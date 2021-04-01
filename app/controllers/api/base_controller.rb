@@ -6,16 +6,6 @@ class Api::BaseController < ActionController::API
   rescue_from ActiveRecord::RecordNotFound, with: :record_not_found
   rescue_from ActiveRecord::RecordNotUnique, with: :record_not_unique
 
-  protected
-
-  def render_unauthorized(message)
-    render json: { message: message }, status: :unauthorized
-  end
-
-  def authorized?
-    @authorized
-  end
-
   private
 
   def authorize_request
