@@ -10,9 +10,27 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 0) do
+ActiveRecord::Schema.define(version: 2021_04_05_123537) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "auditions", force: :cascade do |t|
+    t.string "first_name"
+    t.string "last_name"
+    t.string "email"
+    t.string "artist_name"
+    t.string "reference_company"
+    t.boolean "exclusive_artist"
+    t.string "sounds_like"
+    t.string "genre"
+    t.string "how_you_know_us"
+    t.string "status", default: "pending"
+    t.datetime "status_updated_at"
+    t.string "note"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["email", "status"], name: "index_auditions_on_email_and_status"
+  end
 
 end
