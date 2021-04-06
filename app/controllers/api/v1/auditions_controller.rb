@@ -1,6 +1,7 @@
 class Api::V1::AuditionsController < Api::BaseController
   def index
-    render json: Audition.all, meta: { count: Audition.count }, adapter: :json
+    @auditions = Audition.filter(params[:status], params[:page], params[:per_page], params[:pagination])
+    render json: @auditions, meta: { count: Audition.count }, adapter: :json
   end
 
   def create

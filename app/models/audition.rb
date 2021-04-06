@@ -19,4 +19,16 @@ class Audition < ApplicationRecord
 
     errors.add(:email, 'is already taken.')
   end
+
+  def self.filter(status, page, per_page, pagination)
+    return all.pagination(page, per_page, pagination) if status.blank?
+    
+    where(status: status).pagination(page, per_page, pagination)
+  end
+
+  def self.pagination(page = 1, per_page = 10, pagination)
+    return all if pagination == 'false'
+
+    page(page).per(per_page)
+  end
 end
