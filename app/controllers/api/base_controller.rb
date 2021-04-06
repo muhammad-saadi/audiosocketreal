@@ -5,6 +5,7 @@ class Api::BaseController < ActionController::API
 
   rescue_from ActiveRecord::RecordNotFound, with: :record_not_found
   rescue_from ActiveRecord::RecordNotUnique, with: :record_not_unique
+  rescue_from ActionController::ParameterMissing, with: :parameter_missing
 
   private
 
@@ -22,5 +23,9 @@ class Api::BaseController < ActionController::API
 
   def invalid_request(exception)
     render json: { error: exception.message, code: :not_acceptable, status: 406 }, status: :not_acceptable
+  end
+
+  def parameter_missing(exception)
+    render json: { error: exception.message, code: :parameter_missing, status: 500 }, status: 500
   end
 end
