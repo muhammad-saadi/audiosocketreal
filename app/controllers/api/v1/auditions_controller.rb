@@ -8,7 +8,7 @@ class Api::V1::AuditionsController < Api::BaseController
     @audition.status_updated_at = DateTime.now
 
     if @audition.save
-      return render json: @audition
+      render json: @audition
     else
       raise ExceptionHandler::ValidationError, @audition.errors.full_messages.to_sentence
     end

@@ -1,13 +1,13 @@
 class Audition < ApplicationRecord
-  validates :first_name, :last_name, :email, :artist_name, :reference_company , :status, :status_updated_at, presence: true
+  validates :first_name, :last_name, :email, :artist_name, :reference_company, :status, :status_updated_at, presence: true
   validate :email_uniqueness
 
   STATUSES = {
-  pending: 'pending',
-  approved: 'approved',
-  rejected: 'rejected',
-  accepted: 'accepted',
-  }
+    pending: 'pending',
+    approved: 'approved',
+    rejected: 'rejected',
+    accepted: 'accepted',
+  }.freeze
 
   enum status: STATUSES
 
