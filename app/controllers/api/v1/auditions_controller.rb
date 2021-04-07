@@ -11,7 +11,7 @@ class Api::V1::AuditionsController < Api::BaseController
     if @audition.save
       render json: @audition
     else
-      raise ExceptionHandler::ValidationError, @audition.errors.to_h
+      raise ExceptionHandler::ValidationError.new(@audition.errors.to_h, 'Error creating audition.')
     end
   end
 

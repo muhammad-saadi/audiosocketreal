@@ -9,11 +9,12 @@ module ExceptionHandler
   class InvalidToken < StandardError; end
 
   class ValidationError < StandardError
-    attr_reader :errors
+    attr_reader :errors, :message
 
-    def initialize(errors)
-      super
+    def initialize(errors, message)
+      super(message)
       @errors = errors
+      @message = message
     end
   end
 
@@ -43,6 +44,6 @@ module ExceptionHandler
 
   # JSON response with message; Status code 500 - Internal server error
   def five_hundred(e)
-    render json: e.errors, status: :internal_server_error
+    render json: { errors: e.errors, message: e.message }, status: :internal_server_error
   end
 end
