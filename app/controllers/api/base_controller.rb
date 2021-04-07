@@ -7,6 +7,10 @@ class Api::BaseController < ActionController::API
   rescue_from ActiveRecord::RecordNotUnique, with: :record_not_unique
   rescue_from ActionController::ParameterMissing, with: :parameter_missing
 
+  def route_not_found
+    render json: { error: 'Invalid Access' }, status: :not_found
+  end
+
   private
 
   def authorize_request

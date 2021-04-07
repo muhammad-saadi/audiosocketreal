@@ -4,5 +4,7 @@ Rails.application.routes.draw do
     namespace :v1 do
       resources :auditions
     end
+
+    match '*unmatched', to: 'base#route_not_found', via: :all
   end
 end
