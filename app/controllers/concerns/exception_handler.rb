@@ -8,7 +8,14 @@ module ExceptionHandler
 
   class InvalidToken < StandardError; end
 
-  class ValidationError < StandardError; end
+  class ValidationError < StandardError
+    attr_reader :errors
+
+    def initialize(errors)
+      super
+      @errors = errors
+    end
+  end
 
   included do
     rescue_from ActiveRecord::RecordInvalid, with: :four_twenty_two
@@ -36,6 +43,6 @@ module ExceptionHandler
 
   # JSON response with message; Status code 500 - Internal server error
   def five_hundred(e)
-    render json: { message: e.message }, status: :internal_server_error
+    render json: e.errors, status: :internal_server_error
   end
 end

@@ -1,5 +1,5 @@
 class Audition < ApplicationRecord
-  validates :first_name, :last_name, :email, :artist_name, :reference_company, :status, :status_updated_at, presence: true
+  validates :first_name, :last_name, :email, :artist_name, :reference_company, presence: true
   validate :email_uniqueness
 
   STATUSES = {
@@ -11,6 +11,17 @@ class Audition < ApplicationRecord
 
   enum status: STATUSES
 
+  def self.filter(params)
+    result = params[:status].present? ? where(status: params[:status]) : all
+    return result if params[:pagination] == 'false'
+
+    result.pagination(params[:page], params[:per_page])
+  end
+
+  def self.pagination(page = 1, per_page = PER_PAGE)
+    page(page).per(per_page)
+  end
+
   private
 
   def email_uniqueness
@@ -18,17 +29,5 @@ class Audition < ApplicationRecord
     return unless Audition.where('email ILIKE ? AND status != ?', email, 'rejected').any?
 
     errors.add(:email, 'is already taken.')
-  end
-
-  def self.filter(status, page, per_page, pagination)
-    return all.pagination(page, per_page, pagination) if status.blank?
-    
-    where(status: status).pagination(page, per_page, pagination)
-  end
-
-  def self.pagination(page = 1, per_page = 10, pagination)
-    return all if pagination == 'false'
-
-    page(page).per(per_page)
   end
 end
