@@ -1,7 +1,7 @@
 class Api::V1::AuditionsController < Api::BaseController
   def index
     @auditions = Audition.filter(filter_params)
-    render json: @auditions, meta: { count: @auditions.count }, adapter: :json
+    render json: @auditions.includes(:genres, :audition_musics), meta: { count: @auditions.count }, adapter: :json
   end
 
   def create
@@ -19,7 +19,7 @@ class Api::V1::AuditionsController < Api::BaseController
 
   def audition_params
     params.require(:audition).permit(:first_name, :last_name, :email, :artist_name, :reference_company, :exclusive_artist,
-                                     :sounds_like, :genre, :how_you_know_us, :status, :status_updated_at, :note)
+                                     :how_you_know_us, :status, :status_updated_at, :note, audition_musics: [:track_link], genre_ids: [])
   end
 
   def filter_params

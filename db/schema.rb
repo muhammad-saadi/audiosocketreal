@@ -10,10 +10,18 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_04_05_123537) do
+ActiveRecord::Schema.define(version: 2021_04_08_093410) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "audition_musics", force: :cascade do |t|
+    t.string "track_link"
+    t.bigint "audition_id"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["audition_id"], name: "index_audition_musics_on_audition_id"
+  end
 
   create_table "auditions", force: :cascade do |t|
     t.string "first_name"
@@ -22,8 +30,6 @@ ActiveRecord::Schema.define(version: 2021_04_05_123537) do
     t.string "artist_name"
     t.string "reference_company"
     t.boolean "exclusive_artist"
-    t.string "sounds_like"
-    t.string "genre"
     t.string "how_you_know_us"
     t.string "status", default: "pending"
     t.datetime "status_updated_at"
@@ -31,6 +37,21 @@ ActiveRecord::Schema.define(version: 2021_04_05_123537) do
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.index ["email", "status"], name: "index_auditions_on_email_and_status"
+  end
+
+  create_table "auditions_genres", force: :cascade do |t|
+    t.bigint "audition_id"
+    t.bigint "genre_id"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["audition_id"], name: "index_auditions_genres_on_audition_id"
+    t.index ["genre_id"], name: "index_auditions_genres_on_genre_id"
+  end
+
+  create_table "genres", force: :cascade do |t|
+    t.string "name"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
   end
 
 end
