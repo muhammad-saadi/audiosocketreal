@@ -2,6 +2,7 @@ class Api::BaseController < ActionController::API
   include ExceptionHandler
 
   before_action :authorize_request
+  before_action :cross_origin_request
 
   rescue_from ActiveRecord::RecordNotFound, with: :record_not_found
   rescue_from ActiveRecord::RecordNotUnique, with: :record_not_unique
@@ -11,7 +12,21 @@ class Api::BaseController < ActionController::API
     render json: { error: 'Invalid Access' }, status: :not_found
   end
 
+  def cors_preflight_check
+    if request.method == 'OPTIONS'
+      cross_origin_request
+      render json: { message: 'Success' }
+    end
+  end
+
   private
+
+  def cross_origin_request
+    response.headers['Access-Control-Allow-Origin'] = '*'
+    response.headers['Access-Control-Allow-Methods'] = 'POST, GET, PUT, PATCH, DELETE, OPTIONS'
+    response.headers['Access-Control-Allow-Headers'] = 'Origin, Content-Type, Accept, Authorization, Token, Auth-Token, Email, X-User-Token, X-User-Email'
+    response.headers['Access-Control-Max-Age'] = '1728000'
+  end
 
   def authorize_request
     @authorized = AuthorizeApiRequest.new(request.headers).call[:result]
