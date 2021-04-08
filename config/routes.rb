@@ -5,7 +5,6 @@ Rails.application.routes.draw do
       resources :auditions
     end
 
-    match '*all', controller: 'base', action: 'cors_preflight_check', via: [:options]
     match '*unmatched', to: 'base#route_not_found', via: :all
   end
 end
