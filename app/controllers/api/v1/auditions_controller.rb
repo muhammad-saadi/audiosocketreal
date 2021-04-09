@@ -1,5 +1,6 @@
 class Api::V1::AuditionsController < Api::BaseController
   before_action :authenticate_user!, only: %i[index]
+  before_action :set_user, only: :assign_manager
 
   def index
     @auditions = Audition.filter(filter_params)
@@ -19,13 +20,17 @@ class Api::V1::AuditionsController < Api::BaseController
 
   def assign_manager
     @audition = Audition.find(params[:id])
-    if @audition.update(assignee: User.find(params[:assignee_id]))
+    if @user.manager? && @audition.update(assignee: @user)
       render json: @audition
     else
       raise ExceptionHandler::ValidationError.new(@audition.errors.to_h, 'Error assigning audition to user.')
     end
   end
   private
+
+  def set_user
+    @user = User.find(params[:assignee_id])
+  end
 
   def audition_params
     params.require(:audition).permit(:first_name, :last_name, :email, :artist_name, :reference_company, :exclusive_artist,
