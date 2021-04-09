@@ -1,4 +1,5 @@
 class User < ApplicationRecord
+  include Roles
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable, :trackable and :omniauthable
   devise :database_authenticatable, :registerable,
@@ -10,4 +11,11 @@ class User < ApplicationRecord
     user = User.find_for_authentication(email: email)
     user&.valid_password?(password) ? user : nil
   end
+
+  ROLES = {
+    manager: 'manager',
+    artist: 'artist'
+  }.freeze
+
+  enum_roles roles: ROLES
 end
