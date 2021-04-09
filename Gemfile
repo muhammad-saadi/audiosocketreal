@@ -59,3 +59,4 @@ gem 'jwt'
 gem 'active_model_serializers', require: true
 gem 'kaminari'
 gem 'rack-cors'
+gem 'devise'

@@ -16,7 +16,7 @@ class AuthorizeApiRequest
   def validate_token
     return true if decoded_auth_token && decoded_auth_token[:app_id] == ENV['APP_ID']
 
-    raise(ExceptionHandler::InvalidToken, Message.invalid_token)
+    raise ExceptionHandler::InvalidToken, Message.invalid_token
   end
 
   # decode authentication token
@@ -26,8 +26,8 @@ class AuthorizeApiRequest
 
   # check for token in `Authorization` header
   def http_auth_header
-    return headers['Authorization'].split(' ').last if headers['Authorization'].present?
+    return headers['Authorization'] if headers['Authorization'].present?
 
-    raise(ExceptionHandler::MissingToken, Message.missing_token)
+    raise ExceptionHandler::MissingToken, Message.missing_token
   end
 end

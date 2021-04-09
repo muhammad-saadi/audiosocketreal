@@ -2,7 +2,8 @@ class JsonWebToken
   HMAC_SECRET = ENV['SECRET_KEY_BASE']
 
   class << self
-    def encode(payload)
+    def encode(payload, exp = nil)
+      payload[:exp] = exp.to_i if exp.present?
       JWT.encode(payload, HMAC_SECRET)
     end
 

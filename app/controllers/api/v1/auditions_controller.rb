@@ -1,4 +1,6 @@
 class Api::V1::AuditionsController < Api::BaseController
+  before_action :authenticate_user!, only: %i[index]
+
   def index
     @auditions = Audition.filter(filter_params)
     render json: @auditions.includes(:genres, :audition_musics), meta: { count: @auditions.count }, adapter: :json

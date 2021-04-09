@@ -1,6 +1,8 @@
 class Api::BaseController < ActionController::API
   include ExceptionHandler
 
+  attr_reader :current_user
+
   before_action :authorize_request
 
   rescue_from ActiveRecord::RecordNotFound, with: :record_not_found
@@ -31,5 +33,9 @@ class Api::BaseController < ActionController::API
 
   def parameter_missing(exception)
     render json: { error: exception.message, code: :parameter_missing, status: 500 }, status: 500
+  end
+
+  def authenticate_user!
+    @current_user = AuthorizeUser.new(request.headers['auth-token']).call
   end
 end
