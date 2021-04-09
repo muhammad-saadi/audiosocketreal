@@ -17,6 +17,14 @@ class Api::V1::AuditionsController < Api::BaseController
     end
   end
 
+  def assign_manager
+    @audition = Audition.find(params[:id])
+    if @audition.update(assignee: User.find(params[:assignee_id]))
+      render json: @audition
+    else
+      raise ExceptionHandler::ValidationError.new(@audition.errors.to_h, 'Error assigning audition to user.')
+    end
+  end
   private
 
   def audition_params

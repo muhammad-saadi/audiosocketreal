@@ -1,5 +1,8 @@
 class User < ApplicationRecord
   include Roles
+
+  has_many :auditions, foreign_key: 'assignee_id', dependent: :destroy
+
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable, :trackable and :omniauthable
   devise :database_authenticatable, :registerable,

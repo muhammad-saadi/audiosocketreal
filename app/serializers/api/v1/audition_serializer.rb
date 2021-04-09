@@ -4,4 +4,5 @@ class Api::V1::AuditionSerializer < ActiveModel::Serializer
 
   has_many :genres
   has_many :audition_musics
+  belongs_to :assignee, class_name: 'User'
 end
