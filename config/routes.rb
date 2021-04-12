@@ -9,7 +9,11 @@ Rails.application.routes.draw do
       resource :session, only: %i[create]
       resources :genres, only: %i[index]
 
-      get 'users/managers', to: 'users#managers'
+      resources :users, only: %i[] do
+        collection do
+          get :managers
+        end
+      end
     end
 
     match '*unmatched', to: 'base#route_not_found', via: :all

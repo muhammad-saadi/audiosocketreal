@@ -1,6 +1,5 @@
 class Api::V1::GenresController < Api::BaseController
   def index
-    @genres = Genre.all
-    render json: @genres
+    render json: Genre.all
   end
 end
