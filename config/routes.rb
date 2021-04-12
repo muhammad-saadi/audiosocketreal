@@ -7,6 +7,8 @@ Rails.application.routes.draw do
         patch :assign_manager, on: :member
       end
       resource :session, only: %i[create]
+
+      get 'users/managers', to: 'users#managers'
     end
 
     match '*unmatched', to: 'base#route_not_found', via: :all
