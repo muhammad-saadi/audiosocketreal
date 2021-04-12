@@ -5,8 +5,8 @@ module Roles
     def enum_roles(roles_hash = nil)
       raise StandardError, 'Roles must initiate on hash.' unless roles_hash.is_a? Hash
 
+      key = roles_hash.keys.first.to_s
       begin
-        key = roles_hash.keys.first.to_s
         unless columns_hash[key].array? && columns_hash[key].type == :text
           raise StandardError, 'Roles must be defined on an array of text.'
         end
