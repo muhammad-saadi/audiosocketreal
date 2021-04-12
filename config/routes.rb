@@ -7,6 +7,7 @@ Rails.application.routes.draw do
         patch :assign_manager, on: :member
       end
       resource :session, only: %i[create]
+      resources :genres, only: %i[index]
 
       get 'users/managers', to: 'users#managers'
     end
