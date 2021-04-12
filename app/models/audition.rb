@@ -1,6 +1,6 @@
 class Audition < ApplicationRecord
   validate :email_uniqueness, on: :create
-  validates :first_name, :last_name, :email, :artist_name, :reference_company, presence: true
+  validates :first_name, :last_name, :email, :artist_name, :reference_company, :status, presence: true
   validates_length_of :audition_musics, maximum: 4, message: 'cannot be more than 4.'
 
   has_many :audition_musics, dependent: :destroy

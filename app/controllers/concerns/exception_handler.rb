@@ -24,6 +24,7 @@ module ExceptionHandler
     rescue_from MissingToken, with: :four_twenty_two
     rescue_from InvalidToken, with: :four_twenty_two
     rescue_from ValidationError, with: :five_hundred
+    rescue_from ArgumentError, with: :five_hundred_standard
 
     rescue_from ActiveRecord::RecordNotFound do |e|
       render json: { message: e.message }, status: :not_found
@@ -45,5 +46,10 @@ module ExceptionHandler
   # JSON response with message; Status code 500 - Internal server error
   def five_hundred(e)
     render json: { errors: e.errors, message: e.message }, status: :internal_server_error
+  end
+
+  # JSON response with message; Status code 500 - Internal server error
+  def five_hundred_standard(e)
+    render json: { message: e.message }, status: :internal_server_error
   end
 end

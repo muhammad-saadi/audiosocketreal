@@ -1,6 +1,7 @@
 class Api::V1::AuditionsController < Api::BaseController
-  before_action :authenticate_user!, only: %i[index assign_manager]
-  before_action :set_user, only: :assign_manager
+  before_action :authenticate_user!, except: %i[create]
+  before_action :set_user, only: %i[assign_manager]
+  before_action :set_audition, only: %i[assign_manager update_status]
 
   def index
     @auditions = Audition.filter(filter_params)
@@ -18,8 +19,15 @@ class Api::V1::AuditionsController < Api::BaseController
     end
   end
 
+  def update_status
+    if @audition.update(status: params[:status])
+      render json: @audition
+    else
+      raise ExceptionHandler::ValidationError.new(@audition.errors.to_h, 'Error updating audition.')
+    end
+  end
+
   def assign_manager
-    @audition = Audition.find(params[:id])
     if @user.manager? && @audition.update(assignee: @user)
       render json: @audition
     else
@@ -27,6 +35,10 @@ class Api::V1::AuditionsController < Api::BaseController
     end
   end
   private
+
+  def set_audition
+    @audition = Audition.find(params[:id])
+  end
 
   def set_user
     @user = User.find(params[:assignee_id])

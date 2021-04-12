@@ -4,7 +4,10 @@ Rails.application.routes.draw do
   namespace :api do
     namespace :v1 do
       resources :auditions do
-        patch :assign_manager, on: :member
+        member do
+          patch :assign_manager
+          patch :update_status
+        end
       end
       resource :session, only: %i[create]
       resources :genres, only: %i[index]
