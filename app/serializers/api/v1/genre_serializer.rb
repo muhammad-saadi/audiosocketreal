@@ -1,3 +1,3 @@
-class Api::V1::GenreSerializer < ActiveModel::Serializer
+class Api::V1::GenreSerializer < BaseSerializer
   attributes :id, :name
 end

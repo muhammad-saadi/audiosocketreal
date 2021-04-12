@@ -1,3 +1,3 @@
-class Api::V1::AuditionMusicSerializer < ActiveModel::Serializer
+class Api::V1::AuditionMusicSerializer < BaseSerializer
   attributes :id, :track_link
 end

@@ -6,7 +6,8 @@ class Audition < ApplicationRecord
   has_many :audition_musics, dependent: :destroy
   has_many :auditions_genres, dependent: :destroy
   has_many :genres, through: :auditions_genres
-  belongs_to :assignee, class_name: 'User', optional: true
+
+  belongs_to :assignee, -> { manager }, class_name: 'User', optional: true
 
   accepts_nested_attributes_for :audition_musics, allow_destroy: true
 

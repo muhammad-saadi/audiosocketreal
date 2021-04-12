@@ -1,5 +1,5 @@
 class Api::V1::AuditionsController < Api::BaseController
-  before_action :authenticate_user!, only: %i[index]
+  before_action :authenticate_user!, only: %i[index assign_manager]
   before_action :set_user, only: :assign_manager
 
   def index

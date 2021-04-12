@@ -1,5 +1,3 @@
-class Api::V1::UserSerializer < ActiveModel::Serializer
+class Api::V1::UserSerializer < BaseSerializer
   attributes :id, :email, :first_name, :last_name
-
-  has_many :auditions
 end
