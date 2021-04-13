@@ -65,7 +65,7 @@ class Api::V1::AuditionsController < Api::BaseController
 
   def audition_params
     params.require(:audition).permit(:first_name, :last_name, :email, :artist_name, :reference_company, :exclusive_artist,
-                                     :how_you_know_us, :status, :status_updated_at, :note, audition_musics: [:track_link], genre_ids: [])
+                                     :how_you_know_us, :status, :status_updated_at, :sounds_like, :note, audition_musics: [:track_link], genre_ids: [])
   end
 
   def filter_params

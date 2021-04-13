@@ -1,6 +1,6 @@
 class Api::V1::AuditionSerializer < BaseSerializer
   attributes :id, :first_name, :last_name, :email, :artist_name, :reference_company, :exclusive_artist,
-              :how_you_know_us, :status, :status_updated_at, :note, :submitted_at
+              :how_you_know_us, :status, :status_updated_at, :sounds_like, :note, :submitted_at
 
   has_many :genres
   has_many :audition_musics
