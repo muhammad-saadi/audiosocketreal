@@ -14,6 +14,7 @@ Rails.application.routes.draw do
           patch :bulk_assign_managers
         end
       end
+
       resource :session, only: %i[create]
       resources :genres, only: %i[index]
 

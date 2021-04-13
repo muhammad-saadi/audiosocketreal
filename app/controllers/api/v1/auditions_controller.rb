@@ -48,9 +48,7 @@ class Api::V1::AuditionsController < Api::BaseController
     @auditions = Audition.where(id: params[:audition_ids])
     if @user.manager? && @auditions.update(assignee: @user)
       render json: @auditions
-
-
-
+    else
       raise ExceptionHandler::ValidationError.new({}, 'Error assigning auditions to user.')
     end
   end
