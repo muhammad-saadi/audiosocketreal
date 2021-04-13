@@ -11,6 +11,7 @@ Rails.application.routes.draw do
 
         collection do
           patch :bulk_update_status
+          patch :bulk_assign_managers
         end
       end
       resource :session, only: %i[create]

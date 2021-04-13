@@ -1,6 +1,6 @@
 class Api::V1::AuditionsController < Api::BaseController
   before_action :authenticate_user!, except: %i[create]
-  before_action :set_user, only: %i[assign_manager]
+  before_action :set_user, only: %i[assign_manager bulk_assign_managers]
   before_action :set_audition, only: %i[assign_manager update_status]
 
   def index
@@ -41,6 +41,17 @@ class Api::V1::AuditionsController < Api::BaseController
       render json: @audition
     else
       raise ExceptionHandler::ValidationError.new(@audition.errors.to_h, 'Error assigning audition to user.')
+    end
+  end
+
+  def bulk_assign_managers
+    @auditions = Audition.where(id: params[:audition_ids])
+    if @user.manager? && @auditions.update(assignee: @user)
+      render json: @auditions
+
+
+
+      raise ExceptionHandler::ValidationError.new({}, 'Error assigning auditions to user.')
     end
   end
 
