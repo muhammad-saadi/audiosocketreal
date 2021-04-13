@@ -27,6 +27,15 @@ class Api::V1::AuditionsController < Api::BaseController
     end
   end
 
+  def bulk_update_status
+    @auditions = Audition.where(id: params[:ids])
+    if @auditions.update(status: params[:status])
+      render json: @auditions
+    else
+      raise ExceptionHandler::ValidationError.new({}, 'Error updating audition.')
+    end
+  end
+
   def assign_manager
     if @user.manager? && @audition.update(assignee: @user)
       render json: @audition
