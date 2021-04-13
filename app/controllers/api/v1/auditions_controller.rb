@@ -43,6 +43,7 @@ class Api::V1::AuditionsController < Api::BaseController
       raise ExceptionHandler::ValidationError.new(@audition.errors.to_h, 'Error assigning audition to user.')
     end
   end
+
   private
 
   def set_audition

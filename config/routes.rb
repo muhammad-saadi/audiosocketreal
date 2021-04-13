@@ -8,6 +8,7 @@ Rails.application.routes.draw do
           patch :assign_manager
           patch :update_status
         end
+
         collection do
           patch :bulk_update_status
         end
