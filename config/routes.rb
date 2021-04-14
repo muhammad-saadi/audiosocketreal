@@ -12,6 +12,7 @@ Rails.application.routes.draw do
         collection do
           patch :bulk_update_status
           patch :bulk_assign_managers
+          get :email_template
         end
       end
 

@@ -55,6 +55,10 @@ class Api::V1::AuditionsController < Api::BaseController
     end
   end
 
+  def email_template
+    render json: { template: EMAIL_TEMPLATES[params[:status].to_sym] }
+  end
+
   private
 
   def set_audition
