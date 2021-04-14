@@ -24,7 +24,6 @@ class Api::V1::AuditionsController < Api::BaseController
   def update_status
     if @audition.update(status: params[:status])
       @audition.send_email(params[:content]) if @audition.status_previously_changed?
-
       render json: @audition
     else
       raise ExceptionHandler::ValidationError.new(@audition.errors.to_h, 'Error updating audition.')
@@ -34,6 +33,7 @@ class Api::V1::AuditionsController < Api::BaseController
   def bulk_update_status
     @auditions = Audition.where(id: params[:ids]).includes(:audition_musics, :genres)
     if @auditions.update(status: params[:status]) && @auditions.all? { |aud| aud.errors.blank? }
+      @auditions.map{|audition| audition.send_email(params[:content])}
       render json: @auditions
     else
       raise ExceptionHandler::ValidationError.new(@auditions.map(&:errors).map(&:to_hash).reduce(&:merge), 'Error updating audition.')
