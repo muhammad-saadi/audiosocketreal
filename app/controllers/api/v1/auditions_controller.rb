@@ -23,6 +23,10 @@ class Api::V1::AuditionsController < Api::BaseController
 
   def update_status
     if @audition.update(status: params[:status], status_updated_at: DateTime.now)
+      if @audition.status_previously_changed?
+        @audition.update(status_updated_at: DateTime.now)
+        @audition.send_email(params[:content])
+      end
       render json: @audition
     else
       raise ExceptionHandler::ValidationError.new(@audition.errors.to_h, 'Error updating audition.')

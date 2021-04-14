@@ -40,6 +40,12 @@ class Audition < ApplicationRecord
     self.audition_musics_attributes = attributes
   end
 
+  def send_email(content)
+    return unless accepted? || rejected?
+
+    AuditionMailer.response_mail(email, content).deliver_later
+  end
+
   private
 
   def email_uniqueness
