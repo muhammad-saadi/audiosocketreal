@@ -3,6 +3,8 @@ class Api::V1::AuditionsController < Api::BaseController
   before_action :set_user, only: %i[assign_manager bulk_assign_managers]
   before_action :set_audition, only: %i[assign_manager update_status]
 
+  around_action :wrap_transaction, only: %i[bulk_update_status]
+
   def index
     @auditions = Audition.filter(filter_params)
     render json: @auditions.includes(:genres, :audition_musics), meta: { count: @auditions.count }, adapter: :json
@@ -32,7 +34,7 @@ class Api::V1::AuditionsController < Api::BaseController
     if @auditions.update(status: params[:status])
       render json: @auditions
     else
-      raise ExceptionHandler::ValidationError.new({}, 'Error updating audition.')
+      raise ExceptionHandler::ValidationError.new(@auditions.map(&:errors).map(&:to_h), 'Error updating audition.')
     end
   end
 

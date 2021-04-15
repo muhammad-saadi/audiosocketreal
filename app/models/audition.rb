@@ -54,8 +54,8 @@ class Audition < ApplicationRecord
 
   def status_validation
     return unless status_changed?
-    return if accepted? && status_was !=  STATUSES[:approved]
+    return if accepted? && status_was != STATUSES[:approved]
 
-    errors.add(:status, 'Cannot be accepted untill it is approved.') 
+    errors.add(:status, 'Cannot be accepted until it is approved.')
   end
 end
