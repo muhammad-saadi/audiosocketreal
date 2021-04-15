@@ -44,6 +44,10 @@ module Roles
 
         define_method "destroy_#{role}_role" do
           public_send(key).delete(roles[role])
+        end
+
+        define_method "destroy_#{role}_role!" do
+          public_send(key).delete(roles[role])
           save
         end
 
@@ -51,10 +55,20 @@ module Roles
           return true if public_send(key).include?(roles[role])
 
           add_property(key, roles[role])
+        end
+
+        define_method "add_#{role}_role!" do
+          return true if public_send(key).include?(roles[role])
+
+          add_property(key, roles[role])
           save
         end
 
         define_method "make_#{role}_primary" do
+          set_property(key, public_send(key).partition { |r| r != roles[role] }.flatten)
+        end
+
+        define_method "make_#{role}_primary!" do
           set_property(key, public_send(key).partition { |r| r != roles[role] }.flatten)
           save
         end
