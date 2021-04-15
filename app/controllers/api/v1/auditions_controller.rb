@@ -30,11 +30,11 @@ class Api::V1::AuditionsController < Api::BaseController
   end
 
   def bulk_update_status
-    @auditions = Audition.where(id: params[:ids])
-    if @auditions.update(status: params[:status])
+    @auditions = Audition.where(id: params[:ids]).includes(:audition_musics, :genres)
+    if @auditions.update(status: params[:status]) && @auditions.all? { |aud| aud.errors.blank? }
       render json: @auditions
     else
-      raise ExceptionHandler::ValidationError.new(@auditions.map(&:errors).map(&:to_h), 'Error updating audition.')
+      raise ExceptionHandler::ValidationError.new(@auditions.map(&:errors).map(&:to_hash).reduce(&:merge), 'Error updating audition.')
     end
   end
 
