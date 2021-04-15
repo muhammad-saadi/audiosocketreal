@@ -1,5 +1,6 @@
 class Audition < ApplicationRecord
   validate :email_uniqueness, on: :create
+  validate :status_validation, on: :update
   validates :first_name, :last_name, :email, :artist_name, :reference_company, :status, presence: true
   validates_length_of :audition_musics, maximum: 4, message: 'cannot be more than 4.'
 
@@ -42,5 +43,12 @@ class Audition < ApplicationRecord
     return unless Audition.where('email ILIKE ? AND status != ?', email, 'rejected').any?
 
     errors.add(:email, 'is already taken.')
+  end
+
+  def status_validation
+    return unless status_changed?
+    return if accepted? && status_was !=  STATUSES[:approved]
+
+    errors.add(:status, 'Cannot be accepted untill it is approved.') 
   end
 end
