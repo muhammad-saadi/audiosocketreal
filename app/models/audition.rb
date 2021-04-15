@@ -19,13 +19,15 @@ class Audition < ApplicationRecord
     accepted: 'accepted',
   }.freeze
 
+  ORDER = ['pending', 'accepted', 'approved', 'rejected'].freeze
+
   enum status: STATUSES
 
   def self.filter(params)
     result = params[:status].present? ? where(status: params[:status]) : all
-    return result if params[:pagination] == 'false'
+    return result.order_by_statuses(ORDER) if params[:pagination] == 'false'
 
-    result.pagination(params[:page], params[:per_page])
+    result.order_by_statuses(ORDER).pagination(params[:page], params[:per_page])
   end
 
   def self.pagination(page, per_page)
@@ -34,6 +36,11 @@ class Audition < ApplicationRecord
 
   def audition_musics=(attributes)
     self.audition_musics_attributes = attributes
+  end
+
+  def self.order_by_statuses(statuses)
+    order_clause = "ARRAY_POSITION(ARRAY['#{statuses.join("','")}'], CAST(status AS TEXT))"
+    order(Arel.sql(order_clause))
   end
 
   private
