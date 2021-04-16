@@ -51,8 +51,6 @@ class Audition < ApplicationRecord
 
   def status_validation
     return unless status_changed?
-
-    self.status_updated_at = DateTime.now
     return unless accepted?
 
     errors.add(:status, 'Cannot be accepted until it is approved.') if status_was != STATUSES[:approved]
