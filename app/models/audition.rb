@@ -19,9 +19,9 @@ class Audition < ApplicationRecord
     accepted: 'accepted',
   }.freeze
 
-  ORDER = %w[pending accepted approved rejected].freeze
+  ORDERED_STATUSES = %w[pending accepted approved rejected].freeze
 
-  scope :order_by_statuses, ->(statuses = ORDER) { order(Arel.sql("ARRAY_POSITION(ARRAY['#{statuses.join("','")}'], CAST(status AS TEXT))")) }
+  scope :order_by_statuses, ->(statuses = ORDERED_STATUSES) { order(Arel.sql("ARRAY_POSITION(ARRAY['#{statuses.join("','")}'], CAST(status AS TEXT))")) }
 
   enum status: STATUSES
 
@@ -51,6 +51,8 @@ class Audition < ApplicationRecord
 
   def status_validation
     return unless status_changed?
+
+    self.status_updated_at = DateTime.now
     return unless accepted?
 
     errors.add(:status, 'Cannot be accepted until it is approved.') if status_was != STATUSES[:approved]
