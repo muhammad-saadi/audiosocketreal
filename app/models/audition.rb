@@ -12,6 +12,8 @@ class Audition < ApplicationRecord
 
   accepts_nested_attributes_for :audition_musics, allow_destroy: true
 
+  before_save :refresh_status_updated
+
   STATUSES = {
     pending: 'pending',
     approved: 'approved',
@@ -47,6 +49,12 @@ class Audition < ApplicationRecord
   end
 
   private
+
+  def refresh_status_updated
+    return unless status_changed?
+
+    self.status_updated_at = DateTime.now
+  end
 
   def email_uniqueness
     return if email.blank?
