@@ -72,7 +72,7 @@ class Api::V1::AuditionsController < Api::BaseController
   end
 
   def set_user
-    @user = User.find(params[:assignee_id]) if params[:assignee_id].present?
+    @user = User.find(params[:assignee_id]) unless params[:assignee_id] == 'null'
   end
 
   def audition_params
