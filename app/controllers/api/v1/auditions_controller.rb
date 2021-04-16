@@ -41,8 +41,6 @@ class Api::V1::AuditionsController < Api::BaseController
   end
 
   def assign_manager
-    raise ExceptionHandler::ValidationError.new({}, 'User should be a manager') if @user.present? && !@user.manager?
-
     if @audition.update(assignee: @user)
       render json: @audition
     else
@@ -51,8 +49,6 @@ class Api::V1::AuditionsController < Api::BaseController
   end
 
   def bulk_assign_managers
-    raise ExceptionHandler::ValidationError.new({}, 'User should be a manager') if @user.present? && !@user.manager?
-
     @auditions = Audition.where(id: params[:audition_ids])
     if @auditions.update(assignee: @user)
       render json: @auditions
@@ -73,6 +69,7 @@ class Api::V1::AuditionsController < Api::BaseController
 
   def set_user
     @user = User.find(params[:assignee_id]) unless params[:assignee_id] == 'null'
+    raise ExceptionHandler::ValidationError.new({}, 'User should be a manager') if @user.present? && !@user.manager?
   end
 
   def audition_params
