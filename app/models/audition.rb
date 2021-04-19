@@ -49,6 +49,10 @@ class Audition < ApplicationRecord
     AuditionMailer.response_mail(email, content).deliver_later
   end
 
+  def notify_assignee
+    AuditionMailer.assignee_mail(assignee.email, id).deliver_later
+  end
+
   private
 
   def refresh_status_updated
