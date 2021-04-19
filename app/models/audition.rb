@@ -30,7 +30,7 @@ class Audition < ApplicationRecord
 
   def self.filter(params)
     result = params[:status].present? ? where(status: params[:status]) : all
-    return result.order_by_statuses if params[:pagination] == 'false'
+    return result.order_by_statuses.ordered if params[:pagination] == 'false'
 
     result.order_by_statuses.ordered.pagination(params[:page], params[:per_page])
   end
