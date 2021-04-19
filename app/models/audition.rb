@@ -24,6 +24,7 @@ class Audition < ApplicationRecord
   ORDERED_STATUSES = %w[pending accepted approved rejected].freeze
 
   scope :order_by_statuses, ->(statuses = ORDERED_STATUSES) { order(Arel.sql("ARRAY_POSITION(ARRAY['#{statuses.join("','")}'], CAST(status AS TEXT))")) }
+  scope :ordered, -> { order(:created_at) }
 
   enum status: STATUSES
 
@@ -31,7 +32,7 @@ class Audition < ApplicationRecord
     result = params[:status].present? ? where(status: params[:status]) : all
     return result.order_by_statuses if params[:pagination] == 'false'
 
-    result.order_by_statuses.pagination(params[:page], params[:per_page])
+    result.order_by_statuses.ordered.pagination(params[:page], params[:per_page])
   end
 
   def self.pagination(page, per_page)
