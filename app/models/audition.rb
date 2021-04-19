@@ -46,11 +46,11 @@ class Audition < ApplicationRecord
   def send_email(content)
     return if pending?
 
-    AuditionMailer.response_mail(email, content).deliver_now  if status_previously_changed?
+    AuditionMailer.response_mail(email, content).deliver_later if status_previously_changed?
   end
 
   def notify_assignee
-    AuditionMailer.assignee_mail(assignee.email, id).deliver_now if assignee_id_previously_changed?
+    AuditionMailer.assignee_mail(assignee.email, id).deliver_later if assignee_id_previously_changed?
   end
 
   private
