@@ -44,13 +44,13 @@ class Audition < ApplicationRecord
   end
 
   def send_email(content)
-    return unless accepted? || rejected?
+    return if pending?
 
-    AuditionMailer.response_mail(email, content).deliver_later
+    AuditionMailer.response_mail(email, content).deliver_now  if status_previously_changed?
   end
 
   def notify_assignee
-    AuditionMailer.assignee_mail(assignee.email, id).deliver_later
+    AuditionMailer.assignee_mail(assignee.email, id).deliver_now if assignee_id_previously_changed?
   end
 
   private

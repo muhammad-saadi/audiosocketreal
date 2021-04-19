@@ -23,7 +23,7 @@ class Api::V1::AuditionsController < Api::BaseController
 
   def update_status
     if @audition.update(status: params[:status])
-      @audition.send_email(params[:content]) if @audition.status_previously_changed?
+      @audition.send_email(params[:content])
       render json: @audition
     else
       raise ExceptionHandler::ValidationError.new(@audition.errors.to_h, 'Error updating audition.')
@@ -33,7 +33,7 @@ class Api::V1::AuditionsController < Api::BaseController
   def bulk_update_status
     @auditions = Audition.where(id: params[:ids]).includes(:audition_musics, :genres)
     if @auditions.update(status: params[:status]) && @auditions.all? { |aud| aud.errors.blank? }
-      @auditions.map{|audition| audition.send_email(params[:content]) if audition.status_previously_changed?}
+      @auditions.map{ |audition| audition.send_email(params[:content]) }
       render json: @auditions
     else
       raise ExceptionHandler::ValidationError.new(@auditions.map(&:errors).map(&:to_hash).reduce(&:merge), 'Error updating audition.')
@@ -42,7 +42,7 @@ class Api::V1::AuditionsController < Api::BaseController
 
   def assign_manager
     if @audition.update(assignee: @user)
-      @audition.notify_assignee if @audition.assignee_id_previously_changed?
+      @audition.notify_assignee
       render json: @audition
     else
       raise ExceptionHandler::ValidationError.new(@audition.errors.to_h, 'Error assigning audition to user.')
@@ -52,7 +52,7 @@ class Api::V1::AuditionsController < Api::BaseController
   def bulk_assign_managers
     @auditions = Audition.where(id: params[:audition_ids])
     if @auditions.update(assignee: @user)
-      @auditions.map{|audition| audition.notify_assignee if audition.assignee_id_previously_changed?}
+      @auditions.map{ |audition| audition.notify_assignee }
       render json: @auditions
     else
       raise ExceptionHandler::ValidationError.new({}, 'Error assigning auditions to user.')
@@ -60,7 +60,9 @@ class Api::V1::AuditionsController < Api::BaseController
   end
 
   def email_template
-    render json: { template: EMAIL_TEMPLATES[params[:status].to_sym] }
+    return render json: { params[:status].to_sym => EMAIL_TEMPLATES[params[:status].to_sym] } if params[:status].present?
+
+    render json: EMAIL_TEMPLATES
   end
 
   private
