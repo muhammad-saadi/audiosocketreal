@@ -68,7 +68,7 @@ class Api::V1::AuditionsController < Api::BaseController
   end
 
   def set_user
-    @user = User.find(params[:assignee_id]) unless params[:assignee_id] == 'null'
+    @user = User.find_by_id(params[:assignee_id])
     raise ExceptionHandler::ValidationError.new({}, 'User should be a manager') if @user.present? && !@user.manager?
   end
 

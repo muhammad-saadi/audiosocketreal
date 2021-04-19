@@ -23,6 +23,12 @@ class User < ApplicationRecord
 
   enum_roles roles: ROLES
 
+  def self.find_by_id(id)
+    return nil if id == 'null'
+
+    find(id)
+  end
+
   private
 
   def validate_manager
