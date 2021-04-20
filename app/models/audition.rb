@@ -35,7 +35,7 @@ class Audition < ApplicationRecord
   def self.filter(params)
     result = params[:status].present? ? where(status: params[:status]) : all
     q = result.ransack("#{params[:search_key]}_cont": params[:search_query])
-    result = q.result.includes(:assignee, :genres).order_by_statuses.ordered
+    result = q.result.order_by_statuses.ordered
     return result if params[:pagination] == 'false'
 
     result.pagination(params[:page], params[:per_page])
