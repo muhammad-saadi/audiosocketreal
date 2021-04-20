@@ -15,6 +15,12 @@ class Api::BaseController < ActionController::API
 
   private
 
+  def process(action, *args)
+    super
+  rescue AbstractController::ActionNotFound => e
+    five_hundred_standard(e)
+  end
+
   def authorize_request
     @authorized = AuthorizeApiRequest.new(request.headers).call[:result]
   end
