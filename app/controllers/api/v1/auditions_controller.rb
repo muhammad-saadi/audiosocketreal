@@ -82,6 +82,6 @@ class Api::V1::AuditionsController < Api::BaseController
   end
 
   def filter_params
-    params.permit(:status, :page, :per_page, :pagination)
+    params.permit(:status, :page, :per_page, :pagination, :search_key, :search_query)
   end
 end

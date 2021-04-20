@@ -28,8 +28,14 @@ class Audition < ApplicationRecord
 
   enum status: STATUSES
 
+  ransack_alias :name, :first_name_or_last_name
+  ransack_alias :assignee, :assignee_first_name_or_author_last_name
+  ransack_alias :genre, :genres_name
+
   def self.filter(params)
     result = params[:status].present? ? where(status: params[:status]) : all
+    q = result.ransack("#{params[:search_key]}_cont": params[:search_query])
+    result = q.result.includes(:assignee, :genres)
     return result.order_by_statuses.ordered if params[:pagination] == 'false'
 
     result.order_by_statuses.ordered.pagination(params[:page], params[:per_page])
