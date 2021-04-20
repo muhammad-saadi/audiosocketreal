@@ -1,6 +1,6 @@
 class Api::V1::AuditionsController < Api::BaseController
   before_action :authenticate_user!, except: %i[create]
-  before_action :set_user, only: %i[assign_manager bulk_assign_managers]
+  before_action :set_user, only: %i[assign_manager bulk_assign_manager]
   before_action :set_audition, only: %i[assign_manager update_status]
 
   around_action :wrap_transaction, only: %i[bulk_update_status]
@@ -49,8 +49,8 @@ class Api::V1::AuditionsController < Api::BaseController
     end
   end
 
-  def bulk_assign_managers
-    @auditions = Audition.where(id: params[:audition_ids])
+  def bulk_assign_manager
+    @auditions = Audition.where(id: params[:audition_ids]).includes(:audition_musics, :genres)
     if @auditions.update(assignee: @user)
       @auditions.map(&:notify_assignee)
       render json: @auditions
