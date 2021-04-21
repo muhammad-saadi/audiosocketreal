@@ -56,7 +56,7 @@ class Audition < ApplicationRecord
   end
 
   def notify_assignee
-    AuditionMailer.assignee_mail(assignee.email, id).deliver_later if assignee_id.present? && assignee_id_previously_changed?
+    AuditionMailer.assignee_mail(assignee.email, id, remarks).deliver_later if assignee_id.present? && assignee_id_previously_changed?
   end
 
   private

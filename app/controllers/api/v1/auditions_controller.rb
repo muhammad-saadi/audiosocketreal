@@ -41,7 +41,7 @@ class Api::V1::AuditionsController < Api::BaseController
   end
 
   def assign_manager
-    if @audition.update(assignee: @user)
+    if @audition.update(assignee: @user, remarks: params[:remarks])
       @audition.notify_assignee
       render json: @audition
     else
@@ -51,7 +51,7 @@ class Api::V1::AuditionsController < Api::BaseController
 
   def bulk_assign_manager
     @auditions = Audition.where(id: params[:audition_ids]).includes(:audition_musics, :genres)
-    if @auditions.update(assignee: @user)
+    if @auditions.update(assignee: @user, remarks: params[:remarks])
       @auditions.map(&:notify_assignee)
       render json: @auditions
     else
@@ -78,7 +78,7 @@ class Api::V1::AuditionsController < Api::BaseController
 
   def audition_params
     params.require(:audition).permit(:first_name, :last_name, :email, :artist_name, :reference_company, :exclusive_artist,
-                                     :how_you_know_us, :status, :status_updated_at, :sounds_like, :note, audition_musics: [:track_link], genre_ids: [])
+                                     :how_you_know_us, :status, :status_updated_at, :sounds_like, :remarks, audition_musics: [:track_link], genre_ids: [])
   end
 
   def filter_params
