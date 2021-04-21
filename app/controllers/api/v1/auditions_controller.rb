@@ -7,7 +7,7 @@ class Api::V1::AuditionsController < Api::BaseController
 
   def index
     @auditions = Audition.filter(filter_params)
-    render json: @auditions.includes(:genres, :audition_musics), meta: { count: @auditions.total_count }, adapter: :json
+    render json: @auditions.includes(:genres, :audition_musics), meta: count_details, adapter: :json
   end
 
   def create
@@ -83,5 +83,16 @@ class Api::V1::AuditionsController < Api::BaseController
 
   def filter_params
     params.permit(:status, :page, :per_page, :pagination, :search_key, :search_query)
+  end
+
+  def count_details
+    {
+      total_count: Audition.count,
+      pendingCount: Audition.pending.count,
+      approvedCount: Audition.approved.count,
+      acceptedCount: Audition.accepted.count,
+      rejectedCount: Audition.rejected.count,
+      current_count: @auditions.total_count
+    }
   end
 end
