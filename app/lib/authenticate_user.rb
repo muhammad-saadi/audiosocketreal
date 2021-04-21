@@ -10,9 +10,8 @@ class AuthenticateUser
   def call
     raise ExceptionHandler::AuthenticationError, 'Invalid Credentials' if user.blank?
 
-    return JsonWebToken.encode({ user_id: user.id }, 1.year.from_now) if remember_me?
-
-    JsonWebToken.encode({ user_id: user.id }, 24.hours.from_now)
+    expiration_time = remember_me? && 1.year.from_now || 24.hours.from_now
+    return JsonWebToken.encode({ user_id: user.id }, expiration_time)
   end
 
   def user
@@ -20,7 +19,7 @@ class AuthenticateUser
   end
 
   def remember_me?
-    return true if remember_me == 'true' || remember_me == true
+    return true if remember_me.in? [true, 'true']
     false
   end
 end
