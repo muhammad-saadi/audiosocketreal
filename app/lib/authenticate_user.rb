@@ -19,7 +19,6 @@ class AuthenticateUser
   end
 
   def remember_me?
-    return true if remember_me.in? [true, 'true']
-    false
+    remember_me.in? [true, 'true']
   end
 end
