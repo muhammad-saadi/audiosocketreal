@@ -87,12 +87,11 @@ class Api::V1::AuditionsController < Api::BaseController
 
   def count_details
     {
-      total_count: Audition.count,
-      pendingCount: Audition.pending.count,
-      approvedCount: Audition.approved.count,
-      acceptedCount: Audition.accepted.count,
-      rejectedCount: Audition.rejected.count,
-      current_count: @auditions.total_count
+      total: @auditions.total_count,
+      pending: @auditions.pending.count,
+      approved: @auditions.approved.count,
+      accepted: @auditions.accepted.count,
+      rejected: @auditions.rejected.count
     }
   end
 end
