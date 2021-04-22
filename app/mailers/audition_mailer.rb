@@ -1,6 +1,13 @@
 class AuditionMailer < ApplicationMailer
-  def response_mail(email, content)
-    mail(content_type: "text/html", to: email, subject: 'Audio socket audition response', body: content)
+  def response_mail(audition, content)
+    mail(
+      content_type: "text/html",
+      from: audition.email_config[:from],
+      to: audition.email,
+      cc: audition.email_config[:cc],
+      subject: audition.email_subject,
+      body: content
+    )
   end
 
   def assignee_mail(email, id, remarks)

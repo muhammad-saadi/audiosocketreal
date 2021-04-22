@@ -50,15 +50,27 @@ class Audition < ApplicationRecord
   end
 
   def send_email(content)
-    return if pending?
+    return unless accepted? || rejected?
 
-    AuditionMailer.response_mail(email, content).deliver_later if status_previously_changed?
+    AuditionMailer.response_mail(self, content).deliver_later if status_previously_changed?
   end
 
   def notify_assignee
     AuditionMailer.assignee_mail(assignee.email, id, remarks).deliver_later if assignee_id.present? && assignee_id_previously_changed?
   end
 
+  def email_subject
+    return 'Your Audiosocket Music Submission' if rejected?
+
+    "Audiosocket x #{artist_name}- We've accepted your submission!"
+  end
+
+  def email_config
+    return {from: ENV['FROM_REJECTED']} if rejected?
+    return {from: ENV['FROM_ACCEPTED'], cc: ENV['CC_FOR_EXCLUSIVE']} if accepted? && exclusive_artist?
+
+    {from: ENV['FROM_ACCEPTED'], cc: ENV['CC_FOR_NON_EXCLUSIVE']}
+  end
   private
 
   def refresh_status_updated
