@@ -10,12 +10,12 @@ class AuditionMailer < ApplicationMailer
     )
   end
 
-  def assignee_mail(email, id, remarks)
-    @id = id
+  def assignee_mail(audition, remarks)
+    @audition = audition
     @remarks = remarks
     mail(
       content_type: "text/html",
-      to: email,
+      to: audition.assignee.email,
       subject: 'Audio socket notification'
     )
   end
