@@ -67,9 +67,9 @@ class Audition < ApplicationRecord
 
   def email_config
     return { from: ENV['FROM_REJECTED'] } if rejected?
-    return { from: ENV['FROM_ACCEPTED'], cc: ENV['CC_FOR_EXCLUSIVE'] } if accepted? && exclusive_artist?
+    return { from: ENV['FROM_ACCEPTED'], cc: ENV['EXCLUSIVE_CC_EMAIL'] } if accepted? && exclusive_artist?
 
-    { from: ENV['FROM_ACCEPTED'], cc: ENV['CC_FOR_NON_EXCLUSIVE'] }
+    { from: ENV['FROM_ACCEPTED'], cc: ENV['NON_EXCLUSIVE_CC_EMAIL'] }
   end
 
   def full_name

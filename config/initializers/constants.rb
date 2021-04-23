@@ -5,7 +5,7 @@ EMAIL_TEMPLATES = {
   accepted: "<p>Hello [name]!</p><p>Thanks for submitting music to Audiosocket, we listened to your link and would love to work with you!</p>
   <p>I've attached our artist agreement here. Please note, all co-writers and rights-holders must sign off on the agreement. Please review it and let me know if you have any questions. Next steps after signing will be submitting music, instructions to follow.</p>
   <p>Attached is also the W9, which will need to match with the bank account payee given on your agreement. If you're outside of the USA, we can make payments via Paypal. In this case, we'd need your Paypal address and a W8 filled out.</p>
-  <p?You can check out some of our recent placements here,it's a great time to come onboard.Please let us know if you have any questions.</p>Thanks!Vanessa",
+  <p>You can check out some of our recent placements here,it's a great time to come onboard.Please let us know if you have any questions.</p>Thanks!Vanessa",
 
   accepted_exclusive_artist: "<p>Hi [name]!</p>Thanks for submitting music to Audiosocket, we have listened to your link and would love to work with you! You can check out some of our recent placements here, it's a great time to come onboard.</p>
   <p>We have two separate arms of our business, ASX (Audiosocket Exclusives) and Audiosocket. ASX focuses on high end Film/TV/Ad placements. It is a much smaller catalog, pitched in a very high touch way. Exclusivity is required at the highest end of sync licensing, it can be on a track level or an artist level. Exclusivity comes with additional benefits such as monthly payments, quarterly pitch updates, tracks coming up first insearch, additional marketing benefits and more.</p>
