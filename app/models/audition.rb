@@ -50,7 +50,7 @@ class Audition < ApplicationRecord
   end
 
   def send_email(content)
-    return unless accepted? || rejected?
+    return unless approved? || rejected?
 
     AuditionMailer.response_mail(id, content.gsub('[name]', full_name)).deliver_later if status_previously_changed?
   end
@@ -67,9 +67,9 @@ class Audition < ApplicationRecord
 
   def email_config
     return { from: ENV['FROM_REJECTED'] } if rejected?
-    return { from: ENV['FROM_ACCEPTED'], cc: ENV['EXCLUSIVE_CC_EMAIL'] } if accepted? && exclusive_artist?
+    return { from: ENV['FROM_APPROVED'], cc: ENV['EXCLUSIVE_CC_EMAIL'] } if approved? && exclusive_artist?
 
-    { from: ENV['FROM_ACCEPTED'], cc: ENV['NON_EXCLUSIVE_CC_EMAIL'] }
+    { from: ENV['FROM_APPROVED'], cc: ENV['NON_EXCLUSIVE_CC_EMAIL'] }
   end
 
   def full_name
