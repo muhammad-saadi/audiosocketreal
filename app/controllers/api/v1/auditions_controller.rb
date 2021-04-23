@@ -87,11 +87,11 @@ class Api::V1::AuditionsController < Api::BaseController
 
   def count_details
     {
-      total: @auditions.total_count,
-      pending: @auditions.pending.count,
-      approved: @auditions.approved.count,
-      accepted: @auditions.accepted.count,
-      rejected: @auditions.rejected.count
+      total: params[:search_query].present? ? @auditions.total_count : Audition.count,
+      pending: params[:search_query].present? ? @auditions.pending.count : Audition.pending.count,
+      approved: params[:search_query].present? ? @auditions.approved.count : Audition.approved.count,
+      accepted: params[:search_query].present? ? @auditions.accepted.count : Audition.accepted.count,
+      rejected: params[:search_query].present? ? @auditions.rejected.count : Audition.rejected.count
     }
   end
 end
