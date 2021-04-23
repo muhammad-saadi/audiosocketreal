@@ -52,11 +52,11 @@ class Audition < ApplicationRecord
   def send_email(content)
     return unless accepted? || rejected?
 
-    AuditionMailer.response_mail(self, content.gsub('[name]', full_name)).deliver_later if status_previously_changed?
+    AuditionMailer.response_mail(id, content.gsub('[name]', full_name)).deliver_later if status_previously_changed?
   end
 
   def notify_assignee
-    AuditionMailer.assignee_mail(self, remarks).deliver_later if assignee_id.present? && assignee_id_previously_changed?
+    AuditionMailer.assignee_mail(id, remarks).deliver_later if assignee_id.present? && assignee_id_previously_changed?
   end
 
   def email_subject
@@ -66,10 +66,10 @@ class Audition < ApplicationRecord
   end
 
   def email_config
-    return {from: ENV['FROM_REJECTED']} if rejected?
-    return {from: ENV['FROM_ACCEPTED'], cc: ENV['CC_FOR_EXCLUSIVE']} if accepted? && exclusive_artist?
+    return { from: ENV['FROM_REJECTED'] } if rejected?
+    return { from: ENV['FROM_ACCEPTED'], cc: ENV['CC_FOR_EXCLUSIVE'] } if accepted? && exclusive_artist?
 
-    {from: ENV['FROM_ACCEPTED'], cc: ENV['CC_FOR_NON_EXCLUSIVE']}
+    { from: ENV['FROM_ACCEPTED'], cc: ENV['CC_FOR_NON_EXCLUSIVE'] }
   end
 
   def full_name
