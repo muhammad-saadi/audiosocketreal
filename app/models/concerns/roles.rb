@@ -10,7 +10,7 @@ module Roles
         unless columns_hash[key].array? && columns_hash[key].type == :text
           raise StandardError, 'Roles must be defined on an array of text.'
         end
-      rescue ActiveRecord::NoDatabaseError, ActiveRecord::StatementInvalid
+      rescue ActiveRecord::NoDatabaseError, ActiveRecord::StatementInvalid, NoMethodError
         # Ignored
       end
 
