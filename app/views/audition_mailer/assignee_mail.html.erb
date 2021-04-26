@@ -1,2 +1,18 @@
-<p>You have been assigned audition#<%= @audition.id %> of <%= @audition.full_name %></p>
-<b>Remarks:</b> <%= @remarks.presence || 'None.' %>
+
+<div class='email-block'>
+	<div class='logo'>
+		<%= image_tag 'logo-black' %>
+	</div>
+	<h1 class='header-text'>Vender Application</h1>
+	<div class='body-text'>
+		<p>hello</p>
+		<p>You one have been assigned audition#<%= @audition.id %> of <%= @audition.full_name %></p>
+		<div>Remarks:</div> <%= @remarks.presence || 'None.' %>
+	</div>
+	<div class='footer-text'>
+		<p>AudioSocket</p>
+		<p>3518 Fermont Ave North, #400</p>
+		<p>Seattle, WA 98103</p>
+		<p>United States</p>
+	</div>
+</div>
