@@ -1,13 +1,15 @@
 <!DOCTYPE html>
-<html>
+<html lang=''>
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <style>
       @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap');
+
       html {
         font-size: 16px;
-        box-sizing: boder-box;
+        box-sizing: border-box;
       }
+
       .email-block {
         max-width: 100%;
         background-color: #f2f2f2;
@@ -16,12 +18,15 @@
         font-family: 'Poppins', sans-serif;
         color: #646464;
       }
+
       .logo {
         text-align: center;
       }
+
       .logo img {
         width: 18.75rem;
       }
+
       .header-text {
         background-color: #393838;
         color: #fff;
@@ -29,30 +34,39 @@
         font-weight: 300;
         margin-bottom: 0;
       }
+
       .body-text {
         padding: 1.2rem 3rem 3rem;
         border: 1px solid #e3e1e1;
         background-color: #ffffff;
-        border-radius: 0 0px 3px 3px;
+        border-radius: 0 0 3px 3px;
       }
+
       .body-text p {
         margin-bottom: 1.8rem
       }
+
       .footer-text {
         padding-top: 1.5rem;
       }
+
       .footer-text p {
         margin-top: 0.3rem;
         margin-bottom: 0.3rem;
         text-align: center;
         opacity: 0.8;
       }
-      @media(min-width:1024px) {
+
+      @media (min-width: 1024px) {
         .email-block {
           width: 40rem;
         }
       }
     </style>
+
+    <title>
+      Artists Portal
+    </title>
   </head>
   <body>
     <%= yield %>
