@@ -127,4 +127,7 @@ Rails.application.configure do
     authentication: :plain,
     enable_starttls_auto: true
   }
+
+  config.action_controller.asset_host = ENV['HOST']
+  config.action_mailer.asset_host = config.action_controller.asset_host
 end
