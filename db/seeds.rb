@@ -32,3 +32,4 @@
  'Latin', 'Cinematic', 'Orchestral', 'Trailer'].each do |genre|
   Genre.find_or_create_by(name: genre)
 end
+AdminUser.create!(email: 'admin@example.com', password: 'password', password_confirmation: 'password') if Rails.env.development?
