@@ -19,12 +19,14 @@ class Audition < ApplicationRecord
     approved: 'approved',
     rejected: 'rejected',
     accepted: 'accepted',
+    deleted: 'deleted'
   }.freeze
 
   ORDERED_STATUSES = %w[pending accepted approved rejected].freeze
 
   scope :order_by_statuses, ->(statuses = ORDERED_STATUSES) { order(Arel.sql("ARRAY_POSITION(ARRAY['#{statuses.join("','")}'], CAST(status AS TEXT))")) }
   scope :ordered, -> { order(:created_at) }
+  scope :active, -> { not_deleted }
 
   enum status: STATUSES
 
@@ -86,7 +88,7 @@ class Audition < ApplicationRecord
 
   def email_uniqueness
     return if email.blank?
-    return unless Audition.where('email ILIKE ? AND status != ?', email, 'rejected').any?
+    return unless Audition.where('email ILIKE ? AND status NOT IN (?)', email, [STATUSES[:rejected], STATUSES[:deleted]]).any?
 
     errors.add(:email, 'is already taken.')
   end
