@@ -34,7 +34,7 @@ class Audition < ApplicationRecord
   ransack_alias :assignee, :assignee_first_name_or_author_last_name
   ransack_alias :genre, :genres_name
 
-  def self.filter(params)
+  def self.filter_records(params)
     result = params[:status].present? ? where(status: params[:status]) : all
     q = result.ransack("#{params[:search_key]}_cont": params[:search_query])
     result = q.result.order_by_statuses.ordered
