@@ -26,7 +26,6 @@ class Audition < ApplicationRecord
 
   scope :order_by_statuses, ->(statuses = ORDERED_STATUSES) { order(Arel.sql("ARRAY_POSITION(ARRAY['#{statuses.join("','")}'], CAST(status AS TEXT))")) }
   scope :ordered, -> { order(:created_at) }
-  scope :non_deleted, -> { not_deleted }
 
   enum status: STATUSES
 

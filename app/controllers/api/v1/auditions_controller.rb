@@ -6,7 +6,7 @@ class Api::V1::AuditionsController < Api::BaseController
   around_action :wrap_transaction, only: %i[bulk_update_status]
 
   def index
-    @auditions = Audition.non_deleted.filter_records(filter_params)
+    @auditions = Audition.not_deleted.filter_records(filter_params)
     render json: @auditions.includes(:genres, :audition_musics), meta: count_details, adapter: :json
   end
 
