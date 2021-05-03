@@ -6,7 +6,7 @@ class Api::V1::AuditionsController < Api::BaseController
   around_action :wrap_transaction, only: %i[bulk_update_status]
 
   def index
-    @auditions = Audition.not_deleted.filter_records(filter_params)
+    @auditions = Audition.filter_records(filter_params)
     render json: @auditions.includes(:genres, :audition_musics), meta: count_details, adapter: :json
   end
 
@@ -89,11 +89,12 @@ class Api::V1::AuditionsController < Api::BaseController
     @auditions = Audition if params[:search_query].blank?
 
     {
-      total: params[:search_query].present? && @auditions.total_count || @auditions.count,
+      total: params[:search_query].present? && @auditions.total_count || @auditions.not_deleted.count,
       pending: @auditions.pending.count,
       approved: @auditions.approved.count,
       accepted: @auditions.accepted.count,
-      rejected: @auditions.rejected.count
+      rejected: @auditions.rejected.count,
+      deleted: @auditions.deleted.count
     }
   end
 end
