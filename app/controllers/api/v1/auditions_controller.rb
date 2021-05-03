@@ -8,7 +8,7 @@ class Api::V1::AuditionsController < Api::BaseController
   def index
     @filtered_auditions = Audition.filter(filter_params[:search_key], filter_params[:search_query])
     @auditions = @filtered_auditions.filter_by_status(filter_params[:status]).pagination(filter_params)
-    render json: @auditions.order_by_statuses.ordered.includes(:genres, :audition_musics), meta: count_details, adapter: :json
+    render json: @auditions.ordered_by_status.ordered.includes(:genres, :audition_musics), meta: count_details, adapter: :json
   end
 
   def create

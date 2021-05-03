@@ -24,8 +24,11 @@ class Audition < ApplicationRecord
 
   ORDERED_STATUSES = %w[pending accepted approved rejected].freeze
 
-  scope :order_by_statuses, ->(statuses = ORDERED_STATUSES) { order(Arel.sql("ARRAY_POSITION(ARRAY['#{statuses.join("','")}'], CAST(status AS TEXT))")) }
+  scope :ordered_by_status, lambda { |statuses = ORDERED_STATUSES|
+    order(Arel.sql("ARRAY_POSITION(ARRAY['#{statuses.join("','")}'], CAST(status AS TEXT))"))
+  }
   scope :ordered, -> { order(:created_at) }
+  scope :by_status, -> (status) { where(status: status) }
 
   enum status: STATUSES
 
@@ -36,7 +39,7 @@ class Audition < ApplicationRecord
   def self.filter_by_status(status)
     return not_deleted if status.blank?
 
-    where(status: status)
+    by_status(status)
   end
 
   def self.filter(key, query)
