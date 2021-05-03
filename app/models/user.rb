@@ -29,6 +29,10 @@ class User < ApplicationRecord
     find(id)
   end
 
+  def full_name
+    [first_name, last_name].reject(&:blank?).join(' ')
+  end
+
   private
 
   def validate_manager

@@ -43,7 +43,7 @@ class Api::V1::AuditionsController < Api::BaseController
 
   def assign_manager
     if @audition.update(assignee: @user, remarks: params[:remarks])
-      @audition.notify_assignee
+      @audition.notify_assignee(current_user.id)
       render json: @audition
     else
       raise ExceptionHandler::ValidationError.new(@audition.errors.to_h, 'Error assigning audition to user.')
@@ -53,7 +53,7 @@ class Api::V1::AuditionsController < Api::BaseController
   def bulk_assign_manager
     @auditions = Audition.where(id: params[:audition_ids]).includes(:audition_musics, :genres)
     if @auditions.update(assignee: @user, remarks: params[:remarks])
-      @auditions.map(&:notify_assignee)
+      @auditions.map{ |audition| audition.notify_assignee(current_user.id) }
       render json: @auditions
     else
       raise ExceptionHandler::ValidationError.new({}, 'Error assigning auditions to user.')

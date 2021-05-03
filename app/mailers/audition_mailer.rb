@@ -11,9 +11,10 @@ class AuditionMailer < ApplicationMailer
     )
   end
 
-  def assignee_mail(id, remarks)
+  def assignee_mail(id, remarks, current_user_id)
     @audition = Audition.find(id)
     @remarks = remarks
+    @current_user = User.find(current_user_id)
     mail(
       content_type: "text/html",
       to: @audition.assignee.email,

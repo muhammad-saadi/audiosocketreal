@@ -2,8 +2,7 @@
 
 PER_PAGE = 10
 EMAIL_TEMPLATES = {
-  approved: "<p>Hello!<br>We hope this note finds you safe and in good health. Thank you for submitting an audition to Audiosocket.</p>
-  <p>Hello [name]!<br>Thanks for submitting music to Audiosocket, we have listened to your links and would love to work with you!</p>
+  approved: "<p>Hello [name]!<br>Thanks for submitting music to Audiosocket, we have listened to your links and would love to work with you!</p>
   <p>I've attached our artist agreement here. Please note, all co-writers and rights-holders must sign off on the agreement. Please review it and let me know if you have any questions. Next steps after signing will be submitting music, instructions to follow.</p>
   <p>Attached is also the W9, which will need to match with the bank account payee given on your agreement. If you're outside of the USA, we can make payments via Paypal. In this case, we'd need your Paypal address and a W8 filled out.</p>
   <p>You can check out some of our recent placements here, it's a great time to come onboard. Please let us know if you have any questions.</p>

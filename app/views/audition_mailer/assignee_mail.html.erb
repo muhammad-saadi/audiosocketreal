@@ -4,8 +4,8 @@
   </div>
   <h1 class='header-text'>Vendor Application</h1>
   <div class='body-text'>
-    <p>hello</p>
-    <p>You one have been assigned audition#<%= @audition.id %> of <%= @audition.full_name %></p>
+    <p>Hello <%= @audition.assignee.full_name.titleize %>,</p>
+    <p><%= @current_user.full_name.titleize %> has assigned you audition#<%= @audition.id %> to you for final review.</p>
     <div>Remarks:</div> <%= @remarks.presence || 'None.' %>
   </div>
   <div class='footer-text'>
