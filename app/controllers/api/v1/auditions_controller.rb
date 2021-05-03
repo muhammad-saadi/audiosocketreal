@@ -6,8 +6,9 @@ class Api::V1::AuditionsController < Api::BaseController
   around_action :wrap_transaction, only: %i[bulk_update_status]
 
   def index
-    @auditions = Audition.filter_records(filter_params)
-    render json: @auditions.includes(:genres, :audition_musics), meta: count_details, adapter: :json
+    @filtered_auditions = Audition.filter(filter_params[:search_key], filter_params[:search_query])
+    @auditions = @filtered_auditions.filter_by_status(filter_params[:status]).pagination(filter_params)
+    render json: @auditions.order_by_statuses.ordered.includes(:genres, :audition_musics), meta: count_details, adapter: :json
   end
 
   def create
@@ -33,7 +34,7 @@ class Api::V1::AuditionsController < Api::BaseController
   def bulk_update_status
     @auditions = Audition.where(id: params[:ids]).includes(:audition_musics, :genres)
     if @auditions.update(status: params[:status]) && @auditions.all? { |aud| aud.errors.blank? }
-      @auditions.map{ |audition| audition.send_email(params[:content]) }
+      @auditions.map { |audition| audition.send_email(params[:content]) }
       render json: @auditions
     else
       raise ExceptionHandler::ValidationError.new(@auditions.map(&:errors).map(&:to_hash).reduce(&:merge), 'Error updating audition.')
@@ -86,15 +87,13 @@ class Api::V1::AuditionsController < Api::BaseController
   end
 
   def count_details
-    @auditions = Audition if params[:search_query].blank?
-
     {
-      total: params[:search_query].present? && @auditions.total_count || @auditions.not_deleted.count,
-      pending: @auditions.pending.count,
-      approved: @auditions.approved.count,
-      accepted: @auditions.accepted.count,
-      rejected: @auditions.rejected.count,
-      deleted: @auditions.deleted.count
+      total: @filtered_auditions.not_deleted.count,
+      pending: @filtered_auditions.pending.count,
+      approved: @filtered_auditions.approved.count,
+      accepted: @filtered_auditions.accepted.count,
+      rejected: @filtered_auditions.rejected.count,
+      deleted: @filtered_auditions.deleted.count
     }
   end
 end

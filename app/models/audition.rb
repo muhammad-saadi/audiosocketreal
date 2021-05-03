@@ -33,17 +33,20 @@ class Audition < ApplicationRecord
   ransack_alias :assignee, :assignee_first_name_or_author_last_name
   ransack_alias :genre, :genres_name
 
-  def self.filter_records(params)
-    result = params[:status].present? ? where(status: params[:status]) : all
-    q = result.ransack("#{params[:search_key]}_cont": params[:search_query])
-    result = q.result.order_by_statuses.ordered
-    return result if params[:pagination] == 'false'
+  def self.filter_by_status(status)
+    return not_deleted if status.blank?
 
-    result.pagination(params[:page], params[:per_page])
+    where(status: status)
   end
 
-  def self.pagination(page, per_page)
-    page(page.presence || 1).per(per_page.presence || PER_PAGE)
+  def self.filter(key, query)
+    ransack("#{key}_cont": query).result
+  end
+
+  def self.pagination(params)
+    return all if params[:pagination] == 'false'
+
+    page(params[:page].presence || 1).per(params[:per_page].presence || PER_PAGE)
   end
 
   def audition_musics=(attributes)
