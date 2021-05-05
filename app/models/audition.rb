@@ -62,8 +62,8 @@ class Audition < ApplicationRecord
     AuditionMailer.response_mail(id, content.gsub('[name]', full_name)).deliver_later if status_previously_changed?
   end
 
-  def notify_assignee(current_user_id)
-    AuditionMailer.assignee_mail(id, remarks, current_user_id).deliver_later if assignee_id.present? && assignee_id_previously_changed?
+  def notify_assignee
+    AuditionMailer.assignee_mail(id, remarks, Current.user.id).deliver_later if assignee_id.present? && assignee_id_previously_changed?
   end
 
   def email_subject

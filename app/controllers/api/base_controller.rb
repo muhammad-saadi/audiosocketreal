@@ -48,4 +48,8 @@ class Api::BaseController < ActionController::API
   def wrap_transaction(&block)
     ActiveRecord::Base.transaction(&block)
   end
+
+  def set_current_user
+    Current.user = current_user
+  end
 end
