@@ -43,6 +43,7 @@ class Api::BaseController < ActionController::API
 
   def authenticate_user!
     @current_user = AuthorizeUser.new(request.headers['auth-token']).call
+    set_current_user
   end
 
   def wrap_transaction(&block)

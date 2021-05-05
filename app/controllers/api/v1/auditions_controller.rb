@@ -2,7 +2,6 @@ class Api::V1::AuditionsController < Api::BaseController
   before_action :authenticate_user!, except: %i[create]
   before_action :set_user, only: %i[assign_manager bulk_assign_manager]
   before_action :set_audition, only: %i[assign_manager update_status]
-  before_action :set_current_user
 
   around_action :wrap_transaction, only: %i[bulk_update_status]
 
