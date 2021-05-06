@@ -13,6 +13,7 @@ class Audition < ApplicationRecord
   accepts_nested_attributes_for :audition_musics, allow_destroy: true
 
   before_save :refresh_status_updated
+  after_update :create_user_profile
 
   STATUSES = {
     pending: 'pending',
@@ -103,5 +104,14 @@ class Audition < ApplicationRecord
     return unless accepted?
 
     errors.add(:status, 'Cannot be accepted until it is approved.') if status_was != STATUSES[:approved]
+  end
+
+  def create_user_profile
+    return unless saved_change_to_status?
+    return unless approved?
+
+    user = User.new(first_name: first_name, last_name: last_name, email: email, roles: ['artist'])
+    user.save(validate: false)
+    ArtistProfile.create(name: artist_name, exclusive: exclusive_artist, user: user)
   end
 end

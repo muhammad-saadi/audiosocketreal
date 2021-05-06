@@ -6,6 +6,7 @@ class User < ApplicationRecord
          :recoverable, :rememberable, :validatable
 
   has_many :auditions, foreign_key: 'assignee_id', dependent: :destroy
+  has_one :artist_profile, dependent: :destroy
 
   validates :email, uniqueness: { case_sensitive: false }, presence: true
 
@@ -31,6 +32,10 @@ class User < ApplicationRecord
 
   def full_name
     [first_name, last_name].reject(&:blank?).join(' ')
+  end
+
+  def encoded_id
+    JWT.encode({ id: id }, ENV['SECRET_KEY_BASE'], 'HS256')
   end
 
   private
