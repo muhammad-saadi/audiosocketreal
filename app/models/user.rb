@@ -9,6 +9,7 @@ class User < ApplicationRecord
   has_one :artist_profile, dependent: :destroy
 
   validates :email, uniqueness: { case_sensitive: false }, presence: true
+  validates :password, confirmation: true
 
   before_save :validate_manager
 

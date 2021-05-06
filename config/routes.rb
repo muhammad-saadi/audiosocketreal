@@ -22,6 +22,7 @@ Rails.application.routes.draw do
       resources :users, only: %i[] do
         collection do
           get :managers
+          patch :accept_invitation
         end
       end
     end
