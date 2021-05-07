@@ -7,6 +7,8 @@ class User < ApplicationRecord
 
   has_many :auditions, foreign_key: 'assignee_id', dependent: :destroy
   has_one :artist_profile, dependent: :destroy
+  has_many :users_agreements
+  has_many :agreements, through: :users_agreements
 
   validates :email, uniqueness: { case_sensitive: false }, presence: true
   validates :password, confirmation: true

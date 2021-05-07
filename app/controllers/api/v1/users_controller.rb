@@ -8,7 +8,7 @@ class Api::V1::UsersController < Api::BaseController
 
   def accept_invitation
     if @user.update(invitation_params)
-      render json: "Agreements will be provided here"
+      render json: @user.users_agreements.map(&:status_hash)
     else
       raise ExceptionHandler::ValidationError.new(@user, 'Error setting password.')
     end
