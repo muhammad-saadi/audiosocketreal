@@ -130,4 +130,5 @@ Rails.application.configure do
 
   config.action_controller.asset_host = ENV['HOST']
   config.action_mailer.asset_host = config.action_controller.asset_host
+  config.action_mailer.default_url_options = { host: ENV['HOST'] }
 end
