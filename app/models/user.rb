@@ -36,7 +36,7 @@ class User < ApplicationRecord
   end
 
   def encoded_id
-    JWT.encode({ id: id }, ENV['SECRET_KEY_BASE'], 'HS256')
+    JsonWebToken.encode({ id: id })
   end
 
   private

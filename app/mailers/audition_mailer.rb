@@ -2,7 +2,8 @@ class AuditionMailer < ApplicationMailer
   def response_mail(id, content)
     @audition = Audition.find(id)
     @content = content
-    @path = "/accept-invitation/#{User.find_by(email: @audition.email).encoded_id}"
+    token = User.find_by(email: @audition.email).encoded_id
+    @path = "http://artists.square63.net/accept-invitation/#{token}"
     mail(
       content_type: "text/html",
       from: @audition.email_config[:from],
