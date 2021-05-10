@@ -7,11 +7,11 @@ class JsonWebToken
       JWT.encode(payload, HMAC_SECRET)
     end
 
-    def decode(token)
+    def decode(token, exception = ExceptionHandler::InvalidToken)
       body = JWT.decode(token, HMAC_SECRET)[0]
       HashWithIndifferentAccess.new body
     rescue JWT::ExpiredSignature, JWT::VerificationError, JWT::DecodeError => e
-      raise ExceptionHandler::InvalidToken, e.message
+      raise exception, e.message
     end
 
     def generate_token

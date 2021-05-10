@@ -21,7 +21,7 @@ class Api::V1::UsersController < Api::BaseController
   private
 
   def set_user
-    @user = User.find_by(JsonWebToken.decode(params[:token]))
+    @user = User.find_by(JsonWebToken.decode(params[:token], ExceptionHandler::TokenError.new('User hash not valid.')))
   end
 
   def invitation_params

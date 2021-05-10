@@ -8,6 +8,15 @@ module ExceptionHandler
 
   class InvalidToken < StandardError; end
 
+  class TokenError < StandardError
+    attr_reader :message
+
+    def initialize(message)
+     super(message)
+     @message = message
+    end
+  end
+
   class ValidationError < StandardError
     attr_reader :errors, :message
 
@@ -25,6 +34,7 @@ module ExceptionHandler
     rescue_from InvalidToken, with: :four_twenty_two
     rescue_from ValidationError, with: :five_hundred
     rescue_from ArgumentError, with: :five_hundred_standard
+    rescue_from TokenError, with: :five_hundred_standard
 
     rescue_from ActiveRecord::RecordNotFound do |e|
       render json: { message: e.message }, status: :not_found
