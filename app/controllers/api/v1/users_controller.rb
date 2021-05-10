@@ -1,6 +1,6 @@
 class Api::V1::UsersController < Api::BaseController
   before_action :authenticate_user!, only: :managers
-  before_action :set_user, only: %i[accept_invitation verify_hash]
+  before_action :set_user, only: %i[accept_invitation authenticate_token]
 
   def managers
     render json: User.manager
@@ -14,8 +14,8 @@ class Api::V1::UsersController < Api::BaseController
     end
   end
 
-  def verify_hash
-      render json: @user, serializer: Api::V1::UserTokenSerializer
+  def authenticate_token
+    render json: @user, serializer: Api::V1::UserTokenSerializer
   end
 
   private

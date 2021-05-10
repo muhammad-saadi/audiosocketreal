@@ -4,5 +4,4 @@ class Api::V1::AgreementsController < Api::BaseController
   def index
     render json: current_user.agreements
   end
-
 end
