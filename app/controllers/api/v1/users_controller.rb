@@ -8,9 +8,9 @@ class Api::V1::UsersController < Api::BaseController
 
   def accept_invitation
     if @user.update(invitation_params)
-      render json: @user.agreements
+      render json: @user
     else
-      raise ExceptionHandler::ValidationError.new(@user, 'Error setting password.')
+      raise ExceptionHandler::ValidationError.new(@user, 'Error accepting invitation.')
     end
   end
 
