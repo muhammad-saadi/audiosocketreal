@@ -18,10 +18,9 @@ Rails.application.routes.draw do
 
       resource :session, only: %i[create]
       resources :genres, only: %i[index]
+      resources :agreements, only: %i[index]
 
       resources :users, only: %i[] do
-        resources :agreements, only: %i[index]
-
         collection do
           get :managers
           patch :accept_invitation
