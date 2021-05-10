@@ -4,7 +4,8 @@ class UsersAgreement < ApplicationRecord
 
   STATUSES = {
     pending: 'pending',
-    accepted: 'accepted'
+    accepted: 'accepted',
+    rejected: 'rejected'
   }.freeze
 
   enum status: STATUSES
