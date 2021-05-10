@@ -1,6 +1,6 @@
 class Api::V1::UsersController < Api::BaseController
   before_action :authenticate_user!, only: :managers
-  before_action :set_user, only: :accept_invitation
+  before_action :set_user, only: %i[accept_invitation verify_hash]
 
   def managers
     render json: User.manager
@@ -12,6 +12,10 @@ class Api::V1::UsersController < Api::BaseController
     else
       raise ExceptionHandler::ValidationError.new(@user, 'Error accepting invitation.')
     end
+  end
+
+  def verify_hash
+      render json: @user, serializer: Api::V1::UserTokenSerializer
   end
 
   private

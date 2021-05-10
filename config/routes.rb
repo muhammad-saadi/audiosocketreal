@@ -25,6 +25,7 @@ Rails.application.routes.draw do
         collection do
           get :managers
           patch :accept_invitation
+          get :verify_hash
         end
       end
     end
