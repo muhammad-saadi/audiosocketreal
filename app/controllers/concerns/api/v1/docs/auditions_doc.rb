@@ -32,7 +32,7 @@ module Api::V1::Docs::AuditionsDoc
 
     def_param_group :doc_update_status do
       api :PATCH, "/v1/auditions/update_status", "Update status of an audition"
-      param :id, Fixnum, desc: 'Id of audition', required: true
+      param :id, :number, desc: 'Id of audition', required: true
       param :status, Audition.statuses.keys, desc: 'New value of status', required: true
       param :content, String, desc: 'Content to be send in email', allow_blank: true
     end
@@ -46,15 +46,15 @@ module Api::V1::Docs::AuditionsDoc
 
     def_param_group :doc_assign_manager do
       api :PATCH, "/v1/auditions/assign_manager", "Assign audition to another manager"
-      param :id, Fixnum, desc: 'Id of audition', required: true
-      param :assignee_id, Integer, desc: 'Id of manager to be assigned', required: true
+      param :id, :number, desc: 'Id of audition', required: true
+      param :assignee_id, :number, desc: 'Id of manager to be assigned', required: true
       param :remarks, String, desc: 'Remarks about the audition', allow_blank: true
     end
 
     def_param_group :doc_bulk_assign_manager do
       api :PATCH, "/v1/auditions/bulk_assign_manager", "Assign multiple auditions to another manager"
-      param :ids, Array, of: Fixnum, desc: 'Ids of audition', required: true
-      param :assignee_id, Integer, desc: 'Id of manager to be assigned', required: true
+      param :audition_ids, Array, of: Fixnum, desc: 'Ids of audition', required: true
+      param :assignee_id, :number, desc: 'Id of manager to be assigned', required: true
       param :remarks, String, desc: 'Remarks about the audition', allow_blank: true
     end
 
