@@ -8,7 +8,7 @@ module Api::V1::Docs::SessionsDoc
       api :POST, "/v1/sessions", "Login user and create session"
       param :email, String, desc: 'Email id for login', required: true
       param :password, String, desc: 'Password for login', required: true
-      param :remember_me, [true, false], desc: 'If you want to avoid session expiry'
+      param :remember_me, [true, false, 'true', 'false'], desc: 'If you want to avoid session expiry', allow_blank: true
     end
   end
 end
