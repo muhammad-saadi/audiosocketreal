@@ -1,6 +1,6 @@
 Apipie.configure do |config|
   config.app_name                = "ArtistPortalBackend"
-  config.api_base_url            = "/api"
+  config.api_base_url            = "/api/v1"
   config.doc_base_url            = "/documentation"
   config.translate = false
   # where is your API defined?
