@@ -6,7 +6,7 @@ module Api::V1::Docs::AuditionsDoc
 
     def_param_group :doc_auditions do
       api :GET, '/auditions', 'Audition listing with search, sorting and pagination'
-      param :status, ['pending', 'approved', 'accepted', 'rejected'], desc: 'Status of audition for search by status'
+      param :status, Audition.statuses.keys, desc: 'Status of audition for search by status'
       param :page, :number, desc: 'Page number'
       param :per_page, :number, desc: 'Maximum number of records per page'
       param :pagination, [true, false], desc: 'Send false to avoid default pagination'
@@ -33,14 +33,14 @@ module Api::V1::Docs::AuditionsDoc
     def_param_group :doc_update_status do
       api :PATCH, "/auditions/update_status", "Update status of an audition"
       param :id, Fixnum, desc: 'Id of audition', required: true
-      param :status, ['pending', 'approved', 'accepted', 'rejected'], desc: 'New value of status', required: true
+      param :status, Audition.statuses.keys, desc: 'New value of status', required: true
       param :content, String, desc: 'Content to be send in email', required: true
     end
 
     def_param_group :doc_bulk_update_status do
       api :PATCH, "/auditions/bulk_update_status", "Update status of multiple auditions at one time"
       param :ids, Array, of: Fixnum, desc: 'Ids of audition', required: true
-      param :status, ['pending', 'approved', 'accepted', 'rejected'], desc: 'New value of status', required: true
+      param :status, Audition.statuses.keys, desc: 'New value of status', required: true
       param :content, String, desc: 'Content to be send in emails', required: true
     end
 

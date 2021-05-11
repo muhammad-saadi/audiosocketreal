@@ -10,7 +10,7 @@ module Api::V1::Docs::UsersDoc
 
     def_param_group :doc_accept_invitation do
       api :PATCH, '/users/accept_invitation', 'Accept invitation by setting password'
-      param :email, String, desc: 'Email of user', required: true
+      param :token, String, desc: 'Encoded id of the user', required: true
       param :password, String, desc: 'Password to be set', required: true
       param :password_confirmation, String, desc: 'Confirmation of password', required: true
     end
