@@ -34,14 +34,14 @@ module Api::V1::Docs::AuditionsDoc
       api :PATCH, "/v1/auditions/update_status", "Update status of an audition"
       param :id, Fixnum, desc: 'Id of audition', required: true
       param :status, Audition.statuses.keys, desc: 'New value of status', required: true
-      param :content, String, desc: 'Content to be send in email', required: true
+      param :content, String, desc: 'Content to be send in email', allow_blank: true
     end
 
     def_param_group :doc_bulk_update_status do
       api :PATCH, "/v1/auditions/bulk_update_status", "Update status of multiple auditions at one time"
       param :ids, Array, of: Fixnum, desc: 'Ids of audition', required: true
       param :status, Audition.statuses.keys, desc: 'New value of status', required: true
-      param :content, String, desc: 'Content to be send in emails', required: true
+      param :content, String, desc: 'Content to be send in emails', allow_blank: true
     end
 
     def_param_group :doc_assign_manager do
