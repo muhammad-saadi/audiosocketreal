@@ -5,7 +5,7 @@ module Api::V1::Docs::UsersDoc
     include Api::V1::Docs
 
     def_param_group :doc_list_managers do
-      api :GET, '/users/managers', 'List all users with manager role'
+      api :GET, '/v1/users/managers', 'List all users with manager role'
     end
 
     def_param_group :doc_accept_invitation do

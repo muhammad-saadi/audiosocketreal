@@ -5,7 +5,7 @@ module Api::V1::Docs::GenresDoc
     include Api::V1::Docs
 
     def_param_group :doc_genres do
-      api :GET, '/genres', 'List all genres in sorted order'
+      api :GET, '/v1/genres', 'List all genres in sorted order'
     end
   end
 end
