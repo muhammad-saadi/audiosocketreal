@@ -60,7 +60,7 @@ module Api::V1::Docs::AuditionsDoc
 
     def_param_group :email_template do
       api :GET, "/v1/auditions/email_template", "Get email templates on basis of status"
-      param :status, String, desc: 'Status whose template is required',required: true
+      param :status, String, desc: 'Status whose template is required', allow_blank: true
     end
   end
 end
