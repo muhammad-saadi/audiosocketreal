@@ -4,7 +4,7 @@ class AuditionMailer < ApplicationMailer
     @content = content
     if @audition.approved?
       token = User.find_by(email: @audition.email).encoded_id
-      @path = "#{ENV['INVITATION_URL']}/#{token}"
+      @path = "#{ENV['FRONTAPP_URL']}/accept-invitation/#{token}"
     end
 
     mail(
