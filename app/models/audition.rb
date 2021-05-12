@@ -1,4 +1,6 @@
 class Audition < ApplicationRecord
+  attr_accessor :exclusive
+
   validate :email_uniqueness, on: :create
   validate :status_validation, on: :update
   validates :first_name, :last_name, :email, :artist_name, :reference_company, :status, presence: true
@@ -36,6 +38,14 @@ class Audition < ApplicationRecord
   ransack_alias :name, :first_name_or_last_name
   ransack_alias :assignee, :assignee_first_name_or_author_last_name
   ransack_alias :genre, :genres_name
+
+  def exclusive
+    @exclusive
+  end
+
+  def exclusive=(val)
+    @exclusive = val
+  end
 
   def self.filter_by_status(status)
     return not_deleted if status.blank?
@@ -116,6 +126,6 @@ class Audition < ApplicationRecord
     user.assign_attributes(first_name: first_name, last_name: last_name, roles: ['artist'])
     user.save(validate: false)
 
-    ArtistProfile.create(name: artist_name, exclusive: exclusive_artist, user: user)
+    ArtistProfile.create(name: artist_name, exclusive: self.exclusive, user: user)
   end
 end

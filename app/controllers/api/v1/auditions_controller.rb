@@ -28,6 +28,8 @@ class Api::V1::AuditionsController < Api::BaseController
 
   param_group :doc_update_status
   def update_status
+    @audition.exclusive = params[:exclusive]
+
     if @audition.update(status: params[:status])
       @audition.send_email(params[:content])
       render json: @audition
