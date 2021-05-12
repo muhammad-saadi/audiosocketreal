@@ -3,4 +3,12 @@ class Agreement < ApplicationRecord
   has_many :users, through: :users_agreements
 
   has_one_attached :attachment
+
+  TYPES = {
+    exclusive: 'exclusive',
+    non_exclusive: 'non_exlusive',
+    youtube_content: 'youtube_content'
+  }.freeze
+
+  enum agreement_type: TYPES
 end

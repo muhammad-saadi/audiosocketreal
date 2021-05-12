@@ -16,7 +16,7 @@ module Api::V1::Docs::UsersDoc
     end
 
     def_param_group :doc_authenticate_token do
-      api :PATCH, '/v1/users/authenticate_token', 'Authenticated given token and send status of user'
+      api :GET, '/v1/users/authenticate_token', 'Authenticated given token and send status of user'
       param :token, String, desc: 'Encoded id of the user', required: true
     end
   end
