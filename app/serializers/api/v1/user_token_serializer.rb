@@ -1,4 +1,4 @@
-class Api::V1::UserTokenSerializer < ActiveModel::Serializer
+class Api::V1::UserTokenSerializer < BaseSerializer
   attributes :name, :password, :agreements
 
   def name
@@ -10,6 +10,6 @@ class Api::V1::UserTokenSerializer < ActiveModel::Serializer
   end
 
   def agreements
-    object.users_agreements.pluck(:status).all?('accepted')
+    object.users_agreements && object.users_agreements.joins(:agreement).where('agreement.agreement_type': ['exclusive', 'non_exclusive']).pluck(:status).all?('accepted')
   end
 end
