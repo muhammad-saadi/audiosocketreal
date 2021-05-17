@@ -24,6 +24,7 @@ Rails.application.routes.draw do
           patch :update_status
         end
       end
+      resources :artist_profiles, only:%i[update]
 
       resources :users, only: %i[] do
         collection do
