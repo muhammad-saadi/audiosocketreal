@@ -28,9 +28,7 @@ class Api::V1::AuditionsController < Api::BaseController
 
   param_group :doc_update_status
   def update_status
-    @audition.exclusive = params[:exclusive]
-
-    if @audition.update(status: params[:status])
+    if @audition.update(status_params)
       @audition.send_email(params[:content])
       render json: @audition
     else
@@ -41,7 +39,7 @@ class Api::V1::AuditionsController < Api::BaseController
   param_group :doc_bulk_update_status
   def bulk_update_status
     @auditions = Audition.where(id: params[:ids]).includes(:audition_musics, :genres)
-    if @auditions.update(status: params[:status]) && @auditions.all? { |aud| aud.errors.blank? }
+    if @auditions.update(status_params) && @auditions.all? { |aud| aud.errors.blank? }
       @auditions.map { |audition| audition.send_email(params[:content]) }
       render json: @auditions
     else
@@ -95,6 +93,10 @@ class Api::V1::AuditionsController < Api::BaseController
 
   def filter_params
     params.permit(:status, :page, :per_page, :pagination, :search_key, :search_query)
+  end
+
+  def status_params
+    params.permit(:status, :exclusive)
   end
 
   def count_details

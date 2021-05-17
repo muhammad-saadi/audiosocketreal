@@ -35,6 +35,7 @@ module Api::V1::Docs::AuditionsDoc
       param :id, :number, desc: 'Id of audition', required: true
       param :status, Audition.statuses.keys, desc: 'New value of status', required: true
       param :content, String, desc: 'Content to be send in email', allow_blank: true
+      param :exclusive, [true, false], desc: 'Want to create artist as exlusive artist', allow_blank: true
     end
 
     def_param_group :doc_bulk_update_status do
@@ -42,6 +43,7 @@ module Api::V1::Docs::AuditionsDoc
       param :ids, Array, of: Fixnum, desc: 'Ids of audition', required: true
       param :status, Audition.statuses.keys, desc: 'New value of status', required: true
       param :content, String, desc: 'Content to be send in emails', allow_blank: true
+      param :exclusive, [true, false], desc: 'Want to create artists as exlusive artist', allow_blank: true
     end
 
     def_param_group :doc_assign_manager do

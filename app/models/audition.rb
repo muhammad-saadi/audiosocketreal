@@ -39,14 +39,6 @@ class Audition < ApplicationRecord
   ransack_alias :assignee, :assignee_first_name_or_author_last_name
   ransack_alias :genre, :genres_name
 
-  def exclusive
-    @exclusive
-  end
-
-  def exclusive=(val)
-    @exclusive = val
-  end
-
   def self.filter_by_status(status)
     return not_deleted if status.blank?
 
