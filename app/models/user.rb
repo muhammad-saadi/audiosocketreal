@@ -42,8 +42,8 @@ class User < ApplicationRecord
   end
 
   def assign_agreements
-    self.agreements = Agreement.where(agreement_type: [Agreement.agreement_types[:youtube_content], Agreement.agreement_types[:exclusive]]) if self.artist_profile.exclusive?
-    self.agreements = Agreement.where(agreement_type: [Agreement.agreement_types[:youtube_content], Agreement.agreement_types[:non_exclusive]]) unless self.artist_profile.exclusive?
+    self.agreements = Agreement.exclusive if self.artist_profile.exclusive?
+    self.agreements = Agreement.non_exclusive unless self.artist_profile.exclusive?
   end
 
   private
