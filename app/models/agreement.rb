@@ -12,6 +12,6 @@ class Agreement < ApplicationRecord
 
   enum agreement_type: TYPES
 
-  scope :exclusive, -> { where(agreement_type: [Agreement.agreement_types[:youtube_content], Agreement.agreement_types[:exclusive]]) }
-  scope :non_exclusive, -> { where(agreement_type: [Agreement.agreement_types[:youtube_content], Agreement.agreement_types[:non_exclusive]]) }
+  scope :exclusive, -> { where(agreement_type: [TYPES[:youtube_content], TYPES[:exclusive]]) }
+  scope :non_exclusive, -> { where(agreement_type: [TYPES[:youtube_content], TYPES[:non_exclusive]]) }
 end
