@@ -10,6 +10,6 @@ class Api::V1::UserTokenSerializer < BaseSerializer
   end
 
   def agreements
-    object.users_agreements && object.users_agreements.joins(:agreement).where('agreement.agreement_type': ['exclusive', 'non_exclusive']).pluck(:status).all?('accepted')
+    object.users_agreements && object.users_agreements.joins(:agreement).where('agreement.agreement_type': [Agreement::TYPES[:exclusive], Agreement::TYPES[:non_exclusive]]).pluck(:status).all?('accepted')
   end
 end

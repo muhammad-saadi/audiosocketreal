@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_05_12_093113) do
+ActiveRecord::Schema.define(version: 2021_05_17_070103) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -48,6 +48,7 @@ ActiveRecord::Schema.define(version: 2021_05_12_093113) do
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.string "agreement_type"
+    t.index ["agreement_type"], name: "index_agreements_on_agreement_type"
   end
 
   create_table "artist_profiles", force: :cascade do |t|
