@@ -19,6 +19,7 @@ Rails.application.routes.draw do
 
       resource :session, only: %i[create]
       resources :genres, only: %i[index]
+      resources :users_agreements, only: %i[index]
       resources :agreements, only: %i[index] do
         member do
           patch :update_status
