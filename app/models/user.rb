@@ -42,7 +42,7 @@ class User < ApplicationRecord
   end
 
   def assign_agreements
-    self.agreements = artist_profile.exclusive? && Agreement.exclusive || Agreement.non_exclusive
+    self.agreements = artist_profile.exclusive? && Agreement.exclusives || Agreement.non_exclusives
   end
 
   private
