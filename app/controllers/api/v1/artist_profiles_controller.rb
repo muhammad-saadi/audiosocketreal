@@ -2,10 +2,10 @@ class Api::V1::ArtistProfilesController < Api::BaseController
   include Api::V1::Docs::ArtistProfilesDoc
 
   before_action :authenticate_user!
-  before_action :set_artist_profile, only: %i[update]
+  before_action :set_artist_profile, only: %i[update_profile]
 
-  param_group :doc_update_artist_profile
-  def update
+  param_group :doc_update_profile
+  def update_profile
     if @artist_profile.update(artist_profile_params)
       render json: @artist_profile
     else
@@ -16,7 +16,8 @@ class Api::V1::ArtistProfilesController < Api::BaseController
   private
 
   def set_artist_profile
-    @artist_profile = ArtistProfile.find(params[:id])
+    raise ExceptionHandler::InvalidAccess, Message.invalid_access unless current_user.artist?
+    @artist_profile = current_user.artist_profile
   end
 
   def artist_profile_params

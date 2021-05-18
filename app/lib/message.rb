@@ -14,4 +14,8 @@ class Message
   def self.unauthorized
     'Unauthorized request'
   end
+
+  def self.invalid_access
+    'Not accessible'
+  end
 end

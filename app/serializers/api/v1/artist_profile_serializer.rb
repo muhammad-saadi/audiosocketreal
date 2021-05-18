@@ -10,6 +10,6 @@ class Api::V1::ArtistProfileSerializer < ActiveModel::Serializer
   end
 
   def additional_images
-    object.additional_images.presence && object.additional_images.each.map{ |image| UrlHelpers.rails_blob_url(image) }
+    object.additional_images.presence && object.additional_images.map{ |image| UrlHelpers.rails_blob_url(image) }
   end
 end

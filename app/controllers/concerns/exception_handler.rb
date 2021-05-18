@@ -8,6 +8,8 @@ module ExceptionHandler
 
   class InvalidToken < StandardError; end
 
+  class InvalidAccess < StandardError; end
+
   class TokenError < StandardError
     attr_reader :message
 
@@ -35,6 +37,7 @@ module ExceptionHandler
     rescue_from ValidationError, with: :five_hundred
     rescue_from ArgumentError, with: :five_hundred_standard
     rescue_from TokenError, with: :five_hundred_standard
+    rescue_from InvalidAccess, with: :four_zero_three
 
     rescue_from ActiveRecord::RecordNotFound do |e|
       render json: { message: e.message }, status: :not_found
@@ -61,5 +64,10 @@ module ExceptionHandler
   # JSON response with message; Status code 500 - Internal server error
   def five_hundred_standard(e)
     render json: { message: e.message }, status: :internal_server_error
+  end
+
+  # JSON response with message; Status code 403 - Forbidden
+  def four_zero_three(e)
+    render json: { message: e.message }, status: :forbidden
   end
 end
