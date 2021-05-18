@@ -2,7 +2,7 @@ class Api::V1::ArtistProfilesController < Api::BaseController
   include Api::V1::Docs::ArtistProfilesDoc
 
   before_action :authenticate_user!
-  before_action :set_artist_profile, only: %i[update_profile]
+  before_action :set_artist_profile, only: %i[update_profile, show_profile]
 
   param_group :doc_update_profile
   def update_profile
@@ -11,6 +11,11 @@ class Api::V1::ArtistProfilesController < Api::BaseController
     else
       raise ExceptionHandler::ValidationError.new(@artist_profile.errors.to_h, 'Error updating artist profile.')
     end
+  end
+
+  param_group :doc_show_profile
+  def show_profile
+    render json: @artist_profile
   end
 
   private

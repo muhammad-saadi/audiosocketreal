@@ -15,5 +15,9 @@ module Api::V1::Docs::ArtistProfilesDoc
       param :contact, String, desc: 'Contact info of artist'
       param :social, Array, of: String, desc: 'Social media account links'
     end
+
+    def_param_group :doc_show_profile do
+      api :GET, "/v1/artist_profiles/show_profile", 'Show artist profile of current user'
+    end
   end
 end
