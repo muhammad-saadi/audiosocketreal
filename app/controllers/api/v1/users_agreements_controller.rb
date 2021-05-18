@@ -21,6 +21,6 @@ class Api::V1::UsersAgreementsController < Api::BaseController
   private
 
   def set_user_agreement
-    @user_agreement = UsersAgreement.find(params[:id])
+    @user_agreement = current_user.users_agreements.find(params[:id])
   end
 end
