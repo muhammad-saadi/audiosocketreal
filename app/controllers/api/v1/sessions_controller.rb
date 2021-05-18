@@ -9,6 +9,6 @@ class Api::V1::SessionsController < Api::BaseController
   private
 
   def authentication_params
-    params.permit(:email, :password, :remember_me)
+    params.permit(:email, :password, :remember_me, :role)
   end
 end
