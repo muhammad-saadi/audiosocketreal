@@ -9,7 +9,7 @@ module Api::V1::Docs::UsersAgreementsDoc
     end
 
     def_param_group :doc_update_status do
-      api :PATCH, '/v1/users_agreements/update_status', 'Accept/Reject an agreement'
+      api :PATCH, '/v1/users_agreements/:id/update_status', 'Accept/Reject an agreement'
       param :id, :number, desc: 'Id of users_agreement', required: true
       param :status, UsersAgreement.statuses.keys, desc: 'New value of status', required: true
     end

@@ -31,7 +31,7 @@ module Api::V1::Docs::AuditionsDoc
     end
 
     def_param_group :doc_update_status do
-      api :PATCH, "/v1/auditions/update_status", "Update status of an audition"
+      api :PATCH, "/v1/auditions/:id/update_status", "Update status of an audition"
       param :id, :number, desc: 'Id of audition', required: true
       param :status, Audition.statuses.keys, desc: 'New value of status', required: true
       param :content, String, desc: 'Content to be send in email', allow_blank: true
@@ -47,7 +47,7 @@ module Api::V1::Docs::AuditionsDoc
     end
 
     def_param_group :doc_assign_manager do
-      api :PATCH, "/v1/auditions/assign_manager", "Assign audition to another manager"
+      api :PATCH, "/v1/auditions/:id/assign_manager", "Assign audition to another manager"
       param :id, :number, desc: 'Id of audition', required: true
       param :assignee_id, :number, desc: 'Id of manager to be assigned', required: true
       param :remarks, String, desc: 'Remarks about the audition', allow_blank: true
