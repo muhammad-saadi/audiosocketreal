@@ -8,4 +8,19 @@ class Api::V1::UsersAgreementsController < Api::BaseController
   def index
     render json: current_user.users_agreements
   end
+
+  param_group :doc_update_status
+  def update_status
+    if @user_agreement.update(status: params[:status], status_updated_at: DateTime.now)
+      render json: current_user.users_agreements
+    else
+      raise ExceptionHandler::ValidationError.new(@user_agreement.errors.to_h, 'Error accepting/rejecting agreement.')
+    end
+  end
+
+  private
+
+  def set_user_agreement
+    @user_agreement = UsersAgreement.find(params[:id])
+  end
 end
