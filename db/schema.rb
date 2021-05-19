@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_05_17_092502) do
+ActiveRecord::Schema.define(version: 2021_05_19_080632) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -62,6 +62,7 @@ ActiveRecord::Schema.define(version: 2021_05_17_092502) do
     t.text "key_facts"
     t.text "contact"
     t.text "social", default: [], array: true
+    t.string "status", default: "pending"
     t.index ["user_id"], name: "index_artist_profiles_on_user_id"
   end
 
