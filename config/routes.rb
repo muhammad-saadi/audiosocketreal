@@ -21,6 +21,7 @@ Rails.application.routes.draw do
       resources :genres, only: %i[index]
       resources :agreements, only: %i[index]
       resources :albums, only: %i[index create update]
+      resources :tracks, only: %i[create]
 
       resources :users_agreements, only: %i[index] do
         member do

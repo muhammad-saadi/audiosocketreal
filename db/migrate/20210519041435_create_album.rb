@@ -5,7 +5,6 @@ class CreateAlbum < ActiveRecord::Migration[6.1]
       t.datetime :release_date
 
       t.references :user
-
       t.timestamps
     end
   end

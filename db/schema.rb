@@ -117,6 +117,15 @@ ActiveRecord::Schema.define(version: 2021_05_19_080632) do
     t.datetime "updated_at", precision: 6, null: false
   end
 
+  create_table "tracks", force: :cascade do |t|
+    t.string "title"
+    t.string "status", default: "pending"
+    t.bigint "album_id"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["album_id"], name: "index_tracks_on_album_id"
+  end
+
   create_table "users", force: :cascade do |t|
     t.string "email", default: "", null: false
     t.string "encrypted_password", default: "", null: false
