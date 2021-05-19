@@ -11,8 +11,7 @@ class Api::V1::AlbumsController < Api::BaseController
 
   param_group :doc_create_album
   def create
-    @album = Album.new(album_params)
-    @album.user = current_user
+    @album = current_user.albums.new(album_params)
     if @album.save
       render json: @album
     else
