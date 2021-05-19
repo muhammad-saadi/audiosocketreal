@@ -51,6 +51,15 @@ ActiveRecord::Schema.define(version: 2021_05_19_080632) do
     t.index ["agreement_type"], name: "index_agreements_on_agreement_type"
   end
 
+  create_table "albums", force: :cascade do |t|
+    t.string "name"
+    t.datetime "release_date"
+    t.bigint "user_id"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["user_id"], name: "index_albums_on_user_id"
+  end
+
   create_table "artist_profiles", force: :cascade do |t|
     t.string "name"
     t.boolean "exclusive"

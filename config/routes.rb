@@ -20,11 +20,14 @@ Rails.application.routes.draw do
       resource :session, only: %i[create]
       resources :genres, only: %i[index]
       resources :agreements, only: %i[index]
+      resources :albums, only: %i[index create update]
+
       resources :users_agreements, only: %i[index] do
         member do
           patch :update_status
         end
       end
+
       resources :artist_profiles, only:[] do
         collection do
           get :show_profile
