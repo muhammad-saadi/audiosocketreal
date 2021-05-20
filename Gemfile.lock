@@ -69,6 +69,22 @@ GEM
       public_suffix (>= 2.0.2, < 5.0)
     apipie-rails (0.5.18)
       rails (>= 4.1)
+    aws-eventstream (1.1.0)
+    aws-partitions (1.418.0)
+    aws-sdk-core (3.111.2)
+      aws-eventstream (~> 1, >= 1.0.2)
+      aws-partitions (~> 1, >= 1.239.0)
+      aws-sigv4 (~> 1.1)
+      jmespath (~> 1.0)
+    aws-sdk-kms (1.41.0)
+      aws-sdk-core (~> 3, >= 3.109.0)
+      aws-sigv4 (~> 1.1)
+    aws-sdk-s3 (1.87.0)
+      aws-sdk-core (~> 3, >= 3.109.0)
+      aws-sdk-kms (~> 1)
+      aws-sigv4 (~> 1.1)
+    aws-sigv4 (1.2.2)
+      aws-eventstream (~> 1, >= 1.0.2)
     bcrypt (3.1.16)
     bindex (0.8.1)
     bootsnap (1.7.3)
@@ -106,6 +122,7 @@ GEM
       concurrent-ruby (~> 1.0)
     jbuilder (2.11.2)
       activesupport (>= 5.0.0)
+    jmespath (1.4.0)
     jsonapi-renderer (0.2.2)
     jwt (2.2.2)
     kaminari (1.2.1)
@@ -258,6 +275,7 @@ PLATFORMS
 DEPENDENCIES
   active_model_serializers
   apipie-rails
+  aws-sdk-s3
   bootsnap (>= 1.4.4)
   byebug
   capybara (>= 3.26)
