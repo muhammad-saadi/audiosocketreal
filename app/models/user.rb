@@ -9,7 +9,7 @@ class User < ApplicationRecord
   has_one :artist_profile, dependent: :destroy
   has_many :users_agreements, dependent: :destroy
   has_many :agreements, through: :users_agreements
-  has_many :albums
+  has_many :albums, dependent: :destroy
 
   validates :email, uniqueness: { case_sensitive: false }, presence: true
   validates :password, confirmation: true
