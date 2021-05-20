@@ -36,7 +36,7 @@ Rails.application.routes.draw do
         end
       end
 
-      resources :artist_profiles, only:[] do
+      resources :artists, only:[] do
         collection do
           get :show_profile
           patch :update_profile

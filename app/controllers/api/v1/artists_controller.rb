@@ -1,5 +1,5 @@
-class Api::V1::ArtistProfilesController < Api::BaseController
-  include Api::V1::Docs::ArtistProfilesDoc
+class Api::V1::ArtistsController < Api::BaseController
+  include Api::V1::Docs::ArtistsDoc
 
   before_action :authenticate_user!
   before_action :set_artist_profile, only: %i[update_profile show_profile]
