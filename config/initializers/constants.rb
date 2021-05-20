@@ -13,7 +13,7 @@ EMAIL_TEMPLATES = {
   <p>Is this something you're interested in? Please let us know and then we can send along some additional information.</p>
   <p>Thanks!</p><p>Vanessa</p>",
 
-  rejected: "<p>Hello!<p></p>We hope this note finds you safe and in good health. Thank you for submitting an audition to Audiosocket.</p>
+  rejected: "<p>Hello!</p><p>We hope this note finds you safe and in good health. Thank you for submitting an audition to Audiosocket.</p>
   <p>After careful review, we've decided the music you submitted is not a good match for our current catalog at this time. Please understand, that while your music may not be a match this time, it certainly might be in the future, as our clients' needs are constantly changing. Please feel free to take a look at our recent placements as a reference for the types of music getting placed. With that in mind, we highly encourage you to submit new music again in the future.</p>
   <p>Thank you again,</p><p>Team Audiosocket<br></p>"
 }.freeze
