@@ -113,11 +113,12 @@ class Audition < ApplicationRecord
     return unless approved?
 
     user = User.find_or_initialize_by(email: email)
-    return if user.persisted?
+    return if user.persisted? && user.artist?
 
-    user.assign_attributes(first_name: first_name, last_name: last_name, roles: ['artist'])
+    user.assign_attributes(first_name: first_name, last_name: last_name) unless user.persisted?
+    user.add_artist_role
     user.save(validate: false)
 
-    ArtistProfile.create(name: artist_name, exclusive: self.exclusive, user: user)
+    user.create_artist_profile(name: artist_name, exclusive: self.exclusive) unless user.artist_profile&.persisted?
   end
 end

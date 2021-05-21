@@ -5,8 +5,9 @@ class User < ApplicationRecord
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :validatable
 
-  has_many :auditions, foreign_key: 'assignee_id', dependent: :destroy
   has_one :artist_profile, dependent: :destroy
+
+  has_many :auditions, foreign_key: 'assignee_id', dependent: :destroy
   has_many :users_agreements, dependent: :destroy
   has_many :agreements, through: :users_agreements
   has_many :albums, dependent: :destroy
