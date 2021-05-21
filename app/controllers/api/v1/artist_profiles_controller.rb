@@ -6,7 +6,6 @@ class Api::V1::ArtistProfilesController < Api::BaseController
 
   param_group :doc_update_profile
   def update_profile
-    @artist_profile.contact_information = ContactInformation.new(contact_information_params)
     if @artist_profile.update(artist_profile_params)
       render json: @artist_profile
     else
@@ -27,10 +26,6 @@ class Api::V1::ArtistProfilesController < Api::BaseController
   end
 
   def artist_profile_params
-    params.permit(:cover_image, :banner_image, :sounds_like, :bio, :key_facts, additional_images: [], social: [])
-  end
-
-  def contact_information_params
-    params.require(:contact_information).permit(:name, :street, :postal_code, :city, :state, :country)
+    params.permit(:cover_image, :banner_image, :sounds_like, :bio, :key_facts, contact_information_attributes: [:name, :street, :postal_code, :city, :state, :country], additional_images: [], social: [])
   end
 end

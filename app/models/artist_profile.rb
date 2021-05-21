@@ -3,6 +3,8 @@ class ArtistProfile < ApplicationRecord
 
   has_one :contact_information, dependent: :destroy
 
+  accepts_nested_attributes_for :contact_information
+
   STATUSES = {
     pending: 'pending',
     approved: 'approved'
