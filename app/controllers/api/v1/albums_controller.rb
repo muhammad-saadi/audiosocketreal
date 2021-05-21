@@ -2,7 +2,7 @@ class Api::V1::AlbumsController < Api::BaseController
   include Api::V1::Docs::AlbumsDoc
 
   before_action :authenticate_user!
-  before_action :set_album, only: %i[update]
+  before_action :set_album, only: %i[update show]
 
   param_group :doc_albums
   def index
@@ -26,6 +26,11 @@ class Api::V1::AlbumsController < Api::BaseController
     else
       raise ExceptionHandler::ValidationError.new(@album.errors.to_h, 'Error updating album.')
     end
+  end
+
+  param_group :doc_show_album
+  def show
+    render json: @album
   end
 
   private

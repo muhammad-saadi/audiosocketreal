@@ -16,8 +16,14 @@ module Api::V1::Docs::AlbumsDoc
 
     def_param_group :doc_update_album do
       api :PATCH, "/v1/albums/:id", 'Update an new album'
+      param :id, :number, desc: 'id of the album'
       param :name, String, desc: 'Name of the album'
       param :release_date, DateTime, desc: 'Date of releasing album'
+    end
+
+    def_param_group :doc_show_album do
+      api :GET, "/v1/albums/:id", 'Show an album'
+      param :id, :number, desc: 'id of the album'
     end
   end
 end
