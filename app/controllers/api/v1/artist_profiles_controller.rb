@@ -3,13 +3,14 @@ class Api::V1::ArtistProfilesController < Api::BaseController
 
   before_action :authenticate_user!
   before_action :set_artist_profile, only: %i[update_profile show_profile]
+  before_action :set_contact_information, only: :update_profile
 
   param_group :doc_update_profile
   def update_profile
-    if @artist_profile.update(artist_profile_params)
+    if @contact_information.update(contact_information_params) && @artist_profile.update(artist_profile_params)
       render json: @artist_profile
     else
-      raise ExceptionHandler::ValidationError.new(@artist_profile.errors.to_h, 'Error updating artist profile.')
+      raise ExceptionHandler::ValidationError.new(@artist_profile.errors.to_h.merge(@contact_information.errors.to_h), 'Error updating artist profile.')
     end
   end
 
@@ -25,7 +26,15 @@ class Api::V1::ArtistProfilesController < Api::BaseController
     @artist_profile = current_user.artist_profile
   end
 
+  def set_contact_information
+    @contact_information = ContactInformation.find_or_initialize_by(artist_profile: @artist_profile)
+  end
+
   def artist_profile_params
-    params.permit(:cover_image, :banner_image, :sounds_like, :bio, :key_facts, contact_information_attributes: [:name, :street, :postal_code, :city, :state, :country], additional_images: [], social: [])
+    params.permit(:cover_image, :banner_image, :sounds_like, :bio, :key_facts, additional_images: [], social: [])
+  end
+
+  def contact_information_params
+    params.require(:contact_information).permit(:name, :street, :postal_code, :city, :state, :country)
   end
 end

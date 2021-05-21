@@ -13,7 +13,7 @@ module Api::V1::Docs::ArtistProfilesDoc
       param :sounds_like, String, desc: "How do artist's sounds looks alike?"
       param :key_facts, String, desc: 'Some key facts about artist'
       param :social, Array, of: String, desc: 'Social media account links'
-      param :contact_information_attributes, Hash, desc: 'Contact Information', required: true do
+      param :contact_information, Hash, desc: 'Contact Information', required: true do
         param :name, String, desc: "Name for contact", required: true
         param :street, String, desc: "Street number", required: true
         param :postal_code, String, desc: "Postal code of area", required: true
