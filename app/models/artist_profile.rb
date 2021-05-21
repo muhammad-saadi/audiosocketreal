@@ -1,6 +1,8 @@
 class ArtistProfile < ApplicationRecord
   belongs_to :user
 
+  has_one :contact_information, dependent: :destroy
+
   STATUSES = {
     pending: 'pending',
     approved: 'approved'

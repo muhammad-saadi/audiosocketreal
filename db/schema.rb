@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_05_19_090433) do
+ActiveRecord::Schema.define(version: 2021_05_21_074136) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -69,7 +69,6 @@ ActiveRecord::Schema.define(version: 2021_05_19_090433) do
     t.string "sounds_like"
     t.text "bio"
     t.text "key_facts"
-    t.text "contact"
     t.text "social", default: [], array: true
     t.string "status", default: "pending"
     t.index ["user_id"], name: "index_artist_profiles_on_user_id"
@@ -109,6 +108,19 @@ ActiveRecord::Schema.define(version: 2021_05_19_090433) do
     t.datetime "updated_at", precision: 6, null: false
     t.index ["audition_id"], name: "index_auditions_genres_on_audition_id"
     t.index ["genre_id"], name: "index_auditions_genres_on_genre_id"
+  end
+
+  create_table "contact_informations", force: :cascade do |t|
+    t.string "name"
+    t.string "street"
+    t.string "postal_code"
+    t.string "city"
+    t.string "state"
+    t.string "country"
+    t.bigint "artist_profile_id"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["artist_profile_id"], name: "index_contact_informations_on_artist_profile_id"
   end
 
   create_table "genres", force: :cascade do |t|
