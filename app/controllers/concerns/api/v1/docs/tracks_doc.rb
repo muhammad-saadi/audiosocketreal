@@ -17,7 +17,7 @@ module Api::V1::Docs::TracksDoc
     end
 
     def_param_group :doc_update_track do
-      api :PATCH, '/v1//albums/:album_id/tracks/:id', 'Update a track'
+      api :PATCH, '/v1/albums/:album_id/tracks/:id', 'Update a track'
       param :id, :number, desc: 'Id of the track'
       param :album_id, :number, desc: 'Id of the album of track'
       param :title, String, desc: 'Title of the track'
@@ -25,7 +25,7 @@ module Api::V1::Docs::TracksDoc
     end
 
     def_param_group :doc_show_track do
-      api :GET, '/v1//albums/:album_id/tracks/:id', 'Show a track'
+      api :GET, '/v1/albums/:album_id/tracks/:id', 'Show a track'
       param :id, :number, desc: 'Id of the track'
       param :album_id, :number, desc: 'Id of the album of track'
     end
