@@ -18,6 +18,12 @@ class Api::V1::ArtistsController < Api::BaseController
     render json: @artist_profile
   end
 
+  def invite_collaborator
+    @user = User.find_or_initialize_by(email: params[:email])
+    @user.collaborator_invitation(collaborator_params)
+    render json: @user
+  end
+
   private
 
   def set_artist_profile
@@ -28,5 +34,9 @@ class Api::V1::ArtistsController < Api::BaseController
   def artist_profile_params
     params.permit(:cover_image, :banner_image, :sounds_like, :bio, :key_facts,
                   contact_information: %i[name street postal_code city state country], additional_images: [], social: [])
+  end
+
+  def collaborator_params
+    params.permit(:name, :email, :agreements, :admin_access)
   end
 end

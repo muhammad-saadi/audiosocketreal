@@ -12,6 +12,10 @@ class User < ApplicationRecord
   has_many :agreements, through: :users_agreements
   has_many :albums, dependent: :destroy
   has_many :publishers, dependent: :destroy
+  has_many :artists_collaborators, foreign_key: "collaborator_id"
+  has_one :artists_collaborator, foreign_key: "artist_id"
+  has_many :artists, through: :artists_collaborators
+  has_one :collaborator, through: :artists_collaborator
 
   validates :email, uniqueness: { case_sensitive: false }, presence: true
   validates :password, confirmation: true
@@ -25,7 +29,8 @@ class User < ApplicationRecord
 
   ROLES = {
     manager: 'manager',
-    artist: 'artist'
+    artist: 'artist',
+    collaborator: 'collaborator'
   }.freeze
 
   enum_roles roles: ROLES
@@ -48,6 +53,19 @@ class User < ApplicationRecord
     self.agreements = artist_profile.exclusive? && Agreement.exclusives || Agreement.non_exclusives
   end
 
+  def collaborator_invitation(params)
+    if persisted?
+      self.add_collaborator_role
+      @collaborator = ArtistsCollaborator.find_or_create_by(artist_id: Current.user.id, collaborator_id: id)
+      CollaboratorMailer.existing_user_mail(@collaborator.id, email).deliver_later
+    else
+      self.assign_attributes(first_name: splited_name(params[:name])[0], last_name: splited_name(params[:name])[1], roles: ['collaborator'])
+      self.save(validate: false)
+      @collaborator = ArtistsCollaborator.create(artist_id: Current.user.id, collaborator_id: id)
+      CollaboratorMailer.new_user_mail(email).deliver_later
+    end
+  end
+
   private
 
   def validate_manager
@@ -58,5 +76,9 @@ class User < ApplicationRecord
     errors.add(:base, 'Cannot remove manager role as auditions are assigned.')
     self.roles = roles_was
     raise ActiveRecord::Rollback
+  end
+
+  def splited_name(name)
+    name.split(/ /, 2)
   end
 end

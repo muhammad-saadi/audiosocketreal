@@ -74,6 +74,16 @@ ActiveRecord::Schema.define(version: 2021_05_25_120009) do
     t.index ["user_id"], name: "index_artist_profiles_on_user_id"
   end
 
+  create_table "artists_collaborators", force: :cascade do |t|
+    t.string "status", default: "pending"
+    t.bigint "artist_id"
+    t.bigint "collaborator_id"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["artist_id"], name: "index_artists_collaborators_on_artist_id"
+    t.index ["collaborator_id"], name: "index_artists_collaborators_on_collaborator_id"
+  end
+
   create_table "audition_musics", force: :cascade do |t|
     t.string "track_link"
     t.bigint "audition_id"
@@ -175,4 +185,6 @@ ActiveRecord::Schema.define(version: 2021_05_25_120009) do
 
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
+  add_foreign_key "artists_collaborators", "users", column: "artist_id"
+  add_foreign_key "artists_collaborators", "users", column: "collaborator_id"
 end
