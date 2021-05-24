@@ -56,14 +56,18 @@ class User < ApplicationRecord
   def collaborator_invitation(params)
     if persisted?
       self.add_collaborator_role
-      @collaborator = ArtistsCollaborator.find_or_create_by(artist_id: Current.user.id, collaborator_id: id, access: params[:access])
+      @collaborator = ArtistsCollaborator.find_or_create_by(artist_id: Current.user.id, collaborator_id: id)
     else
       self.assign_attributes(first_name: splited_name(params[:name])[0], last_name: splited_name(params[:name])[1], roles: ['collaborator'])
       self.save(validate: false)
-      @collaborator = ArtistsCollaborator.create(artist_id: Current.user.id, collaborator_id: id, access: params[:access])
+      @collaborator = ArtistsCollaborator.create(artist_id: Current.user.id, collaborator_id: id)
     end
 
-    CollaboratorMailer.invitation_mail(@collaborator.id, email).deliver_later
+    if @collaborator.update(access: params[:access])
+      CollaboratorMailer.invitation_mail(@collaborator.id, email).deliver_later
+    else
+      raise ExceptionHandler::ValidationError.new(@collaborator.errors.to_h, 'Error inviting collaborator.')
+    end
   end
 
   private

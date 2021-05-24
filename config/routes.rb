@@ -56,6 +56,10 @@ Rails.application.routes.draw do
         collection do
           get :authenticate_token
         end
+
+        member do
+          patch :update_status
+        end
       end
     end
 
