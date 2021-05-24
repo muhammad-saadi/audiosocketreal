@@ -56,14 +56,14 @@ class User < ApplicationRecord
   def collaborator_invitation(params)
     if persisted?
       self.add_collaborator_role
-      @collaborator = ArtistsCollaborator.find_or_create_by(artist_id: Current.user.id, collaborator_id: id)
-      CollaboratorMailer.existing_user_mail(@collaborator.id, email).deliver_later
+      @collaborator = ArtistsCollaborator.find_or_create_by(artist_id: Current.user.id, collaborator_id: id, access: params[:access])
     else
       self.assign_attributes(first_name: splited_name(params[:name])[0], last_name: splited_name(params[:name])[1], roles: ['collaborator'])
       self.save(validate: false)
-      @collaborator = ArtistsCollaborator.create(artist_id: Current.user.id, collaborator_id: id)
-      CollaboratorMailer.new_user_mail(email).deliver_later
+      @collaborator = ArtistsCollaborator.create(artist_id: Current.user.id, collaborator_id: id, access: params[:access])
     end
+
+    CollaboratorMailer.invitation_mail(@collaborator.id, email).deliver_later
   end
 
   private

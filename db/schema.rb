@@ -76,6 +76,7 @@ ActiveRecord::Schema.define(version: 2021_05_25_120009) do
 
   create_table "artists_collaborators", force: :cascade do |t|
     t.string "status", default: "pending"
+    t.string "access"
     t.bigint "artist_id"
     t.bigint "collaborator_id"
     t.datetime "created_at", precision: 6, null: false

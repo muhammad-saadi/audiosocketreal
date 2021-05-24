@@ -18,6 +18,7 @@ class Api::V1::ArtistsController < Api::BaseController
     render json: @artist_profile
   end
 
+  param_group :doc_invite_collaborator
   def invite_collaborator
     @user = User.find_or_initialize_by(email: params[:email])
     @user.collaborator_invitation(collaborator_params)
@@ -37,6 +38,6 @@ class Api::V1::ArtistsController < Api::BaseController
   end
 
   def collaborator_params
-    params.permit(:name, :email, :agreements, :admin_access)
+    params.permit(:name, :email, :agreements, :access)
   end
 end

@@ -51,6 +51,12 @@ Rails.application.routes.draw do
           get :authenticate_token
         end
       end
+
+      resources :artists_collaborators, only: %i[] do
+        collection do
+          get :authenticate_token
+        end
+      end
     end
 
     match '*unmatched', to: 'base#route_not_found', via: :all

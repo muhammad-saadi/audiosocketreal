@@ -23,6 +23,14 @@ module Api::V1::Docs::ArtistsDoc
       end
     end
 
+    def_param_group :doc_invite_collaborator do
+      api :PATCH, '/v1/artists/invite_collaborator', 'Send invitation email to collaborator'
+      param :name, String, desc: "Name of collaborator", required: true
+      param :email, String, desc: "Email of collaborator", required: true
+      param :agreements, [true, false], desc: "If attach agreements for collaborator", required: true
+      param :access, ArtistsCollaborator.accesses.keys, desc: "Access wants to give to collaborator", required: true
+    end
+
     def_param_group :doc_show_profile do
       api :GET, "/v1/artists/show_profile", 'Show artist profile of current user'
     end
