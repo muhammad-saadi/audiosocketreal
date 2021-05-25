@@ -90,3 +90,4 @@ production:
   database: artist_portal_backend_production
   username: artist_portal_backend
   password: <%= ENV['ARTIST_PORTAL_BACKEND_DATABASE_PASSWORD'] %>
+  host: localhost
