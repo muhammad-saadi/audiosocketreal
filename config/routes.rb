@@ -23,6 +23,10 @@ Rails.application.routes.draw do
 
       resources :albums, except: %i[new create] do
         resources :tracks, except: %i[new create]
+
+        member do
+          patch :update_artwork
+        end
       end
 
       resources :users_agreements, only: %i[index] do
