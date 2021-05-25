@@ -20,6 +20,7 @@ Rails.application.routes.draw do
       resource :session, only: %i[create]
       resources :genres, only: %i[index]
       resources :agreements, only: %i[index]
+      resources :publishers, only: %i[index create]
 
       resources :albums, except: %i[new edit] do
         resources :tracks, except: %i[new edit]
