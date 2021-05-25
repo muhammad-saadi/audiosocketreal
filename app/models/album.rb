@@ -3,5 +3,7 @@ class Album < ApplicationRecord
 
   has_many :tracks, dependent: :destroy
 
+  has_one_attached :artwork
+
   validates :name, presence: true
 end
