@@ -2,8 +2,8 @@ class Api::V1::TracksController < Api::BaseController
   include Api::V1::Docs::TracksDoc
 
   before_action :authenticate_user!
-  before_action :set_audition
-  before_action :set_track, only: %i[update show]
+  before_action :set_album
+  before_action :set_track, only: %i[update show destroy]
 
   param_group :doc_tracks
   def index
@@ -34,13 +34,22 @@ class Api::V1::TracksController < Api::BaseController
     render json: @track
   end
 
+  param_group :doc_destroy_track
+  def destroy
+    if @track.destroy
+      render json: @album.tracks
+    else
+      raise ExceptionHandler::ValidationError.new(@track.errors.to_h, 'Error deleting track.')
+    end
+  end
+
   private
 
   def track_params
-    params.permit(:title, :file)
+    params.permit(:title, :file, :public_domain)
   end
 
-  def set_audition
+  def set_album
     @album = current_user.albums.find(params[:album_id])
   end
 

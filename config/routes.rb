@@ -22,7 +22,7 @@ Rails.application.routes.draw do
       resources :agreements, only: %i[index]
 
       resources :albums, except: %i[new create] do
-        resources :tracks, only: %i[index create update show]
+        resources :tracks, except: %i[new create]
       end
 
       resources :users_agreements, only: %i[index] do

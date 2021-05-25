@@ -27,7 +27,7 @@ module Api::V1::Docs::AlbumsDoc
     end
 
     def_param_group :doc_destroy_album do
-      api :DELETE, "/v1/albums/:id", 'Destroy an album'
+      api :DELETE, "/v1/albums/:id", 'Delete an album'
       param :id, :number, desc: 'id of the album'
     end
 
