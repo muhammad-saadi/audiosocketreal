@@ -1,5 +1,6 @@
 class Track < ApplicationRecord
   validates :title, presence: true
+  validates :file, blob: { content_type: %w[audio/vnd.wave audio/wave audio/aiff audio/x-aiff] }
 
   belongs_to :album
 

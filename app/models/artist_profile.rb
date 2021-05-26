@@ -5,6 +5,8 @@ class ArtistProfile < ApplicationRecord
 
   accepts_nested_attributes_for :contact_information
 
+  validates :cover_image, :banner_image, :additional_images, blob: { content_type: :image }
+
   STATUSES = {
     pending: 'pending',
     approved: 'approved'

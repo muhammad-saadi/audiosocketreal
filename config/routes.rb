@@ -21,8 +21,8 @@ Rails.application.routes.draw do
       resources :genres, only: %i[index]
       resources :agreements, only: %i[index]
 
-      resources :albums, except: %i[new create] do
-        resources :tracks, except: %i[new create]
+      resources :albums, except: %i[new edit] do
+        resources :tracks, except: %i[new edit]
 
         member do
           patch :update_artwork
