@@ -3,6 +3,7 @@ class ArtistsCollaborator < ApplicationRecord
   belongs_to :collaborator, class_name: "User", optional: true
 
   validate :self_collaborator_invite
+  validates_uniqueness_of :artist_id, scope: [:collaborator_id]
 
   STATUSES = {
     pending: 'pending',

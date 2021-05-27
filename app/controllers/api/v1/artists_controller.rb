@@ -20,9 +20,8 @@ class Api::V1::ArtistsController < Api::BaseController
 
   param_group :doc_invite_collaborator
   def invite_collaborator
-    @user = User.find_or_initialize_by(email: params[:email])
-    @user.collaborator_invitation(collaborator_params)
-    render json: @user
+    current_user.invite_collaborator(collaborator_params)
+    render json: current_user.collaborators
   end
 
   private

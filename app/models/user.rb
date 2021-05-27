@@ -53,20 +53,18 @@ class User < ApplicationRecord
     self.agreements = artist_profile.exclusive? && Agreement.exclusives || Agreement.non_exclusives
   end
 
-  def collaborator_invitation(params)
-    if persisted?
-      self.add_collaborator_role
-      @collaborator = ArtistsCollaborator.find_or_create_by(artist_id: Current.user.id, collaborator_id: id)
-    else
-      self.assign_attributes(first_name: splited_name(params[:name])[0], last_name: splited_name(params[:name])[1], roles: ['collaborator'])
-      self.save(validate: false)
-      @collaborator = ArtistsCollaborator.create(artist_id: Current.user.id, collaborator_id: id)
-    end
+  def invite_collaborator(params)
+    collaborator = User.find_or_initialize_by(email: params[:email])
+    collaborator.assign_attributes(splited_name(params[:name])) if collaborator.new_record?
 
-    if @collaborator.update(access: params[:access])
-      CollaboratorMailer.invitation_mail(@collaborator.id, email).deliver_later
+    collaborator.add_collaborator_role
+    collaborator.save(validate: false)
+
+    artist_collaborator = ArtistsCollaborator.find_or_create_by(artist_id: id, collaborator_id: collaborator.id)
+    if artist_collaborator.update(access: params[:access])
+      CollaboratorMailer.invitation_mail(artist_collaborator.id, collaborator.email).deliver_later
     else
-      raise ExceptionHandler::ValidationError.new(@collaborator.errors.to_h, 'Error inviting collaborator.')
+      raise ExceptionHandler::ValidationError.new(artist_collaborator.errors.to_h, 'Error inviting collaborator.')
     end
   end
 
@@ -83,6 +81,6 @@ class User < ApplicationRecord
   end
 
   def splited_name(name)
-    name.split(/ /, 2)
+    { first_name: name.split(/ /, 2)[0], last_name: name.split(/ /,2)[1] }
   end
 end

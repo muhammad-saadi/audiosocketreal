@@ -81,7 +81,9 @@ ActiveRecord::Schema.define(version: 2021_05_25_120009) do
     t.bigint "collaborator_id"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.index ["artist_id", "collaborator_id"], name: "index_artists_collaborators_on_artist_id_and_collaborator_id", unique: true
     t.index ["artist_id"], name: "index_artists_collaborators_on_artist_id"
+    t.index ["collaborator_id", "artist_id"], name: "index_artists_collaborators_on_collaborator_id_and_artist_id", unique: true
     t.index ["collaborator_id"], name: "index_artists_collaborators_on_collaborator_id"
   end
 

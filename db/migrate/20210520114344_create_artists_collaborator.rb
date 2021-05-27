@@ -7,6 +7,9 @@ class CreateArtistsCollaborator < ActiveRecord::Migration[6.1]
       t.references :artist, foreign_key: { to_table: :users }
       t.references :collaborator, foreign_key: { to_table: :users }
 
+      t.index %i[collaborator_id artist_id], unique: true
+      t.index %i[artist_id collaborator_id], unique: true
+
       t.timestamps
     end
   end
