@@ -21,6 +21,16 @@ module Api::V1::Docs::ArtistsDoc
         param :state, String, desc: "State", required: true
         param :country, String, desc: "Country", required: true
       end
+      param :payment_information, Hash, desc: 'Payment Information', required: true do
+        param :payee_name, String, desc: "Name for payee", required: true
+        param :routing, String, desc: "Routing", required: true
+        param :account_number, String, desc: "Bank account number", required: true
+        param :bank_name, String, desc: "Name of bank", required: true
+        param :paypal_email, String, desc: "Email adress of paypal", required: true
+      end
+      param :tax_information, Hash, desc: 'tax Information', required: true do
+        param :ssn, String, desc: "Social Security Number", required: true
+      end
     end
 
     def_param_group :doc_invite_collaborator do
