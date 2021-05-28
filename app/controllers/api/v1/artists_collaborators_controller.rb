@@ -1,7 +1,7 @@
-class Api::V1::ArtistsCollaboratorsController < Api::BaseController
+class Api::V1::ArtistsCollaboratorsController < Api::CollaboratorsController
   include Api::V1::Docs::ArtistsCollaboratorsDoc
 
-  before_action :authenticate_user!, only: %i[update_status]
+  skip_before_action :authenticate_user!, :validate_role, only: %i[authenticate_token]
   before_action :set_artists_collaborator_by_token, only: %i[authenticate_token]
   before_action :set_artists_collaborator_by_id, only: %i[update_status]
 
@@ -26,6 +26,6 @@ class Api::V1::ArtistsCollaboratorsController < Api::BaseController
   end
 
   def set_artists_collaborator_by_id
-    @artists_collaborator = current_user.artists_collaborators.find(params[:id])
+    @artists_collaborator = current_user.artist_collaborators.find(params[:id])
   end
 end

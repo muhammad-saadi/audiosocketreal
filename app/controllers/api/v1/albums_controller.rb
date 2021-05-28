@@ -1,7 +1,6 @@
-class Api::V1::AlbumsController < Api::BaseController
+class Api::V1::AlbumsController < Api::ArtistsController
   include Api::V1::Docs::AlbumsDoc
 
-  before_action :authenticate_user!
   before_action :set_album, only: %i[update show destroy update_artwork]
 
   param_group :doc_albums

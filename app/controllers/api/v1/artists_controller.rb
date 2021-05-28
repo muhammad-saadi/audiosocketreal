@@ -1,7 +1,6 @@
-class Api::V1::ArtistsController < Api::BaseController
+class Api::V1::ArtistsController < Api::ArtistsController
   include Api::V1::Docs::ArtistsDoc
 
-  before_action :authenticate_user!
   before_action :set_artist_profile, only: %i[update_profile show_profile]
 
   param_group :doc_update_profile
@@ -32,7 +31,6 @@ class Api::V1::ArtistsController < Api::BaseController
   private
 
   def set_artist_profile
-    raise ExceptionHandler::InvalidAccess, Message.invalid_access unless current_user.artist?
     @artist_profile = current_user.artist_profile
   end
 

@@ -1,7 +1,6 @@
-class Api::V1::PublishersController < Api::BaseController
+class Api::V1::PublishersController < Api::ArtistsController
   include Api::V1::Docs::PublishersDoc
 
-  before_action :authenticate_user!
   before_action :set_publisher, only: %i[update]
 
   param_group :doc_publishers

@@ -1,7 +1,7 @@
-class Api::V1::AuditionsController < Api::BaseController
+class Api::V1::AuditionsController < Api::ManagersController
   include Api::V1::Docs::AuditionsDoc
 
-  before_action :authenticate_user!, except: %i[create]
+  skip_before_action :authenticate_user!, :validate_role, only: %i[create]
   before_action :set_user, only: %i[assign_manager bulk_assign_manager]
   before_action :set_audition, only: %i[assign_manager update_status]
 

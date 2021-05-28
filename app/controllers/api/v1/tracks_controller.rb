@@ -1,7 +1,6 @@
-class Api::V1::TracksController < Api::BaseController
+class Api::V1::TracksController < Api::ArtistsController
   include Api::V1::Docs::TracksDoc
 
-  before_action :authenticate_user!
   before_action :set_album
   before_action :set_track, only: %i[update show destroy]
   before_action :validate_collaborator_and_publisher, only: %i[create update]
