@@ -41,6 +41,10 @@ module Api::V1::Docs::ArtistsDoc
       param :access, ArtistsCollaborator.accesses.keys, desc: "Access wants to give to collaborator", required: true
     end
 
+    def_param_group :doc_collaborators do
+      api :GET, '/v1/artists/collaborators', 'List all collaborators of current user'
+    end
+
     def_param_group :doc_show_profile do
       api :GET, "/v1/artists/show_profile", 'Show artist profile of current user'
     end

@@ -41,6 +41,7 @@ Rails.application.routes.draw do
           get :show_profile
           patch :update_profile
           patch :invite_collaborator
+          get :collaborators
         end
       end
 

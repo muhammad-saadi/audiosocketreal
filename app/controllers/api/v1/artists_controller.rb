@@ -24,6 +24,11 @@ class Api::V1::ArtistsController < Api::BaseController
     render json: current_user.collaborators.ordered
   end
 
+  param_group :doc_collaborators
+  def collaborators
+    render json: current_user.collaborators.ordered
+  end
+
   private
 
   def set_artist_profile
