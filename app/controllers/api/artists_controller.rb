@@ -5,6 +5,6 @@ class Api::ArtistsController < Api::BaseController
   private
 
   def validate_role
-    raise ExceptionHandler::InvalidAccess, 'Not accessible. User must be artist' unless current_user.artist?
+    raise ExceptionHandler::InvalidAccess, Message.invalid_access unless current_user.artist?
   end
 end
