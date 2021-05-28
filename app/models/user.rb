@@ -12,8 +12,8 @@ class User < ApplicationRecord
   has_many :agreements, through: :users_agreements
   has_many :albums, dependent: :destroy
   has_many :publishers, dependent: :destroy
-  has_many :artist_collaborators, foreign_key: "collaborator_id", class_name: 'ArtistsCollaborator'
-  has_many :collaborator_artists, foreign_key: "artist_id", class_name: 'ArtistsCollaborator'
+  has_many :artist_collaborators, foreign_key: "collaborator_id", class_name: 'ArtistsCollaborator', dependent: :destroy
+  has_many :collaborator_artists, foreign_key: "artist_id", class_name: 'ArtistsCollaborator', dependent: :destroy
   has_many :artists, through: :artist_collaborators
   has_many :collaborators, through: :collaborator_artists
 
@@ -68,6 +68,11 @@ class User < ApplicationRecord
     end
   end
 
+  def agreements_accepted?
+    users_agreements && users_agreements.joins(:agreement).where('agreement.agreement_type':
+                        [Agreement::TYPES[:exclusive], Agreement::TYPES[:non_exclusive]]).pluck(:status).all?('accepted')
+  end
+
   private
 
   def validate_manager
@@ -81,6 +86,6 @@ class User < ApplicationRecord
   end
 
   def splited_name(name)
-    { first_name: name.split(/ /, 2)[0], last_name: name.split(/ /,2)[1] }
+    { first_name: name.split(/ /, 2)[0], last_name: name.split(/ /, 2)[1] }
   end
 end

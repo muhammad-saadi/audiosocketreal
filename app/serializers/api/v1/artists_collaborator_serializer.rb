@@ -7,7 +7,7 @@ class Api::V1::ArtistsCollaboratorSerializer < ActiveModel::Serializer
     collaborator = object.collaborator
     {
       password: collaborator.encrypted_password.present?,
-      agreements: collaborator.users_agreements && object.collaborator.users_agreements.joins(:agreement).where('agreement.agreement_type': [Agreement::TYPES[:exclusive], Agreement::TYPES[:non_exclusive]]).pluck(:status).all?('accepted'),
+      agreements: collaborator.agreements_accepted?,
       token: collaborator.encoded_id
     }
   end

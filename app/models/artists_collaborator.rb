@@ -2,7 +2,7 @@ class ArtistsCollaborator < ApplicationRecord
   belongs_to :artist, class_name: "User", optional: true
   belongs_to :collaborator, class_name: "User", optional: true
 
-  validate :self_collaborator_invite
+  validate :collaborator_invite
   validates_uniqueness_of :artist_id, scope: [:collaborator_id]
 
   STATUSES = {
@@ -25,7 +25,7 @@ class ArtistsCollaborator < ApplicationRecord
 
   private
 
-  def self_collaborator_invite
+  def collaborator_invite
     errors.add(:base, 'Could not invite yourself as collaborator') if artist_id == collaborator_id
   end
 end
