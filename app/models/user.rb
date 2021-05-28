@@ -23,6 +23,8 @@ class User < ApplicationRecord
 
   before_save :validate_manager
 
+  scope :ordered, -> { order(created_at: :desc) }
+
   def self.authenticate(email, password)
     user = User.find_for_authentication(email: email)
     user&.valid_password?(password) ? user : nil
