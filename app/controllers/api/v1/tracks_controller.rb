@@ -4,6 +4,7 @@ class Api::V1::TracksController < Api::BaseController
   before_action :authenticate_user!
   before_action :set_album
   before_action :set_track, only: %i[update show destroy]
+  before_action :validate_collaborator_and_publisher, only: %i[create update]
 
   param_group :doc_tracks
   def index
@@ -46,7 +47,7 @@ class Api::V1::TracksController < Api::BaseController
   private
 
   def track_params
-    params.permit(:title, :file, :public_domain)
+    params.permit(:title, :file, :public_domain, :collaborator_id, :publisher_id)
   end
 
   def set_album
@@ -55,5 +56,10 @@ class Api::V1::TracksController < Api::BaseController
 
   def set_track
     @track = @album.tracks.find(params[:id])
+  end
+
+  def validate_collaborator_and_publisher
+    @collaborator = current_user.collaborators.find(params[:collaborator_id])
+    @publisher = current_user.publishers.find(params[:publisher_id])
   end
 end

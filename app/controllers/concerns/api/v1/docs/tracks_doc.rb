@@ -15,6 +15,8 @@ module Api::V1::Docs::TracksDoc
       param :file, File, desc: 'Music file of the track'
       param :public_domain, [true, false], desc: 'Public domain of track'
       param :album_id, :number, desc: 'Id of the album in which track is going to add'
+      param :collaborator_id, :number, desc: "Id of tracks's collaborator"
+      param :publisher_id, :number, desc: "Id of track's publisher"
     end
 
     def_param_group :doc_update_track do
@@ -24,6 +26,8 @@ module Api::V1::Docs::TracksDoc
       param :title, String, desc: 'Title of the track'
       param :public_domain, [true, false], desc: 'Public domain of track'
       param :file, File, desc: 'Music file of the track'
+      param :collaborator_id, :number, desc: "Id of tracks's collaborator"
+      param :publisher_id, :number, desc: "Id of track's publisher"
     end
 
     def_param_group :doc_show_track do

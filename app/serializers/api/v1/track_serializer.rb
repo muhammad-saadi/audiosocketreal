@@ -1,6 +1,9 @@
 class Api::V1::TrackSerializer < BaseSerializer
   attributes :id, :title, :file, :status, :public_domain, :created_at
 
+  belongs_to :publisher
+  belongs_to :collaborator, class_name: 'User'
+
   def file
     object.file.presence && UrlHelpers.rails_blob_url(object.file)
   end

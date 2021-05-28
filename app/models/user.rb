@@ -12,6 +12,7 @@ class User < ApplicationRecord
   has_many :agreements, through: :users_agreements
   has_many :albums, dependent: :destroy
   has_many :publishers, dependent: :destroy
+  has_many :tracks
   has_many :artist_collaborators, foreign_key: "collaborator_id", class_name: 'ArtistsCollaborator', dependent: :destroy
   has_many :collaborator_artists, foreign_key: "artist_id", class_name: 'ArtistsCollaborator', dependent: :destroy
   has_many :artists, through: :artist_collaborators
