@@ -1,5 +1,5 @@
 class Api::V1::TrackSerializer < BaseSerializer
-  attributes :id, :title, :file, :status, :public_domain, :created_at
+  attributes :id, :title, :file, :status, :public_domain, :created_at, :publisher, :collaborator
 
   belongs_to :publisher
   belongs_to :collaborator, class_name: 'User'
