@@ -7,7 +7,7 @@ class Api::V1::AlbumsController < Api::BaseController
 
   param_group :doc_albums
   def index
-    render json: current_user.albums
+    render json: current_user.albums.pagination(pagination_params)
   end
 
   param_group :doc_create_album
@@ -64,5 +64,9 @@ class Api::V1::AlbumsController < Api::BaseController
 
   def artwork_params
     params.permit(:artwork)
+  end
+
+  def pagination_params
+    params.permit(:pagination, :page, :per_page)
   end
 end

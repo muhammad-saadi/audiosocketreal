@@ -7,7 +7,7 @@ class Api::V1::PublishersController < Api::BaseController
 
   param_group :doc_publishers
   def index
-    render json: current_user.publishers.ordered
+    render json: current_user.publishers.pagination(pagination_params)
   end
 
   param_group :doc_create_publishers
@@ -37,5 +37,9 @@ class Api::V1::PublishersController < Api::BaseController
 
   def set_publisher
     @publisher = current_user.publishers.find(params[:id])
+  end
+
+  def pagination_params
+    params.permit(:pagination, :page, :per_page)
   end
 end

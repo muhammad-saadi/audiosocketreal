@@ -22,12 +22,12 @@ class Api::V1::ArtistsController < Api::BaseController
   param_group :doc_invite_collaborator
   def invite_collaborator
     current_user.invite_collaborator(collaborator_params)
-    render json: current_user.collaborators.ordered
+    render json: current_user.collaborators.pagination(pagination_params)
   end
 
   param_group :doc_collaborators
   def collaborators
-    render json: current_user.collaborators.ordered, each_serializer: Api::V1::CollaboratorSerializer
+    render json: current_user.collaborators.pagination(pagination_params), each_serializer: Api::V1::CollaboratorSerializer
   end
 
   private
@@ -45,5 +45,9 @@ class Api::V1::ArtistsController < Api::BaseController
 
   def collaborator_params
     params.permit(:name, :email, :agreements, :access)
+  end
+
+  def pagination_params
+    params.permit(:pagination, :page, :per_page)
   end
 end

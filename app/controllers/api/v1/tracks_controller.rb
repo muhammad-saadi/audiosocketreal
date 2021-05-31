@@ -9,7 +9,7 @@ class Api::V1::TracksController < Api::BaseController
 
   param_group :doc_tracks
   def index
-    render json: @album.tracks
+    render json: @album.tracks.pagination(pagination_params)
   end
 
   param_group :doc_create_track
@@ -62,5 +62,9 @@ class Api::V1::TracksController < Api::BaseController
   def validate_collaborator_and_publisher
     @collaborator = current_user.collaborators.find(params[:collaborator_id]) if params[:collaborator_id].present?
     @publisher = current_user.publishers.find(params[:publisher_id]) if params[:publisher_id].present?
+  end
+
+  def pagination_params
+    params.permit(:pagination, :page, :per_page)
   end
 end
