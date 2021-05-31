@@ -55,4 +55,8 @@ class Api::BaseController < ActionController::API
   def set_current_user
     Current.user = current_user
   end
+
+  def pagination_params
+    params.permit(:pagination, :page, :per_page)
+  end
 end

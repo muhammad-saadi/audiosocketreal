@@ -46,8 +46,4 @@ class Api::V1::ArtistsController < Api::BaseController
   def collaborator_params
     params.permit(:name, :email, :agreements, :access)
   end
-
-  def pagination_params
-    params.permit(:pagination, :page, :per_page)
-  end
 end

@@ -65,8 +65,4 @@ class Api::V1::AlbumsController < Api::BaseController
   def artwork_params
     params.permit(:artwork)
   end
-
-  def pagination_params
-    params.permit(:pagination, :page, :per_page)
-  end
 end
