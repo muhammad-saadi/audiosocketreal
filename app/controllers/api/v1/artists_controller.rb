@@ -1,4 +1,5 @@
-class Api::V1::ArtistsController < Api::ArtistsController
+class Api::V1::ArtistsController < Api::BaseController
+  include ArtistValidator
   include Api::V1::Docs::ArtistsDoc
 
   before_action :set_artist_profile, only: %i[update_profile show_profile]

@@ -1,4 +1,5 @@
-class Api::V1::TracksController < Api::ArtistsController
+class Api::V1::TracksController < Api::BaseController
+  include ArtistValidator
   include Api::V1::Docs::TracksDoc
 
   before_action :set_album

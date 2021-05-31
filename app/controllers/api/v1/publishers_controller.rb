@@ -1,4 +1,5 @@
-class Api::V1::PublishersController < Api::ArtistsController
+class Api::V1::PublishersController < Api::BaseController
+  include ArtistValidator
   include Api::V1::Docs::PublishersDoc
 
   before_action :set_publisher, only: %i[update]

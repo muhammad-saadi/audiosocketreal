@@ -1,4 +1,5 @@
-class Api::V1::AlbumsController < Api::ArtistsController
+class Api::V1::AlbumsController < Api::BaseController
+  include ArtistValidator
   include Api::V1::Docs::AlbumsDoc
 
   before_action :set_album, only: %i[update show destroy update_artwork]

@@ -1,7 +1,12 @@
-class Api::V1::ArtistsCollaboratorsController < Api::CollaboratorsController
+class Api::V1::ArtistsCollaboratorsController < Api::BaseController
+  include CollaboratorValidator
+  include ArtistValidator
   include Api::V1::Docs::ArtistsCollaboratorsDoc
 
-  skip_before_action :authenticate_user!, :validate_role, only: %i[authenticate_token]
+  skip_before_action :authenticate_user!, only: %i[authenticate_token]
+  skip_before_action :validate_collaborator, only: %i[authenticate_token]
+  skip_before_action :validate_artist
+
   before_action :set_artists_collaborator_by_token, only: %i[authenticate_token]
   before_action :set_artists_collaborator_by_id, only: %i[update_status]
 
