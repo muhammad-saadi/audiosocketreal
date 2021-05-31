@@ -6,6 +6,9 @@ module Api::V1::Docs::AlbumsDoc
 
     def_param_group :doc_albums do
       api :GET, "/v1/albums", 'List albums of current user'
+      param :page, :number, desc: 'Page number'
+      param :per_page, :number, desc: 'Maximum number of records per page'
+      param :pagination, ['true', 'false', true, false], desc: 'Send false to avoid default pagination'
     end
 
     def_param_group :doc_create_album do

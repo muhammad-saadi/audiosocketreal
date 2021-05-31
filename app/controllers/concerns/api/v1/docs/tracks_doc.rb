@@ -7,6 +7,9 @@ module Api::V1::Docs::TracksDoc
     def_param_group :doc_tracks do
       api :GET, '/v1/album/:album_id/tracks', 'List tracks of an album'
       param :album_id, :number, desc: 'Id of the album'
+      param :page, :number, desc: 'Page number'
+      param :per_page, :number, desc: 'Maximum number of records per page'
+      param :pagination, ['true', 'false', true, false], desc: 'Send false to avoid default pagination'
     end
 
     def_param_group :doc_create_track do
