@@ -17,6 +17,7 @@ module Api::V1::Docs::TracksDoc
       param :album_id, :number, desc: 'Id of the album in which track is going to add'
       param :collaborator_id, :number, desc: "Id of tracks's collaborator"
       param :publisher_id, :number, desc: "Id of track's publisher"
+      param :status, String, desc: "Status of the track"
     end
 
     def_param_group :doc_update_track do
@@ -28,6 +29,7 @@ module Api::V1::Docs::TracksDoc
       param :file, File, desc: 'Music file of the track'
       param :collaborator_id, :number, desc: "Id of tracks's collaborator"
       param :publisher_id, :number, desc: "Id of track's publisher"
+      param :status, String, desc: "Status of the track"
     end
 
     def_param_group :doc_show_track do

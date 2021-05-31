@@ -47,7 +47,7 @@ class Api::V1::TracksController < Api::BaseController
   private
 
   def track_params
-    params.permit(:title, :file, :public_domain, :collaborator_id, :publisher_id)
+    params.permit(:title, :file, :public_domain, :collaborator_id, :publisher_id, :status)
   end
 
   def set_album
@@ -59,7 +59,7 @@ class Api::V1::TracksController < Api::BaseController
   end
 
   def validate_collaborator_and_publisher
-    @collaborator = current_user.collaborators.find(params[:collaborator_id])
-    @publisher = current_user.publishers.find(params[:publisher_id])
+    @collaborator = current_user.collaborators.find(params[:collaborator_id]) if params[:collaborator_id].present?
+    @publisher = current_user.publishers.find(params[:publisher_id]) if params[:publisher_id].present?
   end
 end

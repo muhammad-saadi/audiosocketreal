@@ -10,6 +10,7 @@ class Track < ApplicationRecord
 
   STATUSES = {
     pending: 'pending',
+    unclassified: 'unclassified',
     approved: 'approved',
     rejected: 'rejected'
   }.freeze

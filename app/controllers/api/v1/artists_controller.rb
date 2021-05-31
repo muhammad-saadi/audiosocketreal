@@ -26,7 +26,7 @@ class Api::V1::ArtistsController < Api::BaseController
 
   param_group :doc_collaborators
   def collaborators
-    render json: current_user.collaborators.ordered
+    render json: current_user.collaborators.ordered, each_serializer: Api::V1::CollaboratorSerializer
   end
 
   private
