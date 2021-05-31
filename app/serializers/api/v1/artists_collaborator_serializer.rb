@@ -1,5 +1,5 @@
 class Api::V1::ArtistsCollaboratorSerializer < ActiveModel::Serializer
-  attributes :id, :status, :meta
+  attributes :id, :status, :access, :meta
 
   belongs_to :artist, class_name: 'User'
 

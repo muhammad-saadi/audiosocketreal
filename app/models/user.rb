@@ -13,10 +13,10 @@ class User < ApplicationRecord
   has_many :albums, dependent: :destroy
   has_many :publishers, dependent: :destroy
   has_many :tracks
-  has_many :artist_collaborators, foreign_key: "collaborator_id", class_name: 'ArtistsCollaborator', dependent: :destroy
-  has_many :collaborator_artists, foreign_key: "artist_id", class_name: 'ArtistsCollaborator', dependent: :destroy
-  has_many :artists, through: :artist_collaborators
-  has_many :collaborators, through: :collaborator_artists
+  has_many :artists_details, foreign_key: "collaborator_id", class_name: 'ArtistsCollaborator', dependent: :destroy
+  has_many :collaborators_details, foreign_key: "artist_id", class_name: 'ArtistsCollaborator', dependent: :destroy
+  has_many :artists, through: :artists_details
+  has_many :collaborators, through: :collaborators_details
 
   validates :email, uniqueness: { case_sensitive: false }, presence: true
   validates :password, confirmation: true

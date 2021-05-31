@@ -56,6 +56,7 @@ Rails.application.routes.draw do
       resources :artists_collaborators, only: %i[] do
         collection do
           get :authenticate_token
+          patch :update_access
         end
 
         member do
