@@ -1,5 +1,6 @@
 module RolesValidator
   extend ActiveSupport::Concern
+
   included do
     class << self
       def validate_role(roles: [], operator: 'OR', only: [], except: [])
@@ -19,7 +20,9 @@ module RolesValidator
       end
     end
   end
+
   private
+
   def validate_user_role(roles, operator)
     if operator == 'AND'
       raise ExceptionHandler::InvalidAccess, Message.invalid_access unless (roles - current_user.roles).blank?
