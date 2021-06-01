@@ -1,5 +1,6 @@
 class User < ApplicationRecord
   include Roles
+  include Pagination
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable, :trackable and :omniauthable
   devise :database_authenticatable, :registerable,
@@ -74,12 +75,6 @@ class User < ApplicationRecord
   def agreements_accepted?
     users_agreements && users_agreements.joins(:agreement).where('agreement.agreement_type':
                         [Agreement::TYPES[:exclusive], Agreement::TYPES[:non_exclusive]]).pluck(:status).all?('accepted')
-  end
-
-  def self.pagination(params)
-    return ordered if params[:pagination] == 'false'
-
-    ordered.page(params[:page].presence || 1).per(params[:per_page].presence || PER_PAGE)
   end
 
   private
