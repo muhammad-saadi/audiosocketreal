@@ -28,7 +28,7 @@ class Api::V1::ArtistsController < Api::BaseController
   param_group :doc_invite_collaborator
   def invite_collaborator
     current_user.invite_collaborator(collaborator_params)
-    render json: current_user.collaborators.pagination(pagination_params)
+    render json: current_user.collaborators.ordered.pagination(pagination_params)
   end
 
   param_group :doc_collaborators

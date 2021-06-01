@@ -79,12 +79,6 @@ class User < ApplicationRecord
                         [Agreement::TYPES[:exclusive], Agreement::TYPES[:non_exclusive]]).pluck(:status).all?('accepted')
   end
 
-  def self.pagination(params)
-    return ordered if params[:pagination] == 'false'
-
-    ordered.page(params[:page].presence || 1).per(params[:per_page].presence || PER_PAGE)
-  end
-
   private
 
   def validate_manager
