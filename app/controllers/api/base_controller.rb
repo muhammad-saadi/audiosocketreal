@@ -1,5 +1,6 @@
 class Api::BaseController < ActionController::API
   include ExceptionHandler
+  include RolesValidator
 
   attr_reader :current_user
 

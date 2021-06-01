@@ -1,6 +1,5 @@
 class Api::V1::UsersController < Api::BaseController
   include UserValidator
-  include RolesValidator
   include Api::V1::Docs::UsersDoc
 
   validate_role roles: ['manager'], only: %i[managers]

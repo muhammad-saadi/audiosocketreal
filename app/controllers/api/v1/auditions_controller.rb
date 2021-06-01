@@ -1,6 +1,5 @@
 class Api::V1::AuditionsController < Api::BaseController
   include UserValidator
-  include RolesValidator
   include Api::V1::Docs::AuditionsDoc
 
   validate_role roles: ['manager'], except: %i[create]

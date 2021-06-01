@@ -1,6 +1,5 @@
 class Api::V1::TracksController < Api::BaseController
   include UserValidator
-  include RolesValidator
   include Api::V1::Docs::TracksDoc
 
   validate_role roles: ['artist']
