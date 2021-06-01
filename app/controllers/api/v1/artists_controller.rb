@@ -1,6 +1,9 @@
 class Api::V1::ArtistsController < Api::BaseController
-  include ArtistValidator
+  include UserValidator
+  include RolesValidator
   include Api::V1::Docs::ArtistsDoc
+
+  validate_role roles: ['artist']
 
   before_action :set_artist_profile, only: %i[update_profile show_profile]
 

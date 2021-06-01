@@ -1,7 +1,10 @@
 class Api::V1::UsersController < Api::BaseController
+  include UserValidator
+  include RolesValidator
   include Api::V1::Docs::UsersDoc
 
-  before_action :authenticate_user!, only: :managers
+  validate_role roles: ['manager'], only: %i[managers]
+
   before_action :set_user, only: %i[accept_invitation authenticate_token]
 
   param_group :doc_list_managers

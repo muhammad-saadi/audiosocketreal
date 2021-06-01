@@ -1,6 +1,9 @@
 class Api::V1::TracksController < Api::BaseController
-  include ArtistValidator
+  include UserValidator
+  include RolesValidator
   include Api::V1::Docs::TracksDoc
+
+  validate_role roles: ['artist']
 
   before_action :set_album
   before_action :set_track, only: %i[update show destroy]

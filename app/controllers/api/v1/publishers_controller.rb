@@ -1,6 +1,9 @@
 class Api::V1::PublishersController < Api::BaseController
-  include ArtistValidator
+  include UserValidator
+  include RolesValidator
   include Api::V1::Docs::PublishersDoc
+
+  validate_role roles: ['artist']
 
   before_action :set_publisher, only: %i[update]
 

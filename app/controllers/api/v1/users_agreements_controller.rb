@@ -1,7 +1,10 @@
 class Api::V1::UsersAgreementsController < Api::BaseController
+  include UserValidator
+  include RolesValidator
   include Api::V1::Docs::UsersAgreementsDoc
 
-  before_action :authenticate_user!
+  validate_role roles: ['artist', 'collaborator']
+
   before_action :set_user_agreement, only: :update_status
 
   param_group :doc_users_agreements

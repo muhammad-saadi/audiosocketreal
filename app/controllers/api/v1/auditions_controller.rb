@@ -1,8 +1,11 @@
 class Api::V1::AuditionsController < Api::BaseController
-  include ManagerValidator
+  include UserValidator
+  include RolesValidator
   include Api::V1::Docs::AuditionsDoc
 
-  skip_before_action :authenticate_user!, :validate_manager, only: %i[create]
+  validate_role roles: ['manager'], except: %i[create]
+
+  skip_before_action :authenticate_user!, only: %i[create]
   before_action :set_user, only: %i[assign_manager bulk_assign_manager]
   before_action :set_audition, only: %i[assign_manager update_status]
 

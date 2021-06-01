@@ -1,6 +1,9 @@
 class Api::V1::AlbumsController < Api::BaseController
-  include ArtistValidator
+  include UserValidator
+  include RolesValidator
   include Api::V1::Docs::AlbumsDoc
+
+  validate_role roles: ['artist']
 
   before_action :set_album, only: %i[update show destroy update_artwork]
 

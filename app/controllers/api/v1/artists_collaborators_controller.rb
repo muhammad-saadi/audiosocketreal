@@ -1,11 +1,12 @@
 class Api::V1::ArtistsCollaboratorsController < Api::BaseController
-  include CollaboratorValidator
-  include ArtistValidator
+  include UserValidator
+  include RolesValidator
   include Api::V1::Docs::ArtistsCollaboratorsDoc
 
+  validate_role roles: ['artist'], only: %i[update_access]
+  validate_role roles: ['collaborator'], only: %i[update_status]
+
   skip_before_action :authenticate_user!, only: %i[authenticate_token]
-  skip_before_action :validate_collaborator, only: %i[authenticate_token update_access]
-  skip_before_action :validate_artist, only: %i[authenticate_token update_status]
 
   before_action :set_artists_collaborator_by_token, only: %i[authenticate_token]
   before_action :set_artists_collaborator_by_id, only: %i[update_status]
@@ -41,7 +42,7 @@ class Api::V1::ArtistsCollaboratorsController < Api::BaseController
   end
 
   def set_artists_collaborator_by_id
-    @artists_collaborator = current_user.artist_collaborators.find(params[:id])
+    @artists_collaborator = current_user.artists_details.find(params[:id])
   end
 
   def set_artists_collaborator_by_collaborator_id

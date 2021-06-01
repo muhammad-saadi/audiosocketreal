@@ -1,7 +1,9 @@
 class Api::V1::AgreementsController < Api::BaseController
+  include UserValidator
+  include RolesValidator
   include Api::V1::Docs::AgreementsDoc
 
-  before_action :authenticate_user!
+  validate_role roles: ['artist', 'collaborator']
 
   param_group :doc_agreements
   def index
