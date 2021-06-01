@@ -1,10 +1,11 @@
 class Api::V1::UsersController < Api::BaseController
-  include UserValidator
   include Api::V1::Docs::UsersDoc
 
   validate_role roles: ['manager'], only: %i[managers]
 
   before_action :set_user, only: %i[accept_invitation authenticate_token]
+
+  skip_before_action :authenticate_user!, except: %i[managers]
 
   param_group :doc_list_managers
   def managers

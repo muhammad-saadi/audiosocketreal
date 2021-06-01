@@ -1,5 +1,4 @@
 class Api::V1::AlbumsController < Api::BaseController
-  include UserValidator
   include Api::V1::Docs::AlbumsDoc
 
   validate_role roles: ['artist']

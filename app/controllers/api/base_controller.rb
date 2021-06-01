@@ -5,6 +5,7 @@ class Api::BaseController < ActionController::API
   attr_reader :current_user
 
   before_action :authorize_request
+  before_action :authenticate_user!
 
   rescue_from ActiveRecord::RecordNotFound, with: :record_not_found
   rescue_from ActiveRecord::RecordNotUnique, with: :record_not_unique

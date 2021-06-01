@@ -1,5 +1,4 @@
 class Api::V1::UsersAgreementsController < Api::BaseController
-  include UserValidator
   include Api::V1::Docs::UsersAgreementsDoc
 
   validate_role roles: ['artist', 'collaborator']

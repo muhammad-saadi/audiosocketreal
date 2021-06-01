@@ -1,5 +1,4 @@
 class Api::V1::ArtistsCollaboratorsController < Api::BaseController
-  include UserValidator
   include Api::V1::Docs::ArtistsCollaboratorsDoc
 
   validate_role roles: ['artist'], only: %i[update_access]
