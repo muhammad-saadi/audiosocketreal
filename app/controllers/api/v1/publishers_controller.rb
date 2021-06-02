@@ -32,7 +32,7 @@ class Api::V1::PublishersController < Api::BaseController
   private
 
   def publisher_params
-    params.permit(:name)
+    params.permit(:name, :pro, :ipi)
   end
 
   def set_publisher

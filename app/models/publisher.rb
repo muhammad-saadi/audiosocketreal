@@ -3,5 +3,7 @@ class Publisher < ApplicationRecord
 
   has_many :tracks
 
+  validates :name, :pro, presence: true
+
   scope :ordered, -> { order(created_at: :desc) }
 end
