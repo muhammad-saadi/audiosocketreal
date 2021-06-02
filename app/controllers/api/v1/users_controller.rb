@@ -29,9 +29,7 @@ class Api::V1::UsersController < Api::BaseController
 
   param_group :doc_forgot_password
   def forgot_password
-    @user = User.find_by(email: params[:email])
-    raise ActiveRecord::RecordNotFound.new('No User found against this email') if @user.blank?
-
+    @user = User.find_by!(email: params[:email])
     @token = @user.send_reset_password_instructions
     raise ExceptionHandler::ValidationError.new(@user.errors.to_h, 'Error resetting password.') unless @user.errors.blank?
 
@@ -40,7 +38,7 @@ class Api::V1::UsersController < Api::BaseController
 
   param_group :doc_reset_password
   def reset_password
-    @user = User.reset_password_by_token(update_params)
+    @user = User.reset_password_by_token(password_params)
     if @user.errors.empty?
       render json: { auth_token: AuthenticateUser.new({ email: @user.email, password: update_params[:password], role: update_params[:role] }).call }
     else
@@ -58,7 +56,7 @@ class Api::V1::UsersController < Api::BaseController
     params.permit(:password, :password_confirmation, :role)
   end
 
-  def update_params
+  def password_params
     params.permit(:reset_password_token, :password, :password_confirmation, :role)
   end
 end
