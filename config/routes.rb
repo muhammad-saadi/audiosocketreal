@@ -50,6 +50,8 @@ Rails.application.routes.draw do
           get :managers
           patch :accept_invitation
           get :authenticate_token
+          patch :reset_password
+          get :forgot_password
         end
       end
 
