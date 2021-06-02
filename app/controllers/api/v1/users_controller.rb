@@ -40,7 +40,7 @@ class Api::V1::UsersController < Api::BaseController
   def reset_password
     @user = User.reset_password_by_token(password_params)
     if @user.errors.empty?
-      render json: { auth_token: AuthenticateUser.new({ email: @user.email, password: update_params[:password], role: update_params[:role] }).call }
+      render json: { auth_token: AuthenticateUser.new({ email: @user.email, password: password_params[:password], role: password_params[:role] }).call }
     else
       raise ExceptionHandler::ValidationError.new(@user.errors.to_h, 'Error resetting password.')
     end

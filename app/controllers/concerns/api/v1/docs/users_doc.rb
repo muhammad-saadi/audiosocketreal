@@ -22,7 +22,7 @@ module Api::V1::Docs::UsersDoc
     end
 
     def_param_group :doc_forgot_password do
-      api :GET, '/v1/users/forgot_password', 'Send email to reset password'
+      api :POST, '/v1/users/forgot_password', 'Send email to reset password'
       param :email, String, desc: 'Email of the user', required: true
     end
 

@@ -51,7 +51,7 @@ Rails.application.routes.draw do
           patch :accept_invitation
           get :authenticate_token
           patch :reset_password
-          get :forgot_password
+          post :forgot_password
         end
       end
 
