@@ -51,5 +51,9 @@ module Api::V1::Docs::ArtistsDoc
     def_param_group :doc_show_profile do
       api :GET, "/v1/artists/show_profile", 'Show artist profile of current user'
     end
+
+    def_param_group :doc_artists do
+      api :GET, "/v1/artists", "Show list of collaborators's artists for collaborator"
+    end
   end
 end

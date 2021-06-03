@@ -54,7 +54,9 @@ class User < ApplicationRecord
   end
 
   def assign_agreements(artist = artist_profile)
-    self.agreements << artist.exclusive? && Agreement.exclusives || Agreement.non_exclusives
+    begin
+      self.agreements << (artist.exclusive? && Agreement.exclusives || Agreement.non_exclusives)
+    rescue; end
   end
 
   def invite_collaborator(params)

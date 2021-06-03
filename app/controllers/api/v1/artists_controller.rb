@@ -1,9 +1,15 @@
 class Api::V1::ArtistsController < Api::BaseController
   include Api::V1::Docs::ArtistsDoc
 
-  validate_role roles: ['artist']
+  validate_role roles: ['artist'], except: %i[index]
+  validate_role roles: ['collaborator'], only: %i[index]
 
   before_action :set_artist_profile, only: %i[update_profile show_profile]
+
+  param_group :doc_artists
+  def index
+    render json: current_user.artists, each_serializer: Api::V1::ArtistsSerializer
+  end
 
   param_group :doc_update_profile
   def update_profile
