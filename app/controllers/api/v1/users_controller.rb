@@ -16,7 +16,7 @@ class Api::V1::UsersController < Api::BaseController
   def accept_invitation
     if @user.update(invitation_params)
       @user.assign_agreements if @user.artist?
-      render json: { auth_token: AuthenticateUser.new({ email: @user.email, password: invitation_params[:password], role: invitation_params[:role] }).call }
+      render json: { auth_token: AuthenticateUser.new({ email: @user.email, password: invitation_params[:password], role: params[:role] }).call }
     else
       raise ExceptionHandler::ValidationError.new(@user.errors, 'Error accepting invitation.')
     end
@@ -53,7 +53,7 @@ class Api::V1::UsersController < Api::BaseController
   end
 
   def invitation_params
-    params.permit(:password, :password_confirmation, :role)
+    params.permit(:password, :password_confirmation)
   end
 
   def password_params

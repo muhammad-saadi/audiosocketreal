@@ -53,8 +53,8 @@ class User < ApplicationRecord
     JsonWebToken.encode({ id: id })
   end
 
-  def assign_agreements
-    self.agreements = artist_profile.exclusive? && Agreement.exclusives || Agreement.non_exclusives
+  def assign_agreements(artist = artist_profile)
+    self.agreements << artist.exclusive? && Agreement.exclusives || Agreement.non_exclusives
   end
 
   def invite_collaborator(params)
@@ -63,6 +63,7 @@ class User < ApplicationRecord
 
     collaborator.add_collaborator_role
     collaborator.save(validate: false)
+    collaborator.assign_agreements(Current.user.artist_profile)
 
     artist_collaborator = ArtistsCollaborator.find_or_create_by(artist_id: id, collaborator_id: collaborator.id)
     if artist_collaborator.update(access: params[:access])
