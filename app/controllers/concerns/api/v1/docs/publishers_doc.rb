@@ -25,5 +25,10 @@ module Api::V1::Docs::PublishersDoc
       param :pro, String, desc: 'PRO of publisher'
       param :ipi, String, desc: 'CAE/IPI of publisher'
     end
+
+    def_param_group :doc_destroy_publisher do
+      api :DELETE, "/v1/publishers/:id", 'Delete a publisher'
+      param :id, :number, desc: 'Id of the publisher'
+    end
   end
 end

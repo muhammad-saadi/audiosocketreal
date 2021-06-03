@@ -3,7 +3,7 @@ class Api::V1::PublishersController < Api::BaseController
 
   validate_role roles: ['artist']
 
-  before_action :set_publisher, only: %i[update]
+  before_action :set_publisher, only: %i[update destroy]
 
   param_group :doc_publishers
   def index
@@ -26,6 +26,15 @@ class Api::V1::PublishersController < Api::BaseController
       render json: current_user.publishers.ordered
     else
       raise ExceptionHandler::ValidationError.new(@publisher.errors.to_h, 'Error creating publisher.')
+    end
+  end
+
+  param_group :doc_destroy_publisher
+  def destroy
+    if @publisher.destroy
+      render json: current_user.publishers
+    else
+      raise ExceptionHandler::ValidationError.new(@publisher.errors.to_h, 'Error deleting collaborator.')
     end
   end
 

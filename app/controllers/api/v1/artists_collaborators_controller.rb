@@ -1,14 +1,14 @@
 class Api::V1::ArtistsCollaboratorsController < Api::BaseController
   include Api::V1::Docs::ArtistsCollaboratorsDoc
 
-  validate_role roles: ['artist'], only: %i[update_access]
+  validate_role roles: ['artist'], only: %i[update_access destroy]
   validate_role roles: ['collaborator'], only: %i[update_status]
 
   skip_before_action :authenticate_user!, only: %i[authenticate_token]
 
   before_action :set_artists_collaborator_by_token, only: %i[authenticate_token]
   before_action :set_artists_collaborator_by_id, only: %i[update_status]
-  before_action :set_artists_collaborator_by_collaborator_id, only: %i[update_access]
+  before_action :set_artists_collaborator_by_collaborator_id, only: %i[update_access destroy]
 
   param_group :doc_authenticate_token
   def authenticate_token
@@ -33,6 +33,15 @@ class Api::V1::ArtistsCollaboratorsController < Api::BaseController
     end
   end
 
+  param_group :doc_destroy_artists_collaborator
+  def destroy
+    if @artists_collaborator.destroy
+      render json: current_user.collaborators, each_serializer: Api::V1::CollaboratorSerializer
+    else
+      raise ExceptionHandler::ValidationError.new(@artists_colaborator.errors.to_h, 'Error deleting collaborator.')
+    end
+  end
+
   private
 
   def set_artists_collaborator_by_token
@@ -44,6 +53,6 @@ class Api::V1::ArtistsCollaboratorsController < Api::BaseController
   end
 
   def set_artists_collaborator_by_collaborator_id
-    @artists_collaborator = current_user.collaborators_details.find_by_collaborator_id(params[:collaborator_id])
+    @artists_collaborator = current_user.collaborators_details.find_by_collaborator_id!(params[:collaborator_id])
   end
 end

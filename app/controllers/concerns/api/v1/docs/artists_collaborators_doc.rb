@@ -20,5 +20,10 @@ module Api::V1::Docs::ArtistsCollaboratorsDoc
       param :collaborator_id, :number, desc: 'ID of collaborator', required: true
       param :access, ArtistsCollaborator.accesses.keys, desc: 'New value of access', required: true
     end
+
+    def_param_group :doc_destroy_artists_collaborator do
+      api :DELETE, "/v1/artists_collaborator/", 'Delete a collaborator'
+      param :collaborator_id, :number, desc: 'Id of the collaborator'
+    end
   end
 end

@@ -20,7 +20,7 @@ Rails.application.routes.draw do
       resource :session, only: %i[create]
       resources :genres, only: %i[index]
       resources :agreements, only: %i[index]
-      resources :publishers, only: %i[index create update]
+      resources :publishers, only: %i[index create update destroy]
 
       resources :albums, except: %i[new edit] do
         resources :tracks, except: %i[new edit]
@@ -30,7 +30,7 @@ Rails.application.routes.draw do
         end
       end
 
-      resources :users_agreements, only: %i[index] do
+      resources :users_agreements, only: %i[index destroy] do
         member do
           patch :update_status
         end
@@ -57,6 +57,7 @@ Rails.application.routes.draw do
 
       resources :artists_collaborators, only: %i[] do
         collection do
+          delete :destroy
           get :authenticate_token
           patch :update_access
         end
