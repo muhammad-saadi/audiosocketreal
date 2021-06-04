@@ -3,7 +3,7 @@
 PER_PAGE = 10
 EMAIL_TEMPLATES = {
   approved: "<p>Hello [name]!</p><p>Thanks for submitting music to Audiosocket, we have listened to your links and would love to work with you!</p>
-  <p>I've attached our artist agreement here. Please note, all co-writers and rights-holders must sign off on the agreement. Please review it and let me know if you have any questions. Next steps after signing will be submitting music, instructions to follow.</p>
+  <p>I've attached our artist agreement <a href='https://drive.google.com/drive/folders/1DPNOXpec_jOv-k5lV2kxitHUOkWj1DqA?usp=sharing'>here</a>. Please note, all co-writers and rights-holders must sign off on the agreement. Please review it and let me know if you have any questions. Next steps after signing will be submitting music, instructions to follow.</p>
   <p>Attached is also the W9, which will need to match with the bank account payee given on your agreement. If you're outside of the USA, we can make payments via Paypal. In this case, we'd need your Paypal address and a W8 filled out.</p>
   <p>You can check out some of our recent placements <a href='https://www.youtube.com/playlist?list=PL8474481F2967477D'>here</a>, it's a great time to come onboard. Please let us know if you have any questions.</p>
   <p>Thanks!</p><p>Vanessa<br>Music Licensing Coordinator<br>Audiosocket</p>",
