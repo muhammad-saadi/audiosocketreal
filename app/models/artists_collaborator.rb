@@ -1,4 +1,6 @@
 class ArtistsCollaborator < ApplicationRecord
+  include Pagination
+
   belongs_to :artist, class_name: "User", optional: true
   belongs_to :collaborator, class_name: "User", optional: true
 
@@ -19,8 +21,20 @@ class ArtistsCollaborator < ApplicationRecord
   enum status: STATUSES
   enum access: ACCESSES
 
+  scope :by_access, -> (access) { where(access: access) }
+
   def encoded_id
     JsonWebToken.encode({ id: id })
+  end
+
+  def self.filter_artists(key, query)
+    ransack("artist_#{key}_cont": query).result
+  end
+
+  def self.filter_by_access(access)
+    return all if access.blank?
+
+    by_access(access)
   end
 
   private

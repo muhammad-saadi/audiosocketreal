@@ -47,8 +47,4 @@ class Api::V1::PublishersController < Api::BaseController
   def set_publisher
     @publisher = current_user.publishers.find(params[:id])
   end
-
-  def pagination_params
-    params.permit(:pagination, :page, :per_page)
-  end
 end
