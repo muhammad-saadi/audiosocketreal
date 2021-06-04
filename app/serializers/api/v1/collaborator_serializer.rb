@@ -1,11 +1,19 @@
 class Api::V1::CollaboratorSerializer < BaseSerializer
   attributes :id, :first_name, :last_name, :email, :access, :status
 
-  def access
-    current_user.collaborators_details.find_by(collaborator_id: object.id).access
+  def id
+    object.collaborator.id
   end
 
-  def status
-    current_user.collaborators_details.find_by(collaborator_id: object.id).status
+  def first_name
+    object.collaborator.first_name
+  end
+
+  def last_name
+    object.collaborator.last_name
+  end
+
+  def email
+    object.collaborator.email
   end
 end

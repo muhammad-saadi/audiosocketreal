@@ -7,7 +7,8 @@ class Api::V1::PublishersController < Api::BaseController
 
   param_group :doc_publishers
   def index
-    render json: current_user.publishers.ordered.pagination(pagination_params)
+    @publishers = current_user.publishers.ordered.pagination(pagination_params)
+    render json: @publishers, meta: { count: @publishers.count }, adapter: :json
   end
 
   param_group :doc_create_publishers
@@ -31,6 +32,8 @@ class Api::V1::PublishersController < Api::BaseController
 
   param_group :doc_destroy_publisher
   def destroy
+    raise ExceptionHandler::BadRequest, 'Cannot delete publisher' unless @publisher.tracks.blank?
+
     if @publisher.destroy
       render json: current_user.publishers
     else

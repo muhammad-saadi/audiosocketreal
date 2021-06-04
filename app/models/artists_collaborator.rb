@@ -22,6 +22,7 @@ class ArtistsCollaborator < ApplicationRecord
   enum access: ACCESSES
 
   scope :by_access, -> (access) { where(access: access) }
+  scope :ordered, -> { order(created_at: :desc) }
 
   def encoded_id
     JsonWebToken.encode({ id: id })

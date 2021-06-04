@@ -55,6 +55,12 @@ module Api::V1::Docs::ArtistsDoc
 
     def_param_group :doc_artists do
       api :GET, "/v1/artists", "Show list of collaborators's artists for collaborator"
+      param :access, ArtistsCollaborator.accesses.keys, desc: 'Access of audition for search by access', allow_blank: true
+      param :page, :number, desc: 'Page number', allow_blank: true
+      param :per_page, :number, desc: 'Maximum number of records per page', allow_blank: true
+      param :pagination, ['true', 'false', true, false], desc: 'Send false to avoid default pagination', allow_blank: true
+      param :search_key, String, desc: 'Attribute on which you want to search', allow_blank: true
+      param :search_query, String, desc: 'Keyword to be search', allow_blank: true
     end
   end
 end

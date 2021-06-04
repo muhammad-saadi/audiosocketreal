@@ -10,7 +10,7 @@ class Api::V1::ArtistsController < Api::BaseController
   def index
     @filtered_artists = current_user.artists_details.includes(:artist).filter_artists(filter_params[:search_key], filter_params[:search_query])
     @artists = @filtered_artists.filter_by_access(filter_params[:access]).pagination(pagination_params).collect(&:artist).flatten
-    render json: @artists, each_serializer: Api::V1::ArtistsSerializer
+    render json: @artists, meta: count_details, root: 'user', each_serializer: Api::V1::ArtistsSerializer, adapter: :json
   end
 
   param_group :doc_update_profile
@@ -35,7 +35,8 @@ class Api::V1::ArtistsController < Api::BaseController
 
   param_group :doc_collaborators
   def collaborators
-    render json: current_user.collaborators.ordered.pagination(pagination_params), each_serializer: Api::V1::CollaboratorSerializer
+    @collaborators = current_user.collaborators_details.ordered.pagination(pagination_params)
+    render json: @collaborators.includes(:collaborator), meta: { count: @collaborators.count }, each_serializer: Api::V1::CollaboratorSerializer, adapter: :json
   end
 
   private
@@ -57,5 +58,13 @@ class Api::V1::ArtistsController < Api::BaseController
 
   def filter_params
     params.permit(:access, :search_key, :search_query)
+  end
+
+  def count_details
+    {
+      total: @filtered_artists.count,
+      read: @filtered_artists.read.count,
+      write: @filtered_artists.write.count
+    }
   end
 end

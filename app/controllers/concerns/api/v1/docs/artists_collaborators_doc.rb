@@ -22,7 +22,7 @@ module Api::V1::Docs::ArtistsCollaboratorsDoc
     end
 
     def_param_group :doc_destroy_artists_collaborator do
-      api :DELETE, "/v1/artists_collaborator/", 'Delete a collaborator'
+      api :DELETE, "/v1/artists_collaborators/", 'Delete a collaborator'
       param :collaborator_id, :number, desc: 'Id of the collaborator'
     end
   end
