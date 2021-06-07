@@ -18,6 +18,8 @@ class Api::V1::ArtistsCollaboratorsController < Api::BaseController
   param_group :doc_update_status
   def update_status
     if @artists_collaborator.update(status: params[:status])
+      @artists_collaborator.send_status_update_mail
+      @artists_collaborator.destroy
       render json: @artists_collaborator
     else
       raise ExceptionHandler::ValidationError.new(@artists_collaborator.errors.to_h, 'Error accepting/rejecting collaborator invitation.')

@@ -40,6 +40,12 @@ class ArtistsCollaborator < ApplicationRecord
     by_access(access)
   end
 
+  def send_status_update_mail
+    return unless accepted? || rejected?
+
+    CollaboratorMailer.invitation_status_update(id).deliver_later if status_previously_changed?
+  end
+
   private
 
   def collaborator_invite

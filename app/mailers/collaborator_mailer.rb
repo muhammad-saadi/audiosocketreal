@@ -6,7 +6,15 @@ class CollaboratorMailer < ApplicationMailer
     mail(
       content_type: "text/html",
       to: email,
-      subject: 'Audio socket collaborator invitation',
+      subject: 'Audiosocket collaborator invitation'
+    )
+  end
+
+  def invitation_status_update(id)
+    @artists_collaborator = ArtistsCollaborator.find(id)
+    mail(
+      to: @artists_collaborator.artist.email,
+      subject: 'Audiosocket collaborator invitation response'
     )
   end
 end
