@@ -1,5 +1,5 @@
 class Api::V1::UsersAgreementSerializer < BaseSerializer
-  attributes :id, :agreement, :status, :status_updated_at
+  attributes :id, :agreement, :status, :role, :status_updated_at
 
   belongs_to :agreement
 

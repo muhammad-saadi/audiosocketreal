@@ -10,6 +10,6 @@ class Api::V1::UserTokenSerializer < BaseSerializer
   end
 
   def agreements
-    object.agreements_accepted?
+    object.agreements_accepted?('artist')
   end
 end

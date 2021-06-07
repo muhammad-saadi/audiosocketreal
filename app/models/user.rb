@@ -52,9 +52,9 @@ class User < ApplicationRecord
     JsonWebToken.encode({ id: id })
   end
 
-  def assign_agreements(artist = artist_profile)
+  def assign_agreements(role, artist = artist_profile)
       new_agreements = artist.exclusive? && Agreement.exclusives || Agreement.non_exclusives
-      self.agreements << new_agreements.where.not(id: agreements.ids)
+      @user_agreements = self.users_agreements.create(new_agreements.ids.map{ |id| {agreement_id: id, role: role} })
   end
 
   def invite_collaborator(params)
@@ -63,7 +63,7 @@ class User < ApplicationRecord
 
     collaborator.add_collaborator_role
     collaborator.save(validate: false)
-    collaborator.assign_agreements(Current.user.artist_profile)
+    collaborator.assign_agreements('collaborator', Current.user.artist_profile)
 
     artist_collaborator = ArtistsCollaborator.find_or_create_by(artist_id: id, collaborator_id: collaborator.id)
     if artist_collaborator.update(access: params[:access])
@@ -73,8 +73,8 @@ class User < ApplicationRecord
     end
   end
 
-  def agreements_accepted?
-    users_agreements && users_agreements.joins(:agreement).where('agreement.agreement_type':
+  def agreements_accepted?(role)
+    users_agreements && users_agreements.where(role: role).joins(:agreement).where('agreement.agreement_type':
                         [Agreement::TYPES[:exclusive], Agreement::TYPES[:non_exclusive]]).pluck(:status).all?('accepted')
   end
 

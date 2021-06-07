@@ -120,5 +120,6 @@ class Audition < ApplicationRecord
     user.save(validate: false)
 
     user.create_artist_profile(name: artist_name, exclusive: self.exclusive) unless user.artist_profile&.persisted?
+    user.assign_agreements('artist', user.artist_profile)
   end
 end

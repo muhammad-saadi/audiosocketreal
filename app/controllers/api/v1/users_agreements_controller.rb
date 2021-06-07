@@ -7,7 +7,7 @@ class Api::V1::UsersAgreementsController < Api::BaseController
 
   param_group :doc_users_agreements
   def index
-    render json: current_user.users_agreements
+    render json: current_user.users_agreements.where(role: params[:role])
   end
 
   param_group :doc_update_status

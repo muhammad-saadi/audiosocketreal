@@ -7,7 +7,7 @@ class Api::V1::ArtistsCollaboratorSerializer < ActiveModel::Serializer
     collaborator = object.collaborator
     {
       password: collaborator.encrypted_password.present?,
-      agreements: collaborator.agreements_accepted?,
+      agreements: collaborator.agreements_accepted?('collaborator'),
       token: collaborator.encoded_id
     }
   end
