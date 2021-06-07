@@ -6,7 +6,7 @@ class Track < ApplicationRecord
 
   belongs_to :album
   belongs_to :publisher, optional: true
-  belongs_to :collaborator, class_name: 'User', optional: true
+  belongs_to :artists_collaborator, optional: true
 
   has_one_attached :file
 

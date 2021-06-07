@@ -4,6 +4,8 @@ class ArtistsCollaborator < ApplicationRecord
   belongs_to :artist, class_name: "User", optional: true
   belongs_to :collaborator, class_name: "User", optional: true
 
+  has_many :tracks, dependent: :restrict_with_exception
+
   validate :collaborator_invite
   validates_uniqueness_of :artist_id, scope: [:collaborator_id]
 

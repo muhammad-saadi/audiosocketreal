@@ -10,12 +10,13 @@ class Api::V1::TracksController < Api::BaseController
   param_group :doc_tracks
   def index
     @tracks = @album.tracks.pagination(pagination_params)
-    render json: @tracks.includes(%i[publisher collaborator file_attachment]), meta: { count: @tracks.count }, adapter: :json
+    render json: @tracks.includes(%i[publisher file_attachment], artists_collaborator: :collaborator), meta: { count: @tracks.count }, adapter: :json
   end
 
   param_group :doc_create_track
   def create
     @track = @album.tracks.new(track_params)
+    set_artists_collaborator
     if @track.save
       render json: @track
     else
@@ -25,6 +26,7 @@ class Api::V1::TracksController < Api::BaseController
 
   param_group :doc_update_track
   def update
+    set_artists_collaborator
     if @track.update(track_params)
       render json: @track
     else
@@ -49,7 +51,7 @@ class Api::V1::TracksController < Api::BaseController
   private
 
   def track_params
-    params.permit(:title, :file, :public_domain, :collaborator_id, :publisher_id, :status)
+    params.permit(:title, :file, :public_domain, :publisher_id, :status)
   end
 
   def set_album
@@ -63,5 +65,9 @@ class Api::V1::TracksController < Api::BaseController
   def validate_collaborator_and_publisher
     @collaborator = current_user.collaborators.find(params[:collaborator_id]) if params[:collaborator_id].present?
     @publisher = current_user.publishers.find(params[:publisher_id]) if params[:publisher_id].present?
+  end
+
+  def set_artists_collaborator
+    @track.artists_collaborator = current_user.collaborators_details.find_by(collaborator_id: params[:collaborator_id])
   end
 end
