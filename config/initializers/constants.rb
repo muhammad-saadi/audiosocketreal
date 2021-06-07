@@ -10,7 +10,7 @@ EMAIL_TEMPLATES = {
 
   approved_exclusive_artist: "<p>Hi [name]!</p><p>Thanks for submitting music to Audiosocket, we have listened to your link and would love to work with you! You can check out some of our recent placements <a href='https://www.youtube.com/playlist?list=PL8474481F2967477D'>here</a>, it's a great time to come onboard.</p>
   <p>We have two separate arms of our business, ASX (Audiosocket Exclusives) and Audiosocket. ASX focuses on high end Film/TV/Ad placements. It is a much smaller catalog, pitched in a very high touch way. Exclusivity is required at the highest end of sync licensing, it can be on a track level or an artist level. Exclusivity comes with additional benefits such as monthly payments, quarterly pitch updates, tracks coming up first insearch, additional marketing benefits and more.</p>
-  <p>Is this something you're interested in? Please let us know and then we can send along some additional information.</p>
+  <p>Is this something you're interested in? Please review our exclusive agreement <a href='https://drive.google.com/drive/folders/1g5uXNt71YgrxoqHO2Yqv-QPPMMIZFcHG?usp=sharing'>here</a>. We're happy to answer any questions you might have.</p>
   <p>Thanks!</p><p>Vanessa</p>",
 
   rejected: "<p>Hello!</p><p>We hope this note finds you safe and in good health. Thank you for submitting an audition to Audiosocket.</p>
