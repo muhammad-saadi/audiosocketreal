@@ -10,8 +10,6 @@ module ExceptionHandler
 
   class InvalidAccess < StandardError; end
 
-  class BadRequest < StandardError; end
-
   class TokenError < StandardError
     attr_reader :message
 
@@ -40,7 +38,7 @@ module ExceptionHandler
     rescue_from ArgumentError, with: :five_hundred_standard
     rescue_from TokenError, with: :five_hundred_standard
     rescue_from InvalidAccess, with: :four_zero_three
-    rescue_from BadRequest, with: :four_hundred
+    rescue_from ActiveRecord::DeleteRestrictionError, with: :four_hundred
 
     rescue_from ActiveRecord::RecordNotFound do |e|
       render json: { message: e.message }, status: :not_found

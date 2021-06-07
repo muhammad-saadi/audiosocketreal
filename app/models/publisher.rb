@@ -3,7 +3,7 @@ class Publisher < ApplicationRecord
 
   belongs_to :user
 
-  has_many :tracks
+  has_many :tracks, dependent: :restrict_with_exception
 
   validates :name, :pro, presence: true
 

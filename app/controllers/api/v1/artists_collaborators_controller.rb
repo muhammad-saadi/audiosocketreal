@@ -35,7 +35,7 @@ class Api::V1::ArtistsCollaboratorsController < Api::BaseController
 
   param_group :doc_destroy_artists_collaborator
   def destroy
-    raise ExceptionHandler::BadRequest, 'Cannot delete collaborator' unless @artists_collaborator.collaborator.tracks.blank?
+    raise ActiveRecord::DeleteRestrictionError, 'tracks' unless @artists_collaborator.collaborator.tracks.blank?
 
     if @artists_collaborator.destroy
       render json: current_user.collaborators_details.includes(:collaborator), each_serializer: Api::V1::CollaboratorSerializer

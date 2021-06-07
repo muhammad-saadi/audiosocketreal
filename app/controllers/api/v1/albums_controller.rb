@@ -8,7 +8,7 @@ class Api::V1::AlbumsController < Api::BaseController
   param_group :doc_albums
   def index
     @albums = current_user.albums.pagination(pagination_params)
-    render json: @albums.includes({ tracks: %i[publisher collaborator file_attachment] }), meta: { count: @albums.count }, adapter: :json
+    render json: @albums.includes(tracks: %i[publisher collaborator file_attachment]), meta: { count: @albums.count }, adapter: :json
   end
 
   param_group :doc_create_album
