@@ -5,7 +5,7 @@ class Api::V1::SessionsController < Api::BaseController
 
   param_group :doc_create_session
   def create
-    render json: { auth_token: AuthenticateUser.new(authentication_params).call }
+    render json: { auth_token: AuthenticateUser.new(authentication_params).call, role: params[:role] }
   end
 
   private
