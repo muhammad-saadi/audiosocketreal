@@ -2,8 +2,8 @@ class Api::V1::Collaborator::ArtistsController < Api::BaseController
   include AccessValidator
 
   validate_role roles: ['collaborator']
-  validate_collaborator_access access: %w[read write], only: %i[show_profile]
-  validate_collaborator_access access: %w[write], only: %i[update_profile]
+  validate_access roles: ['collaborator'], access: %w[read write], only: %i[show_profile]
+  validate_access roles: ['collaborator'], access: %w[write], only: %i[update_profile]
 
   before_action :set_artist_profile, only: %i[update_profile show_profile]
 
