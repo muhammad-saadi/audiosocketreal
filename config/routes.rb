@@ -4,6 +4,15 @@ Rails.application.routes.draw do
   # For details on the DSL available within this file, see https://guides.rubyonrails.org/routing.html
   namespace :api do
     namespace :v1 do
+      namespace :collaborator do
+        resources :artists do
+          collection do
+            get :show_profile
+            patch :update_profile
+          end
+        end
+      end
+
       resources :auditions do
         member do
           patch :assign_manager
