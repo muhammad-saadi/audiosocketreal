@@ -1,0 +1,68 @@
+class Api::V1::Collaborator::TracksController < Api::V1::Collaborator::BaseController
+  allow_access roles: ['collaborator'], access: %w[read write], only: %i[index show]
+  allow_access roles: ['collaborator'], access: %w[write], only: %i[create update destroy]
+
+  before_action :set_album
+  before_action :set_track, only: %i[update show destroy]
+  before_action :validate_collaborator_and_publisher, only: %i[create update]
+
+  def index
+    @tracks = @album.tracks.pagination(pagination_params)
+    render json: @tracks.includes(%i[publisher file_attachment], artists_collaborator: :collaborator),
+           meta: { count: @tracks.count }, adapter: :json, each_serializer: Api::V1::TrackSerializer
+  end
+
+  def create
+    @track = @album.tracks.new(track_params)
+    set_artists_collaborator
+    if @track.save
+      render json: @track, serializer: Api::V1::TrackSerializer
+    else
+      raise ExceptionHandler::ValidationError.new(@track.errors.to_h, 'Error creating track.')
+    end
+  end
+
+  def update
+    set_artists_collaborator
+    if @track.update(track_params)
+      render json: @track, serializer: Api::V1::TrackSerializer
+    else
+      raise ExceptionHandler::ValidationError.new(@track.errors.to_h, 'Error updating track.')
+    end
+  end
+
+  def show
+    render json: @track, serializer: Api::V1::TrackSerializer
+  end
+
+  def destroy
+    if @track.destroy
+      render json: @album.tracks, each_serializer: Api::V1::TrackSerializer
+    else
+      raise ExceptionHandler::ValidationError.new(@track.errors.to_h, 'Error deleting track.')
+    end
+  end
+
+  private
+
+  def track_params
+    params.permit(:title, :file, :public_domain, :publisher_id, :status)
+  end
+
+  def set_album
+    @album = @current_artist.albums.find(params[:album_id])
+  end
+
+  def set_track
+    @track = @album.tracks.find(params[:id])
+  end
+
+  def validate_collaborator_and_publisher
+    @collaborator = @current_artist.collaborators.find(params[:collaborator_id]) if params[:collaborator_id].present?
+    @publisher = @current_artist.publishers.find(params[:publisher_id]) if params[:publisher_id].present?
+  end
+
+  def set_artists_collaborator
+    @track.artists_collaborator = @current_artist.collaborators_details.find_by(collaborator_id: params[:collaborator_id])
+  end
+end

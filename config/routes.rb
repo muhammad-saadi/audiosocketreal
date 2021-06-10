@@ -11,6 +11,14 @@ Rails.application.routes.draw do
             patch :update_profile
           end
         end
+
+        resources :albums, except: %i[new edit] do
+          resources :tracks, except: %i[new edit]
+
+          member do
+            patch :update_artwork
+          end
+        end
       end
 
       resources :auditions do

@@ -1,12 +1,12 @@
-class Api::V1::Collaborator::ArtistsController < Api::BaseController
-  include AccessValidator
+class Api::V1::Collaborator::ArtistsController < Api::V1::Collaborator::BaseController
+  include Api::V1::Docs::Collaborator::ArtistsDoc
 
-  validate_role roles: ['collaborator']
-  validate_access roles: ['collaborator'], access: %w[read write], only: %i[show_profile]
-  validate_access roles: ['collaborator'], access: %w[write], only: %i[update_profile]
+  allow_access roles: ['collaborator'], access: %w[read write], only: %i[show_profile]
+  allow_access roles: ['collaborator'], access: %w[write], only: %i[update_profile]
 
   before_action :set_artist_profile, only: %i[update_profile show_profile]
 
+  param_group :doc_collaborator_update_profile
   def update_profile
     if @artist_profile.update(artist_profile_params)
       render json: @artist_profile, serializer: Api::V1::ArtistProfileSerializer
@@ -15,6 +15,7 @@ class Api::V1::Collaborator::ArtistsController < Api::BaseController
     end
   end
 
+  param_group :doc_collaborator_show_profile
   def show_profile
     render json: @artist_profile, serializer: Api::V1::ArtistProfileSerializer
   end

@@ -3,18 +3,18 @@ module AccessValidator
 
   included do
     class << self
-      def validate_access(roles: [], access: [], only: [], except: [])
+      def allow_access(roles: [], access: [], only: [], except: [])
         if only.present?
           before_action only: only do
-            validate_collaborator_access(access) if roles.include?('collaborator')
+            validate_roles_access(roles, access)
           end
         elsif except.present?
           before_action except: except do
-            validate_collaborator_access(access) if roles.include?('collaborator')
+            validate_roles_access(roles, access)
           end
         else
           before_action do
-            validate_collaborator_access(access) if roles.include?('collaborator')
+            validate_roles_access(roles, access)
           end
         end
       end
@@ -23,11 +23,16 @@ module AccessValidator
 
   private
 
+  def validate_roles_access(roles, access)
+    return if roles.blank?
+
+    validate_collaborator_access(access) if roles.include?('collaborator')
+  end
+
   def validate_collaborator_access(access)
     return unless access.present? && current_user.collaborator?
+    return if access.include?(current_user.artists_details.find_by(artist_id: params[:artist_id])&.access)
 
-    unless access.include?(current_user.artists_details.find_by(artist_id: params[:artist_id])&.access)
-      raise ExceptionHandler::InvalidAccess, Message.invalid_access
-    end
+    raise ExceptionHandler::InvalidAccess, Message.invalid_access
   end
 end
