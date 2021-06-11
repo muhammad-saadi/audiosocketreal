@@ -29,7 +29,7 @@ class Api::V1::Collaborator::ArtistsController < Api::V1::Collaborator::BaseCont
   private
 
   def set_artist_profile
-    @artist_profile = User.find(params[:artist_id]).artist_profile
+    @artist_profile = @current_artist.artist_profile
   end
 
   def artist_profile_params

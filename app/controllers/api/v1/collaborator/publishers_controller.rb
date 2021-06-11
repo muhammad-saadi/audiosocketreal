@@ -6,6 +6,6 @@ class Api::V1::Collaborator::PublishersController < Api::V1::Collaborator::BaseC
   param_group :doc_publishers
   def index
     @publishers = @current_artist.publishers.ordered.pagination(pagination_params)
-    render json: @publishers, meta: { count: @publishers.count }, adapter: :json
+    render json: @publishers, meta: { count: @publishers.count }, each_serializer: Api::V1::PublisherSerializer, adapter: :json
   end
 end
