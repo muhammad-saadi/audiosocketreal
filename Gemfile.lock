@@ -78,6 +78,13 @@ GEM
       public_suffix (>= 2.0.2, < 5.0)
     apipie-rails (0.5.18)
       rails (>= 4.1)
+    arbre (1.4.0)
+      activesupport (>= 3.0.0, < 6.2)
+      ruby2_keywords (>= 0.0.2, < 1.0)
+    arctic_admin (3.2.0)
+      activeadmin (>= 1.1.0, < 3.0)
+      font-awesome-sass (~> 5.0)
+      jquery-rails
     aws-eventstream (1.1.0)
     aws-partitions (1.418.0)
     aws-sdk-core (3.111.2)
@@ -94,13 +101,6 @@ GEM
       aws-sigv4 (~> 1.1)
     aws-sigv4 (1.2.2)
       aws-eventstream (~> 1, >= 1.0.2)
-    arbre (1.4.0)
-      activesupport (>= 3.0.0, < 6.2)
-      ruby2_keywords (>= 0.0.2, < 1.0)
-    arctic_admin (3.2.0)
-      activeadmin (>= 1.1.0, < 3.0)
-      font-awesome-sass (~> 5.0)
-      jquery-rails
     bcrypt (3.1.16)
     bindex (0.8.1)
     bootsnap (1.7.3)
@@ -308,10 +308,10 @@ PLATFORMS
 
 DEPENDENCIES
   active_model_serializers
-  apipie-rails
-  aws-sdk-s3
   activeadmin
+  apipie-rails
   arctic_admin
+  aws-sdk-s3
   bootsnap (>= 1.4.4)
   byebug
   capybara (>= 3.26)
