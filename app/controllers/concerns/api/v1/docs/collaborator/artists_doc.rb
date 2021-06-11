@@ -4,13 +4,13 @@ module Api::V1::Docs::Collaborator::ArtistsDoc
   included do
     include Api::V1::Docs::Collaborator
 
-    def_param_group :doc_collaborator_show_profile do
-      api :GET, "/v1/collaborator/artists/show_profile/", 'Show artist profile of current user'
+    def_param_group :doc_show_profile do
+      api :GET, "/v1/collaborator/artists/show_profile", 'Show artist profile of current artist'
       param :artist_id, :number, desc: "ID of the artist", required: true
     end
 
-    def_param_group :doc_collaborator_update_profile do
-      api :PATCH, "/v1/collaborator/artists/update_profile", "Update artist profile of current user"
+    def_param_group :doc_update_profile do
+      api :PATCH, "/v1/collaborator/artists/update_profile", "Update artist profile of current artist"
       param :artist_id, :number, desc: "ID of the artist", required: true
       param :cover_image, File,desc: 'Cover image for the artist profile'
       param :banner_image, File, desc: 'banner image for the artist profile'
@@ -39,5 +39,14 @@ module Api::V1::Docs::Collaborator::ArtistsDoc
         param :ssn, String, desc: "Social Security Number", required: true
       end
     end
+
+    def_param_group :doc_collaborators do
+      api :GET, '/v1/artists/collaborators', 'List all collaborators of current user'
+      param :page, :number, desc: 'Page number'
+      param :per_page, :number, desc: 'Maximum number of records per page'
+      param :pagination, ['true', 'false', true, false], desc: 'Send false to avoid default pagination'
+    end
+
+
   end
 end

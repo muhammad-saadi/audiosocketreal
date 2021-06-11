@@ -40,7 +40,7 @@ module Api::V1::Docs::AuditionsDoc
 
     def_param_group :doc_bulk_update_status do
       api :PATCH, "/v1/auditions/bulk_update_status", "Update status of multiple auditions at one time"
-      param :ids, Array, of: Fixnum, desc: 'Ids of audition', required: true
+      param :ids, Array, of: :number, desc: 'Ids of audition', required: true
       param :status, Audition.statuses.keys, desc: 'New value of status', required: true
       param :content, String, desc: 'Content to be send in emails', allow_blank: true
       param :exclusive, [true, false], desc: 'Want to create artists as exlusive artist', allow_blank: true
@@ -55,7 +55,7 @@ module Api::V1::Docs::AuditionsDoc
 
     def_param_group :doc_bulk_assign_manager do
       api :PATCH, "/v1/auditions/bulk_assign_manager", "Assign multiple auditions to another manager"
-      param :audition_ids, Array, of: Fixnum, desc: 'Ids of audition', required: true
+      param :audition_ids, Array, of: :number, desc: 'Ids of audition', required: true
       param :assignee_id, :number, desc: 'Id of manager to be assigned', required: true
       param :remarks, String, desc: 'Remarks about the audition', allow_blank: true
     end

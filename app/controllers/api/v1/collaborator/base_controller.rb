@@ -8,7 +8,7 @@ class Api::V1::Collaborator::BaseController < Api::BaseController
   private
 
   def set_current_artist
-    unless (@current_artist = current_user.artists.find_by(id: params[:artist_id]))
+    unless (@current_artist = current_user.artists_details.accepted.find_by(id: params[:artist_id])&.artist)
       raise ExceptionHandler::InvalidAccess, Message.invalid_access
     end
   end

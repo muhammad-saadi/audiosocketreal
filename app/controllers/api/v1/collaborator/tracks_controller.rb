@@ -1,4 +1,6 @@
 class Api::V1::Collaborator::TracksController < Api::V1::Collaborator::BaseController
+  include Api::V1::Docs::Collaborator::TracksDoc
+
   allow_access roles: ['collaborator'], access: %w[read write], only: %i[index show]
   allow_access roles: ['collaborator'], access: %w[write], only: %i[create update destroy]
 
@@ -6,12 +8,14 @@ class Api::V1::Collaborator::TracksController < Api::V1::Collaborator::BaseContr
   before_action :set_track, only: %i[update show destroy]
   before_action :validate_collaborator_and_publisher, only: %i[create update]
 
+  param_group :doc_tracks
   def index
     @tracks = @album.tracks.pagination(pagination_params)
     render json: @tracks.includes(%i[publisher file_attachment], artists_collaborator: :collaborator),
            meta: { count: @tracks.count }, adapter: :json, each_serializer: Api::V1::TrackSerializer
   end
 
+  param_group :doc_create_track
   def create
     @track = @album.tracks.new(track_params)
     set_artists_collaborator
@@ -22,6 +26,7 @@ class Api::V1::Collaborator::TracksController < Api::V1::Collaborator::BaseContr
     end
   end
 
+  param_group :doc_update_track
   def update
     set_artists_collaborator
     if @track.update(track_params)
@@ -31,10 +36,12 @@ class Api::V1::Collaborator::TracksController < Api::V1::Collaborator::BaseContr
     end
   end
 
+  param_group :doc_show_track
   def show
     render json: @track, serializer: Api::V1::TrackSerializer
   end
 
+  param_group :doc_destroy_track
   def destroy
     if @track.destroy
       render json: @album.tracks, each_serializer: Api::V1::TrackSerializer

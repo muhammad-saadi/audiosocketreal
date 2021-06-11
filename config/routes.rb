@@ -9,6 +9,7 @@ Rails.application.routes.draw do
           collection do
             get :show_profile
             patch :update_profile
+            get :collaborators
           end
         end
 

@@ -31,7 +31,7 @@ module AccessValidator
 
   def validate_collaborator_access(access)
     return unless access.present? && current_user.collaborator?
-    return if access.include?(current_user.artists_details.find_by(artist_id: params[:artist_id])&.access)
+    return if access.include?(current_user.artists_details.find_by(id: params[:artist_id])&.access)
 
     raise ExceptionHandler::InvalidAccess, Message.invalid_access
   end
