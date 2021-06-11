@@ -31,7 +31,6 @@ module Api::V1::Docs::UsersDoc
       param :password, String, desc: 'Password to be set', required: true
       param :password_confirmation, String, desc: 'Confirmation of password', required: true
       param :reset_password_token, String, desc: 'Reset password token', required: true
-      param :role, String, desc: 'Role to login as', required: true
     end
   end
 end
