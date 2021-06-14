@@ -1,4 +1,6 @@
 ActiveAdmin.register User, as: 'Artist' do
+  permit_params :email, :password, :password_confirmation, :first_name, :last_name
+
   controller do
     def scoped_collection
       end_of_association_chain.artist
@@ -25,9 +27,8 @@ ActiveAdmin.register User, as: 'Artist' do
       row :created_at
       row :updated_at
       row :roles
-      row :publishers
       row :artist_profile do |artist|
-        link_to artist.artist_profile.name, admin_artist_profile_path(artist.artist_profile)
+        artist.artist_profile
       end
     end
 
@@ -36,20 +37,20 @@ ActiveAdmin.register User, as: 'Artist' do
         column :id
         column :name
         column :actions do |album|
-          link_to t('active_admin.view'), admin_album_path(album)
+          link_to t('active_admin.view')
         end
       end
     end
 
-    panel 'Agreements' do
+    panel 'Agreement' do
       table_for artist.users_agreements do
         column :id
-        column :agreement do |users_agreement|
-          link_to :agreement, admin_agreement_path(users_agreement.agreement)
+        column 'Agreement ID' do |users_agreement|
+          link_to users_agreement.agreement.id
         end
         column :status
         column :actions do |users_agreement|
-          link_to t('active_admin.view'), admin_users_agreement_path(users_agreement)
+          link_to t('active_admin.view')
         end
       end
     end
@@ -59,7 +60,7 @@ ActiveAdmin.register User, as: 'Artist' do
         column :id
         column :name
         column :actions do |publisher|
-          link_to t('active_admin.view'), admin_publisher_path(publisher)
+          link_to t('active_admin.view')
         end
       end
     end
@@ -69,26 +70,21 @@ ActiveAdmin.register User, as: 'Artist' do
         column :id
         column :first_name
         column :actions do |collaborator|
-          link_to t('active_admin.view'), admin_user_path(collaborator)
+          link_to t('active_admin.view')
         end
       end
     end
     active_admin_comments
   end
 
-  # See permitted parameters documentation:
-  # https://github.com/activeadmin/activeadmin/blob/master/docs/2-resource-customization.md#setting-up-strong-parameters
-  #
-  # Uncomment all parameters which should be permitted for assignment
-  #
-  # permit_params :email, :encrypted_password, :first_name, :last_name, :reset_password_token, :reset_password_sent_at, :remember_created_at, :roles
-  #
-  # or
-  #
-  # permit_params do
-  #   permitted = [:email, :encrypted_password, :first_name, :last_name, :reset_password_token, :reset_password_sent_at, :remember_created_at, :roles]
-  #   permitted << :other if params[:action] == 'create' && current_user.admin?
-  #   permitted
-  # end
+  form do |f|
+    f.inputs do
+      f.input :first_name
+      f.input :last_name
+      f.input :email
+    end
+    f.actions
+  end
+
 
 end
