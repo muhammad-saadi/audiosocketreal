@@ -7,12 +7,13 @@ Rails.application.routes.draw do
   namespace :api do
     namespace :v1 do
       namespace :collaborator do
-        resources :publishers, only: %i[index]
+        resources :publishers, only: %i[index create update destroy]
         resources :artists do
           collection do
             get :show_profile
             patch :update_profile
             get :collaborators
+            patch :invite_collaborator
           end
         end
 

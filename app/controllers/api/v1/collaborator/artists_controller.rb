@@ -2,7 +2,7 @@ class Api::V1::Collaborator::ArtistsController < Api::V1::Collaborator::BaseCont
   include Api::V1::Docs::Collaborator::ArtistsDoc
 
   allow_access roles: ['collaborator'], access: %w[read write], only: %i[show_profile collaborators]
-  allow_access roles: ['collaborator'], access: %w[write], only: %i[update_profile]
+  allow_access roles: ['collaborator'], access: %w[write], only: %i[update_profile invite_collaborator]
 
   before_action :set_artist_profile, only: %i[update_profile show_profile]
 
@@ -26,6 +26,13 @@ class Api::V1::Collaborator::ArtistsController < Api::V1::Collaborator::BaseCont
     render json: @collaborators.includes(:collaborator), meta: { count: @collaborators.count }, each_serializer: Api::V1::CollaboratorSerializer, adapter: :json
   end
 
+  param_group :doc_invite_collaborator
+  def invite_collaborator
+    @current_artist.invite_collaborator(collaborator_params)
+    @collaborators = @current_artist.collaborators_details.ordered.pagination(pagination_params)
+    render json: @collaborators.includes(:collaborator), meta: { count: @collaborators.count }, each_serializer: Api::V1::CollaboratorSerializer, adapter: :json
+  end
+
   private
 
   def set_artist_profile
@@ -37,5 +44,9 @@ class Api::V1::Collaborator::ArtistsController < Api::V1::Collaborator::BaseCont
                   contact_information: %i[name phone street postal_code city state country],
                   payment_information: %i[payee_name bank_name routing account_number paypal_email],
                   tax_information: %i[ssn], additional_images: [], social: [])
+  end
+
+  def collaborator_params
+    params.permit(:name, :email, :agreements, :access)
   end
 end

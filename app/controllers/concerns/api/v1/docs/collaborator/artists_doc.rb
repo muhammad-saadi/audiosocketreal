@@ -41,12 +41,20 @@ module Api::V1::Docs::Collaborator::ArtistsDoc
     end
 
     def_param_group :doc_collaborators do
-      api :GET, '/v1/artists/collaborators', 'List all collaborators of current user'
+      api :GET, '/v1/collaborator/artists/collaborators', 'List all collaborators of current user'
+      param :artist_id, :number, desc: "ID of the artist", required: true
       param :page, :number, desc: 'Page number'
       param :per_page, :number, desc: 'Maximum number of records per page'
       param :pagination, ['true', 'false', true, false], desc: 'Send false to avoid default pagination'
     end
 
-
+    def_param_group :doc_invite_collaborator do
+      api :PATCH, '/v1/collaborator/artists/invite_collaborator', 'Send invitation email to collaborator'
+      param :artist_id, :number, desc: "ID of the artist", required: true
+      param :name, String, desc: "Name of collaborator", required: true
+      param :email, String, desc: "Email of collaborator", required: true
+      param :agreements, [true, false], desc: "If attach agreements for collaborator", required: true
+      param :access, ArtistsCollaborator.accesses.keys, desc: "Access wants to give to collaborator", required: true
+    end
   end
 end

@@ -54,7 +54,7 @@ class User < ApplicationRecord
 
   def assign_agreements(role, artist = artist_profile)
       new_agreements = artist.exclusive? && Agreement.exclusives || Agreement.non_exclusives
-      @user_agreements = self.users_agreements.create(new_agreements.ids.map{ |id| {agreement_id: id, role: role} })
+      @user_agreements = users_agreements.create(new_agreements.ids.map{ |id| {agreement_id: id, role: role} })
   end
 
   def invite_collaborator(params)
@@ -63,11 +63,11 @@ class User < ApplicationRecord
 
     collaborator.add_collaborator_role
     collaborator.save(validate: false)
-    collaborator.assign_agreements('collaborator', Current.user.artist_profile)
+    collaborator.assign_agreements('collaborator', artist_profile)
 
     artist_collaborator = ArtistsCollaborator.find_or_create_by(artist_id: id, collaborator_id: collaborator.id)
     if artist_collaborator.update(access: params[:access])
-      CollaboratorMailer.invitation_mail(Current.user.id, artist_collaborator.id, collaborator.email).deliver_later
+      CollaboratorMailer.invitation_mail(id, artist_collaborator.id, collaborator.email).deliver_later
     else
       raise ExceptionHandler::ValidationError.new(artist_collaborator.errors.to_h, 'Error inviting collaborator.')
     end
