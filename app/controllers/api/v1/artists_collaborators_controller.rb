@@ -7,8 +7,7 @@ class Api::V1::ArtistsCollaboratorsController < Api::BaseController
   skip_before_action :authenticate_user!, only: %i[authenticate_token]
 
   before_action :set_artists_collaborator_by_token, only: %i[authenticate_token]
-  before_action :set_artists_collaborator_by_id, only: %i[update_status]
-  before_action :set_artists_collaborator_by_collaborator_id, only: %i[update_access destroy]
+  before_action :set_artists_collaborator, only: %i[update_status update_access destroy]
 
   param_group :doc_authenticate_token
   def authenticate_token
@@ -19,8 +18,7 @@ class Api::V1::ArtistsCollaboratorsController < Api::BaseController
   def update_status
     if @artists_collaborator.update(status: params[:status])
       @artists_collaborator.send_status_update_mail
-      @artists_collaborator.destroy! if @artists_collaborator.rejected?
-      render json: @artists_collaborator
+      render json: current_user.collaborators_details.includes(:collaborator), each_serializer: Api::V1::CollaboratorSerializer
     else
       raise ExceptionHandler::ValidationError.new(@artists_collaborator.errors.to_h, 'Error accepting/rejecting collaborator invitation.')
     end
@@ -50,11 +48,7 @@ class Api::V1::ArtistsCollaboratorsController < Api::BaseController
     @artists_collaborator = ArtistsCollaborator.find_by(JsonWebToken.decode(params[:token], ExceptionHandler::TokenError.new('Invalid Token.')))
   end
 
-  def set_artists_collaborator_by_id
-    @artists_collaborator = current_user.artists_details.find(params[:id])
-  end
-
-  def set_artists_collaborator_by_collaborator_id
-    @artists_collaborator = current_user.collaborators_details.find_by_collaborator_id!(params[:collaborator_id])
+  def set_artists_collaborator
+    @artists_collaborator = current_user.collaborators_details.find(params[:id])
   end
 end

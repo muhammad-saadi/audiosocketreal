@@ -8,6 +8,7 @@ Rails.application.routes.draw do
     namespace :v1 do
       namespace :collaborator do
         resources :publishers, only: %i[index create update destroy]
+        resources :artists_collaborators, only: %i[destroy]
         resources :artists do
           collection do
             get :show_profile
@@ -77,9 +78,8 @@ Rails.application.routes.draw do
         end
       end
 
-      resources :artists_collaborators, only: %i[] do
+      resources :artists_collaborators, only: %i[destroy] do
         collection do
-          delete :destroy
           get :authenticate_token
           patch :update_access
         end

@@ -1,9 +1,5 @@
 class Api::V1::CollaboratorSerializer < BaseSerializer
-  attributes :id, :first_name, :last_name, :email, :access, :status
-
-  def id
-    object.collaborator.id
-  end
+  attributes :id, :first_name, :last_name, :email, :access, :status, :collaborator_profile
 
   def first_name
     object.collaborator.first_name

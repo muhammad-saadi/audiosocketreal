@@ -66,7 +66,7 @@ class User < ApplicationRecord
     collaborator.assign_agreements('collaborator', artist_profile)
 
     artist_collaborator = ArtistsCollaborator.find_or_create_by(artist_id: id, collaborator_id: collaborator.id)
-    if artist_collaborator.update(access: params[:access])
+    if artist_collaborator.update(access: params[:access], status: 'pending')
       CollaboratorMailer.invitation_mail(id, artist_collaborator.id, collaborator.email).deliver_later
     else
       raise ExceptionHandler::ValidationError.new(artist_collaborator.errors.to_h, 'Error inviting collaborator.')
