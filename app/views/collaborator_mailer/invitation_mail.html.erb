@@ -1,22 +1,24 @@
-<div class='email-block'>
-  <div class='logo'>
-    <%= image_tag 'logo-black.png' %>
+<div style="max-width:100%;background-color:#f2f2f2;padding:4rem 0 3rem 0;margin:0 auto;font-family:'Poppins', sans-serif; color:#646464;width:40rem;">
+  <div style="text-align: center;">
+    <%= image_tag 'logo-black.png', style: 'width: 18.75rem;' %>
   </div>
-  <h1 class='header-text'>Collaborator Invitation</h1>
-  <div class='body-text'>
-    <p>Hello!</p>
-    <p>You’ve been invited to <%= @current_user.full_name %>’s Audiosocket artist portal for music licensing.</p>
-    <p>All rights-holders must sign off on our agreement. You’ll also be asked to enter your Performing Rights 
+  <h1 style="background-color:#393838;color:#fff;padding:2.2rem 3rem;font-weight:300;margin-bottom:0;">
+    Collaborator Invitation
+  </h1>
+  <div style="padding: 1.2rem 3rem 3rem;border: 1px solid #e3e1e1;background-color: #ffffff;border-radius: 0 0 3px 3px;">
+    <p style="margin-bottom: 1.8rem">Hello!</p>
+    <p style="margin-bottom: 1.8rem">You’ve been invited to <%= @current_user.full_name %>’s Audiosocket artist portal for music licensing.</p>
+    <p style="margin-bottom: 1.8rem">All rights-holders must sign off on our agreement. You’ll also be asked to enter your Performing Rights 
     Information so please have that handy. This is a unique link and can only be used once.</p>
-    <p><%= link_to "PORTAL LINK", @path %></p>
-    <p>Once you login, please choose a password, you can return anytime at <a href = "https://artists.audiosocket.com">https://artists.audiosocket.com</a> </p>
-    <p>Please let us know if you have any questions.</p>
-    <p>Thanks!</p>
-    <p>Team Audiosocket</p>
+    <p style="margin-bottom: 1.8rem"><%= link_to "PORTAL LINK", @path %></p>
+    <p style="margin-bottom: 1.8rem">Once you login, please choose a password, you can return anytime at <a href = "https://artists.audiosocket.com">https://artists.audiosocket.com</a> </p>
+    <p style="margin-bottom: 1.8rem">Please let us know if you have any questions.</p>
+    <p style="margin-bottom: 1.8rem">Thanks!</p>
+    <p style="margin-bottom: 1.8rem">Team Audiosocket</p>
   </div>
-  <div class='footer-text'>
-    <p>Audiosocket</p>
-    <p>Seattle, WA 98103</p>
-    <p>United States</p>
+  <div style="padding-top:1.5rem;">
+    <p style="margin-top:0.3rem;margin-bottom:0.3rem;text-align:center;opacity:0.8;">Audiosocket</p>
+    <p style="margin-top:0.3rem;margin-bottom:0.3rem;text-align:center;opacity:0.8;">Seattle, WA 98103</p>
+    <p style="margin-top:0.3rem;margin-bottom:0.3rem;text-align:center;opacity:0.8;">United States</p>
   </div>
 </div>
