@@ -5,6 +5,8 @@ class ArtistProfile < ApplicationRecord
   has_one :payment_information, dependent: :destroy
   has_one :tax_information, dependent: :destroy
 
+  has_many :notes, as: :notable, dependent: :destroy
+
   accepts_nested_attributes_for :contact_information
   accepts_nested_attributes_for :payment_information
   accepts_nested_attributes_for :tax_information

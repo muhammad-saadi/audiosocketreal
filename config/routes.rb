@@ -44,6 +44,7 @@ Rails.application.routes.draw do
       resources :genres, only: %i[index]
       resources :agreements, only: %i[index]
       resources :publishers, only: %i[index create update destroy]
+      resources :notes, only: %i[index create]
 
       resources :albums, except: %i[new edit] do
         resources :tracks, except: %i[new edit]

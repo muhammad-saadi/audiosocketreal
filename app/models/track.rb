@@ -10,6 +10,8 @@ class Track < ApplicationRecord
 
   has_one_attached :file
 
+  has_many :notes, as: :notable, dependent: :destroy
+
   STATUSES = {
     pending: 'pending',
     unclassified: 'unclassified',

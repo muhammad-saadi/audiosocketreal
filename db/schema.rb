@@ -169,6 +169,18 @@ ActiveRecord::Schema.define(version: 2021_06_07_104038) do
     t.datetime "updated_at", precision: 6, null: false
   end
 
+  create_table "notes", force: :cascade do |t|
+    t.text "description"
+    t.string "status", default: "pending"
+    t.bigint "user_id"
+    t.string "notable_type"
+    t.bigint "notable_id"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["notable_type", "notable_id"], name: "index_notes_on_notable"
+    t.index ["user_id"], name: "index_notes_on_user_id"
+  end
+
   create_table "payment_informations", force: :cascade do |t|
     t.string "payee_name"
     t.string "bank_name"
