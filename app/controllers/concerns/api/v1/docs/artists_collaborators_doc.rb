@@ -16,8 +16,8 @@ module Api::V1::Docs::ArtistsCollaboratorsDoc
     end
 
     def_param_group :doc_update_access do
-      api :PATCH, '/v1/artists_collaborators/update_access', 'Update access for a collaborator'
-      param :collaborator_id, :number, desc: 'ID of collaborator', required: true
+      api :PATCH, '/v1/artists_collaborators/:id/update_access', 'Update access for a collaborator'
+      param :id, :number, desc: 'ID of collaborator', required: true
       param :access, ArtistsCollaborator.accesses.keys, desc: 'New value of access', required: true
     end
 

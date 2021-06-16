@@ -14,6 +14,6 @@ class Api::V1::TrackSerializer < BaseSerializer
   def collaborator
     return if object.artists_collaborator.blank?
 
-    Api::V1::UserSerializer.new(object.artists_collaborator.collaborator)
+    Api::V1::CollaboratorSerializer.new(object.artists_collaborator)
   end
 end

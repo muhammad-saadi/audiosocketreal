@@ -7,7 +7,8 @@ class Api::V1::ArtistsCollaboratorsController < Api::BaseController
   skip_before_action :authenticate_user!, only: %i[authenticate_token]
 
   before_action :set_artists_collaborator_by_token, only: %i[authenticate_token]
-  before_action :set_artists_collaborator, only: %i[update_status update_access destroy]
+  before_action :set_collaborators_detail, only: %i[ update_access destroy]
+  before_action :set_artists_detail, only: %i[update_status]
 
   param_group :doc_authenticate_token
   def authenticate_token
@@ -18,7 +19,7 @@ class Api::V1::ArtistsCollaboratorsController < Api::BaseController
   def update_status
     if @artists_collaborator.update(status: params[:status])
       @artists_collaborator.send_status_update_mail
-      render json: current_user.collaborators_details.includes(:collaborator), each_serializer: Api::V1::CollaboratorSerializer
+      render json: current_user.artists_details.includes(:artist, collaborator: :users_agreements), each_serializer: Api::V1::ArtistsSerializer
     else
       raise ExceptionHandler::ValidationError.new(@artists_collaborator.errors.to_h, 'Error accepting/rejecting collaborator invitation.')
     end
@@ -38,7 +39,7 @@ class Api::V1::ArtistsCollaboratorsController < Api::BaseController
     if @artists_collaborator.destroy
       render json: current_user.collaborators_details.includes(:collaborator), each_serializer: Api::V1::CollaboratorSerializer
     else
-      raise ExceptionHandler::ValidationError.new(@artists_colaborator.errors.to_h, 'Error deleting collaborator.')
+      raise ExceptionHandler::ValidationError.new(@artists_collaborator.errors.to_h, 'Error deleting collaborator.')
     end
   end
 
@@ -48,7 +49,11 @@ class Api::V1::ArtistsCollaboratorsController < Api::BaseController
     @artists_collaborator = ArtistsCollaborator.find_by(JsonWebToken.decode(params[:token], ExceptionHandler::TokenError.new('Invalid Token.')))
   end
 
-  def set_artists_collaborator
+  def set_artists_detail
+    @artists_collaborator = current_user.artists_details.find(params[:id])
+  end
+
+  def set_collaborators_detail
     @artists_collaborator = current_user.collaborators_details.find(params[:id])
   end
 end

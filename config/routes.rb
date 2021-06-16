@@ -81,10 +81,10 @@ Rails.application.routes.draw do
       resources :artists_collaborators, only: %i[destroy] do
         collection do
           get :authenticate_token
-          patch :update_access
         end
 
         member do
+          patch :update_access
           patch :update_status
         end
       end

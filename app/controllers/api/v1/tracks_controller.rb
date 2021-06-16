@@ -63,11 +63,11 @@ class Api::V1::TracksController < Api::BaseController
   end
 
   def validate_collaborator_and_publisher
-    @collaborator = current_user.collaborators.find(params[:collaborator_id]) if params[:collaborator_id].present?
+    @collaborator = current_user.collaborators_details.find(params[:artists_collaborator_id]) if params[:artists_collaborator_id].present?
     @publisher = current_user.publishers.find(params[:publisher_id]) if params[:publisher_id].present?
   end
 
   def set_artists_collaborator
-    @track.artists_collaborator = current_user.collaborators_details.find_by(collaborator_id: params[:collaborator_id])
+    @track.artists_collaborator = current_user.collaborators_details.find(params[:artists_collaborator_id])
   end
 end
