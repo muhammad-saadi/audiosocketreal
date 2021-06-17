@@ -7,7 +7,7 @@ class Api::V1::Collaborator::ArtistsCollaboratorsController < Api::V1::Collabora
 
   param_group :doc_update_artists_collaborator
   def update
-    if @artists_collaborator.update(artists_collaborator_params) && @artists_collaborator.collaborator_profile.update(collaborator_profile_params)
+    if @artists_collaborator.update(artists_collaborator_params)
       render json: @current_artist.collaborators_details.includes(:collaborator).ordered, each_serializer: Api::V1::CollaboratorSerializer
     else
       raise ExceptionHandler::ValidationError.new(@artists_collaborator.errors.to_h, 'Error updating collaborator.')
@@ -30,10 +30,6 @@ class Api::V1::Collaborator::ArtistsCollaboratorsController < Api::V1::Collabora
   end
 
   def artists_collaborator_params
-    params.permit(:access)
-  end
-
-  def collaborator_profile_params
-    params.permit(:pro, :ipi, :different_registered_name)
+    params.permit(:access, collaborator_profile_attributes: %i[pro ipi different_registered_name])
   end
 end

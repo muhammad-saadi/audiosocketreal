@@ -11,6 +11,8 @@ class ArtistsCollaborator < ApplicationRecord
   validate :collaborator_invite
   validates_uniqueness_of :artist_id, scope: [:collaborator_id]
 
+  accepts_nested_attributes_for :collaborator_profile
+
   STATUSES = {
     pending: 'pending',
     accepted: 'accepted',

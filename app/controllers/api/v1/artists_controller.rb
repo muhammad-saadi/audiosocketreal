@@ -54,7 +54,7 @@ class Api::V1::ArtistsController < Api::BaseController
   end
 
   def collaborator_params
-    params.permit(:name, :email, :agreements, :access, :pro, :ipi, :different_registered_name)
+    params.permit(:name, :email, :agreements, :access, collaborator_profile_attributes: %i[pro ipi different_registered_name])
   end
 
   def filter_params
