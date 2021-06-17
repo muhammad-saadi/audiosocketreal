@@ -6,6 +6,8 @@ class ArtistsCollaborator < ApplicationRecord
 
   has_many :tracks, dependent: :restrict_with_exception
 
+  has_one :collaborator_profile, dependent: :destroy
+
   validate :collaborator_invite
   validates_uniqueness_of :artist_id, scope: [:collaborator_id]
 

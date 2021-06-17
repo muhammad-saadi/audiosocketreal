@@ -72,6 +72,9 @@ class User < ApplicationRecord
     else
       raise ExceptionHandler::ValidationError.new(artist_collaborator.errors.to_h, 'Error inviting collaborator.')
     end
+
+    collaborator_profile = CollaboratorProfile.find_or_create_by(artists_collaborator_id: artist_collaborator.id)
+    collaborator_profile.update!(pro: params[:pro], ipi: params[:ipi], different_registered_name: params[:different_registered_name])
   end
 
   def agreements_accepted?(role)

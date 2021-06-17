@@ -7,7 +7,7 @@ class Api::V1::ArtistsCollaboratorsController < Api::BaseController
   skip_before_action :authenticate_user!, only: %i[authenticate_token]
 
   before_action :set_artists_collaborator_by_token, only: %i[authenticate_token]
-  before_action :set_collaborators_detail, only: %i[ update_access destroy]
+  before_action :set_collaborators_detail, only: %i[update update_access destroy]
   before_action :set_artists_detail, only: %i[update_status]
 
   param_group :doc_authenticate_token
@@ -29,6 +29,15 @@ class Api::V1::ArtistsCollaboratorsController < Api::BaseController
   def update_access
     if @artists_collaborator.update(access: params[:access])
       render json: current_user.collaborators_details.includes(:collaborator), each_serializer: Api::V1::CollaboratorSerializer
+    else
+      raise ExceptionHandler::ValidationError.new(@artists_collaborator.errors.to_h, 'Error updating collaborator.')
+    end
+  end
+
+  param_group :doc_update_artists_collaborator
+  def update
+    if @artists_collaborator.update(artists_collaborator_params) && @artists_collaborator.collaborator_profile.update(collaborator_profile_params)
+      render json: current_user.collaborators_details.includes(:collaborator).ordered, each_serializer: Api::V1::CollaboratorSerializer
     else
       raise ExceptionHandler::ValidationError.new(@artists_collaborator.errors.to_h, 'Error updating collaborator.')
     end
@@ -56,4 +65,13 @@ class Api::V1::ArtistsCollaboratorsController < Api::BaseController
   def set_collaborators_detail
     @artists_collaborator = current_user.collaborators_details.find(params[:id])
   end
+
+  def artists_collaborator_params
+    params.permit(:access)
+  end
+
+  def collaborator_profile_params
+    params.permit(:pro, :ipi, :different_registered_name)
+  end
+
 end
