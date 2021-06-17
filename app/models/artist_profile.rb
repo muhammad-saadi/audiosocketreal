@@ -19,7 +19,15 @@ class ArtistProfile < ApplicationRecord
     approved: 'approved'
   }.freeze
 
+  IMAGE_STATUSES = {
+    pending: 'pending',
+    approved: 'approved',
+    rejected: 'rejected'
+  }.freeze
+
   enum status: STATUSES
+  enum cover_image_status: IMAGE_STATUSES, _prefix: :cover_image_status
+  enum banner_image_status: IMAGE_STATUSES, _prefix: :banner_image_status
 
   has_one_attached :cover_image
   has_one_attached :banner_image

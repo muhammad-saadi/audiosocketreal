@@ -16,6 +16,8 @@ class Api::V1::ArtistsController < Api::BaseController
   param_group :doc_update_profile
   def update_profile
     if @artist_profile.update(artist_profile_params)
+      @artist_profile.banner_image_status_pending! if params[:banner_image].present?
+      @artist_profile.cover_image_status_pending! if params[:cover_image].present?
       render json: @artist_profile
     else
       raise ExceptionHandler::ValidationError.new(@artist_profile.errors.to_h, 'Error updating artist profile.')

@@ -40,9 +40,11 @@ module Api::V1::Docs::ArtistsDoc
       param :email, String, desc: "Email of collaborator", required: true
       param :agreements, [true, false], desc: "If attach agreements for collaborator", required: true
       param :access, ArtistsCollaborator.accesses.keys, desc: "Access wants to give to collaborator", required: true
-      param :pro, String, desc: 'PRO of collaborator'
-      param :ipi, String, desc: 'CAE/IPI of collaborator'
-      param :different_registered_name, [true, false], desc: 'Is PRO knows by different name?'
+      param :collaborator_profile_attributes, Hash, desc: 'Collaborator profile attributes', required: true do
+        param :pro, String, desc: 'PRO of collaborator'
+        param :ipi, String, desc: 'CAE/IPI of collaborator'
+        param :different_registered_name, [true, false], desc: 'Is PRO knows by different name?'
+      end
     end
 
     def_param_group :doc_collaborators do

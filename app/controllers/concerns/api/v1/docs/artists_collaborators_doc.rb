@@ -25,9 +25,11 @@ module Api::V1::Docs::ArtistsCollaboratorsDoc
       api :PATCH, '/v1/artists_collaborators/:id', 'Update collaborator'
       param :id, :number, desc: 'ID of collaborator', required: true
       param :access, ArtistsCollaborator.accesses.keys, desc: 'New value of access', required: true
-      param :pro, String, desc: 'PRO of collaborator'
-      param :ipi, String, desc: 'CAE/IPI of collaborator'
-      param :different_registered_name, [true, false], desc: 'Is PRO knows by different name?'
+      param :collaborator_profile_attributes, Hash, desc: 'Collaborator profile attributes', required: true do
+        param :pro, String, desc: 'PRO of collaborator'
+        param :ipi, String, desc: 'CAE/IPI of collaborator'
+        param :different_registered_name, [true, false], desc: 'Is PRO knows by different name?'
+      end
     end
 
     def_param_group :doc_destroy_artists_collaborator do
