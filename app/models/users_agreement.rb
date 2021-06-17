@@ -20,4 +20,5 @@ class UsersAgreement < ApplicationRecord
 
   scope :artists, -> { where(role: ROLES[:artist]) }
   scope :collaborators, -> { where(role: ROLES[:collaborator]) }
+  scope :by_role, ->(role) { where(role: role) }
 end

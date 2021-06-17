@@ -17,7 +17,7 @@ class User < ApplicationRecord
   has_many :collaborators_details, foreign_key: "artist_id", class_name: 'ArtistsCollaborator', dependent: :destroy
   has_many :artists, through: :artists_details
   has_many :collaborators, through: :collaborators_details
-  has_many :notes
+  has_many :notes, dependent: :destroy
 
   validates :email, uniqueness: { case_sensitive: false }, presence: true
   validates :password, confirmation: true
