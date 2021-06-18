@@ -1,7 +1,7 @@
 class Api::V1::Collaborator::ArtistsCollaboratorsController < Api::V1::Collaborator::BaseController
   include Api::V1::Docs::Collaborator::ArtistsCollaboratorsDoc
 
-  allow_access roles: ['collaborator'], access: %w[write], only: %i[destroy]
+  allow_access roles: ['collaborator'], access: %w[write], only: %i[update destroy]
 
   before_action :set_artists_collaborator, only: %i[update destroy]
 
