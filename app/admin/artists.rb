@@ -1,5 +1,7 @@
 ActiveAdmin.register User, as: 'Artist' do
-  permit_params :email, :password, :password_confirmation, :first_name, :last_name
+  config.remove_action_item(:new)
+
+  permit_params :first_name, :last_name
 
   controller do
     def scoped_collection
@@ -34,43 +36,63 @@ ActiveAdmin.register User, as: 'Artist' do
 
     panel 'Albums' do
       table_for artist.albums do
-        column :id
-        column :name
-        column :actions do |album|
-          link_to t('active_admin.view')
+        if artist.albums.blank?
+          column 'No Records Found'
+        else
+          column :id
+          column :name
+          column :actions do |album|
+            link_to t('active_admin.view'), '#', class: 'small button'
+          end
         end
       end
     end
 
-    panel 'Agreement' do
-      table_for artist.users_agreements do
-        column :id
-        column 'Agreement ID' do |users_agreement|
-          link_to users_agreement.agreement.id
-        end
-        column :status
-        column :actions do |users_agreement|
-          link_to t('active_admin.view')
+    panel 'Agreements' do
+      table_for artist.users_agreements.artist do
+        if artist.users_agreements.artist.blank?
+          column 'No Records Found'
+        else
+          column :id
+          column 'Agreement Type' do |users_agreement|
+            link_to users_agreement.agreement.agreement_type
+          end
+          column :status
+          column :actions do |users_agreement|
+            link_to t('active_admin.view'), '#',class: 'small button'
+          end
         end
       end
     end
 
     panel 'Publishers' do
       table_for artist.publishers do
-        column :id
-        column :name
-        column :actions do |publisher|
-          link_to t('active_admin.view')
+        if artist.publishers.blank?
+          column 'No Records Found'
+        else
+          column :id
+          column :name
+          column :actions do |publisher|
+            link_to t('active_admin.view'), '#', class: 'small button'
+          end
         end
       end
     end
 
-    panel 'Collaborators' do
-      table_for artist.collaborators do
-        column :id
-        column :first_name
-        column :actions do |collaborator|
-          link_to t('active_admin.view')
+    panel 'Collaborators Details' do
+      table_for artist.collaborators_details do
+        if artist.collaborators_details.blank?
+          column 'No Records Found'
+        else
+          column :id
+          column :collaborator do |collaborators_detail|
+            link_to collaborators_detail.collaborator.email, admin_collaborator_path(collaborators_detail.collaborator)
+          end
+          column :access
+          column :status
+          column :actions do |collaborator|
+            link_to t('active_admin.view'), '#', class: 'small button'
+          end
         end
       end
     end
@@ -81,7 +103,6 @@ ActiveAdmin.register User, as: 'Artist' do
     f.inputs do
       f.input :first_name
       f.input :last_name
-      f.input :email
     end
     f.actions
   end
