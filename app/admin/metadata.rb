@@ -13,7 +13,7 @@ ActiveAdmin.register Metadata do
     attributes_table do
       row :key
       row :content do |metadata|
-        metadata.content.html_safe
+        metadata.content.to_s.html_safe
       end
     end
   end
