@@ -5,6 +5,7 @@ class Note < ApplicationRecord
   has_many_attached :files
 
   scope :by_notable, -> (type, id){ where(notable_type: type, notable_id: id) }
+
   STATUSES = {
     pending: 'pending',
     completed: 'completed'
