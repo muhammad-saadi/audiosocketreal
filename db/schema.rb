@@ -184,6 +184,9 @@ ActiveRecord::Schema.define(version: 2021_06_18_100327) do
   create_table "metadata", force: :cascade do |t|
     t.string "key"
     t.text "content"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["key"], name: "index_metadata_on_key", unique: true
   end
 
   create_table "notes", force: :cascade do |t|
