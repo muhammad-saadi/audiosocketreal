@@ -5,7 +5,7 @@ ActiveAdmin.register Metadata do
   form do |f|
     f.inputs do
       f.input :key, input_html: { disabled: true }
-      f.input :content
+      f.input :content, as: :ckeditor
     end
     f.actions
   end
