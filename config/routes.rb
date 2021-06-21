@@ -9,6 +9,7 @@ Rails.application.routes.draw do
       namespace :collaborator do
         resources :publishers, only: %i[index create update destroy]
         resources :artists_collaborators, only: %i[update destroy]
+        resources :notes, only: %i[index create]
         resources :artists do
           collection do
             get :show_profile

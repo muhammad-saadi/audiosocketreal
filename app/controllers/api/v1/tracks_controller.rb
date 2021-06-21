@@ -68,6 +68,6 @@ class Api::V1::TracksController < Api::BaseController
   end
 
   def set_artists_collaborator
-    @track.artists_collaborator = current_user.collaborators_details.find(params[:artists_collaborator_id])
+    @track.artists_collaborator = current_user.collaborators_details.find(params[:artists_collaborator_id]) if params[:artists_collaborator_id].present?
   end
 end
