@@ -8,8 +8,7 @@ class Api::V1::Collaborator::NotesController < Api::V1::Collaborator::BaseContro
   def create
     @note = @current_artist.notes.new(note_params)
     if @note.save
-      render json: @current_artist.notes.pending.where(notable_type: params[:notable_type], notable_id: params[:notable_id]),
-             each_serializer: Api::V1::NoteSerializer
+      render json: @current_artist.notes.pending.by_notable(params[:notable_type], params[:notable_id]), each_serializer: Api::V1::NoteSerializer
     else
       raise ExceptionHandler::ValidationError.new(@note.errors.to_h, 'Error setting note.')
     end
@@ -17,8 +16,7 @@ class Api::V1::Collaborator::NotesController < Api::V1::Collaborator::BaseContro
 
   param_group :doc_notes
   def index
-    render json: @current_artist.notes.pending.where(notable_type: params[:notable_type], notable_id: params[:notable_id]),
-           each_serializer: Api::V1::NoteSerializer
+    render json: @current_artist.notes.pending.by_notable(params[:notable_type], params[:notable_id]), each_serializer: Api::V1::NoteSerializer
   end
 
   private
