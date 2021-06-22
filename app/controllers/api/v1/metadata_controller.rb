@@ -10,7 +10,7 @@ class Api::V1::MetadataController < Api::BaseController
 
   private
 
-  def set_meta_data
+  def set_metadata
     @metadata = Metadata.find_by(key: params[:key])
   end
 end
