@@ -42,7 +42,7 @@ ActiveAdmin.register User, as: 'Artist' do
           column :id
           column :name
           column :actions do |album|
-            link_to t('active_admin.view'), '#', class: 'small button'
+            link_to t('active_admin.view'), admin_album_path(album), class: 'small button'
           end
         end
       end
