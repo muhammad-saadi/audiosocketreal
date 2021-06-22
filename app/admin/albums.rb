@@ -1,8 +1,5 @@
 ActiveAdmin.register Album do
   permit_params :name, :release_date, :user_id
-  # action_item only: [:show] do
-  #    if album.present?
-  # end
 
   show do
     attributes_table do
@@ -15,6 +12,7 @@ ActiveAdmin.register Album do
       panel('', class: 'right') do
         link_to 'Add new Track', new_admin_track_path(track: { album_id: album.id }), class: 'medium button'
       end
+
       table_for album.tracks do
         column :id
         column :title
