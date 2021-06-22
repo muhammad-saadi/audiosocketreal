@@ -1,11 +1,9 @@
 class ChangeColumnTypeOfCollaborator < ActiveRecord::Migration[6.1]
-  def change
-    def self.up
-      change_column :collaborator_profiles, :different_registered_name, :string
-    end
+  def up
+    change_column :collaborator_profiles, :different_registered_name, :string
+  end
 
-    def self.down
-      change_column :collaborator_profiles, :different_registered_name, :boolean
-    end
+  def down
+    change_column :collaborator_profiles, :different_registered_name, 'boolean USING CAST(different_registered_name AS boolean)'
   end
 end
