@@ -9,7 +9,7 @@ ActiveAdmin.register Album do
     end
 
     panel 'Tracks' do
-      panel('', class: 'right') do
+      panel('', class: 'align-right') do
         link_to 'Add new Track', new_admin_track_path(track: { album_id: album.id }), class: 'medium button'
       end
 
