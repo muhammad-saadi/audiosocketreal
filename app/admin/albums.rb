@@ -12,8 +12,8 @@ ActiveAdmin.register Album do
     end
 
     panel 'Tracks' do
-      panel '' do
-        link_to 'Add new Track', new_admin_track_path(track: { album_id: album.id })
+      panel('', class: 'right') do
+        link_to 'Add new Track', new_admin_track_path(track: { album_id: album.id }), class: 'medium button'
       end
       table_for album.tracks do
         column :id
@@ -25,5 +25,14 @@ ActiveAdmin.register Album do
     end
 
     active_admin_comments
+  end
+
+  form do |f|
+    f.inputs do
+      f.input :name
+      f.input :release_date
+      f.input :user, as: :select, collection: User.artist
+    end
+    f.actions
   end
 end
