@@ -58,7 +58,7 @@ module Api::V1::Docs::Collaborator::ArtistsDoc
       param :collaborator_profile_attributes, Hash, desc: 'Collaborator profile attributes', required: true do
         param :pro, String, desc: 'PRO of collaborator'
         param :ipi, String, desc: 'CAE/IPI of collaborator'
-        param :different_registered_name, [true, false], desc: 'Is PRO knows by different name?'
+        param :different_registered_name, String, desc: 'Is PRO knows by different name?'
       end
     end
   end
