@@ -2,12 +2,19 @@ ActiveAdmin.register Track do
   config.remove_action_item(:new)
   permit_params :title, :file, :status, :album_id, :public_domain, :publisher_id, :artists_collaborator_id
 
+  includes :album
+
+  filter :title
+  filter :status, as: :select, collection: Track.statuses.keys.map { |key| [key.titleize, key] }
+
   index do
     selectable_column
     id_column
     column :title
     column :album
-    column :status
+    column :status do |track|
+      track.status&.titleize
+    end
     column :public_domain
     column :created_at
     column :updated_at
@@ -21,7 +28,9 @@ ActiveAdmin.register Track do
         link_to 'Download', rails_blob_url(track.file), class: 'small button' if track.file.attached?
       end
       row :album
-      row :status
+      row :status do |track|
+        track.status&.titleize
+      end
       row :public_domain
       row :publisher
       row :artists_collaborator
@@ -35,11 +44,11 @@ ActiveAdmin.register Track do
     f.inputs do
       f.input :title
       f.input :file, as: :file
-      f.input :status, as: :select, collection: Track.statuses.keys.map { |key| [key.humanize, key] }, include_blank: false
+      f.input :status, as: :select, collection: Track.statuses.keys.map { |key| [key.titleize, key] }, include_blank: false
       f.input :album, as: :searchable_select, collection: user.albums, include_blank: false
       f.input :public_domain
       f.input :publisher, as: :searchable_select, collection: user.publishers, include_blank: '(Select a Publisher)'
-      f.input :artists_collaborator, as: :searchable_select, collection: user.collaborators_details.map { |u| [u.collaborator.email, u.id] },
+      f.input :artists_collaborator, as: :searchable_select, collection: user.collaborators_details.includes(:collaborator).map { |u| [u.collaborator.email, u.id] },
                                      include_blank: '(Select a Collaborator)'
     end
     f.actions

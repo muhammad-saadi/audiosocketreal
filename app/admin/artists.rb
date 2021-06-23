@@ -1,7 +1,9 @@
 ActiveAdmin.register User, as: 'Artist' do
   config.remove_action_item(:new)
-
   permit_params :first_name, :last_name
+
+  filter :first_name_or_last_name_cont, as: :string, label: 'Name'
+  filter :email
 
   controller do
     def scoped_collection
@@ -17,7 +19,9 @@ ActiveAdmin.register User, as: 'Artist' do
     column :last_name
     column :created_at
     column :updated_at
-    column :roles
+    column :roles do |artist|
+      artist.roles.map { |role| role&.titleize }
+    end
     actions
   end
 
@@ -28,9 +32,12 @@ ActiveAdmin.register User, as: 'Artist' do
       row :last_name
       row :created_at
       row :updated_at
-      row :roles
+      row :roles do
+        artist.roles.map{ |role| role&.titleize }
+      end
+
       row :artist_profile do |artist|
-        artist.artist_profile
+        link_to 'Go to Artist Profile', admin_artist_profile_path(artist.artist_profile)
       end
     end
 
@@ -54,10 +61,15 @@ ActiveAdmin.register User, as: 'Artist' do
           column 'No Records Found'
         else
           column :id
+          column :agreement
           column 'Agreement Type' do |users_agreement|
-            link_to users_agreement.agreement.agreement_type
+            users_agreement.agreement.agreement_type&.titleize
           end
-          column :status
+
+          column :status do |users_agreement|
+            users_agreement.status&.titleize
+          end
+
           column :actions do |users_agreement|
             link_to t('active_admin.view'), '#',class: 'small button'
           end
@@ -88,8 +100,15 @@ ActiveAdmin.register User, as: 'Artist' do
           column :collaborator do |collaborators_detail|
             link_to collaborators_detail.collaborator.email, admin_collaborator_path(collaborators_detail.collaborator)
           end
-          column :access
-          column :status
+
+          column :access do |collaborators_detail|
+            collaborators_detail.access&.titleize
+          end
+
+          column :status do |collaborators_detail|
+            collaborators_detail.status&.titleize
+          end
+
           column :actions do |collaborator|
             link_to t('active_admin.view'), '#', class: 'small button'
           end

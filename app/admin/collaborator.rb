@@ -1,7 +1,9 @@
 ActiveAdmin.register User, as: 'Collaborator' do
   config.remove_action_item(:new)
-
   permit_params :first_name, :last_name
+
+  filter :first_name_or_last_name_cont, as: :string, label: 'Name'
+  filter :email
 
   controller do
     def scoped_collection
@@ -17,7 +19,9 @@ ActiveAdmin.register User, as: 'Collaborator' do
     column :last_name
     column :created_at
     column :updated_at
-    column :roles
+    column :roles do |collaborator|
+      collaborator.roles.map { |role| role&.titleize }
+    end
     actions
   end
 
@@ -28,7 +32,9 @@ ActiveAdmin.register User, as: 'Collaborator' do
       row :last_name
       row :created_at
       row :updated_at
-      row :roles
+      row :roles do
+        collaborator.roles.map { |role| role&.titleize }
+      end
     end
 
     panel 'Artists details' do
@@ -40,8 +46,15 @@ ActiveAdmin.register User, as: 'Collaborator' do
           column :artist do |artists_detail|
             link_to artists_detail.artist.email, admin_artist_path(artists_detail.artist)
           end
-          column :access
-          column :status
+
+          column :access do |artists_detail|
+            artists_detail.access&.titleize
+          end
+
+          column :status do |artists_detail|
+            artists_detail.status&.titleize
+          end
+
           column :actions do |artist|
             link_to t('active_admin.view'), '#', class: 'small button'
           end
@@ -55,10 +68,15 @@ ActiveAdmin.register User, as: 'Collaborator' do
           column 'No Records Found'
         else
           column :id
+          column :agreement
           column 'Agreement Type' do |users_agreement|
-            link_to users_agreement.agreement.agreement_type
+            users_agreement.agreement.agreement_type&.titleize
           end
-          column :status
+
+          column :status do |users_agreement|
+            users_agreement.status&.titleize
+          end
+
           column :actions do |users_agreement|
             link_to t('active_admin.view'), '#',class: 'small button'
           end

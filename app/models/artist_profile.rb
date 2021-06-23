@@ -33,6 +33,17 @@ class ArtistProfile < ApplicationRecord
   has_one_attached :banner_image
   has_many_attached :additional_images
 
+  attr_accessor :social_raw
+
+  def social_raw
+    self.social.join("\n") unless self.social.nil?
+  end
+
+  def social_raw=(values)
+    self.social = []
+    self.social = values.split("\n")
+  end
+
   def contact_information=(attributes)
     self.contact_information_attributes = attributes.merge({ id: contact_information&.id })
   end

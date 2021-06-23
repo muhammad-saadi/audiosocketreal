@@ -1,6 +1,11 @@
 ActiveAdmin.register Album do
   permit_params :name, :release_date, :user_id
 
+  includes :user
+
+  filter :name
+  filter :user, as: :searchable_select, collection: User.artist, label: 'Artist'
+
   show do
     attributes_table do
       row :name
