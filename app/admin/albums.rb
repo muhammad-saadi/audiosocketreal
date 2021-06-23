@@ -28,8 +28,8 @@ ActiveAdmin.register Album do
   form do |f|
     f.inputs do
       f.input :name
-      f.input :release_date
-      f.input :user, as: :select, collection: User.artist
+      f.input :release_date, as: :datetime_picker
+      f.input :user, as: :searchable_select , collection: User.artist, label: 'Artist', include_blank: '(Select an Artist)'
     end
     f.actions
   end
