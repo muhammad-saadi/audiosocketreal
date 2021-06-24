@@ -1,5 +1,5 @@
 ActiveAdmin.register ArtistProfile do
-  config.remove_action_item(:new)
+  actions :all, except: [:destroy, :new, :create]
 
   includes :user
 
@@ -68,6 +68,70 @@ ActiveAdmin.register ArtistProfile do
       end
       row :created_at
       row :updated_at
+    end
+
+    panel 'Contact Information' do
+      panel('', class: 'align-right') do
+        if artist_profile.contact_information.present?
+          link_to 'Edit contact Information', edit_admin_contact_information_path(artist_profile.contact_information), class: 'medium button'
+        else
+          link_to 'Add contact Information', new_admin_contact_information_path(contact_information: { artist_profile_id: artist_profile.id }), class: 'medium button'
+        end
+      end
+
+      attributes_table_for artist_profile.contact_information do
+        if artist_profile.contact_information.blank?
+          row 'No Record Found'
+        else
+          row :name
+          row :phone
+          row :street
+          row :postal_code
+          row :city
+          row :state
+          row :country
+        end
+      end
+    end
+
+    panel 'Payment Information' do
+      panel('', class: 'align-right') do
+        if artist_profile.payment_information.present?
+          link_to 'Edit payment Information', edit_admin_payment_information_path(artist_profile.payment_information), class: 'medium button'
+        else
+          link_to 'Add payment Information', new_admin_payment_information_path(payment_information: { artist_profile_id: artist_profile.id }), class: 'medium button'
+        end
+      end
+
+      attributes_table_for artist_profile.payment_information do
+        if artist_profile.payment_information.blank?
+          row 'No Record Found'
+        else
+          row :payee_name
+          row :bank_name
+          row :routing
+          row :account_number
+          row :paypal_email
+        end
+      end
+    end
+
+    panel 'Tax Information' do
+      panel('', class: 'align-right') do
+        if artist_profile.tax_information.present?
+          link_to 'Edit tax Information', edit_admin_tax_information_path(artist_profile.tax_information), class: 'medium button'
+        else
+          link_to 'Add tax Information', new_admin_tax_information_path(tax_information: { artist_profile_id: artist_profile.id }), class: 'medium button'
+        end
+      end
+
+      attributes_table_for artist_profile.tax_information do
+        if artist_profile.tax_information.blank?
+          row 'No Record Found'
+        else
+          row :ssn
+        end
+      end
     end
   end
 
