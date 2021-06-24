@@ -1,9 +1,13 @@
 class Api::V1::ArtistsSerializer < ActiveModel::Serializer
-  attributes :id, :email, :first_name, :last_name, :agreements, :access, :status
+  attributes :id, :name, :email, :first_name, :last_name, :agreements, :access, :status
 
   def agreements
     object.collaborator.users_agreements.collaborators.joins(:agreement).where('agreement.agreement_type':
       object.artist.artist_profile.exclusive?? Agreement::TYPES[:exclusive] : Agreement::TYPES[:non_exclusive]).pluck(:status).all?('accepted')
+  end
+
+  def name
+    object.artist.artist_profile.name
   end
 
   def email
