@@ -56,13 +56,17 @@ ActiveAdmin.register User, as: 'Collaborator' do
           end
 
           column :actions do |artist|
-            link_to t('active_admin.view'), '#', class: 'small button'
+            link_to t('active_admin.view'), admin_artists_collaborator_path(artist), class: 'small button'
           end
         end
       end
     end
 
     panel 'Agreements' do
+      panel('', class: 'align-right') do
+        link_to 'Add new Agreement', new_admin_users_agreement_path(users_agreement: { user_id: collaborator.id, role: 'collaborator' }), class: 'medium button'
+      end
+
       table_for collaborator.users_agreements.collaborator do
         if collaborator.users_agreements.collaborator.blank?
           column 'No Records Found'
@@ -78,7 +82,7 @@ ActiveAdmin.register User, as: 'Collaborator' do
           end
 
           column :actions do |users_agreement|
-            link_to t('active_admin.view'), '#',class: 'small button'
+            link_to t('active_admin.view'), admin_users_agreement_path(users_agreement), class: 'small button'
           end
         end
       end
@@ -93,11 +97,13 @@ ActiveAdmin.register User, as: 'Collaborator' do
           column :id
           column :title
           column :actions do |track|
-            link_to t('active_admin.view'), admin_track_path(track),class: 'small button'
+            link_to t('active_admin.view'), admin_track_path(track), class: 'small button'
           end
         end
       end
     end
+
+    active_admin_comments
   end
 
   form do |f|

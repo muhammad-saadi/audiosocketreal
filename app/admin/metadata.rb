@@ -23,6 +23,8 @@ ActiveAdmin.register Metadata do
         metadata.content.to_s.html_safe
       end
     end
+
+    active_admin_comments
   end
 
   form do |f|

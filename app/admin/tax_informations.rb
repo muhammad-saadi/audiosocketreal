@@ -6,6 +6,9 @@ ActiveAdmin.register TaxInformation do
 
   permit_params :ssn, :artist_profile_id
 
+  filter :artist_profile, as: :searchable_select
+  filter :ssn
+
   form do |f|
     f.inputs do
       f.input :ssn

@@ -56,6 +56,10 @@ ActiveAdmin.register User, as: 'Artist' do
     end
 
     panel 'Agreements' do
+      panel('', class: 'align-right') do
+        link_to 'Add new Agreement', new_admin_users_agreement_path(users_agreement: { user_id: artist.id, role: 'artist' }), class: 'medium button'
+      end
+
       table_for artist.users_agreements.artist do
         if artist.users_agreements.artist.blank?
           column 'No Records Found'
@@ -71,13 +75,17 @@ ActiveAdmin.register User, as: 'Artist' do
           end
 
           column :actions do |users_agreement|
-            link_to t('active_admin.view'), '#',class: 'small button'
+            link_to t('active_admin.view'), admin_users_agreement_path(users_agreement), class: 'small button'
           end
         end
       end
     end
 
     panel 'Publishers' do
+      panel('', class: 'align-right') do
+        link_to 'Add new Publisher', new_admin_publisher_path(publisher: { user_id: artist.id }), class: 'medium button'
+      end
+
       table_for artist.publishers do
         if artist.publishers.blank?
           column 'No Records Found'
@@ -85,7 +93,7 @@ ActiveAdmin.register User, as: 'Artist' do
           column :id
           column :name
           column :actions do |publisher|
-            link_to t('active_admin.view'), '#', class: 'small button'
+            link_to t('active_admin.view'), admin_publisher_path(publisher), class: 'small button'
           end
         end
       end
@@ -110,7 +118,7 @@ ActiveAdmin.register User, as: 'Artist' do
           end
 
           column :actions do |collaborator|
-            link_to t('active_admin.view'), '#', class: 'small button'
+            link_to t('active_admin.view'), admin_artists_collaborator_path(collaborator), class: 'small button'
           end
         end
       end

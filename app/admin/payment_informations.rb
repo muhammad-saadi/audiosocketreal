@@ -4,6 +4,10 @@ ActiveAdmin.register PaymentInformation do
 
   includes :artist_profile
 
+  filter :payee_name
+  filter :bank_name
+  filter :artist_profile, as: :searchable_select
+
   permit_params :payee_name, :bank_name, :routing, :account_number, :paypal_email, :artist_profile_id
 
   form do |f|

@@ -26,6 +26,7 @@ ActiveAdmin.register Agreement do
         agreement.content.to_s.html_safe
       end
     end
+    active_admin_comments
   end
 
   form do |f|

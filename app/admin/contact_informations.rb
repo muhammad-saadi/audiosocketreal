@@ -6,6 +6,12 @@ ActiveAdmin.register ContactInformation do
 
   permit_params :name, :street, :postal_code, :city, :state, :country, :artist_profile_id, :phone
 
+  filter :artist_profile, as: :searchable_select
+  filter :name
+  filter :country
+  filter :state
+  filter :city
+
   index do
     selectable_column
     id_column
@@ -39,6 +45,8 @@ ActiveAdmin.register ContactInformation do
       row :created_at
       row :updated_at
     end
+
+    active_admin_comments
   end
 
   form do |f|
