@@ -19,9 +19,7 @@ ActiveAdmin.register ContactInformation do
     column :phone
     column :street
     column :postal_code
-    column :country do |contact_information|
-      CountryStateSelect.countries_collection.find { |a| a[1].to_s == contact_information.country }.first
-    end
+    column :country
     column :state
     column :city
     column :artist_profile
@@ -36,9 +34,7 @@ ActiveAdmin.register ContactInformation do
       row :phone
       row :street
       row :postal_code
-      row :country do
-        CountryStateSelect.countries_collection.find { |a| a[1].to_s == contact_information.country }.first
-      end
+      row :country
       row :state
       row :city
       row :artist_profile
@@ -55,7 +51,7 @@ ActiveAdmin.register ContactInformation do
       f.input :phone
       f.input :street
       f.input :postal_code
-      f.input :country, as: :select, collection: CountryStateSelect.countries_collection, include_blank: '(Select Country)'
+      f.input :country, as: :select, collection: CountryStateSelect.countries_collection.map(&:first), include_blank: '(Select Country)'
       f.input :state
       f.input :city
       f.input :artist_profile, as: :select, collection: [f.object.artist_profile], include_blank: false

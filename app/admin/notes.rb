@@ -54,7 +54,7 @@ ActiveAdmin.register Note do
   form do |f|
     f.inputs do
       f.label "Note ##{f.object.id}"
-      f.input :status, as: :select, collection: Note.statuses.keys.map { |key| [key.titleize, key] }, include_blank: false
+      f.input :status, as: :select, collection: notes_status_list, include_blank: false
     end
     f.actions
   end

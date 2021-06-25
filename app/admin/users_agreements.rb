@@ -13,12 +13,7 @@ ActiveAdmin.register UsersAgreement do
     selectable_column
     id_column
     column :user do |agreement|
-      link_to agreement.user.email, case agreement.role
-                              when 'collaborator'
-                                admin_collaborator_path(agreement.user)
-                              when 'artist'
-                                admin_artist_path(agreement.user)
-                              end
+      link_to agreement.user.email, [:admin, agreement.role, { id: agreement.user.id }]
     end
     column :agreement
     column :status do |agreement|
@@ -38,12 +33,7 @@ ActiveAdmin.register UsersAgreement do
   show do
     attributes_table do
       row :user do |agreement|
-        link_to agreement.user.email, case agreement.role
-                              when 'collaborator'
-                                admin_collaborator_path(agreement.user)
-                              when 'artist'
-                                admin_artist_path(agreement.user)
-                              end
+        link_to agreement.user.email, [:admin, agreement.role, { id: agreement.user.id }]
       end
       row :agreement
       row :status do |agreement|
@@ -65,8 +55,8 @@ ActiveAdmin.register UsersAgreement do
   form do |f|
     f.inputs do
       f.input :user, collection: [f.object.user], include_blank: false
-      f.input :agreement, as: :select, collection: Agreement.all.map { |agreement| ["Agreement ##{agreement.id}", agreement.id] }, include_blank: false
-      f.input :status, as: :select, collection: UsersAgreement.statuses.keys.map { |key| [key.titleize, key] }, include_blank: false
+      f.input :agreement, as: :select, collection: agreements_list, include_blank: false
+      f.input :status, as: :select, collection: users_agreements_status_list, include_blank: false
       f.input :role, as: :select, collection: [[f.object.role&.titleize, f.object.role]], include_blank: false
     end
     f.actions

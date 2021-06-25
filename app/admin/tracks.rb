@@ -48,11 +48,11 @@ ActiveAdmin.register Track do
     f.inputs do
       f.input :title
       f.input :file, as: :file
-      f.input :status, as: :select, collection: Track.statuses.keys.map { |key| [key.titleize, key] }, include_blank: false
+      f.input :status, as: :select, collection: tracks_status_list, include_blank: false
       f.input :album, as: :searchable_select, collection: user.albums, include_blank: false
       f.input :public_domain
       f.input :publisher, as: :searchable_select, collection: user.publishers, include_blank: '(Select a Publisher)'
-      f.input :artists_collaborator, as: :searchable_select, collection: user.collaborators_details.includes(:collaborator).map { |u| [u.collaborator.email, u.id] },
+      f.input :artists_collaborator, as: :searchable_select, collection: collaborators_details_list(user),
                                      include_blank: '(Select a Collaborator)'
     end
     f.actions

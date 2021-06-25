@@ -20,7 +20,7 @@ ActiveAdmin.register User, as: 'Artist' do
     column :created_at
     column :updated_at
     column :roles do |artist|
-      artist.roles.map { |role| role&.titleize }
+      artist.roles.map.map(&:titleize)
     end
     actions
   end
@@ -33,7 +33,7 @@ ActiveAdmin.register User, as: 'Artist' do
       row :created_at
       row :updated_at
       row :roles do
-        artist.roles.map{ |role| role&.titleize }
+        artist.roles.map(&:titleize)
       end
 
       row :artist_profile do |artist|

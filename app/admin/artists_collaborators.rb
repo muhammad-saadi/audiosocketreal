@@ -63,8 +63,8 @@ ActiveAdmin.register ArtistsCollaborator do
     f.inputs do
       f.input :artist, input_html: { disabled: true }
       f.input :collaborator, input_html: { disabled: true }
-      f.input :status, as: :select, collection: ArtistsCollaborator.statuses.keys.map { |key| [key.humanize, key] }, include_blank: false
-      f.input :access, as: :select, collection: ArtistsCollaborator.accesses.keys.map { |key| [key.humanize, key] }, include_blank: false
+      f.input :status, as: :select, collection: collaborators_status_list, include_blank: false
+      f.input :access, as: :select, collection: collaborators_access_list, include_blank: false
     end
     f.actions
   end

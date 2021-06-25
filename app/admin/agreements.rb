@@ -31,9 +31,12 @@ ActiveAdmin.register Agreement do
 
   form do |f|
     f.inputs do
-      f.input :agreement_type, as: :select, collection: Agreement.agreement_types.keys.map { |key| [key.titleize, key] }, include_blank: false
+      f.input :agreement_type, as: :select, collection: agreement_types, include_blank: false
       f.input :attachment, as: :file
-      f.input :content, as: :ckeditor
+      div do
+        f.label :content
+        f.cktext_area :content
+      end
     end
     f.actions
   end

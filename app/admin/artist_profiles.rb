@@ -141,11 +141,9 @@ ActiveAdmin.register ArtistProfile do
     f.inputs do
       f.input :name
       f.input :banner_image, as: :file
-      f.input :banner_image_status, as: :select, collection: ArtistProfile.banner_image_statuses.keys.map { |key|
-                                    [key.titleize, key] }, include_blank: false
+      f.input :banner_image_status, as: :select, collection: images_status_list, include_blank: false
       f.input :cover_image, as: :file
-      f.input :cover_image_status, as: :select, collection: ArtistProfile.cover_image_statuses.keys.map { |key|
-                                    [key.titleize, key] }, include_blank: false
+      f.input :cover_image_status, as: :select, collection: images_status_list, include_blank: false
       f.input :additional_images, as: :file, input_html: { multiple: true }
       f.input :exclusive
       f.input :sounds_like

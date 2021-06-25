@@ -20,7 +20,7 @@ ActiveAdmin.register User, as: 'Collaborator' do
     column :created_at
     column :updated_at
     column :roles do |collaborator|
-      collaborator.roles.map { |role| role&.titleize }
+      collaborator.roles.map(&:titleize)
     end
     actions
   end
@@ -33,7 +33,7 @@ ActiveAdmin.register User, as: 'Collaborator' do
       row :created_at
       row :updated_at
       row :roles do
-        collaborator.roles.map { |role| role&.titleize }
+        collaborator.roles.map(&:titleize)
       end
     end
 
