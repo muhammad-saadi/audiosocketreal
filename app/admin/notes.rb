@@ -5,38 +5,23 @@ ActiveAdmin.register Note do
 
   includes :user, :notable
 
-  index do
-    tabs do
-      tab :pending do
-        table_for notes.pending do
-          selectable_column
-          id_column
-          column :status do |note|
-            note.status&.titleize
-          end
-          column :notable_type
-          column :notable
-          column :created_at
-          column :updated_at
-          actions
-        end
-      end
+  filter :notable_type
 
-      tab :completed do
-        table_for notes.completed do
-          selectable_column
-          id_column
-          column :status do |note|
-            note.status&.titleize
-          end
-          column :notable_type
-          column :notable
-          column :created_at
-          column :updated_at
-          actions
-        end
-      end
+  scope :all, default: true
+  scope :pending
+  scope :completed
+
+  index do
+    selectable_column
+    id_column
+    column :status do |note|
+      note.status&.titleize
     end
+    column :notable_type
+    column :notable
+    column :created_at
+    column :updated_at
+    actions
   end
 
   show do
