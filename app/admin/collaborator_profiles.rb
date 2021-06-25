@@ -5,7 +5,7 @@ ActiveAdmin.register CollaboratorProfile do
 
   permit_params :pro, :ipi, :different_registered_name
 
-  filter :artists_collaborator, as: :select, collection: ArtistsCollaborator.all.map { |artists_collaborator| ["Artist Collaborator ##{artists_collaborator.id}", artists_collaborator.id] }
+  filter :artists_collaborator, as: :select, collection: -> { artists_collaborators_list }
 
   index do
     selectable_column

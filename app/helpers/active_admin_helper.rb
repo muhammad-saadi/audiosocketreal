@@ -12,8 +12,9 @@ module ActiveAdminHelper
   end
 
   def images_status_list
-    ArtistProfile::IMAGE_STATUSES.keys.map { |key| [key.titleize, key] }
+    ArtistProfile::IMAGE_STATUSES.keys.map { |key| [key.to_s.titleize, key] }
   end
+
 
   def notes_status_list
     Note.statuses.keys.map { |key| [key.titleize, key] }
@@ -33,5 +34,9 @@ module ActiveAdminHelper
 
   def collaborators_details_list(user)
     user.collaborators_details.includes(:collaborator).map { |u| [u.collaborator.email, u.id] }
+  end
+
+  def artists_collaborators_list
+    ArtistsCollaborator.all.map { |artists_collaborator| ["Artist Collaborator ##{artists_collaborator.id}", artists_collaborator.id] }
   end
 end

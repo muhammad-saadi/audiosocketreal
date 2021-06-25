@@ -7,8 +7,8 @@ ActiveAdmin.register ArtistsCollaborator do
 
   filter :artist, as: :searchable_select, collection: User.artist
   filter :collaborator, as: :searchable_select, collection: User.collaborator
-  filter :status, as: :select, collection: ArtistsCollaborator.statuses.keys.map { |key| [key.humanize, key] }
-  filter :access, as: :select, collection: ArtistsCollaborator.accesses.keys.map { |key| [key.humanize, key] }
+  filter :status, as: :select, collection: -> { collaborators_status_list }
+  filter :access, as: :select, collection: -> { collaborators_access_list }
 
   index do
     selectable_column

@@ -5,7 +5,7 @@ ActiveAdmin.register Track do
   includes :album
 
   filter :title
-  filter :status, as: :select, collection: Track.statuses.keys.map { |key| [key.titleize, key] }
+  filter :status, as: :select, collection: -> { tracks_status_list }
 
   index do
     selectable_column

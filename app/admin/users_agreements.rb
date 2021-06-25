@@ -5,7 +5,7 @@ ActiveAdmin.register UsersAgreement do
 
   includes :agreement, :user
 
-  filter :agreement, as: :select, collection: Agreement.all.map { |agreement| ["Agreement ##{agreement.id}", agreement.id] }
+  filter :agreement, as: :select, collection: -> { agreements_list }
   filter :status
   filter :role
 

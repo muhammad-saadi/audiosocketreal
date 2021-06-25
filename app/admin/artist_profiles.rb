@@ -6,8 +6,8 @@ ActiveAdmin.register ArtistProfile do
   filter :name
   filter :user, as: :searchable_select, collection: User.artist, label: 'Artist'
   filter :exclusive
-  filter :banner_image_status, as: :select, collection: ArtistProfile.banner_image_statuses.keys.map { |key| [key.titleize, key] }
-  filter :cover_image_status, as: :select, collection: ArtistProfile.cover_image_statuses.keys.map { |key| [key.titleize, key] }
+  filter :banner_image_status, as: :select, collection: -> { images_status_list }
+  filter :cover_image_status, as: :select, collection: -> { images_status_list }
 
   permit_params :name, :exclusive, :user_id, :sounds_like, :bio, :key_facts, :social_raw, :banner_image, :cover_image,
                 :banner_image_status, :cover_image_status, additional_images: []
