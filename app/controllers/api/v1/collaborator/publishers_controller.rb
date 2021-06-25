@@ -16,7 +16,7 @@ class Api::V1::Collaborator::PublishersController < Api::V1::Collaborator::BaseC
   def create
     @publisher = @current_artist.publishers.new(publisher_params)
     if @publisher.save
-      render json: @current_artist.publishers.ordered, each_serializer: Api::V1::PublisherSerializer, adapter: :json
+      render json: @current_artist.publishers.ordered, each_serializer: Api::V1::PublisherSerializer
     else
       raise ExceptionHandler::ValidationError.new(@publisher.errors.to_h, 'Error creating publisher.')
     end
@@ -25,7 +25,7 @@ class Api::V1::Collaborator::PublishersController < Api::V1::Collaborator::BaseC
   param_group :doc_update_publishers
   def update
     if @publisher.update(publisher_params)
-      render json: @current_artist.publishers.ordered, each_serializer: Api::V1::PublisherSerializer, adapter: :json
+      render json: @current_artist.publishers.ordered, each_serializer: Api::V1::PublisherSerializer
     else
       raise ExceptionHandler::ValidationError.new(@publisher.errors.to_h, 'Error creating publisher.')
     end
@@ -34,7 +34,7 @@ class Api::V1::Collaborator::PublishersController < Api::V1::Collaborator::BaseC
   param_group :doc_destroy_publisher
   def destroy
     if @publisher.destroy
-      render json: @current_artist.publishers, each_serializer: Api::V1::PublisherSerializer, adapter: :json
+      render json: @current_artist.publishers, each_serializer: Api::V1::PublisherSerializer
     else
       raise ExceptionHandler::ValidationError.new(@publisher.errors.to_h, 'Error deleting collaborator.')
     end
