@@ -30,6 +30,20 @@ ActiveAdmin.register Publisher do
       row :updated_at
     end
 
+    panel 'Tracks' do
+      table_for publisher.tracks do
+        if publisher.tracks.blank?
+          column 'No Records Found'
+        else
+          column :id
+          column :title
+          column :actions do |track|
+            link_to 'view', admin_track_path(track), class: 'small button'
+          end
+        end
+      end
+    end
+
     active_admin_comments
   end
 

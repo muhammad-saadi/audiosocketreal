@@ -38,6 +38,7 @@ ActiveAdmin.register Note do
           end
         end
       end
+
       row :status do
         note.status&.titleize
       end

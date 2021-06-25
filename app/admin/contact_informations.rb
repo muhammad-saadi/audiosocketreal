@@ -20,7 +20,7 @@ ActiveAdmin.register ContactInformation do
     column :street
     column :postal_code
     column :country do |contact_information|
-      CountryStateSelect.countries_collection.find{|a| a[1].to_s == contact_information.country}.first
+      CountryStateSelect.countries_collection.find { |a| a[1].to_s == contact_information.country }.first
     end
     column :state
     column :city
@@ -37,7 +37,7 @@ ActiveAdmin.register ContactInformation do
       row :street
       row :postal_code
       row :country do
-        CountryStateSelect.countries_collection.find{|a| a[1].to_s == contact_information.country}.first
+        CountryStateSelect.countries_collection.find { |a| a[1].to_s == contact_information.country }.first
       end
       row :state
       row :city

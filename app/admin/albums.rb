@@ -19,10 +19,14 @@ ActiveAdmin.register Album do
       end
 
       table_for album.tracks do
-        column :id
-        column :title
-        column :actions do |track|
-          link_to 'view', admin_track_path(track), class: 'small button'
+        if album.tracks.blank?
+          column 'No Records Found'
+        else
+          column :id
+          column :title
+          column :actions do |track|
+            link_to 'view', admin_track_path(track), class: 'small button'
+          end
         end
       end
     end

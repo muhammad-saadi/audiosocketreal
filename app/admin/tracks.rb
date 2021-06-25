@@ -27,10 +27,12 @@ ActiveAdmin.register Track do
       row :file do |track|
         link_to 'Download', rails_blob_url(track.file), class: 'small button' if track.file.attached?
       end
+
       row :album
       row :status do |track|
         track.status&.titleize
       end
+
       row :public_domain
       row :publisher
       row :artists_collaborator

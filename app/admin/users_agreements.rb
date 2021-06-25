@@ -49,11 +49,12 @@ ActiveAdmin.register UsersAgreement do
       row :status do |agreement|
         agreement.status&.titleize
       end
-      row :status_updated_at
 
+      row :status_updated_at
       row :role do |agreement|
         agreement.role&.titleize
       end
+
       row :created_at
       row :updated_at
     end

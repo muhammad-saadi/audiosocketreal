@@ -50,6 +50,8 @@ ActiveAdmin.register ArtistsCollaborator do
       row :access do
         artists_collaborator.access&.titleize
       end
+
+      row :collaborator_profile
       row :created_at
       row :updated_at
     end
