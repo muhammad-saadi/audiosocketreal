@@ -33,7 +33,7 @@ class Api::V1::ArtistsController < Api::BaseController
   def invite_collaborator
     current_user.invite_collaborator(collaborator_params)
     @collaborators = current_user.collaborators_details.ordered.pagination(pagination_params)
-    render json: @collaborators.includes(:collaborator), meta: { count: @collaborators.count }, each_serializer: Api::V1::CollaboratorSerializer, adapter: :json
+    render json: @collaborators.includes(:collaborator), meta: { count: @collaborators.count }, each_serializer: Api::V1::CollaboratorSerializer
   end
 
   param_group :doc_collaborators
