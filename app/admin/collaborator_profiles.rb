@@ -1,5 +1,17 @@
 ActiveAdmin.register CollaboratorProfile do
-  actions :all, except: [:destroy, :new, :create]
+  menu false
+
+  actions :edit, :update
+
+  controller do
+    def index
+      redirect_to admin_artists_collaborators_path
+    end
+
+    def show
+      redirect_to admin_artists_collaborator_path(CollaboratorProfile.find(params[:id]).artists_collaborator)
+    end
+  end
 
   includes :artists_collaborator
 
@@ -18,19 +30,6 @@ ActiveAdmin.register CollaboratorProfile do
     column :created_at
     column :updated_at
     actions
-  end
-
-  show do
-    attributes_table do
-      row :artists_collaborator
-      row :pro
-      row :ipi
-      row :different_registered_name
-      row :created_at
-      row :updated_at
-    end
-
-    active_admin_comments
   end
 
   form do |f|

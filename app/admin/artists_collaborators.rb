@@ -57,6 +57,19 @@ ActiveAdmin.register ArtistsCollaborator do
       row :updated_at
     end
 
+    panel 'Collaborator Profile' do
+      panel('', class: 'align-right') do
+        link_to 'Edit collaborator profile', edit_admin_collaborator_profile_path(artists_collaborator.collaborator_profile), class: 'medium button'
+      end
+      attributes_table_for artists_collaborator.collaborator_profile do
+        row :pro
+        row :ipi
+        row :different_registered_name
+        row :created_at
+        row :updated_at
+      end
+    end
+
     active_admin_comments
   end
 
