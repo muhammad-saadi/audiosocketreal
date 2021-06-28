@@ -6,6 +6,13 @@ ActiveAdmin.register Track do
 
   filter :title
   filter :status, as: :select, collection: -> { tracks_status_list }
+  filter :created_at
+
+  scope :all, default: true
+  scope :pending
+  scope :unclassified
+  scope :approved
+  scope :rejected
 
   index do
     selectable_column

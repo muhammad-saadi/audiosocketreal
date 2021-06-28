@@ -7,7 +7,8 @@ ActiveAdmin.register UsersAgreement do
 
   filter :agreement, as: :select, collection: -> { agreements_list }
   filter :status
-  filter :role
+  filter :role, as: :select, collection: -> { users_agreement_roles_list }
+  filter :created_at
 
   index do
     selectable_column

@@ -1,5 +1,17 @@
 ActiveAdmin.register ArtistProfile do
-  actions :all, except: [:destroy, :new, :create]
+  menu false
+
+  actions :edit, :update
+
+  controller do
+    def index
+      redirect_to admin_artists_path
+    end
+
+    def show
+      redirect_to admin_artist_path(ArtistProfile.find(params[:id]).user)
+    end
+  end
 
   includes :user
 
@@ -8,6 +20,7 @@ ActiveAdmin.register ArtistProfile do
   filter :exclusive
   filter :banner_image_status, as: :select, collection: -> { images_status_list }
   filter :cover_image_status, as: :select, collection: -> { images_status_list }
+  filter :created_at
 
   permit_params :name, :exclusive, :user_id, :sounds_like, :bio, :key_facts, :social_raw, :banner_image, :cover_image,
                 :banner_image_status, :cover_image_status, additional_images: []
@@ -28,113 +41,6 @@ ActiveAdmin.register ArtistProfile do
     column :created_at
     column :updated_at
     actions
-  end
-
-  show do
-    attributes_table do
-      row :name
-      row :banner_image do
-        image_tag(artist_profile.banner_image, width: 100, height: 100) if artist_profile.banner_image.attached?
-      end
-
-      row :banner_image_status do
-        artist_profile.banner_image_status&.titleize
-      end
-
-      row :cover_image do
-        image_tag(artist_profile.cover_image, width: 100, height: 100) if artist_profile.cover_image.attached?
-      end
-
-      row :cover_image_status do
-        artist_profile.cover_image_status&.titleize
-      end
-
-      row :additional_images do
-        ul do
-          artist_profile.additional_images.each do |img|
-            li do
-              image_tag(img, width: 100, height: 100)
-            end
-          end
-        end
-      end
-      row :exclusive
-      row :sounds_like
-      row :bio
-      row :key_facts
-      row :social
-      row 'Artist' do
-        artist_profile.user
-      end
-      row :created_at
-      row :updated_at
-    end
-
-    panel 'Contact Information' do
-      panel('', class: 'align-right') do
-        if artist_profile.contact_information.present?
-          link_to 'Edit contact Information', edit_admin_contact_information_path(artist_profile.contact_information), class: 'medium button'
-        else
-          link_to 'Add contact Information', new_admin_contact_information_path(contact_information: { artist_profile_id: artist_profile.id }), class: 'medium button'
-        end
-      end
-
-      attributes_table_for artist_profile.contact_information do
-        if artist_profile.contact_information.blank?
-          row 'No Record Found'
-        else
-          row :name
-          row :phone
-          row :street
-          row :postal_code
-          row :city
-          row :state
-          row :country
-        end
-      end
-    end
-
-    panel 'Payment Information' do
-      panel('', class: 'align-right') do
-        if artist_profile.payment_information.present?
-          link_to 'Edit payment Information', edit_admin_payment_information_path(artist_profile.payment_information), class: 'medium button'
-        else
-          link_to 'Add payment Information', new_admin_payment_information_path(payment_information: { artist_profile_id: artist_profile.id }), class: 'medium button'
-        end
-      end
-
-      attributes_table_for artist_profile.payment_information do
-        if artist_profile.payment_information.blank?
-          row 'No Record Found'
-        else
-          row :payee_name
-          row :bank_name
-          row :routing
-          row :account_number
-          row :paypal_email
-        end
-      end
-    end
-
-    panel 'Tax Information' do
-      panel('', class: 'align-right') do
-        if artist_profile.tax_information.present?
-          link_to 'Edit tax Information', edit_admin_tax_information_path(artist_profile.tax_information), class: 'medium button'
-        else
-          link_to 'Add tax Information', new_admin_tax_information_path(tax_information: { artist_profile_id: artist_profile.id }), class: 'medium button'
-        end
-      end
-
-      attributes_table_for artist_profile.tax_information do
-        if artist_profile.tax_information.blank?
-          row 'No Record Found'
-        else
-          row :ssn
-        end
-      end
-    end
-
-    active_admin_comments
   end
 
   form do |f|

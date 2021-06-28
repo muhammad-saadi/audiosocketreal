@@ -5,6 +5,7 @@ ActiveAdmin.register Album do
 
   filter :name
   filter :user, as: :searchable_select, collection: User.artist, label: 'Artist'
+  filter :created_at
 
   show do
     attributes_table do
@@ -37,7 +38,7 @@ ActiveAdmin.register Album do
   form do |f|
     f.inputs do
       f.input :name
-      f.input :release_date, as: :datetime_picker
+      f.input :release_date, as: :date_picker
       f.input :user, as: :searchable_select , collection: User.artist, label: 'Artist', include_blank: '(Select an Artist)'
     end
     f.actions

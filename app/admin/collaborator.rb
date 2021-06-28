@@ -4,6 +4,7 @@ ActiveAdmin.register User, as: 'Collaborator' do
 
   filter :first_name_or_last_name_cont, as: :string, label: 'Name'
   filter :email
+  filter :created_at
 
   controller do
     def scoped_collection
@@ -63,10 +64,6 @@ ActiveAdmin.register User, as: 'Collaborator' do
     end
 
     panel 'Agreements' do
-      panel('', class: 'align-right') do
-        link_to 'Add new Agreement', new_admin_users_agreement_path(users_agreement: { user_id: collaborator.id, role: 'collaborator' }), class: 'medium button'
-      end
-
       table_for collaborator.users_agreements.collaborator do
         if collaborator.users_agreements.collaborator.blank?
           column 'No Records Found'

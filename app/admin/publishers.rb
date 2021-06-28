@@ -7,6 +7,7 @@ ActiveAdmin.register Publisher do
 
   filter :user, as: :searchable_select, collection: User.artist
   filter :name
+  filter :created_at
 
   index do
     selectable_column

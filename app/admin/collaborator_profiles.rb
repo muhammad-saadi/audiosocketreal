@@ -6,6 +6,7 @@ ActiveAdmin.register CollaboratorProfile do
   permit_params :pro, :ipi, :different_registered_name
 
   filter :artists_collaborator, as: :select, collection: -> { artists_collaborators_list }
+  filter :created_at
 
   index do
     selectable_column

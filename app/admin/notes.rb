@@ -6,6 +6,7 @@ ActiveAdmin.register Note do
   includes :user, :notable
 
   filter :notable_type
+  filter :created_at
 
   scope :all, default: true
   scope :pending

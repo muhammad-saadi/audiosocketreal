@@ -9,6 +9,7 @@ ActiveAdmin.register ArtistsCollaborator do
   filter :collaborator, as: :searchable_select, collection: User.collaborator
   filter :status, as: :select, collection: -> { collaborators_status_list }
   filter :access, as: :select, collection: -> { collaborators_access_list }
+  filter :created_at
 
   index do
     selectable_column

@@ -1,7 +1,8 @@
 ActiveAdmin.register Agreement do
   permit_params :content, :agreement_type, :attachment
 
-  filter :agreement_type
+  filter :agreement_type, as: :select, collection: -> { agreement_types }
+  filter :created_at
 
   index do
     selectable_column

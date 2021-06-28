@@ -1,6 +1,17 @@
 ActiveAdmin.register PaymentInformation do
-  config.remove_action_item(:new)
+  menu false
+
   actions :all, except: [:destroy]
+
+  controller do
+    def index
+      redirect_to admin_artists_path
+    end
+
+    def show
+      redirect_to admin_artist_path(PaymentInformation.find(params[:id]).artist_profile.user)
+    end
+  end
 
   includes :artist_profile
 

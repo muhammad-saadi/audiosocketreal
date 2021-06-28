@@ -15,7 +15,6 @@ module ActiveAdminHelper
     ArtistProfile::IMAGE_STATUSES.keys.map { |key| [key.to_s.titleize, key] }
   end
 
-
   def notes_status_list
     Note.statuses.keys.map { |key| [key.titleize, key] }
   end
@@ -26,6 +25,10 @@ module ActiveAdminHelper
 
   def users_agreements_status_list
     UsersAgreement.statuses.keys.map { |key| [key.titleize, key] }
+  end
+
+  def users_agreement_roles_list
+    UsersAgreement.roles.keys.map { |key| [key.titleize, key] }
   end
 
   def agreements_list

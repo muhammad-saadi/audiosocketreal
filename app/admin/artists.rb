@@ -4,6 +4,7 @@ ActiveAdmin.register User, as: 'Artist' do
 
   filter :first_name_or_last_name_cont, as: :string, label: 'Name'
   filter :email
+  filter :created_at
 
   controller do
     def scoped_collection
@@ -35,9 +36,114 @@ ActiveAdmin.register User, as: 'Artist' do
       row :roles do
         artist.roles.map(&:titleize)
       end
+    end
 
-      row :artist_profile do |artist|
-        link_to 'Go to Artist Profile', admin_artist_profile_path(artist.artist_profile)
+    panel 'Artist Profile' do
+      if artist.artist_profile.blank?
+        row 'No Record Found'
+      else
+        panel('', class: 'align-right') do
+          link_to 'Edit artist profile', edit_admin_artist_profile_path(artist.artist_profile), class: 'medium button'
+        end
+        attributes_table_for artist.artist_profile do
+          row :name
+          row :banner_image do
+            image_tag(artist.artist_profile.banner_image, width: 100, height: 100) if artist.artist_profile.banner_image.attached?
+          end
+
+          row :banner_image_status do
+            artist.artist_profile.banner_image_status&.titleize
+          end
+
+          row :cover_image do
+            image_tag(artist.artist_profile.cover_image, width: 100, height: 100) if artist.artist_profile.cover_image.attached?
+          end
+
+          row :cover_image_status do
+            artist.artist_profile.cover_image_status&.titleize
+          end
+
+          row :additional_images do
+            ul do
+              artist.artist_profile.additional_images.each do |img|
+                li do
+                  image_tag(img, width: 100, height: 100)
+                end
+              end
+            end
+          end
+          row :exclusive
+          row :sounds_like
+          row :bio
+          row :key_facts
+          row :social
+          row :created_at
+          row :updated_at
+
+          panel 'Contact Information' do
+            panel('', class: 'align-right') do
+              if artist.artist_profile.contact_information.present?
+                link_to 'Edit contact Information', edit_admin_contact_information_path(artist.artist_profile.contact_information), class: 'medium button'
+              else
+                link_to 'Add contact Information', new_admin_contact_information_path(contact_information: { artist_profile_id: artist.artist_profile.id }), class: 'medium button'
+              end
+            end
+
+            attributes_table_for artist.artist_profile.contact_information do
+              if artist.artist_profile.contact_information.blank?
+                row 'No Record Found'
+              else
+                row :name
+                row :phone
+                row :street
+                row :postal_code
+                row :city
+                row :state
+                row :country
+              end
+            end
+          end
+
+          panel 'Payment Information' do
+            panel('', class: 'align-right') do
+              if artist.artist_profile.payment_information.present?
+                link_to 'Edit payment Information', edit_admin_payment_information_path(artist.artist_profile.payment_information), class: 'medium button'
+              else
+                link_to 'Add payment Information', new_admin_payment_information_path(payment_information: { artist_profile_id: artist.artist_profile.id }), class: 'medium button'
+              end
+            end
+
+            attributes_table_for artist.artist_profile.payment_information do
+              if artist.artist_profile.payment_information.blank?
+                row 'No Record Found'
+              else
+                row :payee_name
+                row :bank_name
+                row :routing
+                row :account_number
+                row :paypal_email
+              end
+            end
+          end
+
+          panel 'Tax Information' do
+            panel('', class: 'align-right') do
+              if artist.artist_profile.tax_information.present?
+                link_to 'Edit tax Information', edit_admin_tax_information_path(artist.artist_profile.tax_information), class: 'medium button'
+              else
+                link_to 'Add tax Information', new_admin_tax_information_path(tax_information: { artist_profile_id: artist.artist_profile.id }), class: 'medium button'
+              end
+            end
+
+            attributes_table_for artist.artist_profile.tax_information do
+              if artist.artist_profile.tax_information.blank?
+                row 'No Record Found'
+              else
+                row :ssn
+              end
+            end
+          end
+        end
       end
     end
 
@@ -56,12 +162,9 @@ ActiveAdmin.register User, as: 'Artist' do
     end
 
     panel 'Agreements' do
-      panel('', class: 'align-right') do
-        link_to 'Add new Agreement', new_admin_users_agreement_path(users_agreement: { user_id: artist.id, role: 'artist' }), class: 'medium button'
-      end
-
-      table_for artist.users_agreements.artist do
-        if artist.users_agreements.artist.blank?
+      @users_agreements = artist.users_agreements.artist.includes(:agreement)
+      table_for @users_agreements do
+        if @users_agreements.blank?
           column 'No Records Found'
         else
           column :id
@@ -100,8 +203,9 @@ ActiveAdmin.register User, as: 'Artist' do
     end
 
     panel 'Collaborators Details' do
-      table_for artist.collaborators_details do
-        if artist.collaborators_details.blank?
+      @collaborator_details = artist.collaborators_details.includes(:collaborator)
+      table_for @collaborator_details do
+        if @collaborator_details.blank?
           column 'No Records Found'
         else
           column :id

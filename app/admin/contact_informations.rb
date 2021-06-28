@@ -1,6 +1,17 @@
 ActiveAdmin.register ContactInformation do
-  config.remove_action_item(:new)
+  menu false
+
   actions :all, except: [:destroy]
+
+  controller do
+    def index
+      redirect_to admin_artists_path
+    end
+
+    def show
+      redirect_to admin_artist_path(ContactInformation.find(params[:id]).artist_profile.user)
+    end
+  end
 
   includes :artist_profile
 
@@ -26,23 +37,6 @@ ActiveAdmin.register ContactInformation do
     column :created_at
     column :updated_at
     actions
-  end
-
-  show do
-    attributes_table do
-      row :name
-      row :phone
-      row :street
-      row :postal_code
-      row :country
-      row :state
-      row :city
-      row :artist_profile
-      row :created_at
-      row :updated_at
-    end
-
-    active_admin_comments
   end
 
   form do |f|
