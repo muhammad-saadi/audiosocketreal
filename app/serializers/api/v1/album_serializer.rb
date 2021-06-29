@@ -6,8 +6,4 @@ class Api::V1::AlbumSerializer < BaseSerializer
   def artwork
     object.artwork.presence && UrlHelpers.rails_blob_url(object.artwork)
   end
-
-  def release_date
-    formatted_date(object.release_date&.localtime)
-  end
 end
