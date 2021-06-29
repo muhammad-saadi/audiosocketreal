@@ -12,6 +12,7 @@ class ArtistProfile < ApplicationRecord
   accepts_nested_attributes_for :tax_information
 
   validates :cover_image, :banner_image, :additional_images, blob: { content_type: :image }
+  validates :bio, length: { maximum: 400 }
   validates_associated :payment_information, on: :update
 
   STATUSES = {

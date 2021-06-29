@@ -15,7 +15,7 @@ ActiveAdmin.register ContactInformation do
 
   includes :artist_profile
 
-  permit_params :name, :street, :postal_code, :city, :state, :country, :artist_profile_id, :phone
+  permit_params :name, :street, :postal_code, :city, :state, :country, :artist_profile_id, :phone, :email
 
   filter :artist_profile, as: :searchable_select
   filter :name
@@ -27,6 +27,7 @@ ActiveAdmin.register ContactInformation do
     selectable_column
     id_column
     column :name
+    column :email
     column :phone
     column :street
     column :postal_code
@@ -42,6 +43,7 @@ ActiveAdmin.register ContactInformation do
   form do |f|
     f.inputs do
       f.input :name
+      f.input :email
       f.input :phone
       f.input :street
       f.input :postal_code

@@ -103,6 +103,7 @@ ActiveAdmin.register User, as: 'Artist' do
               else
                 row :name
                 row :phone
+                row :email
                 row :street
                 row :postal_code
                 row :city

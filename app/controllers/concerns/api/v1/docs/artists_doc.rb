@@ -16,6 +16,7 @@ module Api::V1::Docs::ArtistsDoc
       param :contact_information, Hash, desc: 'Contact Information', required: true do
         param :name, String, desc: "Name for contact", required: true
         param :phone, String, desc: "Phone number", required: true
+        param :email, String, desc: "Email", required: true
         param :street, String, desc: "Street number", required: true
         param :postal_code, String, desc: "Postal code of area", required: true
         param :city, String, desc: "City", required: true
