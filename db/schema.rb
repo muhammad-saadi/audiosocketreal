@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_06_29_071336) do
+ActiveRecord::Schema.define(version: 2021_06_29_111900) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -98,7 +98,7 @@ ActiveRecord::Schema.define(version: 2021_06_29_071336) do
     t.text "social", default: [], array: true
     t.string "status", default: "pending"
     t.string "banner_image_status", default: "rejected"
-    t.string "cover_image_status", default: "rejected"
+    t.string "profile_image_status", default: "rejected"
     t.index ["user_id"], name: "index_artist_profiles_on_user_id"
   end
 
@@ -154,10 +154,10 @@ ActiveRecord::Schema.define(version: 2021_06_29_071336) do
   create_table "collaborator_profiles", force: :cascade do |t|
     t.string "pro"
     t.string "ipi"
-    t.string "different_registered_name"
     t.bigint "artists_collaborator_id"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.string "different_registered_name"
     t.index ["artists_collaborator_id"], name: "index_collaborator_profiles_on_artists_collaborator_id"
   end
 

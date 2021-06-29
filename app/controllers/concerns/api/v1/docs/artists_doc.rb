@@ -6,7 +6,7 @@ module Api::V1::Docs::ArtistsDoc
 
     def_param_group :doc_update_profile do
       api :PATCH, "/v1/artists/update_profile", "Update artist profile of current user"
-      param :cover_image, File,desc: 'Cover image for the artist profile'
+      param :profile_image, File,desc: 'Cover image for the artist profile'
       param :banner_image, File, desc: 'banner image for the artist profile'
       param :additional_images, Array, of: File, desc: 'Images for any additional purpose'
       param :bio, String, desc: 'Biography of the artist'

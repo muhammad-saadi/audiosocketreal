@@ -17,7 +17,7 @@ class Api::V1::ArtistsController < Api::BaseController
   def update_profile
     if @artist_profile.update(artist_profile_params)
       @artist_profile.banner_image_status_pending! if params[:banner_image].present?
-      @artist_profile.cover_image_status_pending! if params[:cover_image].present?
+      @artist_profile.profile_image_status_pending! if params[:profile_image].present?
       render json: @artist_profile
     else
       raise ExceptionHandler::ValidationError.new(@artist_profile.errors.to_h, 'Error updating artist profile.')
@@ -49,7 +49,7 @@ class Api::V1::ArtistsController < Api::BaseController
   end
 
   def artist_profile_params
-    params.permit(:cover_image, :banner_image, :sounds_like, :bio, :key_facts,
+    params.permit(:profile_image, :banner_image, :sounds_like, :bio, :key_facts,
                   contact_information: %i[name email phone street postal_code city state country],
                   payment_information: %i[payee_name bank_name routing account_number paypal_email],
                   tax_information: %i[ssn], additional_images: [], social: [])

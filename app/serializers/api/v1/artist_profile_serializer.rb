@@ -1,13 +1,13 @@
 class Api::V1::ArtistProfileSerializer < ActiveModel::Serializer
-  attributes :id, :name, :exclusive, :cover_image, :banner_image, :additional_images, :sounds_like, :bio,
-             :key_facts, :social, :cover_image_status, :banner_image_status
+  attributes :id, :name, :exclusive, :profile_image, :banner_image, :additional_images, :sounds_like, :bio,
+             :key_facts, :social, :profile_image_status, :banner_image_status
 
   has_one :contact_information, serializer: Api::V1::ContactInformationSerializer
   has_one :payment_information, serializer: Api::V1::PaymentInformationSerializer
   has_one :tax_information, serializer: Api::V1::TaxInformationSerializer
 
-  def cover_image
-    object.cover_image.presence && UrlHelpers.rails_blob_url(object.cover_image)
+  def profile_image
+    object.profile_image.presence && UrlHelpers.rails_blob_url(object.profile_image)
   end
 
   def banner_image

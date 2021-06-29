@@ -63,12 +63,12 @@ ActiveAdmin.register User, as: 'Artist' do
             artist.artist_profile.banner_image_status&.titleize
           end
 
-          row :cover_image do
-            image_tag(artist.artist_profile.cover_image, width: 100, height: 100) if artist.artist_profile.cover_image.attached?
+          row :profile_image do
+            image_tag(artist.artist_profile.profile_image, width: 100, height: 100) if artist.artist_profile.profile_image.attached?
           end
 
-          row :cover_image_status do
-            artist.artist_profile.cover_image_status&.titleize
+          row :profile_image_status do
+            artist.artist_profile.profile_image_status&.titleize
           end
 
           row :additional_images do

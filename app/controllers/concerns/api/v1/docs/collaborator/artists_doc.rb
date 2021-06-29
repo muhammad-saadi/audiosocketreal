@@ -12,7 +12,7 @@ module Api::V1::Docs::Collaborator::ArtistsDoc
     def_param_group :doc_update_profile do
       api :PATCH, "/v1/collaborator/artists/update_profile", "Update artist profile of current artist"
       param :artist_id, :number, desc: "ID of the artist", required: true
-      param :cover_image, File,desc: 'Cover image for the artist profile'
+      param :profile_image, File,desc: 'Cover image for the artist profile'
       param :banner_image, File, desc: 'banner image for the artist profile'
       param :additional_images, Array, of: File, desc: 'Images for any additional purpose'
       param :bio, String, desc: 'Biography of the artist'

@@ -11,7 +11,7 @@ class ArtistProfile < ApplicationRecord
   accepts_nested_attributes_for :payment_information
   accepts_nested_attributes_for :tax_information
 
-  validates :cover_image, :banner_image, :additional_images, blob: { content_type: :image }
+  validates :profile_image, :banner_image, :additional_images, blob: { content_type: :image }
   validates :bio, length: { maximum: 400 }
   validates_associated :payment_information, on: :update
 
@@ -27,10 +27,10 @@ class ArtistProfile < ApplicationRecord
   }.freeze
 
   enum status: STATUSES
-  enum cover_image_status: IMAGE_STATUSES, _prefix: :cover_image_status
+  enum profile_image_status: IMAGE_STATUSES, _prefix: :profile_image_status
   enum banner_image_status: IMAGE_STATUSES, _prefix: :banner_image_status
 
-  has_one_attached :cover_image
+  has_one_attached :profile_image
   has_one_attached :banner_image
   has_many_attached :additional_images
 
