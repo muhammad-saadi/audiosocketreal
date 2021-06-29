@@ -154,10 +154,10 @@ ActiveRecord::Schema.define(version: 2021_06_28_054201) do
   create_table "collaborator_profiles", force: :cascade do |t|
     t.string "pro"
     t.string "ipi"
+    t.string "different_registered_name"
     t.bigint "artists_collaborator_id"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-    t.string "different_registered_name"
     t.index ["artists_collaborator_id"], name: "index_collaborator_profiles_on_artists_collaborator_id"
   end
 
