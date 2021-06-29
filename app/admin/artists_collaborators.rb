@@ -52,7 +52,6 @@ ActiveAdmin.register ArtistsCollaborator do
         artists_collaborator.access&.titleize
       end
 
-      row :collaborator_profile
       row :created_at
       row :updated_at
     end
@@ -80,6 +79,10 @@ ActiveAdmin.register ArtistsCollaborator do
       f.input :status, as: :select, collection: collaborators_status_list, include_blank: false
       f.input :access, as: :select, collection: collaborators_access_list, include_blank: false
     end
-    f.actions
+
+    f.actions do
+      f.action :submit
+      f.cancel_link({ action: 'show' })
+    end
   end
 end

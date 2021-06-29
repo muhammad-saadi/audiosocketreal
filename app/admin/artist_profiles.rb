@@ -57,6 +57,10 @@ ActiveAdmin.register ArtistProfile do
       f.input :key_facts
       f.input :social_raw, as: :text
     end
-    f.actions
+
+    f.actions do
+      f.action :submit
+      f.cancel_link({ action: 'show' })
+    end
   end
 end

@@ -22,6 +22,10 @@ ActiveAdmin.register AdminUser do
       f.input :password
       f.input :password_confirmation
     end
-    f.actions
+
+    f.actions do
+      f.action :submit
+      f.cancel_link({ action: 'show' })
+    end
   end
 end

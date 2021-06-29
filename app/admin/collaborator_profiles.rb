@@ -39,6 +39,10 @@ ActiveAdmin.register CollaboratorProfile do
       f.input :ipi
       f.input :different_registered_name
     end
-    f.actions
+
+    f.actions do
+      f.action :submit
+      f.cancel_link({ action: 'show' })
+    end
   end
 end

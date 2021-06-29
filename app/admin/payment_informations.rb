@@ -30,6 +30,10 @@ ActiveAdmin.register PaymentInformation do
       f.input :paypal_email
       f.input :artist_profile, as: :select, collection: [f.object.artist_profile], include_blank: false
     end
-    f.actions
+
+    f.actions do
+      f.action :submit
+      f.cancel_link({ action: 'show' })
+    end
   end
 end

@@ -57,6 +57,10 @@ ActiveAdmin.register Note do
       f.label "Note ##{f.object.id}"
       f.input :status, as: :select, collection: notes_status_list, include_blank: false
     end
-    f.actions
+
+    f.actions do
+      f.action :submit
+      f.cancel_link({ action: 'show' })
+    end
   end
 end

@@ -3,8 +3,9 @@ ActiveAdmin.register Album do
 
   includes :user
 
-  filter :name
+  filter :name_cont, as: :string, label: 'Track title'
   filter :user, as: :searchable_select, collection: User.artist, label: 'Artist'
+  filter :tracks_title_cont, as: :string, label: 'Track title'
   filter :created_at
 
   show do
@@ -41,6 +42,10 @@ ActiveAdmin.register Album do
       f.input :release_date, as: :date_picker
       f.input :user, as: :searchable_select , collection: User.artist, label: 'Artist', include_blank: '(Select an Artist)'
     end
-    f.actions
+
+    f.actions do
+      f.action :submit
+      f.cancel_link({ action: 'show' })
+    end
   end
 end

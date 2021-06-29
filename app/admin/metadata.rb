@@ -36,6 +36,10 @@ ActiveAdmin.register Metadata do
       f.label 'Content:'
       f.cktext_area :content
     end
-    f.actions
+
+    f.actions do
+      f.action :submit
+      f.cancel_link({ action: 'show' })
+    end
   end
 end

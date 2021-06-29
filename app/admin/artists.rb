@@ -3,6 +3,14 @@ ActiveAdmin.register User, as: 'Artist' do
   permit_params :first_name, :last_name
 
   filter :first_name_or_last_name_cont, as: :string, label: 'Name'
+  filter :artist_profile_name_cont, as: :string, label: 'Artist Name'
+  filter :artist_profile_contact_information_name_cont, as: :string, label: 'Contact Name'
+  filter :artist_profile_exclusive, as: :select, label: 'Exclusive'
+  filter :artist_profile_contact_information_country_cont, as: :string, label: 'Country'
+  filter :artist_profile_contact_information_state_cont, as: :string, label: 'State'
+  filter :artist_profile_contact_information_city_cont, as: :string, label: 'City'
+  filter :artist_profile_payment_information_payee_name_cont, as: :string, label: 'Payee Name'
+  filter :artist_profile_payment_information_bank_name_cont, as: :string, label: 'Bank name'
   filter :email
   filter :created_at
 
@@ -235,7 +243,11 @@ ActiveAdmin.register User, as: 'Artist' do
       f.input :first_name
       f.input :last_name
     end
-    f.actions
+
+    f.actions do
+      f.action :submit
+      f.cancel_link({ action: 'show' })
+    end
   end
 
 

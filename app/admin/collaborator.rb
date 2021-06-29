@@ -108,6 +108,10 @@ ActiveAdmin.register User, as: 'Collaborator' do
       f.input :first_name
       f.input :last_name
     end
-    f.actions
+
+    f.actions do
+      f.action :submit
+      f.cancel_link({ action: 'show' })
+    end
   end
 end

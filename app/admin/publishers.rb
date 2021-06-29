@@ -6,7 +6,7 @@ ActiveAdmin.register Publisher do
   includes :user
 
   filter :user, as: :searchable_select, collection: User.artist
-  filter :name
+  filter :name_cont, as: :string, label: 'Name'
   filter :created_at
 
   index do
@@ -55,6 +55,10 @@ ActiveAdmin.register Publisher do
       f.input :pro
       f.input :ipi
     end
-    f.actions
+
+    f.actions do
+      f.action :submit
+      f.cancel_link({ action: 'show' })
+    end
   end
 end

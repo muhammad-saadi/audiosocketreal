@@ -39,6 +39,10 @@ ActiveAdmin.register Agreement do
         f.cktext_area :content
       end
     end
-    f.actions
+
+    f.actions do
+      f.action :submit
+      f.cancel_link({ action: 'show' })
+    end
   end
 end

@@ -1,5 +1,16 @@
 ActiveAdmin.register UsersAgreement do
-  config.remove_action_item(:new)
+  menu false
+
+  controller do
+    def index
+      redirect_to admin_artists_path
+    end
+
+    def show
+      @agreement = UsersAgreement.find(params[:id])
+      redirect_to [:admin, @agreement.role, { id: @agreement.user.id }]
+    end
+  end
 
   permit_params :user_id, :agreement_id, :status, :status_updated_at, :role
 
@@ -31,28 +42,6 @@ ActiveAdmin.register UsersAgreement do
     actions
   end
 
-  show do
-    attributes_table do
-      row :user do |agreement|
-        link_to agreement.user.email, [:admin, agreement.role, { id: agreement.user.id }]
-      end
-      row :agreement
-      row :status do |agreement|
-        agreement.status&.titleize
-      end
-
-      row :status_updated_at
-      row :role do |agreement|
-        agreement.role&.titleize
-      end
-
-      row :created_at
-      row :updated_at
-    end
-
-    active_admin_comments
-  end
-
   form do |f|
     f.inputs do
       f.input :user, collection: [f.object.user], include_blank: false
@@ -60,6 +49,10 @@ ActiveAdmin.register UsersAgreement do
       f.input :status, as: :select, collection: users_agreements_status_list, include_blank: false
       f.input :role, as: :select, collection: [[f.object.role&.titleize, f.object.role]], include_blank: false
     end
-    f.actions
+
+    f.actions do
+      f.action :submit
+      f.cancel_link({ action: 'show' })
+    end
   end
 end

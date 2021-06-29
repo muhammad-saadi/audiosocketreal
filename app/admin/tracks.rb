@@ -4,7 +4,7 @@ ActiveAdmin.register Track do
 
   includes :album
 
-  filter :title
+  filter :title_cont, as: :string, label: 'Title'
   filter :status, as: :select, collection: -> { tracks_status_list }
   filter :created_at
 
@@ -62,6 +62,10 @@ ActiveAdmin.register Track do
       f.input :artists_collaborator, as: :searchable_select, collection: collaborators_details_list(user),
                                      include_blank: '(Select a Collaborator)'
     end
-    f.actions
+
+    f.actions do
+      f.action :submit
+      f.cancel_link({ action: 'show' })
+    end
   end
 end
