@@ -58,14 +58,22 @@ ActiveAdmin.register ArtistsCollaborator do
 
     panel 'Collaborator Profile' do
       panel('', class: 'align-right') do
-        link_to 'Edit collaborator profile', edit_admin_collaborator_profile_path(artists_collaborator.collaborator_profile), class: 'medium button'
+        if artists_collaborator.collaborator_profile.present?
+          link_to 'Edit collaborator profile', edit_admin_collaborator_profile_path(artists_collaborator.collaborator_profile), class: 'medium button'
+        else
+          link_to 'Add collaborator profile', new_admin_collaborator_profile_path(collaborator_profile: { artists_collaborator_id: artists_collaborator.id }), class: 'medium button'
+        end
       end
       attributes_table_for artists_collaborator.collaborator_profile do
-        row :pro
-        row :ipi
-        row :different_registered_name
-        row :created_at
-        row :updated_at
+        if artists_collaborator.collaborator_profile.blank?
+          row 'No Record Found'
+        else
+          row :pro
+          row :ipi
+          row :different_registered_name
+          row :created_at
+          row :updated_at
+        end
       end
     end
 

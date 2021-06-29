@@ -54,8 +54,8 @@ class User < ApplicationRecord
   end
 
   def assign_agreements(role, artist = artist_profile)
-      new_agreements = artist.exclusive? && Agreement.exclusives || Agreement.non_exclusives
-      @user_agreements = users_agreements.create(new_agreements.ids.map{ |id| {agreement_id: id, role: role} })
+    new_agreements = artist.exclusive? && Agreement.exclusives || Agreement.non_exclusives
+    @user_agreements = users_agreements.create(new_agreements.ids.map{ |id| {agreement_id: id, role: role} })
   end
 
   def invite_collaborator(params)

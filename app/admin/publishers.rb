@@ -58,7 +58,7 @@ ActiveAdmin.register Publisher do
 
     f.actions do
       f.action :submit
-      f.cancel_link({ action: 'show' })
+      f.cancel_link(f.object.persisted?? { action: 'show' } : admin_artist_path(f.object.user_id))
     end
   end
 end

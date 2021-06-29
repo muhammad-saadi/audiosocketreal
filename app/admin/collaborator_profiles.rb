@@ -1,7 +1,7 @@
 ActiveAdmin.register CollaboratorProfile do
   menu false
 
-  actions :edit, :update
+  actions :all, except: [:destroy]
 
   controller do
     def index
@@ -15,7 +15,7 @@ ActiveAdmin.register CollaboratorProfile do
 
   includes :artists_collaborator
 
-  permit_params :pro, :ipi, :different_registered_name
+  permit_params :pro, :ipi, :different_registered_name, :artists_collaborator_id
 
   filter :artists_collaborator, as: :select, collection: -> { artists_collaborators_list }
   filter :created_at
@@ -34,7 +34,7 @@ ActiveAdmin.register CollaboratorProfile do
 
   form do |f|
     f.inputs do
-      f.label "Artist Collaborator ##{f.object.artists_collaborator.id}"
+      f.input :artists_collaborator, as: :select, collection: [["Artists Collaborator ##{f.object.artists_collaborator_id}", f.object.artists_collaborator.id]], include_blank: false
       f.input :pro
       f.input :ipi
       f.input :different_registered_name
@@ -42,7 +42,7 @@ ActiveAdmin.register CollaboratorProfile do
 
     f.actions do
       f.action :submit
-      f.cancel_link({ action: 'show' })
+      f.cancel_link(admin_artists_collaborator_path(f.object.artists_collaborator_id))
     end
   end
 end

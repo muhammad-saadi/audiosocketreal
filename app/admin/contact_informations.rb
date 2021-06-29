@@ -53,7 +53,7 @@ ActiveAdmin.register ContactInformation do
 
     f.actions do
       f.action :submit
-      f.cancel_link({ action: 'show' })
+      f.cancel_link(admin_artist_profile_path(f.object.artist_profile_id))
     end
   end
 end
