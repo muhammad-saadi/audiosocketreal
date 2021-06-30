@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class ArtistProfile < ApplicationRecord
   belongs_to :user
 
@@ -11,7 +13,12 @@ class ArtistProfile < ApplicationRecord
   accepts_nested_attributes_for :payment_information
   accepts_nested_attributes_for :tax_information
 
-  validates :profile_image, :banner_image, :additional_images, blob: { content_type: :image }
+  validates :profile_image, :banner_image, :additional_images, blob: { content_type: :image },
+                                                               dimension: {
+                                                                 width: { min: 100, max: 2001 },
+                                                                 height: { min: 100, max: 1001 },
+                                                                 message: 'is not given between dimension'
+                                                               }
   validates :bio, length: { maximum: 400 }
 
   STATUSES = {
@@ -36,7 +43,7 @@ class ArtistProfile < ApplicationRecord
   attr_accessor :social_raw
 
   def social_raw
-    self.social.join("\n") unless self.social.nil?
+    social&.join("\n")
   end
 
   def social_raw=(values)
