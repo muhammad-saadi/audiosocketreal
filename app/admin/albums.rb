@@ -1,5 +1,5 @@
 ActiveAdmin.register Album do
-  permit_params :name, :release_date, :user_id
+  permit_params :name, :release_date, :user_id, :artwork
 
   includes :user
 
@@ -12,6 +12,9 @@ ActiveAdmin.register Album do
     attributes_table do
       row :name
       row :release_date
+      row :artwork do
+        image_tag(album.artwork, width: 100, height: 100) if album.artwork.attached?
+      end
       row :user
     end
 
@@ -40,6 +43,7 @@ ActiveAdmin.register Album do
     f.inputs do
       f.input :name
       f.input :release_date, as: :date_picker
+      f.input :artwork, as: :file
       f.input :user, as: :searchable_select , collection: User.artist, label: 'Artist', include_blank: '(Select an Artist)'
     end
 

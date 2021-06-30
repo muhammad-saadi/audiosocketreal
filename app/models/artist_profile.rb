@@ -13,7 +13,6 @@ class ArtistProfile < ApplicationRecord
 
   validates :profile_image, :banner_image, :additional_images, blob: { content_type: :image }
   validates :bio, length: { maximum: 400 }
-  validates_associated :payment_information, on: :update
 
   STATUSES = {
     pending: 'pending',
