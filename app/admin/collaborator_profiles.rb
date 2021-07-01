@@ -35,7 +35,7 @@ ActiveAdmin.register CollaboratorProfile do
   form do |f|
     f.inputs do
       f.input :artists_collaborator, as: :select, collection: [["Artists Collaborator ##{f.object.artists_collaborator_id}", f.object.artists_collaborator.id]], include_blank: false
-      f.input :pro
+      f.input :pro, as: :select, collection: pro_list, include_blank: '(Select a PRO)'
       f.input :ipi
       f.input :different_registered_name
     end
