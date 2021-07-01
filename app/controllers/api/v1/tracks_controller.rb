@@ -51,7 +51,7 @@ class Api::V1::TracksController < Api::BaseController
   private
 
   def track_params
-    params.permit(:title, :file, :public_domain, :publisher_id, :status)
+    params.permit(:title, :file, :public_domain, :publisher_id, :status, :lyrics, :explicit)
   end
 
   def set_album

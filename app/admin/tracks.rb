@@ -1,6 +1,6 @@
 ActiveAdmin.register Track do
   config.remove_action_item(:new)
-  permit_params :title, :file, :status, :album_id, :public_domain, :publisher_id, :artists_collaborator_id
+  permit_params :title, :file, :status, :album_id, :public_domain, :publisher_id, :artists_collaborator_id, :lyrics, :explicit
 
   includes :album
 
@@ -22,6 +22,7 @@ ActiveAdmin.register Track do
     column :status do |track|
       track.status&.titleize
     end
+    column :explicit
     column :public_domain
     column :created_at
     column :updated_at
@@ -40,6 +41,8 @@ ActiveAdmin.register Track do
         track.status&.titleize
       end
 
+      row :explicit
+      row :lyrics
       row :public_domain
       row :publisher
       row :artists_collaborator
@@ -55,9 +58,11 @@ ActiveAdmin.register Track do
     f.inputs do
       f.input :title
       f.input :file, as: :file
+      f.input :lyrics
       f.input :status, as: :select, collection: tracks_status_list, include_blank: false
       f.input :album, as: :searchable_select, collection: user.albums, include_blank: false
       f.input :public_domain
+      f.input :explicit
       f.input :publisher, as: :searchable_select, collection: user.publishers, include_blank: '(Select a Publisher)'
       f.input :artists_collaborator, as: :searchable_select, collection: collaborators_details_list(user),
                                      include_blank: '(Select a Collaborator)'
