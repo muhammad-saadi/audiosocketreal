@@ -16,7 +16,6 @@ class Api::V1::TracksController < Api::BaseController
   param_group :doc_create_track
   def create
     @track = @album.tracks.new(track_params)
-    set_artists_collaborator
     if @track.save
       render json: @track
     else
@@ -26,7 +25,6 @@ class Api::V1::TracksController < Api::BaseController
 
   param_group :doc_update_track
   def update
-    set_artists_collaborator
     if @track.update(track_params)
       render json: @track
     else
@@ -51,7 +49,7 @@ class Api::V1::TracksController < Api::BaseController
   private
 
   def track_params
-    params.permit(:title, :file, :public_domain, :publisher_id, :status, :lyrics, :explicit)
+    params.permit(:title, :file, :public_domain, :publisher_id, :artists_collaborator_id, :status, :lyrics, :explicit)
   end
 
   def set_album
@@ -65,9 +63,5 @@ class Api::V1::TracksController < Api::BaseController
   def validate_collaborator_and_publisher
     @collaborator = current_user.collaborators_details.find(params[:artists_collaborator_id]) if params[:artists_collaborator_id].present?
     @publisher = current_user.publishers.find(params[:publisher_id]) if params[:publisher_id].present?
-  end
-
-  def set_artists_collaborator
-    @track.artists_collaborator = current_user.collaborators_details.find(params[:artists_collaborator_id]) if params[:artists_collaborator_id].present?
   end
 end
