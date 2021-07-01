@@ -56,7 +56,7 @@ ActiveAdmin.register User, as: 'Artist' do
         attributes_table_for artist.artist_profile do
           row :name
           row :banner_image do
-            image_tag(artist.artist_profile.banner_image, width: 100, height: 100) if artist.artist_profile.banner_image.attached?
+            image_tag(artist.artist_profile.banner_image, width: 320, height: 100) if artist.artist_profile.banner_image.attached?
           end
 
           row :banner_image_status do

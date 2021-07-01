@@ -55,7 +55,7 @@ ActiveAdmin.register ArtistProfile do
       f.input :sounds_like
       f.input :bio
       f.input :key_facts
-      f.input :social_raw, as: :text
+      f.input :social_raw, as: :text, label: 'Social'
     end
 
     f.actions do
