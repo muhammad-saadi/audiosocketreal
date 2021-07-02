@@ -131,6 +131,7 @@ ActiveAdmin.register User, as: 'Artist' do
                 row :routing
                 row :account_number
                 row :paypal_email
+                row :updated_at
               end
             end
           end
