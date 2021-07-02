@@ -33,7 +33,7 @@ ActiveAdmin.register Track do
     attributes_table do
       row :title
       row :file do |track|
-        link_to 'Download', rails_blob_url(track.file), class: 'small button' if track.file.attached?
+        audio_tag(url_for(track.file), controls: true) if track.file.attached?
       end
 
       row :album
