@@ -28,14 +28,15 @@ paths:
                   name:
                     type: string
                   release_date:
-                    type: date
+                    type: string
+                    format: date
                 required:
                 - id
                 - name
         '404':
           description: album not found
 servers:
-- url: https://{defaultHost}
+- url: http://localhost:3000
   variables:
     defaultHost:
-      default: www.example.com
+      default: http://localhost:3000

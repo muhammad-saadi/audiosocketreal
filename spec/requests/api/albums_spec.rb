@@ -14,7 +14,7 @@ describe 'Albums API' do
                properties: {
                  id: { type: :integer },
                  name: { type: :string },
-                 release_date: { type: :date }
+                 release_date: { type: :string, format: 'date' }
                },
                required: %w[id name]
 
