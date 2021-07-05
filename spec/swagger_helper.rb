@@ -31,7 +31,7 @@ RSpec.configure do |config|
         user_auth: {
           description: 'Json web token for user authentication',
           type: :apiKey,
-          name: :auth_token,
+          name: 'auth-token',
           in: :header
         }
       },

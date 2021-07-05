@@ -19,7 +19,7 @@ RSpec.describe 'api/session', type: :request do
       response '200', 'created' do
         schema type: :object,
                properties: {
-                 auth_token: { type: :string },
+                 'auth-token': { type: :string },
                  role: { type: :string }
                }
         run_test!

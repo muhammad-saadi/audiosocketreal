@@ -12,7 +12,7 @@ securityDefinitions:
   user_auth:
     description: Json web token for user authentication
     type: apiKey
-    name: auth_token
+    name: auth-token
     in: header
 paths:
   "/api/v1/albums/{id}":
@@ -78,7 +78,7 @@ paths:
           schema:
             type: object
             properties:
-              auth_token:
+              auth-token:
                 type: string
               role:
                 type: string
