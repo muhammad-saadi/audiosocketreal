@@ -1,40 +1,87 @@
 ---
-openapi: 3.0.1
+swagger: '2.0'
 info:
   title: API V1
   version: v1
+securityDefinitions:
+  api_auth:
+    description: Authorization Token for API authentication
+    type: apiKey
+    name: Authorization
+    in: header
+  user_auth:
+    description: Json web token for user authentication
+    type: apiKey
+    name: auth_token
+    in: header
 paths:
-  "/albums/{id}":
+  "/api/v1/albums/{id}":
     get:
       summary: Retrieves an album
       tags:
       - Albums
+      produces:
+      - application/json
       parameters:
       - name: id
         in: path
+        type: string
         required: true
-        schema:
-          type: string
+      security:
+      - api_auth: {}
+        user_auth: {}
       responses:
         '200':
           description: Album found
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  id:
-                    type: integer
-                  name:
-                    type: string
-                  release_date:
-                    type: string
-                    format: date
-                required:
-                - id
-                - name
+          schema:
+            type: object
+            properties:
+              id:
+                type: integer
+              name:
+                type: string
+              release_date:
+                type: string
+                format: date
+            required:
+            - id
+            - name
         '404':
           description: album not found
+  "/api/v1/session":
+    post:
+      summary: create
+      tags:
+      - Session
+      parameters:
+      - name: email
+        in: formData
+        type: string
+      - name: password
+        in: formData
+        type: string
+      - name: remember_me
+        in: formData
+        type: boolean
+      - name: role
+        in: formData
+        type: string
+      security:
+      - api_auth: {}
+      consumes:
+      - multipart/form-data
+      produces:
+      - application/json
+      responses:
+        '200':
+          description: created
+          schema:
+            type: object
+            properties:
+              auth_token:
+                type: string
+              role:
+                type: string
 servers:
 - url: http://localhost:3000
   variables:

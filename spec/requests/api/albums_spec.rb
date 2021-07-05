@@ -3,11 +3,12 @@
 require 'swagger_helper'
 
 describe 'Albums API' do
-  path '/albums/{id}' do
+  path '/api/v1/albums/{id}' do
     get 'Retrieves an album' do
       tags 'Albums'
       produces 'application/json'
       parameter name: :id, in: :path, type: :string
+      security [api_auth: {}, user_auth: {}]
 
       response '200', 'Album found' do
         schema type: :object,
