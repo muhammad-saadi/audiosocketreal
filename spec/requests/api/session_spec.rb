@@ -2,7 +2,7 @@ require 'swagger_helper'
 
 RSpec.describe 'api/session', type: :request do
   path '/api/v1/session' do
-    post 'create' do
+    post 'create session (Sign-in)' do
       tags 'Session'
 
       parameter name: :email, in: :formData, type: :string
@@ -10,7 +10,6 @@ RSpec.describe 'api/session', type: :request do
       parameter name: :remember_me, in: :formData, type: :boolean
       parameter name: :role, in: :formData, type: :string
 
-      # here
       security [api_auth: {}]
 
       consumes 'multipart/form-data'

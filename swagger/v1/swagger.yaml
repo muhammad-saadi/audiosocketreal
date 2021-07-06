@@ -15,7 +15,116 @@ securityDefinitions:
     name: auth-token
     in: header
 paths:
+  "/api/v1/albums":
+    get:
+      summary: Retrieves all albums of current user
+      tags:
+      - Albums
+      produces:
+      - application/json
+      parameters:
+      - name: page
+        in: query
+        type: string
+      - name: per_page
+        in: query
+        type: string
+      - name: pagination
+        in: query
+        type: string
+      security:
+      - api_auth: {}
+        user_auth: {}
+      responses:
+        '200':
+          description: Albums list
+          schema:
+            type: object
+            properties:
+              albums:
+                type: array
+                items:
+                  properties:
+                    id:
+                      type: integer
+                    name:
+                      type: string
+                    release_date:
+                      type: string
+                      format: date
+                    artwork:
+                      type: string
+    post:
+      summary: Create a new album
+      tags:
+      - Albums
+      parameters:
+      - name: name
+        in: formData
+        type: string
+      - name: release_date
+        in: formData
+        type: date
+      security:
+      - api_auth: {}
+        user_auth: {}
+      consumes:
+      - multipart/form-data
+      produces:
+      - application/json
+      responses:
+        '200':
+          description: Album Created
+          schema:
+            type: object
+            properties:
+              id:
+                type: integer
+              name:
+                type: string
+              release_date:
+                type: string
+                format: date
+              artwork:
+                type: string
   "/api/v1/albums/{id}":
+    patch:
+      summary: Update an album
+      tags:
+      - Albums
+      parameters:
+      - name: id
+        in: path
+        type: string
+        required: true
+      - name: name
+        in: formData
+        type: string
+      - name: release_date
+        in: formData
+        type: date
+      security:
+      - api_auth: {}
+        user_auth: {}
+      consumes:
+      - multipart/form-data
+      produces:
+      - application/json
+      responses:
+        '200':
+          description: Album Updated
+          schema:
+            type: object
+            properties:
+              id:
+                type: integer
+              name:
+                type: string
+              release_date:
+                type: string
+                format: date
+              artwork:
+                type: string
     get:
       summary: Retrieves an album
       tags:
@@ -43,14 +152,83 @@ paths:
               release_date:
                 type: string
                 format: date
-            required:
-            - id
-            - name
+              artwork:
+                type: string
         '404':
           description: album not found
+    delete:
+      summary: Delete an album
+      tags:
+      - Albums
+      produces:
+      - application/json
+      parameters:
+      - name: id
+        in: path
+        type: string
+        required: true
+      security:
+      - api_auth: {}
+        user_auth: {}
+      responses:
+        '200':
+          description: Album Deleted
+          schema:
+            type: object
+            properties:
+              albums:
+                type: array
+                items:
+                  properties:
+                    id:
+                      type: integer
+                    name:
+                      type: string
+                    release_date:
+                      type: string
+                      format: date
+                    artwork:
+                      type: string
+        '404':
+          description: album not found
+  "/api/v1/albums/{id}/update_artwork":
+    patch:
+      summary: Update artwork of an album
+      tags:
+      - Albums
+      parameters:
+      - name: id
+        in: path
+        type: string
+        required: true
+      - name: artwork
+        in: formData
+        type: file
+      security:
+      - api_auth: {}
+        user_auth: {}
+      consumes:
+      - multipart/form-data
+      produces:
+      - application/json
+      responses:
+        '200':
+          description: Album Updated
+          schema:
+            type: object
+            properties:
+              id:
+                type: integer
+              name:
+                type: string
+              release_date:
+                type: string
+                format: date
+              artwork:
+                type: string
   "/api/v1/session":
     post:
-      summary: create
+      summary: create session (Sign-in)
       tags:
       - Session
       parameters:
