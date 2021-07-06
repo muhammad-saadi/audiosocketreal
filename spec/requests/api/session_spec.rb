@@ -10,7 +10,7 @@ RSpec.describe 'api/session', type: :request do
       parameter name: :remember_me, in: :formData, type: :boolean
       parameter name: :role, in: :formData, type: :string
 
-      security [api_auth: {}]
+      security [{ api_auth: [] }]
 
       consumes 'multipart/form-data'
       produces 'application/json'
