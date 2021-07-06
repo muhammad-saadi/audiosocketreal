@@ -71,7 +71,6 @@ RSpec.describe 'api/artists_collaborators', type: :request do
     patch 'Update artists collaborator' do
       tags 'Artists Collaborator'
 
-
       parameter name: :id, in: :path, type: :string
       parameter name: :access, in: :formData, type: :string
       parameter name: :'collaborator_profile_attributes[pro]', in: :formData, type: :string
