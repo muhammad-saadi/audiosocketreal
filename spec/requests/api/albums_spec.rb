@@ -13,7 +13,7 @@ describe 'Albums API' do
       parameter name: :per_page, in: :query, type: :string
       parameter name: :pagination, in: :query, type: :string
 
-      security [api_auth: {}, user_auth: {}]
+      security [{ api_auth: [] }, { user_auth: [] }]
 
       response '200', 'Albums list' do
         schema type: :object,
@@ -42,7 +42,7 @@ describe 'Albums API' do
       parameter name: :name, in: :formData, type: :string
       parameter name: :release_date, in: :formData, type: :date
 
-      security [api_auth: {}, user_auth: {}]
+      security [{ api_auth: [] }, { user_auth: [] }]
 
       consumes 'multipart/form-data'
       produces 'application/json'
@@ -70,7 +70,7 @@ describe 'Albums API' do
       parameter name: :name, in: :formData, type: :string
       parameter name: :release_date, in: :formData, type: :date
 
-      security [api_auth: {}, user_auth: {}]
+      security [{ api_auth: [] }, { user_auth: [] }]
 
       consumes 'multipart/form-data'
       produces 'application/json'
@@ -97,7 +97,7 @@ describe 'Albums API' do
 
       parameter name: :id, in: :path, type: :string
 
-      security [api_auth: {}, user_auth: {}]
+      security [{ api_auth: [] }, { user_auth: [] }]
 
       response '200', 'Album found' do
         schema type: :object,
@@ -126,7 +126,7 @@ describe 'Albums API' do
 
       parameter name: :id, in: :path, type: :string
 
-      security [api_auth: {}, user_auth: {}]
+      security [{ api_auth: [] }, { user_auth: [] }]
 
       response '200', 'Album Deleted' do
         schema type: :object,
@@ -161,7 +161,7 @@ describe 'Albums API' do
       parameter name: :id, in: :path, type: :string
       parameter name: :artwork, in: :formData, type: :file
 
-      security [api_auth: {}, user_auth: {}]
+      security [{ api_auth: [] }, { user_auth: [] }]
 
       consumes 'multipart/form-data'
       produces 'application/json'

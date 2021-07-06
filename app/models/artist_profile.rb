@@ -14,8 +14,8 @@ class ArtistProfile < ApplicationRecord
   accepts_nested_attributes_for :tax_information
 
   validates :profile_image, :banner_image, :additional_images, blob: { content_type: :image }
-  validates :profile_image, dimension: { width: 353, height: 353, message: 'must be 353x353' }
-  validates :banner_image, dimension: { width: 1440, height: 448, message: 'must be 1440x448' }
+  validates :profile_image, dimension: { min: 353..353, message: 'must be minimum 353x353' }
+  validates :banner_image, dimension: { min: 1440..448, message: 'must be minimum 1440x448' }
   validates :bio, length: { maximum: 400 }
 
   STATUSES = {

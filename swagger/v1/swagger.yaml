@@ -33,8 +33,8 @@ paths:
         in: query
         type: string
       security:
-      - api_auth: {}
-        user_auth: {}
+      - api_auth: []
+      - user_auth: []
       responses:
         '200':
           description: Albums list
@@ -66,8 +66,8 @@ paths:
         in: formData
         type: date
       security:
-      - api_auth: {}
-        user_auth: {}
+      - api_auth: []
+      - user_auth: []
       consumes:
       - multipart/form-data
       produces:
@@ -104,8 +104,8 @@ paths:
         in: formData
         type: date
       security:
-      - api_auth: {}
-        user_auth: {}
+      - api_auth: []
+      - user_auth: []
       consumes:
       - multipart/form-data
       produces:
@@ -137,8 +137,8 @@ paths:
         type: string
         required: true
       security:
-      - api_auth: {}
-        user_auth: {}
+      - api_auth: []
+      - user_auth: []
       responses:
         '200':
           description: Album found
@@ -168,8 +168,8 @@ paths:
         type: string
         required: true
       security:
-      - api_auth: {}
-        user_auth: {}
+      - api_auth: []
+      - user_auth: []
       responses:
         '200':
           description: Album Deleted
@@ -205,8 +205,8 @@ paths:
         in: formData
         type: file
       security:
-      - api_auth: {}
-        user_auth: {}
+      - api_auth: []
+      - user_auth: []
       consumes:
       - multipart/form-data
       produces:

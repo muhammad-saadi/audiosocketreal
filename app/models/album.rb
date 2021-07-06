@@ -9,5 +9,5 @@ class Album < ApplicationRecord
   has_one_attached :artwork
 
   validates :name, presence: true
-  validates :artwork, blob: { content_type: :image }, dimension: { width: 353, height: 353, message: 'must be 353x353' }
+  validates :artwork, blob: { content_type: :image }, dimension: { min: 353..353, message: 'must be minimum 353x353' }
 end
