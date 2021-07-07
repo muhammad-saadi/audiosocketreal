@@ -52,6 +52,15 @@ ActiveAdmin.register Note do
     active_admin_comments
   end
 
+  csv do
+    column :id
+    column (:status) { |note| note.status&.titleize }
+    column :notable_type
+    column :notable, &:notable_name
+    column (:created_at) { |object| formatted_datetime(object.created_at.localtime) }
+    column (:updated_at) { |object| formatted_datetime(object.updated_at.localtime) }
+  end
+
   form do |f|
     f.inputs do
       f.label "Note ##{f.object.id}"

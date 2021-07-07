@@ -48,6 +48,16 @@ ActiveAdmin.register Publisher do
     active_admin_comments
   end
 
+  csv do
+    column :id
+    column (:user) { |publisher| publisher.user.full_name }
+    column :name
+    column :pro
+    column :ipi
+    column (:created_at) { |object| formatted_datetime(object.created_at.localtime) }
+    column (:updated_at) { |object| formatted_datetime(object.updated_at.localtime) }
+  end
+
   form do |f|
     f.inputs do
       f.input :user, as: :select, collection: [f.object.user], include_blank: false

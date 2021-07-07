@@ -8,7 +8,7 @@ class Api::V1::TrackSerializer < BaseSerializer
   end
 
   def created_at
-    formatted_date(object.created_at.localtime)
+    formatted_datetime(object.created_at.localtime)
   end
 
   def collaborator

@@ -4,7 +4,7 @@ class Api::V1::UsersAgreementSerializer < BaseSerializer
   belongs_to :agreement
 
   def status_updated_at
-    formatted_date(object.status_updated_at&.localtime)
+    formatted_datetime(object.status_updated_at&.localtime)
   end
 
   def agreement_user

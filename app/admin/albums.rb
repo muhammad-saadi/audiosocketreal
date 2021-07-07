@@ -39,6 +39,15 @@ ActiveAdmin.register Album do
     active_admin_comments
   end
 
+  csv do
+    column :id
+    column :name
+    column (:release_date) { |object| formatted_date(object.release_date) }
+    column (:user) { |album| album.user.full_name }
+    column (:created_at) { |object| formatted_datetime(object.created_at.localtime) }
+    column (:updated_at) { |object| formatted_datetime(object.updated_at.localtime) }
+  end
+
   form do |f|
     f.inputs do
       f.input :name

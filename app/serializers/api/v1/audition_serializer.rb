@@ -8,10 +8,10 @@ class Api::V1::AuditionSerializer < BaseSerializer
   belongs_to :assignee
 
   def status_updated_at
-    formatted_date(object.status_updated_at&.localtime)
+    formatted_datetime(object.status_updated_at&.localtime)
   end
 
   def submitted_at
-    formatted_date(object.created_at.localtime)
+    formatted_datetime(object.created_at.localtime)
   end
 end

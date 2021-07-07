@@ -12,4 +12,10 @@ class Note < ApplicationRecord
   }.freeze
 
   enum status: STATUSES
+
+  def notable_name
+    return notable.title if notable_type == 'Track'
+
+    notable.name
+  end
 end

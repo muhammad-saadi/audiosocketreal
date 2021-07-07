@@ -53,6 +53,17 @@ ActiveAdmin.register Track do
     active_admin_comments
   end
 
+  csv do
+    column :id
+    column :title
+    column (:album) { |track| track.album.name }
+    column (:status) { |track| track.status&.titleize }
+    column (:explicit) { |object| formatted_boolean(object.explicit) }
+    column (:public_domain) { |object| formatted_boolean(object.public_domain) }
+    column (:created_at) { |object| formatted_datetime(object.created_at.localtime) }
+    column (:updated_at) { |object| formatted_datetime(object.updated_at.localtime) }
+  end
+
   form do |f|
     user = f.object.album.user
     f.inputs do

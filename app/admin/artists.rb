@@ -29,7 +29,7 @@ ActiveAdmin.register User, as: 'Artist' do
     column :created_at
     column :updated_at
     column :roles do |artist|
-      artist.roles.map.map(&:titleize)
+      artist.roles.map(&:titleize)
     end
     actions
   end
@@ -238,6 +238,16 @@ ActiveAdmin.register User, as: 'Artist' do
       end
     end
     active_admin_comments
+  end
+
+  csv do
+    column :id
+    column :email
+    column :first_name
+    column :last_name
+    column (:created_at) { |object| formatted_datetime(object.created_at.localtime) }
+    column (:updated_at) { |object| formatted_datetime(object.updated_at.localtime) }
+    column (:roles) { |artist| artist.roles.map(&:titleize) }
   end
 
   form do |f|

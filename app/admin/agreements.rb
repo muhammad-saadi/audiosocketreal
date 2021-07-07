@@ -30,6 +30,11 @@ ActiveAdmin.register Agreement do
     active_admin_comments
   end
 
+  csv do
+    column :id
+    column (:agreement_type) { |agreement| agreement.agreement_type&.titleize }
+  end
+
   form do |f|
     f.inputs do
       f.input :agreement_type, as: :select, collection: agreement_types, include_blank: false

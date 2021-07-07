@@ -103,6 +103,16 @@ ActiveAdmin.register User, as: 'Collaborator' do
     active_admin_comments
   end
 
+  csv do
+    column :id
+    column :email
+    column :first_name
+    column :last_name
+    column (:created_at) { |object| formatted_datetime(object.created_at.localtime) }
+    column (:updated_at) { |object| formatted_datetime(object.updated_at.localtime) }
+    column (:roles) { |collaborator| collaborator.roles.map(&:titleize) }
+  end
+
   form do |f|
     f.inputs do
       f.input :first_name

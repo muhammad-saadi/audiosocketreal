@@ -80,6 +80,16 @@ ActiveAdmin.register ArtistsCollaborator do
     active_admin_comments
   end
 
+  csv do
+    column :id
+    column (:artist) { |artists_collaborator| artists_collaborator.artist.email }
+    column (:collaborator) { |artists_collaborator| artists_collaborator.collaborator.email }
+    column (:status) { |artists_collaborator| artists_collaborator.status&.titleize }
+    column (:access) { |artists_collaborator| artists_collaborator.access&.titleize }
+    column (:created_at) { |object| formatted_datetime(object.created_at.localtime) }
+    column (:updated_at) { |object| formatted_datetime(object.updated_at.localtime) }
+  end
+
   form do |f|
     f.inputs do
       f.input :artist, input_html: { disabled: true }

@@ -27,6 +27,11 @@ ActiveAdmin.register Metadata do
     active_admin_comments
   end
 
+  csv do
+    column :id
+    column (:key) { |metadata| metadata.key.titleize }
+  end
+
   form do |f|
     h2 do
       metadata.key.titleize
