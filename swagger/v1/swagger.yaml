@@ -1966,6 +1966,47 @@ paths:
                   type: string
                 agreement_user:
                   type: string
+  "/api/v1/users/managers":
+    get:
+      summary: List all users with manager role
+      tags:
+      - Users
+      produces:
+      - application/json
+      security:
+      - api_auth: []
+      - user_auth: []
+      responses:
+        '200':
+          description: Managers list
+          schema:
+            type: array
+            items:
+              properties:
+                id:
+                  type: integer
+                email:
+                  type: string
+                first_name:
+                  type: string
+                last_name:
+                  type: string
+  "/api/v1/users/forgot_password":
+    post:
+      summary: Send password reset request
+      tags:
+      - Users
+      parameters:
+      - name: email
+        in: formData
+        type: string
+      produces:
+      - application/json
+      security:
+      - api_auth: []
+      responses:
+        '200':
+          description: Email Sent
 servers:
 - url: http://localhost:3000
   variables:
