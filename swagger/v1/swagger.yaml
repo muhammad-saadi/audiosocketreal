@@ -1328,6 +1328,110 @@ paths:
             properties:
               status:
                 type: string
+  "/api/v1/genres":
+    get:
+      summary: Get all genres
+      tags:
+      - Genres
+      security:
+      - api_auth: []
+      produces:
+      - application/json
+      responses:
+        '200':
+          description: Genres List
+          schema:
+            type: array
+            items:
+              type: object
+              properties:
+                id:
+                  type: integer
+                name:
+                  type: string
+  "/api/v1/notes":
+    get:
+      summary: Get notes associated with an object
+      tags:
+      - Notes
+      parameters:
+      - name: notable_type
+        in: query
+        type: string
+      - name: notable_id
+        in: query
+        type: integer
+      security:
+      - api_auth: []
+      - user_auth: []
+      produces:
+      - application/json
+      responses:
+        '200':
+          description: Notes List
+          schema:
+            type: array
+            items:
+              type: object
+              properties:
+                id:
+                  type: integer
+                description:
+                  type: string
+                files:
+                  type: array
+                  items:
+                    type: string
+                notable_type:
+                  type: string
+                notable_id:
+                  type: integer
+                status:
+                  type: string
+    post:
+      summary: Create note for an object
+      tags:
+      - Notes
+      parameters:
+      - name: notable_type
+        in: formData
+        type: string
+      - name: notable_id
+        in: formData
+        type: string
+      - name: description
+        in: formData
+        type: string
+      - name: files[]
+        in: formData
+        type: file
+      security:
+      - api_auth: []
+      - user_auth: []
+      produces:
+      - application/json
+      responses:
+        '200':
+          description: Notes List
+          schema:
+            type: array
+            items:
+              type: object
+              properties:
+                id:
+                  type: integer
+                description:
+                  type: string
+                files:
+                  type: array
+                  items:
+                    type: string
+                notable_type:
+                  type: string
+                notable_id:
+                  type: integer
+                status:
+                  type: string
   "/api/v1/session":
     post:
       summary: create session (Sign-in)
