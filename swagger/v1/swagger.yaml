@@ -795,6 +795,271 @@ paths:
                   type: string
                 status:
                   type: string
+  "/api/v1/auditions":
+    get:
+      summary: List all auditions
+      tags:
+      - Auditions
+      parameters:
+      - name: page
+        in: query
+        type: string
+      - name: per_page
+        in: query
+        type: string
+      - name: pagination
+        in: query
+        type: string
+      - name: status
+        in: query
+        type: string
+      - name: search_key
+        in: formData
+        type: string
+      - name: search_query
+        in: formData
+        type: string
+      security:
+      - api_auth: []
+      - user_auth: []
+      consumes:
+      - multipart/form-data
+      produces:
+      - application/json
+      responses:
+        '200':
+          description: Auditions List
+          schema:
+            type: object
+            properties:
+              auditions:
+                type: array
+                items:
+                  properties:
+                    id:
+                      type: integer
+                    first_name:
+                      type: string
+                    last_name:
+                      type: string
+                    email:
+                      type: string
+                    artist_name:
+                      type: string
+                    reference_company:
+                      type: string
+                    exclusive_artist:
+                      type: string
+                    how_you_know_us:
+                      type: string
+                    status:
+                      type: string
+                    status_updated_at:
+                      type: string
+                    sounds_like:
+                      type: string
+                    remarks:
+                      type: string
+                    submitted_at:
+                      type: string
+                    audition_music:
+                      type: array
+                      items:
+                        type: string
+                    genres_ids:
+                      type: array
+                      items:
+                        type: string
+    post:
+      summary: Create a new audition
+      tags:
+      - Auditions
+      parameters:
+      - name: audition
+        in: body
+        type: object
+      security:
+      - api_auth: []
+      produces:
+      - application/json
+      responses:
+        '200':
+          description: Audition Created
+          schema:
+            type: object
+            properties:
+              auditions:
+                type: array
+                items:
+                  properties:
+                    id:
+                      type: integer
+                    first_name:
+                      type: string
+                    last_name:
+                      type: string
+                    email:
+                      type: string
+                    artist_name:
+                      type: string
+                    reference_company:
+                      type: string
+                    exclusive_artist:
+                      type: string
+                    how_you_know_us:
+                      type: string
+                    status:
+                      type: string
+                    status_updated_at:
+                      type: string
+                    sounds_like:
+                      type: string
+                    remarks:
+                      type: string
+                    submitted_at:
+                      type: string
+                    audition_music:
+                      type: array
+                      items:
+                        type: string
+                    genres_ids:
+                      type: array
+                      items:
+                        type: string
+  "/api/v1/auditions/{id}/update_status":
+    patch:
+      summary: Update status of audition
+      tags:
+      - Auditions
+      parameters:
+      - name: id
+        in: path
+        type: integer
+        required: true
+      - name: status
+        in: formData
+        type: string
+      - name: content
+        in: formData
+        type: string
+      - name: exclusive
+        in: formData
+        type: boolean
+      security:
+      - api_auth: []
+      - user_auth: []
+      produces:
+      - application/json
+      responses:
+        '200':
+          description: Status Updated
+          schema:
+            type: object
+            properties:
+              auditions:
+                type: array
+                items:
+                  properties:
+                    id:
+                      type: integer
+                    first_name:
+                      type: string
+                    last_name:
+                      type: string
+                    email:
+                      type: string
+                    artist_name:
+                      type: string
+                    reference_company:
+                      type: string
+                    exclusive_artist:
+                      type: string
+                    how_you_know_us:
+                      type: string
+                    status:
+                      type: string
+                    status_updated_at:
+                      type: string
+                    sounds_like:
+                      type: string
+                    remarks:
+                      type: string
+                    submitted_at:
+                      type: string
+                    audition_music:
+                      type: array
+                      items:
+                        type: string
+                    genres_ids:
+                      type: array
+                      items:
+                        type: string
+  "/api/v1/auditions/bulk_update_status":
+    patch:
+      summary: Update status of auditions in bulk
+      tags:
+      - Auditions
+      parameters:
+      - name: ids[]
+        in: formData
+      - name: status
+        in: formData
+        type: string
+      - name: content
+        in: formData
+        type: string
+      - name: exclusive
+        in: formData
+        type: boolean
+      security:
+      - api_auth: []
+      - user_auth: []
+      produces:
+      - application/json
+      responses:
+        '200':
+          description: Statuses Updated
+          schema:
+            type: object
+            properties:
+              auditions:
+                type: array
+                items:
+                  properties:
+                    id:
+                      type: integer
+                    first_name:
+                      type: string
+                    last_name:
+                      type: string
+                    email:
+                      type: string
+                    artist_name:
+                      type: string
+                    reference_company:
+                      type: string
+                    exclusive_artist:
+                      type: string
+                    how_you_know_us:
+                      type: string
+                    status:
+                      type: string
+                    status_updated_at:
+                      type: string
+                    sounds_like:
+                      type: string
+                    remarks:
+                      type: string
+                    submitted_at:
+                      type: string
+                    audition_music:
+                      type: array
+                      items:
+                        type: string
+                    genres_ids:
+                      type: array
+                      items:
+                        type: string
   "/api/v1/session":
     post:
       summary: create session (Sign-in)
