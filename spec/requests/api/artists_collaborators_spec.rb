@@ -3,7 +3,7 @@ require 'swagger_helper'
 RSpec.describe 'api/artists_collaborators', type: :request do
   path '/api/v1/artists_collaborators/{id}/update_status' do
     patch 'Update status of artists collaborator' do
-      tags 'Artists Collaborator'
+      tags 'Artists Collaborators'
 
 
       parameter name: :id, in: :path, type: :string
@@ -37,7 +37,7 @@ RSpec.describe 'api/artists_collaborators', type: :request do
 
   path '/api/v1/artists_collaborators/{id}/update_access' do
     patch 'Update access of artists collaborator' do
-      tags 'Artists Collaborator'
+      tags 'Artists Collaborators'
 
 
       parameter name: :id, in: :path, type: :string
@@ -69,7 +69,7 @@ RSpec.describe 'api/artists_collaborators', type: :request do
 
   path '/api/v1/artists_collaborators/{id}' do
     patch 'Update artists collaborator' do
-      tags 'Artists Collaborator'
+      tags 'Artists Collaborators'
 
       parameter name: :id, in: :path, type: :string
       parameter name: :access, in: :formData, type: :string
@@ -103,7 +103,7 @@ RSpec.describe 'api/artists_collaborators', type: :request do
 
   path '/api/v1/artists_collaborators/{id}' do
     delete 'Destroy artists collaborator' do
-      tags 'Artists Collaborator'
+      tags 'Artists Collaborators'
 
 
       parameter name: :id, in: :path, type: :string

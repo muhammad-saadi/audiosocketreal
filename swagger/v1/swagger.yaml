@@ -257,7 +257,7 @@ paths:
     patch:
       summary: Update status of artists collaborator
       tags:
-      - Artists Collaborator
+      - Artists Collaborators
       parameters:
       - name: id
         in: path
@@ -301,7 +301,7 @@ paths:
     patch:
       summary: Update access of artists collaborator
       tags:
-      - Artists Collaborator
+      - Artists Collaborators
       parameters:
       - name: id
         in: path
@@ -341,7 +341,7 @@ paths:
     patch:
       summary: Update artists collaborator
       tags:
-      - Artists Collaborator
+      - Artists Collaborators
       parameters:
       - name: id
         in: path
@@ -389,7 +389,7 @@ paths:
     delete:
       summary: Destroy artists collaborator
       tags:
-      - Artists Collaborator
+      - Artists Collaborators
       parameters:
       - name: id
         in: path
@@ -1896,6 +1896,76 @@ paths:
                   type: string
                 explicit:
                   type: boolean
+  "/api/v1/users_agreements":
+    get:
+      summary: Retrieves agreements details of current user
+      tags:
+      - Users Agreements
+      parameters:
+      - name: role
+        in: query
+        type: string
+      produces:
+      - application/json
+      security:
+      - api_auth: []
+      - user_auth: []
+      responses:
+        '200':
+          description: UsersAgreements list
+          schema:
+            type: array
+            items:
+              properties:
+                id:
+                  type: integer
+                agreement:
+                  type: object
+                status:
+                  type: string
+                role:
+                  type: string
+                status_updated_at:
+                  type: string
+                agreement_user:
+                  type: string
+  "/api/v1/users_agreements/{id}/update_status":
+    patch:
+      summary: Update status of an users_agreement
+      tags:
+      - Users Agreements
+      parameters:
+      - name: id
+        in: path
+        type: string
+        required: true
+      - name: status
+        in: formData
+        type: string
+      produces:
+      - application/json
+      security:
+      - api_auth: []
+      - user_auth: []
+      responses:
+        '200':
+          description: Status Updated
+          schema:
+            type: array
+            items:
+              properties:
+                id:
+                  type: integer
+                agreement:
+                  type: object
+                status:
+                  type: string
+                role:
+                  type: string
+                status_updated_at:
+                  type: string
+                agreement_user:
+                  type: string
 servers:
 - url: http://localhost:3000
   variables:
