@@ -111,7 +111,7 @@ RSpec.describe 'api/publishers', type: :request do
 
       security [{ api_auth: [] }, { user_auth: [] }]
 
-      response '200', 'Publisher Updated' do
+      response '200', 'Publisher Destroyed' do
         schema type: :object,
                properties: {
                  publishers: {

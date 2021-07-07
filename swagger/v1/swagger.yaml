@@ -1565,7 +1565,7 @@ paths:
       - user_auth: []
       responses:
         '200':
-          description: Publisher Updated
+          description: Publisher Destroyed
           schema:
             type: object
             properties:
@@ -1615,6 +1615,287 @@ paths:
                 type: string
               role:
                 type: string
+  "/api/v1/albums/{album_id}/tracks":
+    get:
+      summary: Retrieves all track of album
+      tags:
+      - Tracks
+      produces:
+      - application/json
+      parameters:
+      - name: album_id
+        in: path
+        type: string
+        required: true
+      - name: page
+        in: query
+        type: string
+      - name: per_page
+        in: query
+        type: string
+      - name: pagination
+        in: query
+        type: string
+      security:
+      - api_auth: []
+      - user_auth: []
+      responses:
+        '200':
+          description: Tracks list
+          schema:
+            type: object
+            properties:
+              tracks:
+                type: array
+                items:
+                  properties:
+                    id:
+                      type: integer
+                    title:
+                      type: string
+                    file:
+                      type: string
+                    status:
+                      type: string
+                    public_domain:
+                      type: boolean
+                    created_at:
+                      type: string
+                      format: date
+                    publisher:
+                      type: object
+                    collaborator:
+                      type: object
+                    lyrics:
+                      type: string
+                    explicit:
+                      type: boolean
+    post:
+      summary: Create a new track of album
+      tags:
+      - Tracks
+      produces:
+      - application/json
+      parameters:
+      - name: album_id
+        in: path
+        type: string
+        required: true
+      - name: title
+        in: formData
+        type: string
+      - name: public_domain
+        in: formData
+        type: boolean
+      - name: file
+        in: formData
+        type: file
+      - name: collaborator_id
+        in: formData
+        type: integer
+      - name: publisher_id
+        in: formData
+        type: integer
+      - name: status
+        in: formData
+        type: string
+      - name: lyrics
+        in: formData
+        type: string
+      - name: explicit
+        in: formData
+        type: boolean
+      security:
+      - api_auth: []
+      - user_auth: []
+      responses:
+        '200':
+          description: Track Created
+          schema:
+            type: object
+            properties:
+              id:
+                type: integer
+              title:
+                type: string
+              file:
+                type: string
+              status:
+                type: string
+              public_domain:
+                type: boolean
+              created_at:
+                type: string
+                format: date
+              publisher:
+                type: object
+              collaborator:
+                type: object
+              lyrics:
+                type: string
+              explicit:
+                type: boolean
+  "/api/v1/albums/{album_id}/tracks/{id}":
+    patch:
+      summary: Update a track
+      tags:
+      - Tracks
+      produces:
+      - application/json
+      parameters:
+      - name: album_id
+        in: path
+        type: string
+        required: true
+      - name: id
+        in: path
+        type: string
+        required: true
+      - name: title
+        in: formData
+        type: string
+      - name: public_domain
+        in: formData
+        type: boolean
+      - name: file
+        in: formData
+        type: file
+      - name: collaborator_id
+        in: formData
+        type: integer
+      - name: publisher_id
+        in: formData
+        type: integer
+      - name: status
+        in: formData
+        type: string
+      - name: lyrics
+        in: formData
+        type: string
+      - name: explicit
+        in: formData
+        type: boolean
+      security:
+      - api_auth: []
+      - user_auth: []
+      responses:
+        '200':
+          description: Track Updated
+          schema:
+            type: object
+            properties:
+              id:
+                type: integer
+              title:
+                type: string
+              file:
+                type: string
+              status:
+                type: string
+              public_domain:
+                type: boolean
+              created_at:
+                type: string
+                format: date
+              publisher:
+                type: object
+              collaborator:
+                type: object
+              lyrics:
+                type: string
+              explicit:
+                type: boolean
+    get:
+      summary: Show a track
+      tags:
+      - Tracks
+      produces:
+      - application/json
+      parameters:
+      - name: album_id
+        in: path
+        type: string
+        required: true
+      - name: id
+        in: path
+        type: string
+        required: true
+      security:
+      - api_auth: []
+      - user_auth: []
+      responses:
+        '200':
+          description: Track
+          schema:
+            type: object
+            properties:
+              id:
+                type: integer
+              title:
+                type: string
+              file:
+                type: string
+              status:
+                type: string
+              public_domain:
+                type: boolean
+              created_at:
+                type: string
+                format: date
+              publisher:
+                type: object
+              collaborator:
+                type: object
+              lyrics:
+                type: string
+              explicit:
+                type: boolean
+    delete:
+      summary: Destroy a track
+      tags:
+      - Tracks
+      produces:
+      - application/json
+      parameters:
+      - name: album_id
+        in: path
+        type: string
+        required: true
+      - name: id
+        in: path
+        type: string
+        required: true
+      security:
+      - api_auth: []
+      - user_auth: []
+      responses:
+        '200':
+          description: Track Destroyed
+          schema:
+            type: array
+            items:
+              properties:
+                id:
+                  type: integer
+                title:
+                  type: string
+                file:
+                  type: string
+                status:
+                  type: string
+                public_domain:
+                  type: boolean
+                created_at:
+                  type: string
+                  format: date
+                publisher:
+                  type: object
+                collaborator:
+                  type: object
+                lyrics:
+                  type: string
+                explicit:
+                  type: boolean
 servers:
 - url: http://localhost:3000
   variables:
