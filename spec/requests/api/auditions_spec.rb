@@ -37,13 +37,34 @@ RSpec.describe 'api/auditions', type: :request do
                        sounds_like: { type: :string },
                        remarks: { type: :string },
                        submitted_at: { type: :string },
-                       audition_music: {
+                       audition_musics: {
                          type: :array,
-                         items: { type: :string }
+                         items: {
+                           type: :object,
+                           properties: {
+                             id: { type: :integer },
+                             track_link: { type: :string }
+                           }
+                         }
                        },
-                       genres_ids: {
+                       genres: {
                          type: :array,
-                         items: { type: :string }
+                         items: {
+                           type: :object,
+                           properties: {
+                             id: { type: :integer },
+                             name: { type: :string }
+                           }
+                         }
+                       },
+                       assignee: {
+                         type: :object,
+                         properties: {
+                           id: { type: :integer },
+                           email: { type: :string },
+                           first_name: { type: :string },
+                           last_name: { type: :string }
+                         }
                        }
                      }
                    }
@@ -85,13 +106,34 @@ RSpec.describe 'api/auditions', type: :request do
                        sounds_like: { type: :string },
                        remarks: { type: :string },
                        submitted_at: { type: :string },
-                       audition_music: {
+                       audition_musics: {
                          type: :array,
-                         items: { type: :string }
+                         items: {
+                           type: :object,
+                           properties: {
+                             id: { type: :integer },
+                             track_link: { type: :string }
+                           }
+                         }
                        },
-                       genres_ids: {
+                       genres: {
                          type: :array,
-                         items: { type: :string }
+                         items: {
+                           type: :object,
+                           properties: {
+                             id: { type: :integer },
+                             name: { type: :string }
+                           }
+                         }
+                       },
+                       assignee: {
+                         type: :object,
+                         properties: {
+                           id: { type: :integer },
+                           email: { type: :string },
+                           first_name: { type: :string },
+                           last_name: { type: :string }
+                         }
                        }
                      }
                    }
@@ -119,32 +161,46 @@ RSpec.describe 'api/auditions', type: :request do
       response '200', 'Status Updated' do
         schema type: :object,
                properties: {
-                 auditions: {
+                 id: { type: :integer },
+                 first_name: { type: :string },
+                 last_name: { type: :string },
+                 email: { type: :string },
+                 artist_name: { type: :string },
+                 reference_company: { type: :string },
+                 exclusive_artist: { type: :string },
+                 how_you_know_us: { type: :string },
+                 status: { type: :string },
+                 status_updated_at: { type: :string },
+                 sounds_like: { type: :string },
+                 remarks: { type: :string },
+                 submitted_at: { type: :string },
+                 audition_musics: {
                    type: :array,
                    items: {
+                     type: :object,
                      properties: {
                        id: { type: :integer },
-                       first_name: { type: :string },
-                       last_name: { type: :string },
-                       email: { type: :string },
-                       artist_name: { type: :string },
-                       reference_company: { type: :string },
-                       exclusive_artist: { type: :string },
-                       how_you_know_us: { type: :string },
-                       status: { type: :string },
-                       status_updated_at: { type: :string },
-                       sounds_like: { type: :string },
-                       remarks: { type: :string },
-                       submitted_at: { type: :string },
-                       audition_music: {
-                         type: :array,
-                         items: { type: :string }
-                       },
-                       genres_ids: {
-                         type: :array,
-                         items: { type: :string }
-                       }
+                       track_link: { type: :string }
                      }
+                   }
+                 },
+                 genres: {
+                   type: :array,
+                   items: {
+                     type: :object,
+                     properties: {
+                       id: { type: :integer },
+                       name: { type: :string }
+                     }
+                   }
+                 },
+                 assignee: {
+                   type: :object,
+                   properties: {
+                     id: { type: :integer },
+                     email: { type: :string },
+                     first_name: { type: :string },
+                     last_name: { type: :string }
                    }
                  }
                }
@@ -187,17 +243,194 @@ RSpec.describe 'api/auditions', type: :request do
                        sounds_like: { type: :string },
                        remarks: { type: :string },
                        submitted_at: { type: :string },
-                       audition_music: {
+                       audition_musics: {
                          type: :array,
-                         items: { type: :string }
+                         items: {
+                           type: :object,
+                           properties: {
+                             id: { type: :integer },
+                             track_link: { type: :string }
+                           }
+                         }
                        },
-                       genres_ids: {
+                       genres: {
                          type: :array,
-                         items: { type: :string }
+                         items: {
+                           type: :object,
+                           properties: {
+                             id: { type: :integer },
+                             name: { type: :string }
+                           }
+                         }
+                       },
+                       assignee: {
+                         type: :object,
+                         properties: {
+                           id: { type: :integer },
+                           email: { type: :string },
+                           first_name: { type: :string },
+                           last_name: { type: :string }
+                         }
                        }
                      }
                    }
                  }
+               }
+
+        run_test!
+      end
+    end
+  end
+
+  path '/api/v1/auditions/{id}/assign_manager' do
+    patch 'Assign manager to auditions' do
+      tags 'Auditions'
+
+      parameter name: :id, in: :path, type: :integer
+      parameter name: :assignee_id, in: :formData, type: :string
+      parameter name: :remarks, in: :formData, type: :string
+
+      security [{ api_auth: [] }, { user_auth: [] }]
+
+      produces 'application/json'
+
+      response '200', 'Assigned Manager' do
+        schema type: :object,
+               properties: {
+                 id: { type: :integer },
+                 first_name: { type: :string },
+                 last_name: { type: :string },
+                 email: { type: :string },
+                 artist_name: { type: :string },
+                 reference_company: { type: :string },
+                 exclusive_artist: { type: :string },
+                 how_you_know_us: { type: :string },
+                 status: { type: :string },
+                 status_updated_at: { type: :string },
+                 sounds_like: { type: :string },
+                 remarks: { type: :string },
+                 submitted_at: { type: :string },
+                 audition_musics: {
+                   type: :array,
+                   items: {
+                     type: :object,
+                     properties: {
+                       id: { type: :integer },
+                       track_link: { type: :string }
+                     }
+                   }
+                 },
+                 genres: {
+                   type: :array,
+                   items: {
+                     type: :object,
+                     properties: {
+                       id: { type: :integer },
+                       name: { type: :string }
+                     }
+                   }
+                 },
+                 assignee: {
+                   type: :object,
+                   properties: {
+                     id: { type: :integer },
+                     email: { type: :string },
+                     first_name: { type: :string },
+                     last_name: { type: :string }
+                   }
+                 }
+               }
+
+        run_test!
+      end
+    end
+  end
+
+  path '/api/v1/auditions/bulk_assign_manager' do
+    patch 'Assign manager to auditions in bulk' do
+      tags 'Auditions'
+
+      parameter name: :'audition_ids[]', in: :formData
+      parameter name: :assignee_id, in: :formData, type: :string
+      parameter name: :remarks, in: :formData, type: :string
+
+      security [{ api_auth: [] }, { user_auth: [] }]
+
+      produces 'application/json'
+
+      response '200', 'Statuses Updated' do
+        schema type: :object,
+               properties: {
+                 auditions: {
+                   type: :array,
+                   items: {
+                     properties: {
+                       id: { type: :integer },
+                       first_name: { type: :string },
+                       last_name: { type: :string },
+                       email: { type: :string },
+                       artist_name: { type: :string },
+                       reference_company: { type: :string },
+                       exclusive_artist: { type: :string },
+                       how_you_know_us: { type: :string },
+                       status: { type: :string },
+                       status_updated_at: { type: :string },
+                       sounds_like: { type: :string },
+                       remarks: { type: :string },
+                       submitted_at: { type: :string },
+                       audition_musics: {
+                         type: :array,
+                         items: {
+                           type: :object,
+                           properties: {
+                             id: { type: :integer },
+                             track_link: { type: :string }
+                           }
+                         }
+                       },
+                       genres: {
+                         type: :array,
+                         items: {
+                           type: :object,
+                           properties: {
+                             id: { type: :integer },
+                             name: { type: :string }
+                           }
+                         }
+                       },
+                       assignee: {
+                         type: :object,
+                         properties: {
+                           id: { type: :integer },
+                           email: { type: :string },
+                           first_name: { type: :string },
+                           last_name: { type: :string }
+                         }
+                       }
+                     }
+                   }
+                 }
+               }
+
+        run_test!
+      end
+    end
+  end
+
+  path '/api/v1/auditions/email_template' do
+    get 'Get email template on basis of status' do
+      tags 'Auditions'
+
+      parameter name: :status, in: :query, type: :string
+
+      security [{ api_auth: [] }, { user_auth: [] }]
+
+      produces 'application/json'
+
+      response '200', 'Template found' do
+        schema type: :object,
+               properties: {
+                 status: { type: :string }
                }
 
         run_test!

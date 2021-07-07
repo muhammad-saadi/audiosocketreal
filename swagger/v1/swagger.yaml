@@ -862,14 +862,35 @@ paths:
                       type: string
                     submitted_at:
                       type: string
-                    audition_music:
+                    audition_musics:
                       type: array
                       items:
-                        type: string
-                    genres_ids:
+                        type: object
+                        properties:
+                          id:
+                            type: integer
+                          track_link:
+                            type: string
+                    genres:
                       type: array
                       items:
-                        type: string
+                        type: object
+                        properties:
+                          id:
+                            type: integer
+                          name:
+                            type: string
+                    assignee:
+                      type: object
+                      properties:
+                        id:
+                          type: integer
+                        email:
+                          type: string
+                        first_name:
+                          type: string
+                        last_name:
+                          type: string
     post:
       summary: Create a new audition
       tags:
@@ -918,14 +939,35 @@ paths:
                       type: string
                     submitted_at:
                       type: string
-                    audition_music:
+                    audition_musics:
                       type: array
                       items:
-                        type: string
-                    genres_ids:
+                        type: object
+                        properties:
+                          id:
+                            type: integer
+                          track_link:
+                            type: string
+                    genres:
                       type: array
                       items:
-                        type: string
+                        type: object
+                        properties:
+                          id:
+                            type: integer
+                          name:
+                            type: string
+                    assignee:
+                      type: object
+                      properties:
+                        id:
+                          type: integer
+                        email:
+                          type: string
+                        first_name:
+                          type: string
+                        last_name:
+                          type: string
   "/api/v1/auditions/{id}/update_status":
     patch:
       summary: Update status of audition
@@ -956,44 +998,61 @@ paths:
           schema:
             type: object
             properties:
-              auditions:
+              id:
+                type: integer
+              first_name:
+                type: string
+              last_name:
+                type: string
+              email:
+                type: string
+              artist_name:
+                type: string
+              reference_company:
+                type: string
+              exclusive_artist:
+                type: string
+              how_you_know_us:
+                type: string
+              status:
+                type: string
+              status_updated_at:
+                type: string
+              sounds_like:
+                type: string
+              remarks:
+                type: string
+              submitted_at:
+                type: string
+              audition_musics:
                 type: array
                 items:
+                  type: object
                   properties:
                     id:
                       type: integer
-                    first_name:
+                    track_link:
                       type: string
-                    last_name:
+              genres:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    id:
+                      type: integer
+                    name:
                       type: string
-                    email:
-                      type: string
-                    artist_name:
-                      type: string
-                    reference_company:
-                      type: string
-                    exclusive_artist:
-                      type: string
-                    how_you_know_us:
-                      type: string
-                    status:
-                      type: string
-                    status_updated_at:
-                      type: string
-                    sounds_like:
-                      type: string
-                    remarks:
-                      type: string
-                    submitted_at:
-                      type: string
-                    audition_music:
-                      type: array
-                      items:
-                        type: string
-                    genres_ids:
-                      type: array
-                      items:
-                        type: string
+              assignee:
+                type: object
+                properties:
+                  id:
+                    type: integer
+                  email:
+                    type: string
+                  first_name:
+                    type: string
+                  last_name:
+                    type: string
   "/api/v1/auditions/bulk_update_status":
     patch:
       summary: Update status of auditions in bulk
@@ -1052,14 +1111,223 @@ paths:
                       type: string
                     submitted_at:
                       type: string
-                    audition_music:
+                    audition_musics:
                       type: array
                       items:
-                        type: string
-                    genres_ids:
+                        type: object
+                        properties:
+                          id:
+                            type: integer
+                          track_link:
+                            type: string
+                    genres:
                       type: array
                       items:
-                        type: string
+                        type: object
+                        properties:
+                          id:
+                            type: integer
+                          name:
+                            type: string
+                    assignee:
+                      type: object
+                      properties:
+                        id:
+                          type: integer
+                        email:
+                          type: string
+                        first_name:
+                          type: string
+                        last_name:
+                          type: string
+  "/api/v1/auditions/{id}/assign_manager":
+    patch:
+      summary: Assign manager to auditions
+      tags:
+      - Auditions
+      parameters:
+      - name: id
+        in: path
+        type: integer
+        required: true
+      - name: assignee_id
+        in: formData
+        type: string
+      - name: remarks
+        in: formData
+        type: string
+      security:
+      - api_auth: []
+      - user_auth: []
+      produces:
+      - application/json
+      responses:
+        '200':
+          description: Assigned Manager
+          schema:
+            type: object
+            properties:
+              id:
+                type: integer
+              first_name:
+                type: string
+              last_name:
+                type: string
+              email:
+                type: string
+              artist_name:
+                type: string
+              reference_company:
+                type: string
+              exclusive_artist:
+                type: string
+              how_you_know_us:
+                type: string
+              status:
+                type: string
+              status_updated_at:
+                type: string
+              sounds_like:
+                type: string
+              remarks:
+                type: string
+              submitted_at:
+                type: string
+              audition_musics:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    id:
+                      type: integer
+                    track_link:
+                      type: string
+              genres:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    id:
+                      type: integer
+                    name:
+                      type: string
+              assignee:
+                type: object
+                properties:
+                  id:
+                    type: integer
+                  email:
+                    type: string
+                  first_name:
+                    type: string
+                  last_name:
+                    type: string
+  "/api/v1/auditions/bulk_assign_manager":
+    patch:
+      summary: Assign manager to auditions in bulk
+      tags:
+      - Auditions
+      parameters:
+      - name: audition_ids[]
+        in: formData
+      - name: assignee_id
+        in: formData
+        type: string
+      - name: remarks
+        in: formData
+        type: string
+      security:
+      - api_auth: []
+      - user_auth: []
+      produces:
+      - application/json
+      responses:
+        '200':
+          description: Statuses Updated
+          schema:
+            type: object
+            properties:
+              auditions:
+                type: array
+                items:
+                  properties:
+                    id:
+                      type: integer
+                    first_name:
+                      type: string
+                    last_name:
+                      type: string
+                    email:
+                      type: string
+                    artist_name:
+                      type: string
+                    reference_company:
+                      type: string
+                    exclusive_artist:
+                      type: string
+                    how_you_know_us:
+                      type: string
+                    status:
+                      type: string
+                    status_updated_at:
+                      type: string
+                    sounds_like:
+                      type: string
+                    remarks:
+                      type: string
+                    submitted_at:
+                      type: string
+                    audition_musics:
+                      type: array
+                      items:
+                        type: object
+                        properties:
+                          id:
+                            type: integer
+                          track_link:
+                            type: string
+                    genres:
+                      type: array
+                      items:
+                        type: object
+                        properties:
+                          id:
+                            type: integer
+                          name:
+                            type: string
+                    assignee:
+                      type: object
+                      properties:
+                        id:
+                          type: integer
+                        email:
+                          type: string
+                        first_name:
+                          type: string
+                        last_name:
+                          type: string
+  "/api/v1/auditions/email_template":
+    get:
+      summary: Get email template on basis of status
+      tags:
+      - Auditions
+      parameters:
+      - name: status
+        in: query
+        type: string
+      security:
+      - api_auth: []
+      - user_auth: []
+      produces:
+      - application/json
+      responses:
+        '200':
+          description: Template found
+          schema:
+            type: object
+            properties:
+              status:
+                type: string
   "/api/v1/session":
     post:
       summary: create session (Sign-in)
