@@ -1432,6 +1432,155 @@ paths:
                   type: integer
                 status:
                   type: string
+  "/api/v1/publishers":
+    get:
+      summary: Retrieves all publishers of current user
+      tags:
+      - Publishers
+      produces:
+      - application/json
+      parameters:
+      - name: page
+        in: query
+        type: string
+      - name: per_page
+        in: query
+        type: string
+      - name: pagination
+        in: query
+        type: string
+      security:
+      - api_auth: []
+      - user_auth: []
+      responses:
+        '200':
+          description: Publishers list
+          schema:
+            type: object
+            properties:
+              publishers:
+                type: array
+                items:
+                  properties:
+                    id:
+                      type: integer
+                    name:
+                      type: string
+                    pro:
+                      type: string
+                    ipi:
+                      type: string
+    post:
+      summary: Create new publishers
+      tags:
+      - Publishers
+      produces:
+      - application/json
+      parameters:
+      - name: name
+        in: query
+        type: string
+      - name: pro
+        in: query
+        type: string
+      - name: ipi
+        in: query
+        type: string
+      security:
+      - api_auth: []
+      - user_auth: []
+      responses:
+        '200':
+          description: Publisher Created
+          schema:
+            type: object
+            properties:
+              publishers:
+                type: array
+                items:
+                  properties:
+                    id:
+                      type: integer
+                    name:
+                      type: string
+                    pro:
+                      type: string
+                    ipi:
+                      type: string
+  "/api/v1/publishers/{id}":
+    patch:
+      summary: Update a publishers
+      tags:
+      - Publishers
+      produces:
+      - application/json
+      parameters:
+      - name: id
+        in: path
+        type: string
+        required: true
+      - name: name
+        in: query
+        type: string
+      - name: pro
+        in: query
+        type: string
+      - name: ipi
+        in: query
+        type: string
+      security:
+      - api_auth: []
+      - user_auth: []
+      responses:
+        '200':
+          description: Publisher Updated
+          schema:
+            type: object
+            properties:
+              publishers:
+                type: array
+                items:
+                  properties:
+                    id:
+                      type: integer
+                    name:
+                      type: string
+                    pro:
+                      type: string
+                    ipi:
+                      type: string
+    delete:
+      summary: Destroy a publishers
+      tags:
+      - Publishers
+      produces:
+      - application/json
+      parameters:
+      - name: id
+        in: path
+        type: string
+        required: true
+      security:
+      - api_auth: []
+      - user_auth: []
+      responses:
+        '200':
+          description: Publisher Updated
+          schema:
+            type: object
+            properties:
+              publishers:
+                type: array
+                items:
+                  properties:
+                    id:
+                      type: integer
+                    name:
+                      type: string
+                    pro:
+                      type: string
+                    ipi:
+                      type: string
   "/api/v1/session":
     post:
       summary: create session (Sign-in)
