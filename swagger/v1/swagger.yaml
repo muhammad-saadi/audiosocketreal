@@ -447,6 +447,17 @@ paths:
                   type: string
                 status:
                   type: string
+                collaborator_profile:
+                  type: object
+                  properties:
+                    id:
+                      type: integer
+                    pro:
+                      type: string
+                    ipi:
+                      type: string
+                    different_registered_name:
+                      type: string
   "/api/v1/artists_collaborators/{id}/update_access":
     patch:
       summary: Update access of artists collaborator
@@ -487,6 +498,17 @@ paths:
                   type: string
                 status:
                   type: string
+                collaborator_profile:
+                  type: object
+                  properties:
+                    id:
+                      type: integer
+                    pro:
+                      type: string
+                    ipi:
+                      type: string
+                    different_registered_name:
+                      type: string
   "/api/v1/artists_collaborators/{id}":
     patch:
       summary: Update artists collaborator
@@ -536,6 +558,17 @@ paths:
                   type: string
                 status:
                   type: string
+                collaborator_profile:
+                  type: object
+                  properties:
+                    id:
+                      type: integer
+                    pro:
+                      type: string
+                    ipi:
+                      type: string
+                    different_registered_name:
+                      type: string
     delete:
       summary: Destroy artists collaborator
       tags:
@@ -572,6 +605,17 @@ paths:
                   type: string
                 status:
                   type: string
+                collaborator_profile:
+                  type: object
+                  properties:
+                    id:
+                      type: integer
+                    pro:
+                      type: string
+                    ipi:
+                      type: string
+                    different_registered_name:
+                      type: string
   "/api/v1/artists/update_profile":
     patch:
       summary: Update artist profile of current user
@@ -1857,6 +1901,119 @@ paths:
                       type: string
                     explicit:
                       type: boolean
+  "/api/v1/collaborator/artists_collaborators/{id}":
+    patch:
+      summary: Update artists collaborator
+      tags:
+      - Collaborator-Artists Collaborators
+      parameters:
+      - name: artist_id
+        in: query
+        type: string
+      - name: id
+        in: path
+        type: integer
+        required: true
+      - name: access
+        in: formData
+        type: string
+      - name: collaborator_profile_attributes[pro]
+        in: formData
+        type: string
+      - name: collaborator_profile_attributes[ipi]
+        in: formData
+        type: string
+      - name: collaborator_profile_attributes[different_registered_name]
+        in: formData
+        type: string
+      security:
+      - api_auth: []
+      - user_auth: []
+      consumes:
+      - multipart/form-data
+      produces:
+      - application/json
+      responses:
+        '200':
+          description: Collaborator Updated
+          schema:
+            type: array
+            items:
+              type: object
+              properties:
+                id:
+                  type: integer
+                first_name:
+                  type: string
+                last_name:
+                  type: string
+                email:
+                  type: string
+                access:
+                  type: string
+                status:
+                  type: string
+                collaborator_profile:
+                  type: object
+                  properties:
+                    id:
+                      type: integer
+                    pro:
+                      type: string
+                    ipi:
+                      type: string
+                    different_registered_name:
+                      type: string
+    delete:
+      summary: Destroy artists collaborator
+      tags:
+      - Collaborator-Artists Collaborators
+      parameters:
+      - name: artist_id
+        in: query
+        type: integer
+      - name: id
+        in: path
+        type: integer
+        required: true
+      security:
+      - api_auth: []
+      - user_auth: []
+      consumes:
+      - multipart/form-data
+      produces:
+      - application/json
+      responses:
+        '200':
+          description: Collaborator deleted
+          schema:
+            type: array
+            items:
+              type: object
+              properties:
+                id:
+                  type: integer
+                first_name:
+                  type: string
+                last_name:
+                  type: string
+                email:
+                  type: string
+                access:
+                  type: string
+                status:
+                  type: string
+                collaborator_profile:
+                  type: object
+                  properties:
+                    id:
+                      type: integer
+                    pro:
+                      type: string
+                    ipi:
+                      type: string
+                    different_registered_name:
+                      type: string
   "/api/v1/genres":
     get:
       summary: Get all genres

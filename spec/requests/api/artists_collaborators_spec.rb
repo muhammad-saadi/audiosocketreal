@@ -27,6 +27,15 @@ RSpec.describe 'api/artists_collaborators', type: :request do
                    agreements: { type: :boolean },
                    access: { type: :string },
                    status: { type: :string },
+                   collaborator_profile: {
+                     type: :object,
+                     properties: {
+                       id: { type: :integer },
+                       pro: { type: :string },
+                       ipi: { type: :string },
+                       different_registered_name: { type: :string }
+                     }
+                   }
                  }
                }
 
@@ -58,7 +67,16 @@ RSpec.describe 'api/artists_collaborators', type: :request do
                    last_name: { type: :string },
                    email: { type: :string },
                    access: { type: :string },
-                   status: { type: :string }
+                   status: { type: :string },
+                   collaborator_profile: {
+                     type: :object,
+                     properties: {
+                       id: { type: :integer },
+                       pro: { type: :string },
+                       ipi: { type: :string },
+                       different_registered_name: { type: :string }
+                     }
+                   }
                  }
                }
 
@@ -92,7 +110,16 @@ RSpec.describe 'api/artists_collaborators', type: :request do
                    last_name: { type: :string },
                    email: { type: :string },
                    access: { type: :string },
-                   status: { type: :string }
+                   status: { type: :string },
+                   collaborator_profile: {
+                     type: :object,
+                     properties: {
+                       id: { type: :integer },
+                       pro: { type: :string },
+                       ipi: { type: :string },
+                       different_registered_name: { type: :string }
+                     }
+                   }
                  }
                }
 
@@ -123,7 +150,16 @@ RSpec.describe 'api/artists_collaborators', type: :request do
                    last_name: { type: :string },
                    email: { type: :string },
                    access: { type: :string },
-                   status: { type: :string }
+                   status: { type: :string },
+                   collaborator_profile: {
+                     type: :object,
+                     properties: {
+                       id: { type: :integer },
+                       pro: { type: :string },
+                       ipi: { type: :string },
+                       different_registered_name: { type: :string }
+                     }
+                   }
                  }
                }
 
