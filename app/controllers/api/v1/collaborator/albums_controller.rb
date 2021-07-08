@@ -48,7 +48,7 @@ class Api::V1::Collaborator::AlbumsController < Api::V1::Collaborator::BaseContr
   param_group :doc_update_artwork
   def update_artwork
     if @album.update(artwork_params)
-      render json: @album
+      render json: @album, serializer: Api::V1::AlbumSerializer
     else
       raise ExceptionHandler::ValidationError.new(@album.errors.to_h, 'Error updating album artwork.')
     end

@@ -81,6 +81,31 @@ paths:
                       format: date
                     artwork:
                       type: string
+                    tracks:
+                      type: array
+                      items:
+                        properties:
+                          id:
+                            type: integer
+                          title:
+                            type: string
+                          file:
+                            type: string
+                          status:
+                            type: string
+                          public_domain:
+                            type: boolean
+                          created_at:
+                            type: string
+                            format: date
+                          publisher:
+                            type: object
+                          collaborator:
+                            type: object
+                          lyrics:
+                            type: string
+                          explicit:
+                            type: boolean
     post:
       summary: Create a new album
       tags:
@@ -114,6 +139,31 @@ paths:
                 format: date
               artwork:
                 type: string
+              tracks:
+                type: array
+                items:
+                  properties:
+                    id:
+                      type: integer
+                    title:
+                      type: string
+                    file:
+                      type: string
+                    status:
+                      type: string
+                    public_domain:
+                      type: boolean
+                    created_at:
+                      type: string
+                      format: date
+                    publisher:
+                      type: object
+                    collaborator:
+                      type: object
+                    lyrics:
+                      type: string
+                    explicit:
+                      type: boolean
   "/api/v1/albums/{id}":
     patch:
       summary: Update an album
@@ -152,6 +202,31 @@ paths:
                 format: date
               artwork:
                 type: string
+              tracks:
+                type: array
+                items:
+                  properties:
+                    id:
+                      type: integer
+                    title:
+                      type: string
+                    file:
+                      type: string
+                    status:
+                      type: string
+                    public_domain:
+                      type: boolean
+                    created_at:
+                      type: string
+                      format: date
+                    publisher:
+                      type: object
+                    collaborator:
+                      type: object
+                    lyrics:
+                      type: string
+                    explicit:
+                      type: boolean
     get:
       summary: Retrieves an album
       tags:
@@ -181,6 +256,31 @@ paths:
                 format: date
               artwork:
                 type: string
+              tracks:
+                type: array
+                items:
+                  properties:
+                    id:
+                      type: integer
+                    title:
+                      type: string
+                    file:
+                      type: string
+                    status:
+                      type: string
+                    public_domain:
+                      type: boolean
+                    created_at:
+                      type: string
+                      format: date
+                    publisher:
+                      type: object
+                    collaborator:
+                      type: object
+                    lyrics:
+                      type: string
+                    explicit:
+                      type: boolean
         '404':
           description: album not found
     delete:
@@ -216,6 +316,31 @@ paths:
                       format: date
                     artwork:
                       type: string
+                    tracks:
+                      type: array
+                      items:
+                        properties:
+                          id:
+                            type: integer
+                          title:
+                            type: string
+                          file:
+                            type: string
+                          status:
+                            type: string
+                          public_domain:
+                            type: boolean
+                          created_at:
+                            type: string
+                            format: date
+                          publisher:
+                            type: object
+                          collaborator:
+                            type: object
+                          lyrics:
+                            type: string
+                          explicit:
+                            type: boolean
         '404':
           description: album not found
   "/api/v1/albums/{id}/update_artwork":
@@ -253,6 +378,31 @@ paths:
                 format: date
               artwork:
                 type: string
+              tracks:
+                type: array
+                items:
+                  properties:
+                    id:
+                      type: integer
+                    title:
+                      type: string
+                    file:
+                      type: string
+                    status:
+                      type: string
+                    public_domain:
+                      type: boolean
+                    created_at:
+                      type: string
+                      format: date
+                    publisher:
+                      type: object
+                    collaborator:
+                      type: object
+                    lyrics:
+                      type: string
+                    explicit:
+                      type: boolean
   "/api/v1/artists_collaborators/{id}/update_status":
     patch:
       summary: Update status of artists collaborator
@@ -1328,6 +1478,385 @@ paths:
             properties:
               status:
                 type: string
+  "/api/v1/collaborator/albums":
+    get:
+      summary: Retrieves all albums of current artist
+      tags:
+      - Collaborator-Albums
+      produces:
+      - application/json
+      parameters:
+      - name: artist_id
+        in: query
+        type: string
+      - name: page
+        in: query
+        type: string
+      - name: per_page
+        in: query
+        type: string
+      - name: pagination
+        in: query
+        type: string
+      security:
+      - api_auth: []
+      - user_auth: []
+      responses:
+        '200':
+          description: Albums list
+          schema:
+            type: object
+            properties:
+              albums:
+                type: array
+                items:
+                  properties:
+                    id:
+                      type: integer
+                    name:
+                      type: string
+                    release_date:
+                      type: string
+                      format: date
+                    artwork:
+                      type: string
+                    tracks:
+                      type: array
+                      items:
+                        properties:
+                          id:
+                            type: integer
+                          title:
+                            type: string
+                          file:
+                            type: string
+                          status:
+                            type: string
+                          public_domain:
+                            type: boolean
+                          created_at:
+                            type: string
+                            format: date
+                          publisher:
+                            type: object
+                          collaborator:
+                            type: object
+                          lyrics:
+                            type: string
+                          explicit:
+                            type: boolean
+    post:
+      summary: Create a new album
+      tags:
+      - Collaborator-Albums
+      parameters:
+      - name: artist_id
+        in: query
+        type: string
+      - name: name
+        in: formData
+        type: string
+      - name: release_date
+        in: formData
+        type: date
+      security:
+      - api_auth: []
+      - user_auth: []
+      consumes:
+      - multipart/form-data
+      produces:
+      - application/json
+      responses:
+        '200':
+          description: Album Created
+          schema:
+            type: object
+            properties:
+              id:
+                type: integer
+              name:
+                type: string
+              release_date:
+                type: string
+                format: date
+              artwork:
+                type: string
+              tracks:
+                type: array
+                items:
+                  properties:
+                    id:
+                      type: integer
+                    title:
+                      type: string
+                    file:
+                      type: string
+                    status:
+                      type: string
+                    public_domain:
+                      type: boolean
+                    created_at:
+                      type: string
+                      format: date
+                    publisher:
+                      type: object
+                    collaborator:
+                      type: object
+                    lyrics:
+                      type: string
+                    explicit:
+                      type: boolean
+  "/api/v1/collaborator/albums/{id}":
+    patch:
+      summary: Update an album
+      tags:
+      - Collaborator-Albums
+      parameters:
+      - name: artist_id
+        in: query
+        type: string
+      - name: id
+        in: path
+        type: string
+        required: true
+      - name: name
+        in: formData
+        type: string
+      - name: release_date
+        in: formData
+        type: date
+      security:
+      - api_auth: []
+      - user_auth: []
+      consumes:
+      - multipart/form-data
+      produces:
+      - application/json
+      responses:
+        '200':
+          description: Album Updated
+          schema:
+            type: object
+            properties:
+              id:
+                type: integer
+              name:
+                type: string
+              release_date:
+                type: string
+                format: date
+              artwork:
+                type: string
+              tracks:
+                type: array
+                items:
+                  properties:
+                    id:
+                      type: integer
+                    title:
+                      type: string
+                    file:
+                      type: string
+                    status:
+                      type: string
+                    public_domain:
+                      type: boolean
+                    created_at:
+                      type: string
+                      format: date
+                    publisher:
+                      type: object
+                    collaborator:
+                      type: object
+                    lyrics:
+                      type: string
+                    explicit:
+                      type: boolean
+    get:
+      summary: Retrieves an album
+      tags:
+      - Collaborator-Albums
+      produces:
+      - application/json
+      parameters:
+      - name: artist_id
+        in: query
+        type: string
+      - name: id
+        in: path
+        type: string
+        required: true
+      security:
+      - api_auth: []
+      - user_auth: []
+      responses:
+        '200':
+          description: Album found
+          schema:
+            type: object
+            properties:
+              id:
+                type: integer
+              name:
+                type: string
+              release_date:
+                type: string
+                format: date
+              artwork:
+                type: string
+              tracks:
+                type: array
+                items:
+                  properties:
+                    id:
+                      type: integer
+                    title:
+                      type: string
+                    file:
+                      type: string
+                    status:
+                      type: string
+                    public_domain:
+                      type: boolean
+                    created_at:
+                      type: string
+                      format: date
+                    publisher:
+                      type: object
+                    collaborator:
+                      type: object
+                    lyrics:
+                      type: string
+                    explicit:
+                      type: boolean
+        '404':
+          description: album not found
+    delete:
+      summary: Delete an album
+      tags:
+      - Albums
+      produces:
+      - application/json
+      parameters:
+      - name: artist_id
+        in: query
+        type: string
+      - name: id
+        in: path
+        type: string
+        required: true
+      security:
+      - api_auth: []
+      - user_auth: []
+      responses:
+        '200':
+          description: Album Deleted
+          schema:
+            type: object
+            properties:
+              albums:
+                type: array
+                items:
+                  properties:
+                    id:
+                      type: integer
+                    name:
+                      type: string
+                    release_date:
+                      type: string
+                      format: date
+                    artwork:
+                      type: string
+                    tracks:
+                      type: array
+                      items:
+                        properties:
+                          id:
+                            type: integer
+                          title:
+                            type: string
+                          file:
+                            type: string
+                          status:
+                            type: string
+                          public_domain:
+                            type: boolean
+                          created_at:
+                            type: string
+                            format: date
+                          publisher:
+                            type: object
+                          collaborator:
+                            type: object
+                          lyrics:
+                            type: string
+                          explicit:
+                            type: boolean
+        '404':
+          description: album not found
+  "/api/v1/collaborator/albums/{id}/update_artwork":
+    patch:
+      summary: Update artwork of an album
+      tags:
+      - Collaborator-Albums
+      parameters:
+      - name: artist_id
+        in: query
+        type: string
+      - name: id
+        in: path
+        type: string
+        required: true
+      - name: artwork
+        in: formData
+        type: file
+      security:
+      - api_auth: []
+      - user_auth: []
+      consumes:
+      - multipart/form-data
+      produces:
+      - application/json
+      responses:
+        '200':
+          description: Album Updated
+          schema:
+            type: object
+            properties:
+              id:
+                type: integer
+              name:
+                type: string
+              release_date:
+                type: string
+                format: date
+              artwork:
+                type: string
+              tracks:
+                type: array
+                items:
+                  properties:
+                    id:
+                      type: integer
+                    title:
+                      type: string
+                    file:
+                      type: string
+                    status:
+                      type: string
+                    public_domain:
+                      type: boolean
+                    created_at:
+                      type: string
+                      format: date
+                    publisher:
+                      type: object
+                    collaborator:
+                      type: object
+                    lyrics:
+                      type: string
+                    explicit:
+                      type: boolean
   "/api/v1/genres":
     get:
       summary: Get all genres
