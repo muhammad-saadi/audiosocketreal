@@ -154,6 +154,20 @@ ActiveAdmin.register User, as: 'Artist' do
             end
           end
         end
+
+        panel 'Notes' do
+          table_for artist.artist_profile.notes do
+            if artist.artist_profile.notes.blank?
+              column 'No Records Found'
+            else
+              column :id
+              column :status
+              column :actions do |note|
+                link_to 'view', admin_note_path(note), class: 'small button'
+              end
+            end
+          end
+        end
       end
     end
 

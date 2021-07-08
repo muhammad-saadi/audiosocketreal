@@ -27,7 +27,7 @@ ActiveAdmin.register AdminUser do
 
     f.actions do
       f.action :submit
-      f.cancel_link({ action: 'show' })
+      f.cancel_link(f.object.persisted? ? { action: 'show' } : admin_admin_users_path)
     end
   end
 end

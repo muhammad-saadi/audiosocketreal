@@ -7,6 +7,7 @@ ActiveAdmin.register Publisher do
 
   filter :user, as: :searchable_select, collection: User.artist
   filter :name_cont, as: :string, label: 'Name'
+  filter :pro_cont, as: :string, label: 'PRO'
   filter :created_at
 
   index do
@@ -62,7 +63,7 @@ ActiveAdmin.register Publisher do
     f.inputs do
       f.input :user, as: :select, collection: [f.object.user], include_blank: false
       f.input :name
-      f.input :pro, as: :select, collection: pro_list, include_blank: '(Select a PRO)'
+      f.input :pro, as: :searchable_select, collection: pro_list, include_blank: 'Select a PRO'
       f.input :ipi
     end
 

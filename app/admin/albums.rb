@@ -36,6 +36,20 @@ ActiveAdmin.register Album do
       end
     end
 
+    panel 'Notes' do
+      table_for album.notes do
+        if album.notes.blank?
+          column 'No Records Found'
+        else
+          column :id
+          column :status
+          column :actions do |note|
+            link_to 'view', admin_note_path(note), class: 'small button'
+          end
+        end
+      end
+    end
+
     active_admin_comments
   end
 
@@ -53,12 +67,12 @@ ActiveAdmin.register Album do
       f.input :name
       f.input :release_date, as: :date_picker
       f.input :artwork, as: :file
-      f.input :user, as: :searchable_select , collection: User.artist, label: 'Artist', include_blank: '(Select an Artist)'
+      f.input :user, as: :searchable_select , collection: User.artist, label: 'Artist', include_blank: 'Select an Artist'
     end
 
     f.actions do
       f.action :submit
-      f.cancel_link({ action: 'show' })
+      f.cancel_link(f.object.persisted? ? { action: 'show' } : admin_albums_path)
     end
   end
 end

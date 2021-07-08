@@ -47,7 +47,7 @@ ActiveAdmin.register Agreement do
 
     f.actions do
       f.action :submit
-      f.cancel_link({ action: 'show' })
+      f.cancel_link(f.object.persisted? ? { action: 'show' } : admin_agreements_path)
     end
   end
 end

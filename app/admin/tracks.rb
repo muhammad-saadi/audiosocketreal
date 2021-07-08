@@ -50,6 +50,21 @@ ActiveAdmin.register Track do
       row :updated_at
     end
 
+    panel 'Notes' do
+      @track = Track.find(params[:id])
+      table_for @track.notes do
+        if @track.notes.blank?
+          column 'No Records Found'
+        else
+          column :id
+          column :status
+          column :actions do |note|
+            link_to 'view', admin_note_path(note), class: 'small button'
+          end
+        end
+      end
+    end
+
     active_admin_comments
   end
 
@@ -74,9 +89,9 @@ ActiveAdmin.register Track do
       f.input :album, as: :searchable_select, collection: user.albums, include_blank: false
       f.input :public_domain
       f.input :explicit
-      f.input :publisher, as: :searchable_select, collection: user.publishers, include_blank: '(Select a Publisher)'
+      f.input :publisher, as: :searchable_select, collection: user.publishers, include_blank: 'Select a Publisher'
       f.input :artists_collaborator, as: :searchable_select, collection: collaborators_details_list(user),
-                                     include_blank: '(Select a Collaborator)'
+                                     include_blank: 'Select a Collaborator'
     end
 
     f.actions do

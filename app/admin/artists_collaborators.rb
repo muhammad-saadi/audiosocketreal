@@ -100,7 +100,7 @@ ActiveAdmin.register ArtistsCollaborator do
 
     f.actions do
       f.action :submit
-      f.cancel_link({ action: 'show' })
+      f.cancel_link(f.object.persisted? ? { action: 'show' } : admin_collaborators_path)
     end
   end
 end

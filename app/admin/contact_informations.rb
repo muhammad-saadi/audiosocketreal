@@ -47,7 +47,7 @@ ActiveAdmin.register ContactInformation do
       f.input :phone
       f.input :street
       f.input :postal_code
-      f.input :country, as: :select, collection: CountryStateSelect.countries_collection.map(&:first), include_blank: '(Select Country)'
+      f.input :country, as: :searchable_select, collection: CountryStateSelect.countries_collection.map(&:first), include_blank: 'Select a Country'
       f.input :state
       f.input :city
       f.input :artist_profile, as: :select, collection: [f.object.artist_profile], include_blank: false
