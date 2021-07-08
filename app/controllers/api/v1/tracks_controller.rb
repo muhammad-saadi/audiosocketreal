@@ -16,7 +16,6 @@ class Api::V1::TracksController < Api::BaseController
   param_group :doc_create_track
   def create
     @track = @album.tracks.new(track_params)
-    byebug
     if @track.save
       render json: @track
     else
