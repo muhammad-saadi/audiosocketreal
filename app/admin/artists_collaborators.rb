@@ -1,4 +1,5 @@
 ActiveAdmin.register ArtistsCollaborator do
+  menu label: 'Collaborators'
   config.remove_action_item(:new)
 
   permit_params :status, :access
@@ -14,12 +15,12 @@ ActiveAdmin.register ArtistsCollaborator do
   index do
     selectable_column
     id_column
-    column :artist do |artists_collaborator|
-      link_to artists_collaborator.artist.email, admin_artist_path(artists_collaborator.artist)
+    column :collaborator do |artists_collaborator|
+      link_to artists_collaborator.collaborator.full_name, admin_collaborator_path(artists_collaborator.collaborator)
     end
 
-    column :collaborator do |artists_collaborator|
-      link_to artists_collaborator.collaborator.email, admin_collaborator_path(artists_collaborator.collaborator)
+    column :artist do |artists_collaborator|
+      link_to artists_collaborator.artist.full_name, admin_artist_path(artists_collaborator.artist)
     end
 
     column :status do |artists_collaborator|
@@ -35,13 +36,25 @@ ActiveAdmin.register ArtistsCollaborator do
   end
 
   show do
+    panel 'Collaborator' do
+      panel('', class: 'align-right') do
+        if artists_collaborator.collaborator.present?
+          link_to 'Edit collaborator', edit_admin_collaborator_path(artists_collaborator.collaborator), class: 'medium button'
+        end
+      end
+      attributes_table_for artists_collaborator.collaborator do
+        row :email
+        row :first_name
+        row :last_name
+        row :created_at
+        row :updated_at
+        row (:roles) { |collaborator| collaborator.roles.map(&:titleize) }
+      end
+    end
+
     attributes_table do
       row :artist do
-        link_to artists_collaborator.artist.email, admin_artist_path(artists_collaborator.artist)
-      end
-
-      row :collaborator do
-        link_to artists_collaborator.collaborator.email, admin_collaborator_path(artists_collaborator.collaborator)
+        link_to artists_collaborator.artist.full_name, admin_artist_path(artists_collaborator.artist)
       end
 
       row :status do
@@ -77,13 +90,60 @@ ActiveAdmin.register ArtistsCollaborator do
       end
     end
 
+    panel 'Artists details' do
+      table_for artists_collaborator.collaborator.artists_details do
+        if artists_collaborator.collaborator.artists_details.blank?
+          column 'No Records Found'
+        else
+          column :id
+          column :artist do |artists_detail|
+            link_to artists_detail.artist.full_name, admin_artist_path(artists_detail.artist)
+          end
+
+          column :access do |artists_detail|
+            artists_detail.access&.titleize
+          end
+
+          column :status do |artists_detail|
+            artists_detail.status&.titleize
+          end
+
+          column :actions do |artist|
+            link_to t('active_admin.view'), admin_artists_collaborator_path(artist), class: 'small button'
+          end
+        end
+      end
+    end
+
+    panel 'Agreements' do
+      table_for artists_collaborator.collaborator.users_agreements.collaborator do
+        if artists_collaborator.collaborator.users_agreements.collaborator.blank?
+          column 'No Records Found'
+        else
+          column :id
+          column :agreement
+          column 'Agreement Type' do |users_agreement|
+            users_agreement.agreement.agreement_type&.titleize
+          end
+
+          column :status do |users_agreement|
+            users_agreement.status&.titleize
+          end
+
+          column :actions do |users_agreement|
+            link_to t('active_admin.view'), admin_users_agreement_path(users_agreement), class: 'small button'
+          end
+        end
+      end
+    end
+
     active_admin_comments
   end
 
   csv do
     column :id
-    column (:artist) { |artists_collaborator| artists_collaborator.artist.email }
-    column (:collaborator) { |artists_collaborator| artists_collaborator.collaborator.email }
+    column (:artist) { |artists_collaborator| artists_collaborator.artist.full_name }
+    column (:collaborator) { |artists_collaborator| artists_collaborator.collaborator.full_name }
     column (:status) { |artists_collaborator| artists_collaborator.status&.titleize }
     column (:access) { |artists_collaborator| artists_collaborator.access&.titleize }
     column (:created_at) { |object| formatted_datetime(object.created_at.localtime) }

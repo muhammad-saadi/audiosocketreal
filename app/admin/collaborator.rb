@@ -1,4 +1,5 @@
 ActiveAdmin.register User, as: 'Collaborator' do
+  menu false
   config.remove_action_item(:new)
   permit_params :first_name, :last_name
 
@@ -45,7 +46,7 @@ ActiveAdmin.register User, as: 'Collaborator' do
         else
           column :id
           column :artist do |artists_detail|
-            link_to artists_detail.artist.email, admin_artist_path(artists_detail.artist)
+            link_to artists_detail.artist.full_name, admin_artist_path(artists_detail.artist)
           end
 
           column :access do |artists_detail|

@@ -234,7 +234,7 @@ ActiveAdmin.register User, as: 'Artist' do
         else
           column :id
           column :collaborator do |collaborators_detail|
-            link_to collaborators_detail.collaborator.email, admin_collaborator_path(collaborators_detail.collaborator)
+            link_to collaborators_detail.collaborator.full_name, admin_collaborator_path(collaborators_detail.collaborator)
           end
 
           column :access do |collaborators_detail|
