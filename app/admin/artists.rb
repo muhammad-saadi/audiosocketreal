@@ -246,6 +246,14 @@ ActiveAdmin.register User, as: 'Artist' do
             collaborators_detail.status&.titleize
           end
 
+          column :pro do |collaborators_detail|
+            collaborators_detail.collaborator_profile.pro
+          end
+
+          column :ipi do |collaborators_detail|
+            collaborators_detail.collaborator_profile.ipi
+          end
+
           column :actions do |collaborator|
             link_to t('active_admin.view'), admin_artists_collaborator_path(collaborator), class: 'small button'
           end
