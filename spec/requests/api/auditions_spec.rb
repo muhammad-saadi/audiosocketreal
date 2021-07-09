@@ -80,7 +80,16 @@ RSpec.describe 'api/auditions', type: :request do
     post 'Create a new audition' do
       tags 'Auditions'
 
-      parameter name: :audition, in: :body, type: :object
+      parameter name: :'audition[first_name]', in: :formData, type: :string
+      parameter name: :'audition[last_name]', in: :formData, type: :string
+      parameter name: :'audition[email]', in: :formData, type: :string
+      parameter name: :'audition[artist_name]', in: :formData, type: :string
+      parameter name: :'audition[reference_company]', in: :formData, type: :string
+      parameter name: :'audition[exclusive_artist]', in: :formData, type: :boolean
+      parameter name: :'audition[how_you_know_us]', in: :formData, type: :string
+      parameter name: :'audition[sounds_like]', in: :formData, type: :string
+      parameter name: :'audition[audition_musics][][track_link]', in: :formData, type: :string
+      parameter name: :'audition[genre_ids][]', in: :formData, type: :string
 
       security [{ api_auth: [] }]
 
@@ -214,7 +223,7 @@ RSpec.describe 'api/auditions', type: :request do
     patch 'Update status of auditions in bulk' do
       tags 'Auditions'
 
-      parameter name: :'ids[]', in: :formData
+      parameter name: :'ids[]', in: :formData, type: :string
       parameter name: :status, in: :formData, type: :string
       parameter name: :content, in: :formData, type: :string
       parameter name: :exclusive, in: :formData, type: :boolean
@@ -350,7 +359,7 @@ RSpec.describe 'api/auditions', type: :request do
     patch 'Assign manager to auditions in bulk' do
       tags 'Auditions'
 
-      parameter name: :'audition_ids[]', in: :formData
+      parameter name: :'audition_ids[]', in: :formData, type: :string
       parameter name: :assignee_id, in: :formData, type: :string
       parameter name: :remarks, in: :formData, type: :string
 

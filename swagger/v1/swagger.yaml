@@ -1090,9 +1090,36 @@ paths:
       tags:
       - Auditions
       parameters:
-      - name: audition
-        in: body
-        type: object
+      - name: audition[first_name]
+        in: formData
+        type: string
+      - name: audition[last_name]
+        in: formData
+        type: string
+      - name: audition[email]
+        in: formData
+        type: string
+      - name: audition[artist_name]
+        in: formData
+        type: string
+      - name: audition[reference_company]
+        in: formData
+        type: string
+      - name: audition[exclusive_artist]
+        in: formData
+        type: boolean
+      - name: audition[how_you_know_us]
+        in: formData
+        type: string
+      - name: audition[sounds_like]
+        in: formData
+        type: string
+      - name: audition[audition_musics][][track_link]
+        in: formData
+        type: string
+      - name: audition[genre_ids][]
+        in: formData
+        type: string
       security:
       - api_auth: []
       produces:
@@ -1255,6 +1282,7 @@ paths:
       parameters:
       - name: ids[]
         in: formData
+        type: string
       - name: status
         in: formData
         type: string
@@ -1424,6 +1452,7 @@ paths:
       parameters:
       - name: audition_ids[]
         in: formData
+        type: string
       - name: assignee_id
         in: formData
         type: string

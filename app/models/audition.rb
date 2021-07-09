@@ -62,7 +62,7 @@ class Audition < ApplicationRecord
   def send_email(content)
     return unless approved? || rejected?
 
-    AuditionMailer.response_mail(id, content.gsub('[name]', full_name)).deliver_later if status_previously_changed?
+    AuditionMailer.response_mail(id, content&.gsub('[name]', full_name)).deliver_later if status_previously_changed?
   end
 
   def notify_assignee
