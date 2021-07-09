@@ -48,6 +48,7 @@ module ActiveAdminHelper
       ['NS (no society)', 'NS'],
       ['USA - BMI', 'USA - BMI'],
       ['USA - SESAC', 'USA - SESAC'],
+      ['USA - ASCAP', 'USA - ASCAP'],
       ['United Kingdom - PRS', 'United Kingdom - PRS'],
       ['Argentina - SADAIC', 'Argentina - SADAIC'],
       ['Australia - APRA', 'Australia - APRA'],
