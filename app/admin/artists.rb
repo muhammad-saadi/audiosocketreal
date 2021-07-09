@@ -28,9 +28,7 @@ ActiveAdmin.register User, as: 'Artist' do
     column :last_name
     column :created_at
     column :updated_at
-    column :roles do |artist|
-      artist.roles.map(&:titleize)
-    end
+    column :roles, &:roles_string
     actions
   end
 
@@ -42,7 +40,7 @@ ActiveAdmin.register User, as: 'Artist' do
       row :created_at
       row :updated_at
       row :roles do
-        artist.roles.map(&:titleize)
+        artist.roles_string
       end
     end
 
@@ -228,7 +226,7 @@ ActiveAdmin.register User, as: 'Artist' do
     end
 
     panel 'Collaborators Details' do
-      @collaborator_details = artist.collaborators_details.includes(:collaborator)
+      @collaborator_details = artist.collaborators_details.includes(:collaborator, :collaborator_profile)
       table_for @collaborator_details do
         if @collaborator_details.blank?
           column 'No Records Found'
@@ -270,7 +268,7 @@ ActiveAdmin.register User, as: 'Artist' do
     column :last_name
     column (:created_at) { |object| formatted_datetime(object.created_at.localtime) }
     column (:updated_at) { |object| formatted_datetime(object.updated_at.localtime) }
-    column (:roles) { |artist| artist.roles.map(&:titleize) }
+    column :roles, &:roles_string
   end
 
   form do |f|

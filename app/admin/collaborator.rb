@@ -21,9 +21,7 @@ ActiveAdmin.register User, as: 'Collaborator' do
     column :last_name
     column :created_at
     column :updated_at
-    column :roles do |collaborator|
-      collaborator.roles.map(&:titleize)
-    end
+    column :roles, &:roles_string
     actions
   end
 
@@ -35,7 +33,7 @@ ActiveAdmin.register User, as: 'Collaborator' do
       row :created_at
       row :updated_at
       row :roles do
-        collaborator.roles.map(&:titleize)
+        collaborator.roles_string
       end
     end
 
@@ -111,7 +109,7 @@ ActiveAdmin.register User, as: 'Collaborator' do
     column :last_name
     column (:created_at) { |object| formatted_datetime(object.created_at.localtime) }
     column (:updated_at) { |object| formatted_datetime(object.updated_at.localtime) }
-    column (:roles) { |collaborator| collaborator.roles.map(&:titleize) }
+    column :roles, &:roles_string
   end
 
   form do |f|

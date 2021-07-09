@@ -79,6 +79,10 @@ class User < ApplicationRecord
                         [Agreement::TYPES[:exclusive], Agreement::TYPES[:non_exclusive]]).pluck(:status).all?('accepted')
   end
 
+  def roles_string
+    roles.map(&:titleize)
+  end
+
   private
 
   def validate_manager

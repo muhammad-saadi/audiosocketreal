@@ -48,7 +48,7 @@ ActiveAdmin.register ArtistsCollaborator do
         row :last_name
         row :created_at
         row :updated_at
-        row (:roles) { |collaborator| collaborator.roles.map(&:titleize) }
+        row :roles, &:roles_string
       end
     end
 
