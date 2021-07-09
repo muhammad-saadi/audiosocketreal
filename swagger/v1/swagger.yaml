@@ -697,7 +697,7 @@ paths:
       - application/json
       responses:
         '200':
-          description: Album Updated
+          description: ArtistProfile Updated
           schema:
             type: object
             properties:
@@ -776,7 +776,7 @@ paths:
       - application/json
       responses:
         '200':
-          description: Album Updated
+          description: Artist Profile
           schema:
             type: object
             properties:
@@ -843,7 +843,7 @@ paths:
                     type: string
   "/api/v1/artists/invite_collaborator":
     patch:
-      summary: Update artists collaborator
+      summary: Invite collaborator
       tags:
       - Artists
       parameters:
@@ -1778,7 +1778,7 @@ paths:
     delete:
       summary: Delete an album
       tags:
-      - Albums
+      - Collaborator-Albums
       produces:
       - application/json
       parameters:
@@ -2014,6 +2014,888 @@ paths:
                       type: string
                     different_registered_name:
                       type: string
+  "/api/v1/collaborator/artists/update_profile":
+    patch:
+      summary: Update artist profile of current artist
+      tags:
+      - Collaborator-Artists
+      parameters:
+      - name: artist_id
+        in: query
+        type: string
+      - name: profile_image
+        in: formData
+        type: file
+      - name: banner_image
+        in: formData
+        type: file
+      - name: additional_images[]
+        in: formData
+        type: file
+      - name: bio
+        in: formData
+        type: string
+      - name: key_facts
+        in: formData
+        type: string
+      - name: bio
+        in: formData
+        type: string
+      - name: sounds_like
+        in: formData
+        type: string
+      - name: social
+        in: formData
+        type: string
+      - name: contact_information[name]
+        in: formData
+        type: string
+      - name: contact_information[phone]
+        in: formData
+        type: string
+      - name: contact_information[email]
+        in: formData
+        type: string
+      - name: contact_information[street]
+        in: formData
+        type: string
+      - name: contact_information[postal_code]
+        in: formData
+        type: string
+      - name: contact_information[city]
+        in: formData
+        type: string
+      - name: contact_information[state]
+        in: formData
+        type: string
+      - name: contact_information[country]
+        in: formData
+        type: string
+      - name: payment_information[payee_name]
+        in: formData
+        type: string
+      - name: payment_information[routing]
+        in: formData
+        type: string
+      - name: payment_information[account_number]
+        in: formData
+        type: string
+      - name: payment_information[bank_name]
+        in: formData
+        type: string
+      - name: payment_information[paypal_email]
+        in: formData
+        type: string
+      - name: tax_information[ssn]
+        in: formData
+        type: string
+      security:
+      - api_auth: []
+      - user_auth: []
+      consumes:
+      - multipart/form-data
+      produces:
+      - application/json
+      responses:
+        '200':
+          description: ArtistProfile Updated
+          schema:
+            type: object
+            properties:
+              id:
+                type: integer
+              name:
+                type: string
+              exclusive:
+                type: string
+              profile_image:
+                type: string
+              banner_image:
+                type: string
+              additional_images:
+                type: array
+                items:
+                  type: string
+              bio:
+                type: string
+              key_facts:
+                type: string
+              sounds_like:
+                type: string
+              profile_image_status:
+                type: string
+              banner_image_status:
+                type: string
+              contact_information:
+                type: object
+                properties:
+                  name:
+                    type: string
+                  phone:
+                    type: string
+                  email:
+                    type: string
+                  street:
+                    type: string
+                  postal_code:
+                    type: string
+                  city:
+                    type: string
+                  state:
+                    type: string
+                  country:
+                    type: string
+              payment_information:
+                type: object
+                properties:
+                  payee_name:
+                    type: string
+                  routing:
+                    type: string
+                  account_number:
+                    type: string
+                  bank_name:
+                    type: string
+                  paypal_email:
+                    type: string
+              tax_information:
+                type: object
+                properties:
+                  ssn:
+                    type: string
+  "/api/v1/collaborator/artists/show_profile":
+    get:
+      summary: Show artist profile of current artist
+      tags:
+      - Collaborator-Artists
+      security:
+      - api_auth: []
+      - user_auth: []
+      parameters:
+      - name: artist_id
+        in: query
+        type: string
+      consumes:
+      - multipart/form-data
+      produces:
+      - application/json
+      responses:
+        '200':
+          description: Artist Profile
+          schema:
+            type: object
+            properties:
+              id:
+                type: integer
+              name:
+                type: string
+              exclusive:
+                type: string
+              profile_image:
+                type: string
+              banner_image:
+                type: string
+              additional_images:
+                type: array
+                items:
+                  type: string
+              bio:
+                type: string
+              key_facts:
+                type: string
+              sounds_like:
+                type: string
+              profile_image_status:
+                type: string
+              banner_image_status:
+                type: string
+              contact_information:
+                type: object
+                properties:
+                  name:
+                    type: string
+                  phone:
+                    type: string
+                  email:
+                    type: string
+                  street:
+                    type: string
+                  postal_code:
+                    type: string
+                  city:
+                    type: string
+                  state:
+                    type: string
+                  country:
+                    type: string
+              payment_information:
+                type: object
+                properties:
+                  payee_name:
+                    type: string
+                  routing:
+                    type: string
+                  account_number:
+                    type: string
+                  bank_name:
+                    type: string
+                  paypal_email:
+                    type: string
+              tax_information:
+                type: object
+                properties:
+                  ssn:
+                    type: string
+  "/api/v1/collaborator/artists/invite_collaborator":
+    patch:
+      summary: Invite collaborator
+      tags:
+      - Collaborator-Artists
+      parameters:
+      - name: artist_id
+        in: query
+        type: string
+      - name: name
+        in: formData
+        type: string
+      - name: email
+        in: formData
+        type: string
+      - name: access
+        in: formData
+        type: string
+      - name: collaborator_profile_attributes[pro]
+        in: formData
+        type: string
+      - name: collaborator_profile_attributes[ipi]
+        in: formData
+        type: string
+      - name: collaborator_profile_attributes[different_registered_name]
+        in: formData
+        type: string
+      security:
+      - api_auth: []
+      - user_auth: []
+      consumes:
+      - multipart/form-data
+      produces:
+      - application/json
+      responses:
+        '200':
+          description: Collaborator Updated
+          schema:
+            type: array
+            items:
+              type: object
+              properties:
+                id:
+                  type: integer
+                first_name:
+                  type: string
+                last_name:
+                  type: string
+                email:
+                  type: string
+                access:
+                  type: string
+                status:
+                  type: string
+  "/api/v1/collaborator/artists/collaborators":
+    get:
+      summary: List collaborators of current artist
+      tags:
+      - Collaborator-Artists
+      parameters:
+      - name: artist_id
+        in: query
+        type: string
+      - name: page
+        in: query
+        type: string
+      - name: per_page
+        in: query
+        type: string
+      - name: pagination
+        in: query
+        type: string
+      security:
+      - api_auth: []
+      - user_auth: []
+      consumes:
+      - multipart/form-data
+      produces:
+      - application/json
+      responses:
+        '200':
+          description: Collaborators List
+          schema:
+            type: object
+            properties:
+              artists_collaborators:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    id:
+                      type: integer
+                    first_name:
+                      type: string
+                    last_name:
+                      type: string
+                    email:
+                      type: string
+                    access:
+                      type: string
+                    status:
+                      type: string
+                    collaborator_profile:
+                      type: object
+                      properties:
+                        id:
+                          type: integer
+                        pro:
+                          type: string
+                        ipi:
+                          type: string
+                        different_registered_name:
+                          type: string
+  "/api/v1/collaborator/notes":
+    get:
+      summary: Get notes associated with an object
+      tags:
+      - Collaborator-Notes
+      parameters:
+      - name: artist_id
+        in: query
+        type: string
+      - name: notable_type
+        in: query
+        type: string
+      - name: notable_id
+        in: query
+        type: integer
+      security:
+      - api_auth: []
+      - user_auth: []
+      produces:
+      - application/json
+      responses:
+        '200':
+          description: Notes List
+          schema:
+            type: array
+            items:
+              type: object
+              properties:
+                id:
+                  type: integer
+                description:
+                  type: string
+                files:
+                  type: array
+                  items:
+                    type: string
+                notable_type:
+                  type: string
+                notable_id:
+                  type: integer
+                status:
+                  type: string
+    post:
+      summary: Create note for an object
+      tags:
+      - Collaborator-Notes
+      parameters:
+      - name: artist_id
+        in: query
+        type: string
+      - name: notable_type
+        in: formData
+        type: string
+      - name: notable_id
+        in: formData
+        type: string
+      - name: description
+        in: formData
+        type: string
+      - name: files[]
+        in: formData
+        type: file
+      security:
+      - api_auth: []
+      - user_auth: []
+      produces:
+      - application/json
+      responses:
+        '200':
+          description: Notes List
+          schema:
+            type: array
+            items:
+              type: object
+              properties:
+                id:
+                  type: integer
+                description:
+                  type: string
+                files:
+                  type: array
+                  items:
+                    type: string
+                notable_type:
+                  type: string
+                notable_id:
+                  type: integer
+                status:
+                  type: string
+  "/api/v1/collaborator/publishers":
+    get:
+      summary: Retrieves all publishers of current artist
+      tags:
+      - Collaborator-Publishers
+      produces:
+      - application/json
+      parameters:
+      - name: artist_id
+        in: query
+        type: string
+      - name: page
+        in: query
+        type: string
+      - name: per_page
+        in: query
+        type: string
+      - name: pagination
+        in: query
+        type: string
+      security:
+      - api_auth: []
+      - user_auth: []
+      responses:
+        '200':
+          description: Publishers list
+          schema:
+            type: object
+            properties:
+              publishers:
+                type: array
+                items:
+                  properties:
+                    id:
+                      type: integer
+                    name:
+                      type: string
+                    pro:
+                      type: string
+                    ipi:
+                      type: string
+    post:
+      summary: Create new publishers
+      tags:
+      - Collaborator-Publishers
+      produces:
+      - application/json
+      parameters:
+      - name: artist_id
+        in: query
+        type: string
+      - name: name
+        in: query
+        type: string
+      - name: pro
+        in: query
+        type: string
+      - name: ipi
+        in: query
+        type: string
+      security:
+      - api_auth: []
+      - user_auth: []
+      responses:
+        '200':
+          description: Publisher Created
+          schema:
+            type: array
+            items:
+              properties:
+                id:
+                  type: integer
+                name:
+                  type: string
+                pro:
+                  type: string
+                ipi:
+                  type: string
+  "/api/v1/collaborator/publishers/{id}":
+    patch:
+      summary: Update a publishers
+      tags:
+      - Collaborator-Publishers
+      produces:
+      - application/json
+      parameters:
+      - name: artist_id
+        in: query
+        type: string
+      - name: id
+        in: path
+        type: string
+        required: true
+      - name: name
+        in: query
+        type: string
+      - name: pro
+        in: query
+        type: string
+      - name: ipi
+        in: query
+        type: string
+      security:
+      - api_auth: []
+      - user_auth: []
+      responses:
+        '200':
+          description: Publisher Updated
+          schema:
+            type: array
+            items:
+              properties:
+                id:
+                  type: integer
+                name:
+                  type: string
+                pro:
+                  type: string
+                ipi:
+                  type: string
+    delete:
+      summary: Destroy a publishers
+      tags:
+      - Collaborator-Publishers
+      produces:
+      - application/json
+      parameters:
+      - name: artist_id
+        in: query
+        type: string
+      - name: id
+        in: path
+        type: string
+        required: true
+      security:
+      - api_auth: []
+      - user_auth: []
+      responses:
+        '200':
+          description: Publisher Destroyed
+          schema:
+            type: array
+            items:
+              properties:
+                id:
+                  type: integer
+                name:
+                  type: string
+                pro:
+                  type: string
+                ipi:
+                  type: string
+  "/api/v1/collaborator/albums/{album_id}/tracks":
+    get:
+      summary: Retrieves all tracks of album
+      tags:
+      - Collaborator-Tracks
+      produces:
+      - application/json
+      parameters:
+      - name: artist_id
+        in: query
+        type: string
+      - name: album_id
+        in: path
+        type: string
+        required: true
+      - name: page
+        in: query
+        type: string
+      - name: per_page
+        in: query
+        type: string
+      - name: pagination
+        in: query
+        type: string
+      security:
+      - api_auth: []
+      - user_auth: []
+      responses:
+        '200':
+          description: Tracks list
+          schema:
+            type: object
+            properties:
+              tracks:
+                type: array
+                items:
+                  properties:
+                    id:
+                      type: integer
+                    title:
+                      type: string
+                    file:
+                      type: string
+                    status:
+                      type: string
+                    public_domain:
+                      type: boolean
+                    created_at:
+                      type: string
+                      format: date
+                    publisher:
+                      type: object
+                    collaborator:
+                      type: object
+                    lyrics:
+                      type: string
+                    explicit:
+                      type: boolean
+    post:
+      summary: Create a new track of album
+      tags:
+      - Collaborator-Tracks
+      produces:
+      - application/json
+      parameters:
+      - name: artist_id
+        in: query
+        type: string
+      - name: album_id
+        in: path
+        type: string
+        required: true
+      - name: title
+        in: formData
+        type: string
+      - name: public_domain
+        in: formData
+        type: boolean
+      - name: file
+        in: formData
+        type: file
+      - name: collaborator_id
+        in: formData
+        type: integer
+      - name: publisher_id
+        in: formData
+        type: integer
+      - name: status
+        in: formData
+        type: string
+      - name: lyrics
+        in: formData
+        type: string
+      - name: explicit
+        in: formData
+        type: boolean
+      security:
+      - api_auth: []
+      - user_auth: []
+      responses:
+        '200':
+          description: Track Created
+          schema:
+            type: object
+            properties:
+              id:
+                type: integer
+              title:
+                type: string
+              file:
+                type: string
+              status:
+                type: string
+              public_domain:
+                type: boolean
+              created_at:
+                type: string
+                format: date
+              publisher:
+                type: object
+              collaborator:
+                type: object
+              lyrics:
+                type: string
+              explicit:
+                type: boolean
+  "/api/v1/collaborator/albums/{album_id}/tracks/{id}":
+    patch:
+      summary: Update a track
+      tags:
+      - Collaborator-Tracks
+      produces:
+      - application/json
+      parameters:
+      - name: artist_id
+        in: query
+        type: string
+      - name: album_id
+        in: path
+        type: string
+        required: true
+      - name: id
+        in: path
+        type: string
+        required: true
+      - name: title
+        in: formData
+        type: string
+      - name: public_domain
+        in: formData
+        type: boolean
+      - name: file
+        in: formData
+        type: file
+      - name: collaborator_id
+        in: formData
+        type: integer
+      - name: publisher_id
+        in: formData
+        type: integer
+      - name: status
+        in: formData
+        type: string
+      - name: lyrics
+        in: formData
+        type: string
+      - name: explicit
+        in: formData
+        type: boolean
+      security:
+      - api_auth: []
+      - user_auth: []
+      responses:
+        '200':
+          description: Track Updated
+          schema:
+            type: object
+            properties:
+              id:
+                type: integer
+              title:
+                type: string
+              file:
+                type: string
+              status:
+                type: string
+              public_domain:
+                type: boolean
+              created_at:
+                type: string
+                format: date
+              publisher:
+                type: object
+              collaborator:
+                type: object
+              lyrics:
+                type: string
+              explicit:
+                type: boolean
+    get:
+      summary: Show a track
+      tags:
+      - Collaborator-Tracks
+      produces:
+      - application/json
+      parameters:
+      - name: artist_id
+        in: query
+        type: string
+      - name: album_id
+        in: path
+        type: string
+        required: true
+      - name: id
+        in: path
+        type: string
+        required: true
+      security:
+      - api_auth: []
+      - user_auth: []
+      responses:
+        '200':
+          description: Track
+          schema:
+            type: object
+            properties:
+              id:
+                type: integer
+              title:
+                type: string
+              file:
+                type: string
+              status:
+                type: string
+              public_domain:
+                type: boolean
+              created_at:
+                type: string
+                format: date
+              publisher:
+                type: object
+              collaborator:
+                type: object
+              lyrics:
+                type: string
+              explicit:
+                type: boolean
+    delete:
+      summary: Destroy a track
+      tags:
+      - Collaborator-Tracks
+      produces:
+      - application/json
+      parameters:
+      - name: artist_id
+        in: query
+        type: string
+      - name: album_id
+        in: path
+        type: string
+        required: true
+      - name: id
+        in: path
+        type: string
+        required: true
+      security:
+      - api_auth: []
+      - user_auth: []
+      responses:
+        '200':
+          description: Track Destroyed
+          schema:
+            type: array
+            items:
+              properties:
+                id:
+                  type: integer
+                title:
+                  type: string
+                file:
+                  type: string
+                status:
+                  type: string
+                public_domain:
+                  type: boolean
+                created_at:
+                  type: string
+                  format: date
+                publisher:
+                  type: object
+                collaborator:
+                  type: object
+                lyrics:
+                  type: string
+                explicit:
+                  type: boolean
   "/api/v1/genres":
     get:
       summary: Get all genres
@@ -2303,7 +3185,7 @@ paths:
                 type: string
   "/api/v1/albums/{album_id}/tracks":
     get:
-      summary: Retrieves all track of album
+      summary: Retrieves all tracks of album
       tags:
       - Tracks
       produces:

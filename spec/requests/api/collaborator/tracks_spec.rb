@@ -1,12 +1,13 @@
 require 'swagger_helper'
 
-RSpec.describe 'api/tracks', type: :request do
-  path '/api/v1/albums/{album_id}/tracks' do
+RSpec.describe 'api/collaborator/tracks', type: :request do
+  path '/api/v1/collaborator/albums/{album_id}/tracks' do
     get 'Retrieves all tracks of album' do
-      tags 'Tracks'
+      tags 'Collaborator-Tracks'
 
       produces 'application/json'
 
+      parameter name: :artist_id, in: :query, type: :string
       parameter name: :album_id, in: :path, type: :string
       parameter name: :page, in: :query, type: :string
       parameter name: :per_page, in: :query, type: :string
@@ -41,12 +42,13 @@ RSpec.describe 'api/tracks', type: :request do
     end
   end
 
-  path '/api/v1/albums/{album_id}/tracks' do
+  path '/api/v1/collaborator/albums/{album_id}/tracks' do
     post 'Create a new track of album' do
-      tags 'Tracks'
+      tags 'Collaborator-Tracks'
 
       produces 'application/json'
 
+      parameter name: :artist_id, in: :query, type: :string
       parameter name: :album_id, in: :path, type: :string
       parameter name: :title, in: :formData, type: :string
       parameter name: :public_domain, in: :formData, type: :boolean
@@ -79,12 +81,13 @@ RSpec.describe 'api/tracks', type: :request do
     end
   end
 
-  path '/api/v1/albums/{album_id}/tracks/{id}' do
+  path '/api/v1/collaborator/albums/{album_id}/tracks/{id}' do
     patch 'Update a track' do
-      tags 'Tracks'
+      tags 'Collaborator-Tracks'
 
       produces 'application/json'
 
+      parameter name: :artist_id, in: :query, type: :string
       parameter name: :album_id, in: :path, type: :string
       parameter name: :id, in: :path, type: :string
       parameter name: :title, in: :formData, type: :string
@@ -118,12 +121,13 @@ RSpec.describe 'api/tracks', type: :request do
     end
   end
 
-  path '/api/v1/albums/{album_id}/tracks/{id}' do
+  path '/api/v1/collaborator/albums/{album_id}/tracks/{id}' do
     get 'Show a track' do
-      tags 'Tracks'
+      tags 'Collaborator-Tracks'
 
       produces 'application/json'
 
+      parameter name: :artist_id, in: :query, type: :string
       parameter name: :album_id, in: :path, type: :string
       parameter name: :id, in: :path, type: :string
 
@@ -149,12 +153,13 @@ RSpec.describe 'api/tracks', type: :request do
     end
   end
 
-  path '/api/v1/albums/{album_id}/tracks/{id}' do
+  path '/api/v1/collaborator/albums/{album_id}/tracks/{id}' do
     delete 'Destroy a track' do
-      tags 'Tracks'
+      tags 'Collaborator-Tracks'
 
       produces 'application/json'
 
+      parameter name: :artist_id, in: :query, type: :string
       parameter name: :album_id, in: :path, type: :string
       parameter name: :id, in: :path, type: :string
 

@@ -1,10 +1,11 @@
 require 'swagger_helper'
 
-RSpec.describe 'api/artists', type: :request do
-  path '/api/v1/artists/update_profile' do
-    patch 'Update artist profile of current user' do
-      tags 'Artists'
+RSpec.describe 'api/collaborator/artists', type: :request do
+  path '/api/v1/collaborator/artists/update_profile' do
+    patch 'Update artist profile of current artist' do
+      tags 'Collaborator-Artists'
 
+      parameter name: :artist_id, in: :query, type: :string
       parameter name: :profile_image, in: :formData, type: :file
       parameter name: :banner_image, in: :formData, type: :file
       parameter name: :'additional_images[]', in: :formData, type: :file
@@ -84,12 +85,14 @@ RSpec.describe 'api/artists', type: :request do
     end
   end
 
-  path '/api/v1/artists/show_profile' do
-    get 'Show artist profile of current user' do
-      tags 'Artists'
+  path '/api/v1/collaborator/artists/show_profile' do
+    get 'Show artist profile of current artist' do
+      tags 'Collaborator-Artists'
 
 
       security [{ api_auth: [] }, { user_auth: [] }]
+
+      parameter name: :artist_id, in: :query, type: :string
 
       consumes 'multipart/form-data'
       produces 'application/json'
@@ -144,11 +147,12 @@ RSpec.describe 'api/artists', type: :request do
     end
   end
 
-  path '/api/v1/artists/invite_collaborator' do
+  path '/api/v1/collaborator/artists/invite_collaborator' do
     patch 'Invite collaborator' do
-      tags 'Artists'
+      tags 'Collaborator-Artists'
 
 
+      parameter name: :artist_id, in: :query, type: :string
       parameter name: :name, in: :formData, type: :string
       parameter name: :email, in: :formData, type: :string
       parameter name: :access, in: :formData, type: :string
@@ -180,10 +184,11 @@ RSpec.describe 'api/artists', type: :request do
     end
   end
 
-  path '/api/v1/artists/collaborators' do
-    get 'List collaborators of current user' do
-      tags 'Artists'
+  path '/api/v1/collaborator/artists/collaborators' do
+    get 'List collaborators of current artist' do
+      tags 'Collaborator-Artists'
 
+      parameter name: :artist_id, in: :query, type: :string
       parameter name: :page, in: :query, type: :string
       parameter name: :per_page, in: :query, type: :string
       parameter name: :pagination, in: :query, type: :string
@@ -194,53 +199,30 @@ RSpec.describe 'api/artists', type: :request do
       produces 'application/json'
 
       response '200', 'Collaborators List' do
-        schema type: :array,
-               items: {
-                 type: :object,
-                 properties: {
-                   id: { type: :integer },
-                   first_name: { type: :string },
-                   last_name: { type: :string },
-                   email: { type: :string },
-                   access: { type: :string },
-                   status: { type: :string }
-                 }
-               }
-
-        run_test!
-      end
-    end
-  end
-
-  path '/api/v1/artists' do
-    get 'List artists of current user' do
-      tags 'Artists'
-
-      parameter name: :page, in: :query, type: :string
-      parameter name: :per_page, in: :query, type: :string
-      parameter name: :pagination, in: :query, type: :string
-      parameter name: :access, in: :query, type: :string
-      parameter name: :search_key, in: :formData, type: :string
-      parameter name: :search_query, in: :formData, type: :string
-
-      security [{ api_auth: [] }, { user_auth: [] }]
-
-      consumes 'multipart/form-data'
-      produces 'application/json'
-
-      response '200', 'Artists List' do
-        schema type: :array,
-               items: {
-                 type: :object,
-                 properties: {
-                   id: { type: :integer },
-                   name: { type: :string },
-                   email: { type: :string },
-                   first_name: { type: :string },
-                   last_name: { type: :string },
-                   agreements: { type: :boolean },
-                   access: { type: :string },
-                   status: { type: :string }
+        schema type: :object,
+               properties: {
+                 artists_collaborators: {
+                   type: :array,
+                   items: {
+                     type: :object,
+                     properties: {
+                       id: { type: :integer },
+                       first_name: { type: :string },
+                       last_name: { type: :string },
+                       email: { type: :string },
+                       access: { type: :string },
+                       status: { type: :string },
+                       collaborator_profile: {
+                         type: :object,
+                         properties: {
+                           id: { type: :integer },
+                           pro: { type: :string },
+                           ipi: { type: :string },
+                           different_registered_name: { type: :string }
+                         }
+                       }
+                     }
+                   }
                  }
                }
 

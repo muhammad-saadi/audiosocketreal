@@ -189,7 +189,7 @@ RSpec.describe 'api/collaborator/albums', type: :request do
 
   path '/api/v1/collaborator/albums/{id}' do
     delete 'Delete an album' do
-      tags 'Albums'
+      tags 'Collaborator-Albums'
 
       produces 'application/json'
 
