@@ -1,6 +1,7 @@
 ActiveAdmin.register Publisher do
+  config.sort_order = 'pro'
+  config.order_clause = false
   config.remove_action_item(:new)
-
   permit_params :name, :user_id, :pro, :ipi
 
   includes :user
@@ -9,6 +10,12 @@ ActiveAdmin.register Publisher do
   filter :name_cont, as: :string, label: 'Name'
   filter :pro_cont, as: :string, label: 'PRO'
   filter :created_at
+
+  controller do
+    def scoped_collection
+      end_of_association_chain.ordered_by_pro
+    end
+  end
 
   index do
     selectable_column

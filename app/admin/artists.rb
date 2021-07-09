@@ -80,6 +80,7 @@ ActiveAdmin.register User, as: 'Artist' do
               end
             end
           end
+          row :country
           row :exclusive
           row :sounds_like
           row :bio

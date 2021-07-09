@@ -49,7 +49,7 @@ class Api::V1::ArtistsController < Api::BaseController
   end
 
   def artist_profile_params
-    params.permit(:profile_image, :banner_image, :sounds_like, :bio, :key_facts,
+    params.permit(:profile_image, :banner_image, :sounds_like, :bio, :country, :key_facts,
                   contact_information: %i[name email phone street postal_code city state country],
                   payment_information: %i[payee_name bank_name routing account_number paypal_email],
                   tax_information: %i[ssn], additional_images: [], social: [])

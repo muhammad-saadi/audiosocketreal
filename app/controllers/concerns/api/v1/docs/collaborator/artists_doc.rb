@@ -15,6 +15,7 @@ module Api::V1::Docs::Collaborator::ArtistsDoc
       param :profile_image, File,desc: 'Cover image for the artist profile'
       param :banner_image, File, desc: 'banner image for the artist profile'
       param :additional_images, Array, of: File, desc: 'Images for any additional purpose'
+      param :country, String, desc: 'Country of the artist'
       param :bio, String, desc: 'Biography of the artist'
       param :sounds_like, String, desc: "How do artist's sounds looks alike?"
       param :key_facts, String, desc: 'Some key facts about artist'

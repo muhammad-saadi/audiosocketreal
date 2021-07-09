@@ -22,7 +22,7 @@ ActiveAdmin.register ArtistProfile do
   filter :profile_image_status, as: :select, collection: -> { images_status_list }
   filter :created_at
 
-  permit_params :name, :exclusive, :user_id, :sounds_like, :bio, :key_facts, :social_raw, :banner_image, :profile_image,
+  permit_params :name, :exclusive, :user_id, :sounds_like, :country, :bio, :key_facts, :social_raw, :banner_image, :profile_image,
                 :banner_image_status, :profile_image_status, additional_images: []
 
   index do
@@ -51,6 +51,7 @@ ActiveAdmin.register ArtistProfile do
       f.input :profile_image, as: :file
       f.input :profile_image_status, as: :select, collection: images_status_list, include_blank: false
       f.input :additional_images, as: :file, input_html: { multiple: true }
+      f.input :country, as: :searchable_select, collection: CountryStateSelect.countries_collection.map(&:first), include_blank: 'Select a Country'
       f.input :exclusive
       f.input :sounds_like
       f.input :bio

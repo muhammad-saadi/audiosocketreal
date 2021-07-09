@@ -36,7 +36,7 @@ ActiveAdmin.register ArtistsCollaborator do
   end
 
   show do
-    panel 'Collaborator' do
+    panel 'Collaborator Details' do
       panel('', class: 'align-right') do
         if artists_collaborator.collaborator.present?
           link_to 'Edit collaborator', edit_admin_collaborator_path(artists_collaborator.collaborator), class: 'medium button'
@@ -52,21 +52,23 @@ ActiveAdmin.register ArtistsCollaborator do
       end
     end
 
-    attributes_table do
-      row :artist do
-        link_to artists_collaborator.artist.full_name, admin_artist_path(artists_collaborator.artist)
-      end
+    panel 'Collaborator Status' do
+      attributes_table_for artists_collaborator do
+        row :artist do
+          link_to artists_collaborator.artist.full_name, admin_artist_path(artists_collaborator.artist)
+        end
 
-      row :status do
-        artists_collaborator.status&.titleize
-      end
+        row :status do
+          artists_collaborator.status&.titleize
+        end
 
-      row :access do
-        artists_collaborator.access&.titleize
-      end
+        row :access do
+          artists_collaborator.access&.titleize
+        end
 
-      row :created_at
-      row :updated_at
+        row :created_at
+        row :updated_at
+      end
     end
 
     panel 'Collaborator Profile' do
