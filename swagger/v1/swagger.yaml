@@ -3604,8 +3604,3 @@ paths:
       responses:
         '200':
           description: Email Sent
-servers:
-- url: http://localhost:3000
-  variables:
-    defaultHost:
-      default: http://localhost:3000

@@ -35,17 +35,7 @@ RSpec.configure do |config|
           in: :header
         }
       },
-      paths: {},
-      servers: [
-        {
-          url: ENV['HOST'],
-          variables: {
-            defaultHost: {
-              default: ENV['HOST']
-            }
-          }
-        }
-      ]
+      paths: {}
     }
   }
 
