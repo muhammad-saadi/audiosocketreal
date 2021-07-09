@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_07_08_113242) do
+ActiveRecord::Schema.define(version: 2021_07_09_055124) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -177,18 +177,18 @@ ActiveRecord::Schema.define(version: 2021_07_08_113242) do
     t.index ["artist_profile_id"], name: "index_contact_informations_on_artist_profile_id"
   end
 
-  create_table "genres", force: :cascade do |t|
-    t.string "name"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
-  end
-
-  create_table "metadata", force: :cascade do |t|
+  create_table "contents", force: :cascade do |t|
     t.string "key"
     t.text "content"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-    t.index ["key"], name: "index_metadata_on_key", unique: true
+    t.index ["key"], name: "index_contents_on_key", unique: true
+  end
+
+  create_table "genres", force: :cascade do |t|
+    t.string "name"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
   end
 
   create_table "notes", force: :cascade do |t|

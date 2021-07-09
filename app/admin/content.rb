@@ -1,4 +1,4 @@
-ActiveAdmin.register Metadata do
+ActiveAdmin.register Content do
   actions :all, except: [:destroy, :new, :create]
   permit_params :content
 
@@ -7,20 +7,20 @@ ActiveAdmin.register Metadata do
   index do
     selectable_column
     id_column
-    column :key do |metadata|
-      metadata.key.titleize
+    column :key do |content|
+      content.key.titleize
     end
     actions
   end
 
   show do
     attributes_table do
-      row :key do
-        metadata.key.titleize
+      row :key do |content|
+        content.key.titleize
       end
 
-      row :content do |metadata|
-        metadata.content.to_s.html_safe
+      row :content do |content|
+        content.content.to_s.html_safe
       end
     end
 
@@ -29,12 +29,12 @@ ActiveAdmin.register Metadata do
 
   csv do
     column :id
-    column (:key) { |metadata| metadata.key.titleize }
+    column (:key) { |content| content.key.titleize }
   end
 
   form do |f|
     h2 do
-      metadata.key.titleize
+      f.object.key.titleize
     end
 
     f.inputs do

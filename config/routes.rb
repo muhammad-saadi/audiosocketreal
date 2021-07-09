@@ -48,7 +48,7 @@ Rails.application.routes.draw do
       resources :agreements, only: %i[index]
       resources :publishers, only: %i[index create update destroy]
       resources :notes, only: %i[index create]
-      resources :metadata, param: :key, only: [:show]
+      resources :content, param: :key, only: [:show]
 
       resources :albums, except: %i[new edit] do
         resources :tracks, except: %i[new edit]
