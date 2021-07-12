@@ -10,16 +10,14 @@ RSpec.describe 'api/agreements', type: :request do
       security [{ api_auth: [] }, { user_auth: [] }]
 
       response '200', 'Agreements list' do
-        schema type: :object,
-               properties: {
-                 type: :array,
-                 items: {
-                   properties: {
-                     id: { type: :integer },
-                     content: { type: :string },
-                     file: { type: :string },
-                     agreement_type: { type: :string }
-                   }
+        schema type: :array,
+               items: {
+                 type: :object,
+                 properties: {
+                   id: { type: :integer },
+                   content: { type: :string },
+                   file: { type: :string },
+                   agreement_type: { type: :string }
                  }
                }
         run_test!
