@@ -19,6 +19,7 @@ RSpec.describe 'api/publishers', type: :request do
                  publishers: {
                    type: :array,
                    items: {
+                     type: :object,
                      properties: {
                        id: { type: :integer },
                        name: { type: :string },
@@ -52,6 +53,7 @@ RSpec.describe 'api/publishers', type: :request do
                  publishers: {
                    type: :array,
                    items: {
+                     type: :object,
                      properties: {
                        id: { type: :integer },
                        name: { type: :string },
@@ -86,6 +88,7 @@ RSpec.describe 'api/publishers', type: :request do
                  publishers: {
                    type: :array,
                    items: {
+                     type: :object,
                      properties: {
                        id: { type: :integer },
                        name: { type: :string },
@@ -117,6 +120,7 @@ RSpec.describe 'api/publishers', type: :request do
                  publishers: {
                    type: :array,
                    items: {
+                     type: :object,
                      properties: {
                        id: { type: :integer },
                        name: { type: :string },

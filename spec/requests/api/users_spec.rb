@@ -12,6 +12,7 @@ RSpec.describe 'api/users', type: :request do
       response '200', 'Managers list' do
         schema type: :array,
                items: {
+                 type: :object,
                  properties: {
                    id: { type: :integer },
                    email: { type: :string },

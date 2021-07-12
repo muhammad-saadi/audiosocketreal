@@ -23,6 +23,7 @@ RSpec.describe 'api/auditions', type: :request do
                  auditions: {
                    type: :array,
                    items: {
+                     type: :object,
                      properties: {
                        id: { type: :integer },
                        first_name: { type: :string },
@@ -101,6 +102,7 @@ RSpec.describe 'api/auditions', type: :request do
                  auditions: {
                    type: :array,
                    items: {
+                     type: :object,
                      properties: {
                        id: { type: :integer },
                        first_name: { type: :string },
@@ -238,6 +240,7 @@ RSpec.describe 'api/auditions', type: :request do
                  auditions: {
                    type: :array,
                    items: {
+                     type: :object,
                      properties: {
                        id: { type: :integer },
                        first_name: { type: :string },
@@ -373,6 +376,7 @@ RSpec.describe 'api/auditions', type: :request do
                  auditions: {
                    type: :array,
                    items: {
+                     type: :object,
                      properties: {
                        id: { type: :integer },
                        first_name: { type: :string },

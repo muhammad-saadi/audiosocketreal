@@ -19,6 +19,7 @@ describe 'Albums API' do
                  albums: {
                    type: :array,
                    items: {
+                     type: :object,
                      properties: {
                        id: { type: :integer },
                        name: { type: :string },
@@ -27,6 +28,7 @@ describe 'Albums API' do
                        tracks: {
                          type: :array,
                          items: {
+                           type: :object,
                            properties: {
                              id: { type: :integer },
                              title: { type: :string },
@@ -55,7 +57,7 @@ describe 'Albums API' do
       tags 'Albums'
 
       parameter name: :name, in: :formData, type: :string
-      parameter name: :release_date, in: :formData, type: :date
+      parameter name: :release_date, in: :formData, type: :string, format: :date
 
       security [{ api_auth: [] }, { user_auth: [] }]
 
@@ -72,6 +74,7 @@ describe 'Albums API' do
                  tracks: {
                    type: :array,
                    items: {
+                     type: :object,
                      properties: {
                        id: { type: :integer },
                        title: { type: :string },
@@ -116,6 +119,7 @@ describe 'Albums API' do
                  tracks: {
                    type: :array,
                    items: {
+                     type: :object,
                      properties: {
                        id: { type: :integer },
                        title: { type: :string },
@@ -157,6 +161,7 @@ describe 'Albums API' do
                  tracks: {
                    type: :array,
                    items: {
+                     type: :object,
                      properties: {
                        id: { type: :integer },
                        title: { type: :string },
@@ -199,6 +204,7 @@ describe 'Albums API' do
                  albums: {
                    type: :array,
                    items: {
+                     type: :object,
                      properties: {
                        id: { type: :integer },
                        name: { type: :string },
@@ -207,6 +213,7 @@ describe 'Albums API' do
                        tracks: {
                          type: :array,
                          items: {
+                           type: :object,
                            properties: {
                              id: { type: :integer },
                              title: { type: :string },
@@ -257,6 +264,7 @@ describe 'Albums API' do
                  tracks: {
                    type: :array,
                    items: {
+                     type: :object,
                      properties: {
                        id: { type: :integer },
                        title: { type: :string },

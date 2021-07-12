@@ -20,6 +20,7 @@ RSpec.describe 'api/tracks', type: :request do
                  tracks: {
                    type: :array,
                    items: {
+                     type: :object,
                      properties: {
                        id: { type: :integer },
                        title: { type: :string },
@@ -163,6 +164,7 @@ RSpec.describe 'api/tracks', type: :request do
       response '200', 'Track Destroyed' do
         schema type: :array,
                items: {
+                 type: :object,
                  properties: {
                    id: { type: :integer },
                    title: { type: :string },

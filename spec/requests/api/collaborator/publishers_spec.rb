@@ -20,6 +20,7 @@ RSpec.describe 'api/collaborator/publishers', type: :request do
                  publishers: {
                    type: :array,
                    items: {
+                     type: :object,
                      properties: {
                        id: { type: :integer },
                        name: { type: :string },
@@ -51,6 +52,7 @@ RSpec.describe 'api/collaborator/publishers', type: :request do
       response '200', 'Publisher Created' do
         schema type: :array,
                items: {
+                 type: :object,
                  properties: {
                    id: { type: :integer },
                    name: { type: :string },
@@ -81,6 +83,7 @@ RSpec.describe 'api/collaborator/publishers', type: :request do
       response '200', 'Publisher Updated' do
         schema type: :array,
                items: {
+                 type: :object,
                  properties: {
                    id: { type: :integer },
                    name: { type: :string },
@@ -108,6 +111,7 @@ RSpec.describe 'api/collaborator/publishers', type: :request do
       response '200', 'Publisher Destroyed' do
         schema type: :array,
                items: {
+                 type: :object,
                  properties: {
                    id: { type: :integer },
                    name: { type: :string },

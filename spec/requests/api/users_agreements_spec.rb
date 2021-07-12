@@ -14,6 +14,7 @@ RSpec.describe 'api/users_agreements', type: :request do
       response '200', 'UsersAgreements list' do
         schema type: :array,
                items: {
+                 type: :object,
                  properties: {
                    id: { type: :integer },
                    agreement: { type: :object },
@@ -43,6 +44,7 @@ RSpec.describe 'api/users_agreements', type: :request do
       response '200', 'Status Updated' do
         schema type: :array,
                items: {
+                 type: :object,
                  properties: {
                    id: { type: :integer },
                    agreement: { type: :object },

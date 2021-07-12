@@ -20,6 +20,7 @@ RSpec.describe 'api/collaborator/albums', type: :request do
                  albums: {
                    type: :array,
                    items: {
+                     type: :object,
                      properties: {
                        id: { type: :integer },
                        name: { type: :string },
@@ -28,6 +29,7 @@ RSpec.describe 'api/collaborator/albums', type: :request do
                        tracks: {
                          type: :array,
                          items: {
+                           type: :object,
                            properties: {
                              id: { type: :integer },
                              title: { type: :string },
@@ -57,7 +59,7 @@ RSpec.describe 'api/collaborator/albums', type: :request do
 
       parameter name: :artist_id, in: :query, type: :string
       parameter name: :name, in: :formData, type: :string
-      parameter name: :release_date, in: :formData, type: :date
+      parameter name: :release_date, in: :formData, type: :string, format: :date
 
       security [{ api_auth: [] }, { user_auth: [] }]
 
@@ -74,6 +76,7 @@ RSpec.describe 'api/collaborator/albums', type: :request do
                  tracks: {
                    type: :array,
                    items: {
+                     type: :object,
                      properties: {
                        id: { type: :integer },
                        title: { type: :string },
@@ -119,6 +122,7 @@ RSpec.describe 'api/collaborator/albums', type: :request do
                  tracks: {
                    type: :array,
                    items: {
+                     type: :object,
                      properties: {
                        id: { type: :integer },
                        title: { type: :string },
@@ -161,6 +165,7 @@ RSpec.describe 'api/collaborator/albums', type: :request do
                  tracks: {
                    type: :array,
                    items: {
+                     type: :object,
                      properties: {
                        id: { type: :integer },
                        title: { type: :string },
@@ -204,6 +209,7 @@ RSpec.describe 'api/collaborator/albums', type: :request do
                  albums: {
                    type: :array,
                    items: {
+                     type: :object,
                      properties: {
                        id: { type: :integer },
                        name: { type: :string },
@@ -212,6 +218,7 @@ RSpec.describe 'api/collaborator/albums', type: :request do
                        tracks: {
                          type: :array,
                          items: {
+                           type: :object,
                            properties: {
                              id: { type: :integer },
                              title: { type: :string },
@@ -263,6 +270,7 @@ RSpec.describe 'api/collaborator/albums', type: :request do
                  tracks: {
                    type: :array,
                    items: {
+                     type: :object,
                      properties: {
                        id: { type: :integer },
                        title: { type: :string },

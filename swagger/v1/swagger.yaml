@@ -70,6 +70,7 @@ paths:
               albums:
                 type: array
                 items:
+                  type: object
                   properties:
                     id:
                       type: integer
@@ -83,6 +84,7 @@ paths:
                     tracks:
                       type: array
                       items:
+                        type: object
                         properties:
                           id:
                             type: integer
@@ -115,7 +117,8 @@ paths:
         type: string
       - name: release_date
         in: formData
-        type: date
+        type: string
+        format: date
       security:
       - api_auth: []
       - user_auth: []
@@ -141,6 +144,7 @@ paths:
               tracks:
                 type: array
                 items:
+                  type: object
                   properties:
                     id:
                       type: integer
@@ -204,6 +208,7 @@ paths:
               tracks:
                 type: array
                 items:
+                  type: object
                   properties:
                     id:
                       type: integer
@@ -258,6 +263,7 @@ paths:
               tracks:
                 type: array
                 items:
+                  type: object
                   properties:
                     id:
                       type: integer
@@ -305,6 +311,7 @@ paths:
               albums:
                 type: array
                 items:
+                  type: object
                   properties:
                     id:
                       type: integer
@@ -318,6 +325,7 @@ paths:
                     tracks:
                       type: array
                       items:
+                        type: object
                         properties:
                           id:
                             type: integer
@@ -380,6 +388,7 @@ paths:
               tracks:
                 type: array
                 items:
+                  type: object
                   properties:
                     id:
                       type: integer
@@ -1028,6 +1037,7 @@ paths:
               auditions:
                 type: array
                 items:
+                  type: object
                   properties:
                     id:
                       type: integer
@@ -1132,6 +1142,7 @@ paths:
               auditions:
                 type: array
                 items:
+                  type: object
                   properties:
                     id:
                       type: integer
@@ -1305,6 +1316,7 @@ paths:
               auditions:
                 type: array
                 items:
+                  type: object
                   properties:
                     id:
                       type: integer
@@ -1472,6 +1484,7 @@ paths:
               auditions:
                 type: array
                 items:
+                  type: object
                   properties:
                     id:
                       type: integer
@@ -1582,6 +1595,7 @@ paths:
               albums:
                 type: array
                 items:
+                  type: object
                   properties:
                     id:
                       type: integer
@@ -1595,6 +1609,7 @@ paths:
                     tracks:
                       type: array
                       items:
+                        type: object
                         properties:
                           id:
                             type: integer
@@ -1630,7 +1645,8 @@ paths:
         type: string
       - name: release_date
         in: formData
-        type: date
+        type: string
+        format: date
       security:
       - api_auth: []
       - user_auth: []
@@ -1656,6 +1672,7 @@ paths:
               tracks:
                 type: array
                 items:
+                  type: object
                   properties:
                     id:
                       type: integer
@@ -1722,6 +1739,7 @@ paths:
               tracks:
                 type: array
                 items:
+                  type: object
                   properties:
                     id:
                       type: integer
@@ -1779,6 +1797,7 @@ paths:
               tracks:
                 type: array
                 items:
+                  type: object
                   properties:
                     id:
                       type: integer
@@ -1829,6 +1848,7 @@ paths:
               albums:
                 type: array
                 items:
+                  type: object
                   properties:
                     id:
                       type: integer
@@ -1842,6 +1862,7 @@ paths:
                     tracks:
                       type: array
                       items:
+                        type: object
                         properties:
                           id:
                             type: integer
@@ -1907,6 +1928,7 @@ paths:
               tracks:
                 type: array
                 items:
+                  type: object
                   properties:
                     id:
                       type: integer
@@ -2508,6 +2530,7 @@ paths:
               publishers:
                 type: array
                 items:
+                  type: object
                   properties:
                     id:
                       type: integer
@@ -2545,6 +2568,7 @@ paths:
           schema:
             type: array
             items:
+              type: object
               properties:
                 id:
                   type: integer
@@ -2587,6 +2611,7 @@ paths:
           schema:
             type: array
             items:
+              type: object
               properties:
                 id:
                   type: integer
@@ -2619,6 +2644,7 @@ paths:
           schema:
             type: array
             items:
+              type: object
               properties:
                 id:
                   type: integer
@@ -2664,6 +2690,7 @@ paths:
               tracks:
                 type: array
                 items:
+                  type: object
                   properties:
                     id:
                       type: integer
@@ -2902,6 +2929,7 @@ paths:
           schema:
             type: array
             items:
+              type: object
               properties:
                 id:
                   type: integer
@@ -3057,6 +3085,7 @@ paths:
               publishers:
                 type: array
                 items:
+                  type: object
                   properties:
                     id:
                       type: integer
@@ -3094,6 +3123,7 @@ paths:
               publishers:
                 type: array
                 items:
+                  type: object
                   properties:
                     id:
                       type: integer
@@ -3136,6 +3166,7 @@ paths:
               publishers:
                 type: array
                 items:
+                  type: object
                   properties:
                     id:
                       type: integer
@@ -3168,6 +3199,7 @@ paths:
               publishers:
                 type: array
                 items:
+                  type: object
                   properties:
                     id:
                       type: integer
@@ -3244,6 +3276,7 @@ paths:
               tracks:
                 type: array
                 items:
+                  type: object
                   properties:
                     id:
                       type: integer
@@ -3470,6 +3503,7 @@ paths:
           schema:
             type: array
             items:
+              type: object
               properties:
                 id:
                   type: integer
@@ -3512,6 +3546,7 @@ paths:
           schema:
             type: array
             items:
+              type: object
               properties:
                 id:
                   type: integer
@@ -3549,6 +3584,7 @@ paths:
           schema:
             type: array
             items:
+              type: object
               properties:
                 id:
                   type: integer
@@ -3578,6 +3614,7 @@ paths:
           schema:
             type: array
             items:
+              type: object
               properties:
                 id:
                   type: integer
