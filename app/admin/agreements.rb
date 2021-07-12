@@ -4,6 +4,10 @@ ActiveAdmin.register Agreement do
   filter :agreement_type, as: :select, collection: -> { agreement_types }
   filter :created_at
 
+  action_item 'Filters', only: :index do
+    link_to('Filters', '/', id: 'sidebar_toggle')
+  end
+
   index do
     selectable_column
     id_column

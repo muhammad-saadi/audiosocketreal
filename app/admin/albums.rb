@@ -8,6 +8,10 @@ ActiveAdmin.register Album do
   filter :tracks_title_cont, as: :string, label: 'Track title'
   filter :created_at
 
+  action_item 'Filters', only: :index do
+    link_to('Filters', '/', id: 'sidebar_toggle')
+  end
+
   show do
     attributes_table do
       row :name

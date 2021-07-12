@@ -102,7 +102,7 @@ describe 'Albums API' do
 
       parameter name: :id, in: :path, type: :string
       parameter name: :name, in: :formData, type: :string
-      parameter name: :release_date, in: :formData, type: :date
+      parameter name: :release_date, in: :formData, type: :string, format: :date
 
       security [{ api_auth: [] }, { user_auth: [] }]
 

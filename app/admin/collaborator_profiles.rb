@@ -20,6 +20,10 @@ ActiveAdmin.register CollaboratorProfile do
   filter :artists_collaborator, as: :select, collection: -> { artists_collaborators_list }
   filter :created_at
 
+  action_item 'Filters', only: :index do
+    link_to('Filters', '/', id: 'sidebar_toggle')
+  end
+
   index do
     selectable_column
     id_column

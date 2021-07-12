@@ -17,6 +17,10 @@ ActiveAdmin.register Publisher do
     end
   end
 
+  action_item 'Filters', only: :index do
+    link_to('Filters', '/', id: 'sidebar_toggle')
+  end
+
   index do
     selectable_column
     id_column

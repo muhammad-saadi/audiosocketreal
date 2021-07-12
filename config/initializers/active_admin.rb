@@ -233,7 +233,6 @@ ActiveAdmin.setup do |config|
   config.namespace :admin do |admin|
     admin.build_menu :utility_navigation do |menu|
       admin.add_current_user_to_menu menu
-      menu.add label: 'Filters', url: '/', html_options: { target: :blank, id: :sidebar_toggle }
       admin.add_logout_button_to_menu menu
     end
   end

@@ -30,7 +30,7 @@
 
 .header {
   #utility_nav {
-    #logout {
+    #logout, #filters{
       min-width: 50px;
       min-height: 49px;
       float: right;
@@ -53,4 +53,8 @@
       }
     }
   }
+}
+
+#sidebar:before {
+  display: none;
 }

@@ -105,7 +105,7 @@ RSpec.describe 'api/collaborator/albums', type: :request do
       parameter name: :artist_id, in: :query, type: :string
       parameter name: :id, in: :path, type: :string
       parameter name: :name, in: :formData, type: :string
-      parameter name: :release_date, in: :formData, type: :date
+      parameter name: :release_date, in: :formData, type: :string, format: :date
 
       security [{ api_auth: [] }, { user_auth: [] }]
 

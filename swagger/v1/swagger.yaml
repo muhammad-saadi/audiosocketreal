@@ -182,7 +182,8 @@ paths:
         type: string
       - name: release_date
         in: formData
-        type: date
+        type: string
+        format: date
       security:
       - api_auth: []
       - user_auth: []
@@ -1713,7 +1714,8 @@ paths:
         type: string
       - name: release_date
         in: formData
-        type: date
+        type: string
+        format: date
       security:
       - api_auth: []
       - user_auth: []

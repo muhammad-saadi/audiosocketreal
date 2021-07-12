@@ -1,6 +1,10 @@
 ActiveAdmin.register AdminUser do
   permit_params :email, :password, :password_confirmation
 
+  action_item 'Filters', only: :index do
+    link_to('Filters', '/', id: 'sidebar_toggle')
+  end
+
   index do
     selectable_column
     id_column
