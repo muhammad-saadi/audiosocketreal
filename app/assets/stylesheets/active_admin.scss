@@ -16,7 +16,7 @@
 // For example, to change the default status-tag color:
 //
 //   .status_tag { background: #6090DB; }
-.align-right{
+.align-right {
   text-align: right;
   padding: 5px 8px;
   margin-top: -50px;
@@ -26,4 +26,31 @@
   color: white !important;
   background-color: $primary-color !important;
   font-weight: bold;
- }
+}
+
+.header {
+  #utility_nav {
+    #logout {
+      min-width: 50px;
+      min-height: 49px;
+      float: right;
+      display: flex;
+      align-items: center;
+
+      a {
+        position: relative;
+        width: 60px;
+        height: 49px;
+        padding-right: 5px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: black;
+
+        &:before {
+          display: none;
+        }
+      }
+    }
+  }
+}
