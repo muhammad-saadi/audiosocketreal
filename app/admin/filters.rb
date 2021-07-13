@@ -1,3 +1,3 @@
 ActiveAdmin.register Filter do
-  permit_params :title
+  permit_params :name, :filter_id
 end

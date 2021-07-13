@@ -1,5 +1,6 @@
 class Filter < ApplicationRecord
-  validates :title, presence: true
+  validates :name, presence: true
 
-  has_many :sub_filters, dependent: :destroy
+  has_many :filters, dependent: :destroy
+  belongs_to :filter, class_name: 'Filter', optional: true
 end
