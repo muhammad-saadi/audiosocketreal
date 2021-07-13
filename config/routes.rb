@@ -55,6 +55,7 @@ Rails.application.routes.draw do
       resources :publishers, only: %i[index create update destroy]
       resources :notes, only: %i[index create]
       resources :content, param: :key, only: [:show]
+      resources :filters, only: %i[index]
 
       resources :albums, except: %i[new edit] do
         resources :tracks, except: %i[new edit]

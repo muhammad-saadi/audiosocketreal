@@ -2998,6 +2998,31 @@ paths:
                   type: string
                 explicit:
                   type: boolean
+  "/api/v1/filters":
+    get:
+      summary: Get all filters
+      tags:
+      - Filters
+      security:
+      - api_auth: []
+      produces:
+      - application/json
+      responses:
+        '200':
+          description: Filters List
+          schema:
+            type: array
+            items:
+              type: object
+              properties:
+                id:
+                  type: integer
+                name:
+                  type: string
+                sub_filters:
+                  type: array
+                  items:
+                    type: object
   "/api/v1/genres":
     get:
       summary: Get all genres
