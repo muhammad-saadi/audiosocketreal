@@ -646,7 +646,7 @@ paths:
       - name: key_facts
         in: formData
         type: string
-      - name: bio
+      - name: country
         in: formData
         type: string
       - name: sounds_like
@@ -713,6 +713,8 @@ paths:
               id:
                 type: integer
               name:
+                type: string
+              country:
                 type: string
               exclusive:
                 type: string
@@ -792,6 +794,8 @@ paths:
               id:
                 type: integer
               name:
+                type: string
+              country:
                 type: string
               exclusive:
                 type: string
@@ -2090,7 +2094,7 @@ paths:
       - name: key_facts
         in: formData
         type: string
-      - name: bio
+      - name: country
         in: formData
         type: string
       - name: sounds_like
@@ -2157,6 +2161,8 @@ paths:
               id:
                 type: integer
               name:
+                type: string
+              country:
                 type: string
               exclusive:
                 type: string
@@ -2240,6 +2246,8 @@ paths:
               id:
                 type: integer
               name:
+                type: string
+              country:
                 type: string
               exclusive:
                 type: string
