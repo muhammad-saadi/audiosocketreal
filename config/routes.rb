@@ -93,6 +93,13 @@ Rails.application.routes.draw do
           patch :update_status
         end
       end
+
+      resources :tax_forms, only: %i[] do
+        collection do
+          post :create_tax_form
+          post :submit_tax_form
+        end
+      end
     end
 
     match '*unmatched', to: 'base#route_not_found', via: :all

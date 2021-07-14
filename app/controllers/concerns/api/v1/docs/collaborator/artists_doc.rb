@@ -37,9 +37,6 @@ module Api::V1::Docs::Collaborator::ArtistsDoc
         param :bank_name, String, desc: "Name of bank", required: true
         param :paypal_email, String, desc: "Email adress of paypal", required: true
       end
-      param :tax_information, Hash, desc: 'tax Information', required: true do
-        param :ssn, String, desc: "Social Security Number", required: true
-      end
     end
 
     def_param_group :doc_collaborators do

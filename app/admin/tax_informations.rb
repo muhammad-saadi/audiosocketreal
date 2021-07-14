@@ -15,15 +15,14 @@ ActiveAdmin.register TaxInformation do
 
   includes :artist_profile
 
-  permit_params :ssn, :artist_profile_id
+  permit_params :artist_profile_id, tax_forms: []
 
   filter :artist_profile, as: :searchable_select
-  filter :ssn
 
   form do |f|
     f.inputs do
-      f.input :ssn
       f.input :artist_profile, as: :select, collection: [f.object.artist_profile], include_blank: false
+      f.input :tax_forms, as: :file, input_html: { multiple: true }
     end
 
     f.actions do

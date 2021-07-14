@@ -29,6 +29,8 @@ module ExceptionHandler
     end
   end
 
+  class TaxFormError < StandardError; end
+
   included do
     rescue_from ActiveRecord::RecordInvalid, with: :four_twenty_two
     rescue_from AuthenticationError, with: :unauthorized_request
@@ -39,6 +41,7 @@ module ExceptionHandler
     rescue_from TokenError, with: :five_hundred_standard
     rescue_from InvalidAccess, with: :four_zero_three
     rescue_from ActiveRecord::DeleteRestrictionError, with: :four_hundred
+    rescue_from TaxFormError, with: :four_twenty_two
 
     rescue_from ActiveRecord::RecordNotFound do |e|
       render json: { message: e.message }, status: :not_found

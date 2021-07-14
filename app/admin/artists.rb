@@ -154,7 +154,16 @@ ActiveAdmin.register User, as: 'Artist' do
               if artist.artist_profile.tax_information.blank?
                 row 'No Record Found'
               else
-                row :ssn
+                row :tax_forms do |tax_information|
+                  ul do
+                    tax_information.tax_forms.each do |form|
+                      li do
+                        link_to 'Preview', rails_blob_url(form), class: 'small button'
+                      end
+                      br
+                    end
+                  end
+                end
               end
             end
           end

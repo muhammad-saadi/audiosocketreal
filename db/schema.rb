@@ -237,7 +237,6 @@ ActiveRecord::Schema.define(version: 2021_07_15_074311) do
   end
 
   create_table "tax_informations", force: :cascade do |t|
-    t.string "ssn"
     t.bigint "artist_profile_id"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false

@@ -43,7 +43,7 @@ class Api::V1::Collaborator::ArtistsController < Api::V1::Collaborator::BaseCont
     params.permit(:email, :profile_image, :banner_image, :sounds_like, :country, :bio, :key_facts,
                   contact_information: %i[name email phone street postal_code city state country],
                   payment_information: %i[payee_name bank_name routing account_number paypal_email],
-                  tax_information: %i[ssn], additional_images: [], social: [])
+                  additional_images: [], social: [])
   end
 
   def collaborator_params
