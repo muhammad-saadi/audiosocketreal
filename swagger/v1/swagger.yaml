@@ -631,6 +631,9 @@ paths:
       tags:
       - Artists
       parameters:
+      - name: email
+        in: formData
+        type: string
       - name: profile_image
         in: formData
         type: file
@@ -714,6 +717,8 @@ paths:
                 type: integer
               name:
                 type: string
+              email:
+                type: string
               country:
                 type: string
               exclusive:
@@ -794,6 +799,8 @@ paths:
               id:
                 type: integer
               name:
+                type: string
+              email:
                 type: string
               country:
                 type: string
@@ -2079,6 +2086,9 @@ paths:
       - name: artist_id
         in: query
         type: string
+      - name: email
+        in: formData
+        type: string
       - name: profile_image
         in: formData
         type: file
@@ -2161,6 +2171,8 @@ paths:
               id:
                 type: integer
               name:
+                type: string
+              email:
                 type: string
               country:
                 type: string
@@ -2246,6 +2258,8 @@ paths:
               id:
                 type: integer
               name:
+                type: string
+              email:
                 type: string
               country:
                 type: string

@@ -4,6 +4,7 @@ ActiveAdmin.register User, as: 'Artist' do
 
   filter :first_name_or_last_name_cont, as: :string, label: 'Name'
   filter :artist_profile_name_cont, as: :string, label: 'Artist Name'
+  filter :artist_profile_email_cont, as: :string, label: 'Artist Email'
   filter :artist_profile_contact_information_name_cont, as: :string, label: 'Contact Name'
   filter :artist_profile_exclusive, as: :select, label: 'Exclusive'
   filter :artist_profile_contact_information_country_cont, as: :string, label: 'Country'
@@ -57,6 +58,7 @@ ActiveAdmin.register User, as: 'Artist' do
         end
         attributes_table_for artist.artist_profile do
           row :name
+          row :email
           row :banner_image do
             image_tag(artist.artist_profile.banner_image, width: 320, height: 100) if artist.artist_profile.banner_image.attached?
           end

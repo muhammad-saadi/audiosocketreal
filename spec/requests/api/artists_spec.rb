@@ -5,6 +5,7 @@ RSpec.describe 'api/artists', type: :request do
     patch 'Update artist profile of current user' do
       tags 'Artists'
 
+      parameter name: :email, in: :formData, type: :string
       parameter name: :profile_image, in: :formData, type: :file
       parameter name: :banner_image, in: :formData, type: :file
       parameter name: :'additional_images[]', in: :formData, type: :file
@@ -39,6 +40,7 @@ RSpec.describe 'api/artists', type: :request do
                properties: {
                  id: { type: :integer },
                  name: { type: :string },
+                 email: { type: :string },
                  country: { type: :string },
                  exclusive: { type: :string },
                  profile_image: { type: :string },
@@ -100,6 +102,7 @@ RSpec.describe 'api/artists', type: :request do
                properties: {
                  id: { type: :integer },
                  name: { type: :string },
+                 email: { type: :string },
                  country: { type: :string },
                  exclusive: { type: :string },
                  profile_image: { type: :string },

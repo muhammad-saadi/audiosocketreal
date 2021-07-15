@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_07_09_055124) do
+ActiveRecord::Schema.define(version: 2021_07_15_074311) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -100,6 +100,7 @@ ActiveRecord::Schema.define(version: 2021_07_09_055124) do
     t.string "banner_image_status", default: "rejected"
     t.string "profile_image_status", default: "rejected"
     t.string "country"
+    t.string "email"
     t.index ["user_id"], name: "index_artist_profiles_on_user_id"
   end
 
@@ -185,6 +186,16 @@ ActiveRecord::Schema.define(version: 2021_07_09_055124) do
     t.index ["key"], name: "index_contents_on_key", unique: true
   end
 
+  create_table "filters", force: :cascade do |t|
+    t.string "name"
+    t.integer "max_levels_allowed"
+    t.boolean "featured"
+    t.bigint "parent_filter_id"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["parent_filter_id"], name: "index_filters_on_parent_filter_id"
+  end
+
   create_table "genres", force: :cascade do |t|
     t.string "name"
     t.datetime "created_at", precision: 6, null: false
@@ -231,6 +242,15 @@ ActiveRecord::Schema.define(version: 2021_07_09_055124) do
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.index ["artist_profile_id"], name: "index_tax_informations_on_artist_profile_id"
+  end
+
+  create_table "track_filters", force: :cascade do |t|
+    t.bigint "track_id"
+    t.bigint "filter_id"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["filter_id"], name: "index_track_filters_on_filter_id"
+    t.index ["track_id"], name: "index_track_filters_on_track_id"
   end
 
   create_table "tracks", force: :cascade do |t|

@@ -16,13 +16,14 @@ ActiveAdmin.register ArtistProfile do
   includes :user
 
   filter :name
+  filter :email
   filter :user, as: :searchable_select, collection: User.artist, label: 'Artist'
   filter :exclusive
   filter :banner_image_status, as: :select, collection: -> { images_status_list }
   filter :profile_image_status, as: :select, collection: -> { images_status_list }
   filter :created_at
 
-  permit_params :name, :exclusive, :user_id, :sounds_like, :country, :bio, :key_facts, :social_raw, :banner_image, :profile_image,
+  permit_params :name, :email, :exclusive, :user_id, :sounds_like, :country, :bio, :key_facts, :social_raw, :banner_image, :profile_image,
                 :banner_image_status, :profile_image_status, additional_images: []
 
   index do
@@ -46,6 +47,7 @@ ActiveAdmin.register ArtistProfile do
   form do |f|
     f.inputs do
       f.input :name
+      f.input :email
       f.input :banner_image, as: :file
       f.input :banner_image_status, as: :select, collection: images_status_list, include_blank: false
       f.input :profile_image, as: :file
