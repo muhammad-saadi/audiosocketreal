@@ -11,6 +11,10 @@ class Track < ApplicationRecord
   has_one_attached :file
 
   has_many :notes, as: :notable, dependent: :destroy
+  has_many :track_filters, dependent: :destroy
+  has_many :filters, through: :track_filters
+
+  accepts_nested_attributes_for :track_filters
 
   STATUSES = {
     pending: 'pending',

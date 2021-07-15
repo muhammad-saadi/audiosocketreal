@@ -1,6 +1,7 @@
 ActiveAdmin.register Track do
   config.remove_action_item(:new)
-  permit_params :title, :file, :status, :album_id, :public_domain, :publisher_id, :artists_collaborator_id, :lyrics, :explicit
+  permit_params :title, :file, :status, :album_id, :public_domain, :publisher_id, :artists_collaborator_id, :lyrics,
+                :explicit, filter_ids: []
 
   includes :album
 
@@ -56,6 +57,22 @@ ActiveAdmin.register Track do
       row :artists_collaborator
       row :created_at
       row :updated_at
+
+      panel 'Filters' do
+        @track = Track.find(params[:id])
+
+        table_for @track.filters do
+          if @track.filters.blank?
+            column 'No Records Found'
+          else
+            column :id
+            column :name
+            column :actions do |filter|
+              link_to t('active_admin.view'), admin_filter_path(filter), class: 'small button'
+            end
+          end
+        end
+      end
     end
 
     panel 'Notes' do
@@ -100,6 +117,20 @@ ActiveAdmin.register Track do
       f.input :publisher, as: :searchable_select, collection: user.publishers, include_blank: 'Select a Publisher'
       f.input :artists_collaborator, as: :searchable_select, collection: collaborators_details_list(user),
                                      include_blank: 'Select a Collaborator'
+
+      Filter.parent_filters.each do |filter|
+        next unless filter.sub_filters.count.positive?
+
+        f.input :filter_ids, as: :searchable_select, collection: filter.sub_filters, label: filter.name,
+                             include_blank: "Select #{filter.name}", input_html: { name: '[track][filter_ids][]' }
+
+        filter.sub_filters.each do |sub_filter|
+          next unless sub_filter.sub_filters.count.positive?
+
+          f.input :filter_ids, as: :searchable_select, collection: sub_filter.sub_filters, label: "Sub-#{sub_filter.parent_filter.name}",
+                               include_blank: "Select Sub-#{sub_filter.parent_filter.name}", input_html: { name: '[track][filter_ids][]' }
+        end
+      end
     end
 
     f.actions do
