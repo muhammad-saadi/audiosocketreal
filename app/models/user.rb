@@ -83,6 +83,12 @@ class User < ApplicationRecord
     roles.map(&:titleize)
   end
 
+  def form_number
+    return  "w9" if artist_profile.country == "United States"
+
+    "w8ben"
+  end
+
   private
 
   def validate_manager
