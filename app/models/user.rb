@@ -26,6 +26,9 @@ class User < ApplicationRecord
 
   scope :ordered, -> { order(created_at: :desc) }
 
+  W9_FORM = "w9"
+  W8BEN_FORM = "w8ben"
+
   def self.authenticate(email, password)
     user = User.find_for_authentication(email: email)
     user&.valid_password?(password) ? user : nil
@@ -84,9 +87,9 @@ class User < ApplicationRecord
   end
 
   def form_number
-    return  "w9" if artist_profile.country == "United States"
+    return W9_FORM if artist_profile.country == "United States"
 
-    "w8ben"
+    W8BEN_FORM
   end
 
   private

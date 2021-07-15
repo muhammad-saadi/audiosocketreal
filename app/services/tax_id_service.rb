@@ -1,8 +1,6 @@
 require 'open-uri'
 
-class TaxIdService < HttPartyService
-  base_uri 'https://api.taxid.pro'
-
+class TaxIdService
   def self.create_form(current_user)
     current_user = current_user
     key= ENV['TAXID_KEY']
@@ -12,7 +10,7 @@ class TaxIdService < HttPartyService
 
     @options = { body: { key: key, thankYouUrl: thankYouUrl, formNumber: formNumber, reference: reference } }
 
-    self.post("/formRequests", @options).parsed_response
+    HttPartyService.post("https://api.taxid.pro/formRequests", @options).parsed_response
   end
 
   def self.submit_form(params)
