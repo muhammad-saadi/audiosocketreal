@@ -22,7 +22,7 @@ ActiveAdmin.register Track do
     files = batch_action_collection.find(ids).map do |track|
       next unless track.file.attached?
 
-      [track.file, "#{track.title}.#{track.file.filename.to_s.split('.').last}"]
+      [track.file, track.title + File.extname(track.file.filename.to_s)]
     end
 
     zipline(files.reject(&:blank?), 'tracks.zip')

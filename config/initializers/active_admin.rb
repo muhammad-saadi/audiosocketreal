@@ -335,3 +335,7 @@ end
 module ActiveAdmin::ViewHelpers
   include ApplicationHelper
 end
+
+ActiveAdmin::BaseController.class_eval do
+  include Zipline
+end
