@@ -1,7 +1,7 @@
 class Track < ApplicationRecord
   include Pagination
 
-  validates :title, presence: true
+  validates :title, :file, presence: true
   validates :file, blob: { content_type: %w[audio/vnd.wave audio/wave audio/aiff audio/x-aiff audio/mpeg] }
 
   belongs_to :album

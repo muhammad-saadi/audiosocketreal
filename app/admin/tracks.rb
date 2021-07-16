@@ -18,6 +18,16 @@ ActiveAdmin.register Track do
     link_to('Filters', '/', id: 'sidebar_toggle')
   end
 
+  batch_action :download do |ids|
+    files = batch_action_collection.find(ids).map do |track|
+      next unless track.file.attached?
+
+      [track.file, "#{track.title}.wav"]
+    end
+
+    zipline(files.reject(&:blank?), 'tracks.zip')
+  end
+
   index do
     selectable_column
     id_column
