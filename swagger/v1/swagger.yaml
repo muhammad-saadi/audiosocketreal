@@ -3267,6 +3267,24 @@ paths:
                 type: string
               role:
                 type: string
+  "/api/v1/tax_forms/create_tax_form":
+    post:
+      summary: Create a new form
+      tags:
+      - Tax Forms
+      security:
+      - api_auth: []
+      - user_auth: []
+      produces:
+      - application/json
+      responses:
+        '200':
+          description: Tax Form Created
+          schema:
+            type: object
+            properties:
+              url:
+                type: string
   "/api/v1/albums/{album_id}/tracks":
     get:
       summary: Retrieves all tracks of album
