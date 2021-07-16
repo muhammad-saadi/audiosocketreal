@@ -3285,6 +3285,21 @@ paths:
             properties:
               url:
                 type: string
+  "/api/v1/tax_forms/submit_tax_form":
+    post:
+      summary: Generate pdf of tax form
+      tags:
+      - Tax Forms
+      parameters:
+      - name: form[token]
+        in: formData
+        type: string
+      - name: form[reference]
+        in: formData
+        type: string
+      responses:
+        '200':
+          description: Tax Form Submitted
   "/api/v1/albums/{album_id}/tracks":
     get:
       summary: Retrieves all tracks of album
