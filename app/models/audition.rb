@@ -119,7 +119,11 @@ class Audition < ApplicationRecord
     user.add_artist_role
     user.save(validate: false)
 
-    user.create_artist_profile(name: artist_name, exclusive: self.exclusive) unless user.artist_profile&.persisted?
+    unless user.artist_profile&.persisted?
+      profile = user.build_artist_profile(name: artist_name, exclusive: self.exclusive)
+      profile.save(validate: false)
+    end
+
     user.assign_agreements('artist', user.artist_profile)
   end
 end
