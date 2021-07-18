@@ -12,21 +12,27 @@ ActiveAdmin.register Album do
     link_to('Filters', '/', id: 'sidebar_toggle')
   end
 
-  # member_action :download_zip, method: :get do
-  #   album = Album.find(params[:id])
-  #   tracks = album.tracks.map {|track| [track.file, "#{track.title}.wav"]}
-  #   zipline(tracks , 'album.zip')
-  #   # redirect_to admin_albums_path, notice: "Zip downloaded successfully!"
-  #   byebug
-  # end
-
   member_action :download_zip, method: :get do
     album = Album.find(params[:id])
-    tracks = album.tracks.map do |track|
+    album_tracks = album.tracks.map do |track|
       next unless track.file.attached?
-      [track.file, track.title]
+      [track.file, "#{track.title}.#{track.file.filename.to_s.split('.').last}"]
     end
-    zipline(tracks , "#{album.title}.zip")
+    zipline(album_tracks.reject(&:blank?), "#{album.name}.zip")
+  end
+
+  index do
+    selectable_column
+    id_column
+    column :name
+    column :release_date
+    column :user
+    column :created_at
+    column :updated_at
+    actions
+    column :download do |album|
+      link_to 'download',  download_zip_admin_album_path(album), class: 'small button'
+    end
   end
 
   show do

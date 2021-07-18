@@ -193,8 +193,8 @@ ActiveAdmin.register User, as: 'Artist' do
           column :id
           column :name
           column :actions do |album|
-            link_to t('active_admin.view'), admin_album_path(album), class: 'small button'
-            link_to 'download',  download_zip_admin_album_path(album), class: 'small button'
+            span link_to t('active_admin.view'), admin_album_path(album), class: 'small button'
+            span link_to 'Download', download_zip_admin_album_path(album), class: 'small button'
           end
         end
       end
