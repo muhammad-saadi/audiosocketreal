@@ -14,11 +14,7 @@ ActiveAdmin.register Album do
 
   member_action :download_zip, method: :get do
     album = Album.find(params[:id])
-    album_tracks = album.tracks.map do |track|
-      next unless track.file.attached?
-      [track.file, "#{track.title}.#{track.file.filename.to_s.split('.').last}"]
-    end
-    zipline(album_tracks.reject(&:blank?), "#{album.name}.zip")
+    zipline(album.tracks.to_zip, "#{album.name}.zip")
   end
 
   index do
@@ -29,9 +25,11 @@ ActiveAdmin.register Album do
     column :user
     column :created_at
     column :updated_at
-    actions
-    column :download do |album|
-      link_to 'download',  download_zip_admin_album_path(album), class: 'small button'
+    column :actions do |album|
+      span link_to t('active_admin.view'), admin_album_path(album), class: 'small button'
+      span link_to t('active_admin.edit'), edit_admin_album_path(album), class: 'small button'
+      span link_to t('active_admin.delete'), admin_album_path(album), class: 'small button', method: :delete
+      span link_to 'Download',  download_zip_admin_album_path(album), class: 'small button'
     end
   end
 
