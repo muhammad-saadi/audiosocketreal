@@ -28,6 +28,12 @@ Rails.application.routes.draw do
             patch :update_artwork
           end
         end
+
+        resources :tax_forms, only: %i[] do
+          collection do
+            post :create_tax_form
+          end
+        end
       end
 
       resources :auditions do
