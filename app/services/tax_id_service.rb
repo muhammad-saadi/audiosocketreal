@@ -4,7 +4,7 @@ class TaxIdService
   BASE_URL = "https://api.taxid.pro"
 
   def self.create_form(current_user)
-    key= ENV['TAXID_KEY']
+    key = ENV['TAXID_KEY']
     thankYouUrl = ENV['THANK_YOU_URL']
     formNumber = current_user.form_number
     reference = current_user.artist_profile.id
