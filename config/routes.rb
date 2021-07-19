@@ -110,4 +110,6 @@ Rails.application.routes.draw do
 
     match '*unmatched', to: 'base#route_not_found', via: :all
   end
+
+  root to: 'admin/dashboard#index'
 end
