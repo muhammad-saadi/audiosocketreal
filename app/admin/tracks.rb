@@ -19,13 +19,7 @@ ActiveAdmin.register Track do
   end
 
   batch_action :download do |ids|
-    files = batch_action_collection.find(ids).map do |track|
-      next unless track.file.attached?
-
-      [track.file, track.title + File.extname(track.file.filename.to_s)]
-    end
-
-    zipline(files.reject(&:blank?), 'tracks.zip')
+    zipline(batch_action_collection.where(id: ids).to_zip, 'tracks.zip')
   end
 
   index do
@@ -85,12 +79,12 @@ ActiveAdmin.register Track do
   csv do
     column :id
     column :title
-    column (:album) { |track| track.album.name }
-    column (:status) { |track| track.status&.titleize }
-    column (:explicit) { |object| formatted_boolean(object.explicit) }
-    column (:public_domain) { |object| formatted_boolean(object.public_domain) }
-    column (:created_at) { |object| formatted_datetime(object.created_at.localtime) }
-    column (:updated_at) { |object| formatted_datetime(object.updated_at.localtime) }
+    column(:album) { |track| track.album.name }
+    column(:status) { |track| track.status&.titleize }
+    column(:explicit) { |object| formatted_boolean(object.explicit) }
+    column(:public_domain) { |object| formatted_boolean(object.public_domain) }
+    column(:created_at) { |object| formatted_datetime(object.created_at.localtime) }
+    column(:updated_at) { |object| formatted_datetime(object.updated_at.localtime) }
   end
 
   form do |f|

@@ -20,4 +20,16 @@ class Track < ApplicationRecord
   }.freeze
 
   enum status: STATUSES
+
+  def filename
+    title + File.extname(file.filename.to_s)
+  end
+
+  def self.to_zip
+    all.map do |track|
+      next unless track.file.attached?
+
+      [track.file, track.filename]
+    end.compact
+  end
 end
