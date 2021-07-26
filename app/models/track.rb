@@ -32,8 +32,8 @@ class Track < ApplicationRecord
       [track.file, track.filename]
     end.compact
 
-    track_files.each_with_index.inject([]) do |a, b, index|
-      a << [b.first.first, (a.pluck(1).include?(b.first.second) ? b.first.first.record.filename("(#{b.second})") : b.first.second)]
+    track_files.each_with_index.inject([]) do |zip_list, track_file, index|
+      zip_list << [track_file.first.first, (zip_list.pluck(1).include?(track_file.first.second) ? track_file.first.first.record.filename("(#{track_file.second})") : track_file.first.second)]
     end
   end
 end
