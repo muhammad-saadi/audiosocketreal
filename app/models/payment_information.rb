@@ -12,6 +12,6 @@ class PaymentInformation < ApplicationRecord
   private
 
   def united_states?
-    artist_profile.contact_information&.country&.downcase == US
+    artist_profile&.country&.downcase == US
   end
 end
