@@ -21,15 +21,19 @@ class Track < ApplicationRecord
 
   enum status: STATUSES
 
-  def filename
-    title + File.extname(file.filename.to_s)
+  def filename(index = '')
+    title + index + File.extname(file.filename.to_s)
   end
 
   def self.to_zip
-    all.map do |track|
+    track_files = all.map do |track|
       next unless track.file.attached?
 
       [track.file, track.filename]
     end.compact
+
+    track_files.each_with_index.inject([]) do |a, b, index|
+      a << [b.first.first, (a.pluck(1).include?(b.first.second) ? b.first.first.record.filename("(#{b.second})") : b.first.second)]
+    end
   end
 end
