@@ -118,17 +118,18 @@ ActiveAdmin.register Track do
       f.input :artists_collaborator, as: :searchable_select, collection: collaborators_details_list(user),
                                      include_blank: 'Select a Collaborator'
 
-      Filter.parent_filters.each do |filter|
+      Filter.parent_filters.includes(:sub_filters).each do |filter|
         next unless filter.sub_filters.count.positive?
 
-        f.input :filter_ids, as: :searchable_select, collection: filter.sub_filters, label: filter.name,
-                             include_blank: "Select #{filter.name}", input_html: { name: '[track][filter_ids][]' }
+        f.input :filter_ids, as: :searchable_select, collection: filter.sub_filters, label: filter.name, multiple: true,
+                             input_html: { data: { placeholder: "Select #{filter.name}" }, name: '[track][filter_ids][]',
+                                           id: filter.id.to_s, class: 'filter_select' }
+        next unless filter.max_levels_allowed == 2
 
-        filter.sub_filters.each do |sub_filter|
-          next unless sub_filter.sub_filters.count.positive?
-
-          f.input :filter_ids, as: :searchable_select, collection: sub_filter.sub_filters, label: "Sub-#{sub_filter.parent_filter.name}",
-                               include_blank: "Select Sub-#{sub_filter.parent_filter.name}", input_html: { name: '[track][filter_ids][]' }
+        div(class: "#{filter.id}-children") do
+          f.input :filter_ids, as: :searchable_select, collection: f.object.filters.where(parent_filter: filter).map { |sub_filter| sub_filter.sub_filters.pluck(:name, :id) }.flatten(1), label: "Sub-#{filter.name}", multiple: true,
+                               input_html: { data: { placeholder: "Select Sub-#{filter.name}" }, name: '[track][filter_ids][]',
+                                             id: "#{filter.id}-children" }
         end
       end
     end

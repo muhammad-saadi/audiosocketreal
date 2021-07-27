@@ -9,6 +9,11 @@ ActiveAdmin.register Filter do
     def show
       @filter = Filter.find(params[:id])
     end
+
+    def destroy
+      @filter = Filter.find(params[:id]).destroy
+      redirect_to admin_filter_path(@filter.parent_filter)
+    end
   end
 
   index do
