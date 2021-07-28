@@ -1,5 +1,4 @@
 class Api::V1::FiltersController < Api::BaseController
-
   skip_before_action :authorize_request
   skip_before_action :authenticate_user!
 
@@ -8,6 +7,6 @@ class Api::V1::FiltersController < Api::BaseController
   end
 
   def sub_filters
-    render json: Filter.where(id: params[:ids]).includes(:sub_filters).map { |filter| filter.sub_filters.pluck(:id, :name) }
+    render json: Filter.where(id: params[:ids]).includes(:sub_filters).map(&:filter_options).flatten(1)
   end
 end

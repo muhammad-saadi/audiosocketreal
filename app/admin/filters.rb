@@ -3,16 +3,9 @@ ActiveAdmin.register Filter do
 
   controller do
     def scoped_collection
-      end_of_association_chain.parent_filters
-    end
+      return end_of_association_chain.parent_filters if params[:action] == 'index'
 
-    def show
-      @filter = Filter.find(params[:id])
-    end
-
-    def destroy
-      @filter = Filter.find(params[:id]).destroy
-      redirect_to admin_filter_path(@filter.parent_filter)
+      super
     end
   end
 

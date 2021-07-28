@@ -37,11 +37,11 @@ $(function () {
 $(function () {
   $(document).on('change', '.filter_select', function (e) {
     let parent = e.target
-    sub_filters(parent);
+    append_sub_filters(parent);
   })
 })
 
-function sub_filters(filter){
+function append_sub_filters(filter){
   var values = Array.from(filter.selectedOptions).map(({ value }) => value);
   $.ajax({
     type: "GET",
@@ -53,16 +53,15 @@ function sub_filters(filter){
       let selected = Array.from(sub_filter.selectedOptions).map(({ value }) => value);
       sub_filter.innerHTML = ''
 
-      for (let i = 0; i < data.length; i++)
-        for (let j = 0; j < data[i].length; j++) {
-          let child = data[i][j]
-          let option = document.createElement('option');
-          option.value = child[0];
-          option.innerHTML = child[1];
-          if (selected.includes(child[0].toString()))
-            option.selected = true
+      for (let i = 0; i < data.length; i++){
+        let child = data[i]
+        let option = document.createElement('option');
+        option.value = child[1];
+        option.innerHTML = child[0];
+        if (selected.includes(child[1].toString()))
+          option.selected = true
 
-          document.getElementById(filter.id + "-children").appendChild(option)
+        sub_filter.appendChild(option)
         }
     }
   });

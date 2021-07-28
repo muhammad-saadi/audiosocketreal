@@ -1,4 +1,8 @@
 module ActiveAdminHelper
+  def sub_filter_options(filter, track)
+    filter.sub_filters.select { |sub_filter| sub_filter.id.in?(track.filter_ids) }.map(&:filter_options).flatten(1)
+  end
+
   def collaborators_status_list
     ArtistsCollaborator.statuses.keys.map { |key| [key.humanize, key] }
   end
