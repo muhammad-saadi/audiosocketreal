@@ -62,7 +62,7 @@ function append_sub_filters(filter){
           option.selected = true
 
         sub_filter.appendChild(option)
-        }
+      }
     }
   });
 }
