@@ -67,7 +67,7 @@ ActiveAdmin.register Filter do
 
     f.actions do
       f.action :submit
-      f.cancel_link(f.object.persisted? ? { action: 'show' } : admin_filter_path(f.object.parent_filter_id))
+      f.cancel_link(f.object.persisted? ? { action: 'show' } : (f.object.parent_filter.present? ? admin_filter_path(f.object.parent_filter_id) : admin_filters_path))
     end
   end
 end
