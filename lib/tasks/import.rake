@@ -10,8 +10,8 @@ namespace :import do
       sheet = xlsx.sheet(name)
       parent = Filter.find_or_create_by(name: name, max_levels_allowed: sheet.last_column)
       sheet.last_row.times do |i|
-        child = parent.sub_filters.find_or_create_by(name: sheet.cell(i+1, 1).gsub("\n", ''), max_levels_allowed: sheet.last_column - 1) if sheet.cell(i+1,1).present?
-        child.sub_filters.find_or_create_by(name: sheet.cell(i+1, 2).gsub("\n", ''), max_levels_allowed: 0) if sheet.last_column == 2 && sheet.cell(i+1, 2).present?
+        child = parent.sub_filters.find_or_create_by(name: sheet.cell(i + 1, 1).gsub("\n", ''), max_levels_allowed: sheet.last_column - 1) if sheet.cell(i + 1, 1).present?
+        child.sub_filters.find_or_create_by(name: sheet.cell(i + 1, 2).gsub("\n", ''), max_levels_allowed: 0) if sheet.last_column == 2 && sheet.cell(i + 1, 2).present?
       end
     end
   end
