@@ -6,6 +6,7 @@ namespace :import do
     url = "https://docs.google.com/spreadsheets/d/1xNJ5sM7II2PThPymmlIwSvJ2pB8pP7o55fnio9Tw618/export?format=xlsx"
     child = nil
     xlsx = Roo::Spreadsheet.open(url, extension: :xlsx)
+    Filter.destroy_all
     xlsx.sheets.each do |name|
       sheet = xlsx.sheet(name)
       parent = Filter.create(name: name, max_levels_allowed: sheet.last_column)
