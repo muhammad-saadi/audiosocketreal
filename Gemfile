@@ -78,3 +78,4 @@ gem 'rspec-rails'
 gem 'rswag'
 gem 'httparty'
 gem 'zipline'
+gem "roo", "~> 2.8"
