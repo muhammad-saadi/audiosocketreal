@@ -16,7 +16,7 @@ module TrackDetailsExporter
           wav_filename = track.file.filename if track.file.content_type == "audio/vnd.wave" || track.file.content_type == "audio/wave"
           aiff_filename = track.file.filename if track.file.content_type == "audio/aiff" || track.file.content_type == "audio/x-aiff"
           title = track.title
-          performed_by = track.album.user.first_name + " " + track.album.user.last_name
+          performed_by = track.album.user.full_name
           album = track.album.name
           composer = track.composer
           notes = track.admin_note
@@ -33,7 +33,7 @@ module TrackDetailsExporter
           sub_genres = track.filters.select{ |filter| filter.parent_filter.name.in?(genres) }.pluck(:name)
           moods = track.filters.select { |filter| filter.parent_filter.name.downcase.include?('moods') }.pluck(:name)
           instruments = track.filters.select { |filter| filter.parent_filter.name.downcase.include?('instruments') }.pluck(:name)
-          sub_instruments = track.filters.where(parent_filter_id: Filter.where(name: instruments)).pluck(:name)
+          sub_instruments = track.filters.select{ |filter| filter.parent_filter.name.in?(instruments) }.pluck(:name)
 
           sheet << [nil, nil, mp3_filename, wav_filename, aiff_filename, title, performed_by, album, composer, notes, description, lyrics, language, instrumental, explicit, vocals.join(','), key, bpm, tempo.join(','), genres.join(','), sub_genres.join(','), moods.join(','), instruments.join(','), sub_instruments.join(',')]
 
