@@ -1,5 +1,6 @@
 class Track < ApplicationRecord
   include Pagination
+  include TrackDetailsExporter
 
   validates :title, :file, presence: true
   validates :file, blob: { content_type: %w[audio/vnd.wave audio/wave audio/aiff audio/x-aiff audio/mpeg] }
@@ -39,5 +40,9 @@ class Track < ApplicationRecord
     track_files.each_with_index.inject([]) do |zip_list, track_file, index|
       zip_list << [track_file.first.first, (zip_list.pluck(1).include?(track_file.first.second) ? track_file.first.first.record.filename("(#{track_file.second})") : track_file.first.second)]
     end
+  end
+
+  def self.track_sheet
+    track_detail_sheet(all)
   end
 end
