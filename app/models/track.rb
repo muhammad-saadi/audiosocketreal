@@ -41,8 +41,4 @@ class Track < ApplicationRecord
       zip_list << [track_file.first.first, (zip_list.pluck(1).include?(track_file.first.second) ? track_file.first.first.record.filename("(#{track_file.second})") : track_file.first.second)]
     end
   end
-
-  def self.track_sheet
-    track_detail_sheet(all)
-  end
 end

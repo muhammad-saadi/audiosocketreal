@@ -24,7 +24,7 @@ ActiveAdmin.register Track do
   end
 
   batch_action :download_xlsx do |ids|
-    xlsx_sheet = batch_action_collection.where(id: ids).includes(file_attachment: :blob, filters: [:parent_filter, :sub_filters], album: [:user]).track_sheet
+    xlsx_sheet = batch_action_collection.where(id: ids).includes(file_attachment: :blob, filters: [:parent_filter, :sub_filters], album: [:user]).track_detail_sheet
     send_data xlsx_sheet, filename: "tracks_data.xlsx", type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
   end
 

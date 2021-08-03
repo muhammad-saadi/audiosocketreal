@@ -2,7 +2,7 @@ module TrackDetailsExporter
   extend ActiveSupport::Concern
 
   class_methods do
-    def track_detail_sheet(collection)
+    def track_detail_sheet
       io = StringIO.new
       xlsx = Xlsxtream::Workbook.new(io)
       xlsx.write_worksheet 'Sheet1' do |sheet|
@@ -10,7 +10,7 @@ module TrackDetailsExporter
         sheet << ['SynchTank ID', 'Parent track', 'MP3 File', 'WAV File', 'AIFF File', 'Title', 'Performed By', 'Album', 'Composer', 'Notes', 'Description', 'Lyrics', 'Language', 'Instrumental', 'Explicit', 'Vocals', 'Key', 'BPM', 'Tempo', 'Genres :: Comma Sep', 'Subgenres :: Comma Sep', 'Moods :: Comma Sep', 'Instruments :: Comma Sep', 'Subinstruments :: Comma Sep']
         sheet << ['id', 'parent_id', 'mp3_filename', 'wav_filename', 'aiff_filename', 'title', 'performed_by', 'album', 'composer', 'notes', 'description', 'lyrics', 'language', 'instrumental', 'explicit', 'vocals', 'musical_key', 'bpm', 'tempo', 'metadata_genres_csv', 'metadata_subgenres_csv', 'metadata_moods_csv', 'metadata_instruments_csv', 'metadata_subinstruments_csv']
 
-        collection.each do |track|
+        all.each do |track|
 
           mp3_filename = track.file.filename if track.file.content_type == "audio/mpeg"
           wav_filename = track.file.filename if track.file.content_type == "audio/vnd.wave" || track.file.content_type == "audio/wave"
