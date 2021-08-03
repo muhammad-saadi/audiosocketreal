@@ -658,6 +658,12 @@ paths:
       - name: social
         in: formData
         type: string
+      - name: website_link
+        in: formData
+        type: string
+      - name: genre_ids[]
+        in: formData
+        type: string
       - name: contact_information[name]
         in: formData
         type: string
@@ -737,10 +743,25 @@ paths:
                 type: string
               sounds_like:
                 type: string
+              website_link:
+                type: string
               profile_image_status:
                 type: string
               banner_image_status:
                 type: string
+              social:
+                type: array
+                items:
+                  type: string
+              genres:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    id:
+                      type: integer
+                    name:
+                      type: string
               contact_information:
                 type: object
                 properties:
@@ -820,10 +841,25 @@ paths:
                 type: string
               sounds_like:
                 type: string
+              website_link:
+                type: string
               profile_image_status:
                 type: string
               banner_image_status:
                 type: string
+              social:
+                type: array
+                items:
+                  type: string
+              genres:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    id:
+                      type: integer
+                    name:
+                      type: string
               contact_information:
                 type: object
                 properties:
@@ -2113,6 +2149,12 @@ paths:
       - name: social
         in: formData
         type: string
+      - name: website_link
+        in: formData
+        type: string
+      - name: genre_ids[]
+        in: formData
+        type: string
       - name: contact_information[name]
         in: formData
         type: string
@@ -2192,10 +2234,25 @@ paths:
                 type: string
               sounds_like:
                 type: string
+              website_link:
+                type: string
               profile_image_status:
                 type: string
               banner_image_status:
                 type: string
+              social:
+                type: array
+                items:
+                  type: string
+              genres:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    id:
+                      type: integer
+                    name:
+                      type: string
               contact_information:
                 type: object
                 properties:
@@ -2279,10 +2336,25 @@ paths:
                 type: string
               sounds_like:
                 type: string
+              website_link:
+                type: string
               profile_image_status:
                 type: string
               banner_image_status:
                 type: string
+              social:
+                type: array
+                items:
+                  type: string
+              genres:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    id:
+                      type: integer
+                    name:
+                      type: string
               contact_information:
                 type: object
                 properties:

@@ -8,6 +8,8 @@ class ArtistProfile < ApplicationRecord
   has_one :tax_information, dependent: :destroy
 
   has_many :notes, as: :notable, dependent: :destroy
+  has_many :artists_genres, dependent: :destroy
+  has_many :genres, through: :artists_genres
 
   accepts_nested_attributes_for :contact_information
   accepts_nested_attributes_for :payment_information

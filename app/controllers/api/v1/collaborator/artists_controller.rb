@@ -40,10 +40,10 @@ class Api::V1::Collaborator::ArtistsController < Api::V1::Collaborator::BaseCont
   end
 
   def artist_profile_params
-    params.permit(:email, :profile_image, :banner_image, :sounds_like, :country, :bio, :key_facts,
+    params.permit(:email, :profile_image, :banner_image, :sounds_like, :country, :bio, :key_facts, :website_link,
                   contact_information: %i[name email phone street postal_code city state country],
                   payment_information: %i[payee_name bank_name routing account_number paypal_email],
-                  additional_images: [], social: [])
+                  additional_images: [], social: [], genre_ids: [])
   end
 
   def collaborator_params

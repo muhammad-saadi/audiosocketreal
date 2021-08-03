@@ -47,6 +47,10 @@ module ActiveAdminHelper
     ArtistsCollaborator.all.map { |artists_collaborator| ["Artist Collaborator ##{artists_collaborator.id}", artists_collaborator.id] }
   end
 
+  def genres_list
+    Genre.all
+  end
+
   def pro_list
     [
       ['NS (no society)', 'NS'],

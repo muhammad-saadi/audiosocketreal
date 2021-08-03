@@ -87,9 +87,13 @@ ActiveAdmin.register User, as: 'Artist' do
           row :country
           row :exclusive
           row :sounds_like
+          row :genres do
+            artist.artist_profile.genres.map(&:name).join(', ')
+          end
           row :bio
           row :key_facts
           row :social
+          row :website_link
           row :created_at
           row :updated_at
 

@@ -24,7 +24,7 @@ ActiveAdmin.register ArtistProfile do
   filter :created_at
 
   permit_params :name, :email, :exclusive, :user_id, :sounds_like, :country, :bio, :key_facts, :social_raw, :banner_image, :profile_image,
-                :banner_image_status, :profile_image_status, additional_images: []
+                :banner_image_status, :profile_image_status, :website_link, genre_ids: [], additional_images: []
 
   index do
     selectable_column
@@ -56,9 +56,11 @@ ActiveAdmin.register ArtistProfile do
       f.input :country, as: :searchable_select, collection: CountryStateSelect.countries_collection.map(&:first), include_blank: 'Select a Country'
       f.input :exclusive
       f.input :sounds_like
+      f.input :genres, as: :searchable_select, collection: genres_list
       f.input :bio
       f.input :key_facts
       f.input :social_raw, as: :text, label: 'Social'
+      f.input :website_link
     end
 
     f.actions do

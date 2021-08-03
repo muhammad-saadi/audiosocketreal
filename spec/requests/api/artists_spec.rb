@@ -14,6 +14,8 @@ RSpec.describe 'api/artists', type: :request do
       parameter name: :country, in: :formData, type: :string
       parameter name: :sounds_like, in: :formData, type: :string
       parameter name: :social, in: :formData, type: :string
+      parameter name: :website_link, in: :formData, type: :string
+      parameter name: :'genre_ids[]', in: :formData, type: :string
       parameter name: :'contact_information[name]', in: :formData, type: :string
       parameter name: :'contact_information[phone]', in: :formData, type: :string
       parameter name: :'contact_information[email]', in: :formData, type: :string
@@ -49,8 +51,25 @@ RSpec.describe 'api/artists', type: :request do
                  bio: { type: :string },
                  key_facts: { type: :string },
                  sounds_like: { type: :string },
+                 website_link: { type: :string },
                  profile_image_status: { type: :string },
                  banner_image_status: { type: :string },
+                 social: {
+                   type: :array,
+                   items: {
+                     type: :string
+                   }
+                 },
+                 genres: {
+                   type: :array,
+                   items: {
+                     type: :object,
+                     properties: {
+                       id: { type: :integer },
+                       name: { type: :string }
+                     }
+                   }
+                 },
                  contact_information: {
                    type: :object,
                    properties: {
@@ -111,8 +130,25 @@ RSpec.describe 'api/artists', type: :request do
                  bio: { type: :string },
                  key_facts: { type: :string },
                  sounds_like: { type: :string },
+                 website_link: { type: :string },
                  profile_image_status: { type: :string },
                  banner_image_status: { type: :string },
+                 social: {
+                   type: :array,
+                   items: {
+                     type: :string
+                   }
+                 },
+                 genres: {
+                   type: :array,
+                   items: {
+                     type: :object,
+                     properties: {
+                       id: { type: :integer },
+                       name: { type: :string }
+                     }
+                   }
+                 },
                  contact_information: {
                    type: :object,
                    properties: {

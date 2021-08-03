@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_07_15_074311) do
+ActiveRecord::Schema.define(version: 2021_08_03_052545) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -101,6 +101,7 @@ ActiveRecord::Schema.define(version: 2021_07_15_074311) do
     t.string "profile_image_status", default: "rejected"
     t.string "country"
     t.string "email"
+    t.string "website_link"
     t.index ["user_id"], name: "index_artist_profiles_on_user_id"
   end
 
@@ -115,6 +116,15 @@ ActiveRecord::Schema.define(version: 2021_07_15_074311) do
     t.index ["artist_id"], name: "index_artists_collaborators_on_artist_id"
     t.index ["collaborator_id", "artist_id"], name: "index_artists_collaborators_on_collaborator_id_and_artist_id", unique: true
     t.index ["collaborator_id"], name: "index_artists_collaborators_on_collaborator_id"
+  end
+
+  create_table "artists_genres", force: :cascade do |t|
+    t.bigint "artist_profile_id"
+    t.bigint "genre_id"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["artist_profile_id"], name: "index_artists_genres_on_artist_profile_id"
+    t.index ["genre_id"], name: "index_artists_genres_on_genre_id"
   end
 
   create_table "audition_musics", force: :cascade do |t|
