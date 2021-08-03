@@ -88,7 +88,7 @@ ActiveAdmin.register User, as: 'Artist' do
           row :exclusive
           row :sounds_like
           row :genres do
-            artist.artist_profile.genres.map(&:name).join(', ')
+            artist.artist_profile.genre_names
           end
           row :bio
           row :key_facts

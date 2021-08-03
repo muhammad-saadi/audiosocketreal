@@ -61,4 +61,8 @@ class ArtistProfile < ApplicationRecord
   def tax_information=(attributes)
     self.tax_information_attributes = attributes.merge({ id: tax_information&.id })
   end
+
+  def genre_names
+    genres.map(&:name).join(', ')
+  end
 end
