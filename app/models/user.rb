@@ -77,6 +77,12 @@ class User < ApplicationRecord
     end
   end
 
+  def re_invite_collaborator(email)
+    collaborator = User.find_by!(email: email)
+    artist_collaborator = ArtistsCollaborator.find_by!(artist_id: id, collaborator_id: collaborator.id)
+    CollaboratorMailer.invitation_mail(id, artist_collaborator.id, collaborator.email).deliver_later
+  end
+
   def agreements_accepted?(role)
     users_agreements && users_agreements.where(role: role).joins(:agreement).where('agreement.agreement_type':
                         [Agreement::TYPES[:exclusive], Agreement::TYPES[:non_exclusive]]).pluck(:status).all?('accepted')
@@ -105,6 +111,6 @@ class User < ApplicationRecord
   end
 
   def splited_name(name)
-    { first_name: name.split(/ /, 2)[0], last_name: name.split(/ /, 2)[1] }
+    { first_name: name&.split(/ /, 2)[0], last_name: name&.split(/ /, 2)[1] }
   end
 end

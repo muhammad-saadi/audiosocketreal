@@ -18,6 +18,7 @@ Rails.application.routes.draw do
             patch :update_profile
             get :collaborators
             patch :invite_collaborator
+            patch :resend_collaborator_invitation
           end
         end
 
@@ -81,6 +82,7 @@ Rails.application.routes.draw do
           patch :update_profile
           patch :invite_collaborator
           get :collaborators
+          patch :resend_collaborator_invitation
         end
       end
 

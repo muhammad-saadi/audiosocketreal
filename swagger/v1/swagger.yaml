@@ -930,7 +930,43 @@ paths:
       - application/json
       responses:
         '200':
-          description: Collaborator Updated
+          description: Invitation sent
+          schema:
+            type: array
+            items:
+              type: object
+              properties:
+                id:
+                  type: integer
+                first_name:
+                  type: string
+                last_name:
+                  type: string
+                email:
+                  type: string
+                access:
+                  type: string
+                status:
+                  type: string
+  "/api/v1/artists/resend_collaborator_invitation":
+    patch:
+      summary: Re-invite collaborator
+      tags:
+      - Artists
+      parameters:
+      - name: email
+        in: formData
+        type: string
+      security:
+      - api_auth: []
+      - user_auth: []
+      consumes:
+      - multipart/form-data
+      produces:
+      - application/json
+      responses:
+        '200':
+          description: Invitation re-sent
           schema:
             type: array
             items:
@@ -2428,7 +2464,46 @@ paths:
       - application/json
       responses:
         '200':
-          description: Collaborator Updated
+          description: Invitation sent
+          schema:
+            type: array
+            items:
+              type: object
+              properties:
+                id:
+                  type: integer
+                first_name:
+                  type: string
+                last_name:
+                  type: string
+                email:
+                  type: string
+                access:
+                  type: string
+                status:
+                  type: string
+  "/api/v1/collaborator/artists/resend_collaborator_invitation?ar":
+    patch:
+      summary: Re-invite collaborator
+      tags:
+      - Collaborator-Artists
+      parameters:
+      - name: artist_id
+        in: query
+        type: string
+      - name: email
+        in: formData
+        type: string
+      security:
+      - api_auth: []
+      - user_auth: []
+      consumes:
+      - multipart/form-data
+      produces:
+      - application/json
+      responses:
+        '200':
+          description: Invitation re-sent
           schema:
             type: array
             items:

@@ -192,7 +192,6 @@ RSpec.describe 'api/collaborator/artists', type: :request do
     patch 'Invite collaborator' do
       tags 'Collaborator-Artists'
 
-
       parameter name: :artist_id, in: :query, type: :string
       parameter name: :name, in: :formData, type: :string
       parameter name: :email, in: :formData, type: :string
@@ -206,7 +205,39 @@ RSpec.describe 'api/collaborator/artists', type: :request do
       consumes 'multipart/form-data'
       produces 'application/json'
 
-      response '200', 'Collaborator Updated' do
+      response '200', 'Invitation sent' do
+        schema type: :array,
+               items: {
+                 type: :object,
+                 properties: {
+                   id: { type: :integer },
+                   first_name: { type: :string },
+                   last_name: { type: :string },
+                   email: { type: :string },
+                   access: { type: :string },
+                   status: { type: :string }
+                 }
+               }
+
+        run_test!
+      end
+    end
+  end
+
+  path '/api/v1/collaborator/artists/resend_collaborator_invitation?ar' do
+    patch 'Re-invite collaborator' do
+      tags 'Collaborator-Artists'
+
+
+      parameter name: :artist_id, in: :query, type: :string
+      parameter name: :email, in: :formData, type: :string
+
+      security [{ api_auth: [] }, { user_auth: [] }]
+
+      consumes 'multipart/form-data'
+      produces 'application/json'
+
+      response '200', 'Invitation re-sent' do
         schema type: :array,
                items: {
                  type: :object,
