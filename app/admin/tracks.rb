@@ -2,7 +2,7 @@ ActiveAdmin.register Track do
   config.remove_action_item(:new)
   permit_params :title, :file, :status, :album_id, :public_domain, :publisher_id, :artists_collaborator_id, :lyrics, :explicit, :composer, :description, :language, :instrumental, :key, :bpm, :admin_note, filter_ids: []
 
-  includes :album
+  includes :album, file_attachment: :blob
 
   filter :title_cont, as: :string, label: 'Title'
   filter :status, as: :select, collection: -> { tracks_status_list }
@@ -40,6 +40,9 @@ ActiveAdmin.register Track do
     column :public_domain
     column :created_at
     column :updated_at
+    column :file do |track|
+      audio_tag(url_for(track.file), controls: true) if track.file.attached?
+    end
     actions
   end
 

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_08_03_052545) do
+ActiveRecord::Schema.define(version: 2021_08_04_080652) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -279,7 +279,7 @@ ActiveRecord::Schema.define(version: 2021_08_03_052545) do
     t.string "language"
     t.boolean "instrumental"
     t.string "key"
-    t.string "bpm"
+    t.integer "bpm"
     t.index ["album_id"], name: "index_tracks_on_album_id"
     t.index ["artists_collaborator_id"], name: "index_tracks_on_artists_collaborator_id"
     t.index ["publisher_id"], name: "index_tracks_on_publisher_id"
