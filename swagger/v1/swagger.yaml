@@ -954,7 +954,7 @@ paths:
       tags:
       - Artists
       parameters:
-      - name: email
+      - name: artists_collaborator_id
         in: formData
         type: string
       security:
@@ -2491,7 +2491,7 @@ paths:
       - name: artist_id
         in: query
         type: string
-      - name: email
+      - name: artists_collaborator_id
         in: formData
         type: string
       security:

@@ -230,7 +230,7 @@ RSpec.describe 'api/collaborator/artists', type: :request do
 
 
       parameter name: :artist_id, in: :query, type: :string
-      parameter name: :email, in: :formData, type: :string
+      parameter name: :artists_collaborator_id, in: :formData, type: :string
 
       security [{ api_auth: [] }, { user_auth: [] }]
 

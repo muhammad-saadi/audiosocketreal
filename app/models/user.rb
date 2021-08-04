@@ -77,12 +77,6 @@ class User < ApplicationRecord
     end
   end
 
-  def re_invite_collaborator(email)
-    collaborator = User.find_by!(email: email)
-    artist_collaborator = ArtistsCollaborator.find_by!(artist_id: id, collaborator_id: collaborator.id)
-    CollaboratorMailer.invitation_mail(id, artist_collaborator.id, collaborator.email).deliver_later
-  end
-
   def agreements_accepted?(role)
     users_agreements && users_agreements.where(role: role).joins(:agreement).where('agreement.agreement_type':
                         [Agreement::TYPES[:exclusive], Agreement::TYPES[:non_exclusive]]).pluck(:status).all?('accepted')

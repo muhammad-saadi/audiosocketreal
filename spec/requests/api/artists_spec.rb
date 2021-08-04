@@ -224,7 +224,7 @@ RSpec.describe 'api/artists', type: :request do
     patch 'Re-invite collaborator' do
       tags 'Artists'
 
-      parameter name: :email, in: :formData, type: :string
+      parameter name: :artists_collaborator_id, in: :formData, type: :string
 
       security [{ api_auth: [] }, { user_auth: [] }]
 

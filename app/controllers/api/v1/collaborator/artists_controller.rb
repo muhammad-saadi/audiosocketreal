@@ -34,7 +34,8 @@ class Api::V1::Collaborator::ArtistsController < Api::V1::Collaborator::BaseCont
   end
 
   def resend_collaborator_invitation
-    @current_artist.re_invite_collaborator(params[:email])
+    @artists_collaborator = ArtistsCollaborator.find(params[:artists_collaborator_id])
+    CollaboratorMailer.invitation_mail(@current_artist.id, @artists_collaborator.id, @artists_collaborator.collaborator.email).deliver_later
     @collaborators = @current_artist.collaborators_details.ordered.pagination(pagination_params)
     render json: @collaborators.includes(:collaborator), meta: { count: @collaborators.count }, each_serializer: Api::V1::CollaboratorSerializer
   end
