@@ -11,7 +11,6 @@ ActiveAdmin.register Filter do
 
   index do
     selectable_column
-    id_column
     column :name
     column :featured
     column :created_at
@@ -40,7 +39,6 @@ ActiveAdmin.register Filter do
           if filter.sub_filters.blank?
             column 'No Records Found'
           else
-            column :id
             column :name
             column :featured
             column :actions do |filter|

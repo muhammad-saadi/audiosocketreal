@@ -2,7 +2,7 @@ class CollaboratorProfile < ApplicationRecord
   belongs_to :artists_collaborator
 
   validates :ipi, presence: true, unless: -> { pro == 'NS' }
-  validates :ipi, numericality: true, length: { is: 9 }, allow_blank: true
+  validates :ipi, numericality: true, length: { minimum: 9 }, allow_blank: true
 
   before_save :reset_ipi
 

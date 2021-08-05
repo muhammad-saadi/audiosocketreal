@@ -6,7 +6,7 @@ ActiveAdmin.register Track do
 
   filter :title_cont, as: :string, label: 'Title'
   filter :status, as: :select, collection: -> { tracks_status_list }
-  filter :filters, as: :searchable_select
+  filter :filters, as: :searchable_select, collection: -> { filters_list }
   filter :created_at
 
   scope :all, default: true
@@ -31,7 +31,9 @@ ActiveAdmin.register Track do
   index do
     selectable_column
     id_column
-    column :title
+    column :title do |track|
+      link_to track.title, admin_track_path(track)
+    end
     column :album
     column :status do |track|
       track.status&.titleize

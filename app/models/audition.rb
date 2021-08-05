@@ -120,7 +120,7 @@ class Audition < ApplicationRecord
     user.save(validate: false)
 
     unless user.artist_profile&.persisted?
-      profile = user.build_artist_profile(name: artist_name, exclusive: self.exclusive)
+      profile = user.build_artist_profile(name: artist_name, exclusive: exclusive, sounds_like: sounds_like, genres: genres)
       profile.save(validate: false)
     end
 

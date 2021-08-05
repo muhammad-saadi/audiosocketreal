@@ -51,6 +51,10 @@ module ActiveAdminHelper
     Genre.all
   end
 
+  def filters_list
+    Filter.where.not(parent_filter: nil)
+  end
+
   def pro_list
     [
       ['NS (no society)', 'NS'],
