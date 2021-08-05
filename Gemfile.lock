@@ -74,6 +74,8 @@ GEM
       activesupport (= 6.1.3.1)
       marcel (~> 1.0.0)
       mini_mime (~> 1.0.2)
+    activestorage-audio (0.1.0)
+      activestorage (>= 5)
     activesupport (6.1.3.1)
       concurrent-ruby (~> 1.0, >= 1.0.2)
       i18n (>= 1.6, < 2)
@@ -218,6 +220,7 @@ GEM
     mini_portile2 (2.5.0)
     minitest (5.14.4)
     msgpack (1.4.2)
+    multi_json (1.15.0)
     multi_xml (0.6.0)
     nio4r (2.5.7)
     nokogiri (1.11.2)
@@ -342,6 +345,8 @@ GEM
       actionpack (>= 4.0)
       activesupport (>= 4.0)
       sprockets (>= 3.0.0)
+    streamio-ffmpeg (3.0.2)
+      multi_json (~> 1.8)
     terrapin (0.6.0)
       climate_control (>= 0.0.3, < 1.0)
     thor (1.1.0)
@@ -370,8 +375,6 @@ GEM
     websocket-driver (0.7.3)
       websocket-extensions (>= 0.1.0)
     websocket-extensions (0.1.5)
-    xlsxtream (2.4.0)
-      zip_tricks (>= 4.5, < 6)
     xpath (3.2.0)
       nokogiri (~> 1.8)
     zeitwerk (2.4.2)
@@ -390,6 +393,7 @@ DEPENDENCIES
   active_storage_validations
   activeadmin
   activeadmin-searchable_select
+  activestorage-audio
   apipie-rails
   arctic_admin
   aws-sdk-s3
@@ -422,12 +426,12 @@ DEPENDENCIES
   sass-rails (>= 6)
   selenium-webdriver
   spring
+  streamio-ffmpeg
   turbolinks (~> 5)
   tzinfo-data
   web-console (>= 4.1.0)
   webdrivers
   webpacker (~> 5.0)
-  xlsxtream
   zipline
 
 RUBY VERSION

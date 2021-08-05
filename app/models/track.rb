@@ -4,6 +4,7 @@ class Track < ApplicationRecord
 
   validates :title, :file, presence: true
   validates :file, blob: { content_type: %w[audio/vnd.wave audio/wave audio/aiff audio/x-aiff] }
+  validates :file, bitrate: { bits: [16, 24], sample_rate: 48_000 }
 
   belongs_to :album
   belongs_to :publisher, optional: true

@@ -79,4 +79,6 @@ gem 'rswag'
 gem 'httparty'
 gem 'zipline'
 gem "roo", "~> 2.8"
-gem 'xlsxtream'
+gem 'activestorage-audio'
+gem 'streamio-ffmpeg'
+

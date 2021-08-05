@@ -135,7 +135,7 @@ ActiveAdmin.register Track do
                                      include_blank: 'Select a Collaborator'
 
       Filter.parent_filters.includes(sub_filters: [sub_filters: :sub_filters]).each do |filter|
-        next unless filter.sub_filters.count.positive?
+        next unless filter.sub_filters.size.positive?
 
         f.input :filter_ids, as: :searchable_select, collection: filter.sub_filters, label: filter.name, multiple: true,
                              input_html: { data: { placeholder: "Select #{filter.name}" }, name: '[track][filter_ids][]',
