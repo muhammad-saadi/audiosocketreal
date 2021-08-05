@@ -36,14 +36,16 @@ ActiveAdmin.register ArtistsCollaborator do
     end
     column :created_at
     column :updated_at
-    actions
+    actions defaults: false do |artists_collaborator|
+      item 'View', admin_artists_collaborator_path(artists_collaborator), class: 'member_link'
+    end
   end
 
   show do
     panel 'Collaborator Details' do
       panel('', class: 'align-right') do
         if artists_collaborator.collaborator.present?
-          link_to 'Edit collaborator', edit_admin_collaborator_path(artists_collaborator.collaborator), class: 'medium button'
+          link_to 'Edit collaborator', edit_admin_collaborator_path(artists_collaborator.collaborator, artists_collaborator: artists_collaborator), class: 'medium button'
         end
       end
       attributes_table_for artists_collaborator.collaborator do
