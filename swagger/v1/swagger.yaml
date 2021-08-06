@@ -646,6 +646,12 @@ paths:
       - name: bio
         in: formData
         type: string
+      - name: pro
+        in: formData
+        type: string
+      - name: ipi
+        in: formData
+        type: string
       - name: key_facts
         in: formData
         type: string
@@ -737,6 +743,10 @@ paths:
                 type: array
                 items:
                   type: string
+              pro:
+                type: string
+              ipi:
+                type: string
               bio:
                 type: string
               key_facts:
@@ -835,6 +845,10 @@ paths:
                 type: array
                 items:
                   type: string
+              pro:
+                type: string
+              ipi:
+                type: string
               bio:
                 type: string
               key_facts:
@@ -2170,6 +2184,12 @@ paths:
       - name: additional_images[]
         in: formData
         type: file
+      - name: pro
+        in: formData
+        type: string
+      - name: ipi
+        in: formData
+        type: string
       - name: bio
         in: formData
         type: string
@@ -2265,6 +2285,10 @@ paths:
                 items:
                   type: string
               bio:
+                type: string
+              pro:
+                type: string
+              ipi:
                 type: string
               key_facts:
                 type: string
@@ -2367,6 +2391,10 @@ paths:
                 items:
                   type: string
               bio:
+                type: string
+              pro:
+                type: string
+              ipi:
                 type: string
               key_facts:
                 type: string

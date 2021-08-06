@@ -1,6 +1,6 @@
 class Api::V1::ArtistProfileSerializer < ActiveModel::Serializer
-  attributes :id, :name, :email, :exclusive, :profile_image, :banner_image, :additional_images, :country,
-             :sounds_like, :bio, :key_facts, :social, :website_link, :profile_image_status, :banner_image_status
+  attributes :id, :name, :email, :exclusive, :profile_image, :banner_image, :additional_images, :country, :pro,
+             :ipi, :sounds_like, :bio, :key_facts, :social, :website_link, :profile_image_status, :banner_image_status
 
   has_many :genres
   has_one :contact_information, serializer: Api::V1::ContactInformationSerializer

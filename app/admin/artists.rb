@@ -91,6 +91,8 @@ ActiveAdmin.register User, as: 'Artist' do
           row :country
           row :exclusive
           row :sounds_like
+          row :pro
+          row :ipi
           row :genres do
             artist.artist_profile.genre_names
           end

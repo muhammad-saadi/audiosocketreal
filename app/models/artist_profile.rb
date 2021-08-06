@@ -19,6 +19,11 @@ class ArtistProfile < ApplicationRecord
   validates :banner_image, dimension: { min: 1440..448, message: 'must be minimum 1440x448' }
   validates :bio, length: { maximum: 400 }
   validates :email, email: true, allow_blank: true
+  validates :pro, presence: true
+  validates :ipi, presence: true, unless: -> { pro == 'NS' }
+  validates :ipi, numericality: true, length: { minimum: 9 }, allow_blank: true
+
+  before_save :reset_ipi
 
   STATUSES = {
     pending: 'pending',

@@ -10,6 +10,8 @@ RSpec.describe 'api/collaborator/artists', type: :request do
       parameter name: :profile_image, in: :formData, type: :file
       parameter name: :banner_image, in: :formData, type: :file
       parameter name: :'additional_images[]', in: :formData, type: :file
+      parameter name: :pro, in: :formData, type: :string
+      parameter name: :ipi, in: :formData, type: :string
       parameter name: :bio, in: :formData, type: :string
       parameter name: :key_facts, in: :formData, type: :string
       parameter name: :country, in: :formData, type: :string
@@ -50,6 +52,8 @@ RSpec.describe 'api/collaborator/artists', type: :request do
                  banner_image: { type: :string },
                  additional_images: { type: :array, items: { type: :string } },
                  bio: { type: :string },
+                 pro: { type: :string },
+                 ipi: { type: :string },
                  key_facts: { type: :string },
                  sounds_like: { type: :string },
                  website_link: { type: :string },
@@ -131,6 +135,8 @@ RSpec.describe 'api/collaborator/artists', type: :request do
                  banner_image: { type: :string },
                  additional_images: { type: :array, items: { type: :string } },
                  bio: { type: :string },
+                 pro: { type: :string },
+                 ipi: { type: :string },
                  key_facts: { type: :string },
                  sounds_like: { type: :string },
                  website_link: { type: :string },
