@@ -4,9 +4,10 @@ ActiveAdmin.register Track do
 
   includes :album, file_attachment: :blob
 
+  filter :title_or_album_name_or_filters_name_cont, as: :string, label: 'Search'
   filter :title_cont, as: :string, label: 'Title'
   filter :status, as: :select, collection: -> { tracks_status_list }
-  filter :filters, as: :searchable_select, collection: -> { filters_list }
+  filter :filters, as: :searchable_select, multiple: true, collection: -> { filters_list }
   filter :created_at
 
   scope :all, default: true
@@ -45,7 +46,11 @@ ActiveAdmin.register Track do
     column :file do |track|
       audio_tag(url_for(track.file), controls: true) if track.file.attached?
     end
-    actions
+    actions defaults: false do |track|
+      item 'View', admin_track_path(track), class: 'member_link'
+      item 'Edit', edit_admin_track_path(track, index: true), class: 'member_link'
+      item 'Delete', admin_track_path(track), method: :delete, class: 'member_link'
+    end
   end
 
   show do
@@ -161,7 +166,11 @@ ActiveAdmin.register Track do
 
     f.actions do
       f.action :submit
-      f.cancel_link(f.object.persisted? ? { action: 'show' } : admin_album_path(f.object.album_id))
+      f.cancel_link(if params[:index].present?
+                      { action: 'index' }
+                    else
+                      f.object.persisted? ? { action: 'show' } : admin_album_path(f.object.album_id)
+                    end)
     end
   end
 end

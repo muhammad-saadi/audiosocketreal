@@ -19,6 +19,7 @@ ActiveAdmin.register Note do
   index do
     selectable_column
     id_column
+    column :user
     column :status do |note|
       note.status&.titleize
     end
@@ -47,6 +48,7 @@ ActiveAdmin.register Note do
       row :status do
         note.status&.titleize
       end
+      row :user
       row :notable_type
       row :notable
       row :created_at

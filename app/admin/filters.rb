@@ -15,7 +15,6 @@ ActiveAdmin.register Filter do
     column :featured
     column :created_at
     column :updated_at
-
     actions
   end
 

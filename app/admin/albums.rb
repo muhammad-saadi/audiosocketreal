@@ -3,7 +3,8 @@ ActiveAdmin.register Album do
 
   includes :user
 
-  filter :name_cont, as: :string, label: 'Track title'
+  filter :name_or_tracks_title_cont, as: :string, label: 'Search'
+  filter :name_cont, as: :string, label: 'Name'
   filter :user, as: :searchable_select, collection: User.artist, label: 'Artist'
   filter :tracks_title_cont, as: :string, label: 'Track title'
   filter :created_at

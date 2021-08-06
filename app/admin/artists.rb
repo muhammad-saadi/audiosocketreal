@@ -34,7 +34,11 @@ ActiveAdmin.register User, as: 'Artist' do
     column :created_at
     column :updated_at
     column :roles, &:roles_string
-    actions
+    actions defaults: false do |artist|
+      item 'View', admin_artist_path(artist), class: 'member_link'
+      item 'Edit', edit_admin_artist_path(artist, index: true), class: 'member_link'
+      item 'Delete', admin_artist_path(artist), method: :delete, class: 'member_link'
+    end
   end
 
   show do
@@ -299,7 +303,7 @@ ActiveAdmin.register User, as: 'Artist' do
 
     f.actions do
       f.action :submit
-      f.cancel_link({ action: 'show' })
+      f.cancel_link(params[:index].present? ? { action: 'index' } : { action: 'show' })
     end
   end
 
