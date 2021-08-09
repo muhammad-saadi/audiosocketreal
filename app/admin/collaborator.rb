@@ -124,7 +124,7 @@ ActiveAdmin.register User, as: 'Collaborator' do
 
     f.actions do
       f.action :submit
-      f.cancel_link(admin_artists_collaborator_path(params[:artists_collaborator]))
+      f.cancel_link(params[:artists_collaborator].present? ? admin_artists_collaborator_path(params[:artists_collaborator]) : { action: 'show' })
     end
   end
 end
