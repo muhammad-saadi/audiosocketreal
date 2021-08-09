@@ -60,7 +60,7 @@ class Api::V1::AlbumsController < Api::BaseController
   end
 
   def album_params
-    params.permit(:name, :release_date)
+    params.permit(:name, :release_date, :artwork)
   end
 
   def artwork_params

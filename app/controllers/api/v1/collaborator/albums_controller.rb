@@ -61,7 +61,7 @@ class Api::V1::Collaborator::AlbumsController < Api::V1::Collaborator::BaseContr
   end
 
   def album_params
-    params.permit(:name, :release_date)
+    params.permit(:name, :release_date, :artwork)
   end
 
   def artwork_params
