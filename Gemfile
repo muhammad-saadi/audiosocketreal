@@ -82,4 +82,5 @@ gem "roo", "~> 2.8"
 gem 'xlsxtream'
 gem 'activestorage-audio'
 gem 'streamio-ffmpeg'
+gem "pundit"
 
