@@ -1,10 +1,10 @@
 class ActiveAdmin::TrackPolicy < ApplicationPolicy
   def index?
-    @user.admin?
+    @user.admin? || @user.accountant?
   end
 
   def show?
-    @user.admin?
+    @user.admin? || @user.accountant?
   end
 
   def create?
@@ -17,11 +17,5 @@ class ActiveAdmin::TrackPolicy < ApplicationPolicy
 
   def destroy?
     @user.admin?
-  end
-
-  class Scope < ApplicationPolicy::Scope
-    def resolve
-      scope.all
-    end
   end
 end

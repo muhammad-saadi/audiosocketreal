@@ -55,9 +55,9 @@ ActiveAdmin.register Track do
       audio_tag(url_for(track.file), controls: true) if track.file.attached?
     end
     actions defaults: false do |track|
-      item 'View', admin_track_path(track), class: 'member_link'
-      item 'Edit', edit_admin_track_path(track, index: true), class: 'member_link'
-      item 'Delete', admin_track_path(track), method: :delete, class: 'member_link'
+      item 'View', admin_track_path(track), class: 'member_link' if Pundit::policy(current_admin_user, [:active_admin, Track]).show?
+      item 'Edit', edit_admin_track_path(track, index: true), class: 'member_link' if Pundit::policy(current_admin_user, [:active_admin, Track]).edit?
+      item 'Delete', admin_track_path(track), method: :delete, class: 'member_link' if Pundit::policy(current_admin_user, [:active_admin, Track]).destroy?
     end
   end
 
@@ -97,8 +97,10 @@ ActiveAdmin.register Track do
           else
             column :id
             column :name
-            column :actions do |filter|
-              link_to t('active_admin.view'), admin_filter_path(filter), class: 'small button'
+            if Pundit::policy(current_admin_user, [:active_admin, Filter]).show?
+              column :actions do |filter|
+                link_to t('active_admin.view'), admin_filter_path(filter), class: 'small button'
+              end
             end
           end
         end
