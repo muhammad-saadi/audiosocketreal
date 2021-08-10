@@ -7,7 +7,7 @@ ActiveAdmin.register Track do
   filter :title_or_album_name_or_filters_name_cont, as: :string, label: 'Search'
   filter :title_cont, as: :string, label: 'Title'
   filter :status, as: :select, collection: -> { tracks_status_list }
-  filter :filters, as: :searchable_select, multiple: true, collection: -> { filters_list }
+  filter :filters_id, as: :searchable_select, multiple: true, collection: -> { filters_list }
   filter :created_at
 
   scope :all, default: true
