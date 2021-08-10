@@ -291,4 +291,76 @@ RSpec.describe 'api/collaborator/albums', type: :request do
       end
     end
   end
+
+  path '/api/v1/collaborator/albums/{id}/bulk_upload_tracks' do
+    post 'Upload multiple tracks at once' do
+      tags 'Collaborator-Albums'
+
+      parameter name: :artist_id, in: :query, type: :string
+      parameter name: :'files[]', in: :formData, type: :file
+      parameter name: :id, in: :path, type: :string
+
+      security [{ api_auth: [] }, { user_auth: [] }]
+
+      consumes 'multipart/form-data'
+      produces 'application/json'
+
+      response '200', 'Tracks Uploaded' do
+        schema type: :object,
+               properties: {
+                 album: {
+                   type: :object,
+                   properties: {
+                     id: { type: :integer },
+                     name: { type: :string },
+                     release_date: { type: :string, format: 'date' },
+                     artwork: { type: :string },
+                     tracks: {
+                       type: :array,
+                       items: {
+                         type: :object,
+                         properties: {
+                           id: { type: :integer },
+                           title: { type: :string },
+                           file: { type: :string },
+                           status: { type: :string },
+                           public_domain: { type: :boolean },
+                           created_at: { type: :string, format: :date },
+                           publisher: { type: :object },
+                           collaborator: { type: :object },
+                           lyrics: { type: :string },
+                           explicit: { type: :boolean }
+                         }
+                       }
+                     }
+                   }
+                 },
+                 metadata: {
+                   type: :object,
+                   properties: {
+                     total: { type: :integer },
+                     uploaded: { type: :integer },
+                     messages: {
+                       type: :array,
+                       items: {
+                         type: :object,
+                         properties: {
+                           file: { type: :string },
+                           errors: {
+                             type: :array,
+                             items: {
+                               type: :string
+                             }
+                           }
+                         }
+                       }
+                     }
+                   }
+                 }
+               }
+
+        run_test!
+      end
+    end
+  end
 end

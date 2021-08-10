@@ -1,9 +1,9 @@
 class Api::V1::Collaborator::AlbumsController < Api::V1::Collaborator::BaseController
   include Api::V1::Docs::Collaborator::AlbumsDoc
   allow_access roles: ['collaborator'], access: %w[read write], only: %i[index show]
-  allow_access roles: ['collaborator'], access: %w[write], only: %i[create update destroy update_artwork]
+  allow_access roles: ['collaborator'], access: %w[write], only: %i[create update destroy update_artwork bulk_upload_tracks]
 
-  before_action :set_album, only: %i[update show destroy update_artwork]
+  before_action :set_album, only: %i[update show destroy update_artwork bulk_upload_tracks]
 
   param_group :doc_albums
   def index
@@ -52,6 +52,12 @@ class Api::V1::Collaborator::AlbumsController < Api::V1::Collaborator::BaseContr
     else
       raise ExceptionHandler::ValidationError.new(@album.errors.to_h, 'Error updating album artwork.')
     end
+  end
+
+  def bulk_upload_tracks
+    messages = @album.upload_tracks(params[:files].to_a)
+    render json: @album, serializer: Api::V1::AlbumSerializer, adapter: :json,
+           meta: { total: params[:files].to_a.count, uploaded: params[:files].to_a.count - messages.count, messages: messages }
   end
 
   private

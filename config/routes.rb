@@ -26,6 +26,7 @@ Rails.application.routes.draw do
           resources :tracks, except: %i[new edit]
 
           member do
+            post :bulk_upload_tracks
             patch :update_artwork
           end
         end
@@ -66,6 +67,7 @@ Rails.application.routes.draw do
         resources :tracks, except: %i[new edit]
 
         member do
+          post :bulk_upload_tracks
           patch :update_artwork
         end
       end

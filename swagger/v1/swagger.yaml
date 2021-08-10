@@ -412,6 +412,88 @@ paths:
                       type: string
                     explicit:
                       type: boolean
+  "/api/v1/albums/{id}/bulk_upload_tracks":
+    post:
+      summary: Upload multiple tracks at once
+      tags:
+      - Albums
+      parameters:
+      - name: files[]
+        in: formData
+        type: file
+      - name: id
+        in: path
+        type: string
+        required: true
+      security:
+      - api_auth: []
+      - user_auth: []
+      consumes:
+      - multipart/form-data
+      produces:
+      - application/json
+      responses:
+        '200':
+          description: Tracks Uploaded
+          schema:
+            type: object
+            properties:
+              album:
+                type: object
+                properties:
+                  id:
+                    type: integer
+                  name:
+                    type: string
+                  release_date:
+                    type: string
+                    format: date
+                  artwork:
+                    type: string
+                  tracks:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: integer
+                        title:
+                          type: string
+                        file:
+                          type: string
+                        status:
+                          type: string
+                        public_domain:
+                          type: boolean
+                        created_at:
+                          type: string
+                          format: date
+                        publisher:
+                          type: object
+                        collaborator:
+                          type: object
+                        lyrics:
+                          type: string
+                        explicit:
+                          type: boolean
+              metadata:
+                type: object
+                properties:
+                  total:
+                    type: integer
+                  uploaded:
+                    type: integer
+                  messages:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        file:
+                          type: string
+                        errors:
+                          type: array
+                          items:
+                            type: string
   "/api/v1/artists_collaborators/{id}/update_status":
     patch:
       summary: Update status of artists collaborator
@@ -2050,6 +2132,91 @@ paths:
                       type: string
                     explicit:
                       type: boolean
+  "/api/v1/collaborator/albums/{id}/bulk_upload_tracks":
+    post:
+      summary: Upload multiple tracks at once
+      tags:
+      - Collaborator-Albums
+      parameters:
+      - name: artist_id
+        in: query
+        type: string
+      - name: files[]
+        in: formData
+        type: file
+      - name: id
+        in: path
+        type: string
+        required: true
+      security:
+      - api_auth: []
+      - user_auth: []
+      consumes:
+      - multipart/form-data
+      produces:
+      - application/json
+      responses:
+        '200':
+          description: Tracks Uploaded
+          schema:
+            type: object
+            properties:
+              album:
+                type: object
+                properties:
+                  id:
+                    type: integer
+                  name:
+                    type: string
+                  release_date:
+                    type: string
+                    format: date
+                  artwork:
+                    type: string
+                  tracks:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: integer
+                        title:
+                          type: string
+                        file:
+                          type: string
+                        status:
+                          type: string
+                        public_domain:
+                          type: boolean
+                        created_at:
+                          type: string
+                          format: date
+                        publisher:
+                          type: object
+                        collaborator:
+                          type: object
+                        lyrics:
+                          type: string
+                        explicit:
+                          type: boolean
+              metadata:
+                type: object
+                properties:
+                  total:
+                    type: integer
+                  uploaded:
+                    type: integer
+                  messages:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        file:
+                          type: string
+                        errors:
+                          type: array
+                          items:
+                            type: string
   "/api/v1/collaborator/artists_collaborators/{id}":
     patch:
       summary: Update artists collaborator

@@ -10,4 +10,19 @@ class Album < ApplicationRecord
 
   validates :name, :artwork, presence: true
   validates :artwork, blob: { content_type: :image }, dimension: { min: 353..353, message: 'must be minimum 353x353' }
+
+  def upload_tracks(files)
+    messages = []
+    files.each do |file|
+      track = Track.new(file: file)
+      track.valid?
+      if track.errors[:file].present?
+        messages.append({ file: file.original_filename, error: track.errors[:file] })
+      else
+        tracks << track
+        track.save(validate: false)
+      end
+    end
+    messages
+  end
 end
