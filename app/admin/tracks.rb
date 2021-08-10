@@ -16,6 +16,14 @@ ActiveAdmin.register Track do
   scope :approved
   scope :rejected
 
+  controller do
+    def scoped_collection
+      return end_of_association_chain.distinct if params[:action] == 'index'
+
+      super
+    end
+  end
+
   action_item 'Filters', only: :index do
     link_to('Filters', '/', id: 'sidebar_toggle')
   end

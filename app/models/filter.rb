@@ -12,4 +12,8 @@ class Filter < ApplicationRecord
   def filter_options
     sub_filters.pluck(:name, :id)
   end
+
+  def all_sub_filters
+    sub_filters + sub_filters.map(&:sub_filters).flatten
+  end
 end

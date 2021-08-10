@@ -52,7 +52,7 @@ module ActiveAdminHelper
   end
 
   def filters_list
-    Filter.where.not(parent_filter: nil)
+    option_groups_from_collection_for_select(Filter.parent_filters.includes(sub_filters: [sub_filters: :sub_filters]), :all_sub_filters, :name, :id, :name )
   end
 
   def pro_list
