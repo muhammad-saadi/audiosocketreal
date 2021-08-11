@@ -11,6 +11,24 @@ ActiveAdmin.register User, as: 'Collaborator' do
     def scoped_collection
       end_of_association_chain.collaborator
     end
+
+    def index
+      if current_admin_user.admin?
+        super
+      else
+        flash[:error] = "You are not authorized to perform this action."
+        redirect_backwards_or_to_root
+      end
+    end
+
+    def show
+      if current_admin_user.admin?
+        super
+      else
+        flash[:error] = "You are not authorized to perform this action."
+        redirect_backwards_or_to_root
+      end
+    end
   end
 
   action_item 'Filters', only: :index do

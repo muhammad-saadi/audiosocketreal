@@ -1,4 +1,4 @@
-class ActiveAdmin::ArtistPolicy < ApplicationPolicy
+class ActiveAdmin::UsersAgreementPolicy < ApplicationPolicy
   def index?
     @user.admin?
   end

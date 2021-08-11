@@ -1,10 +1,10 @@
 class ActiveAdmin::ArtistProfilePolicy < ApplicationPolicy
   def index?
-    @user.admin?
+    @user.admin? || @user.accountant?
   end
 
   def show?
-    @user.admin?
+    @user.admin? || @user.accountant?
   end
 
   def create?

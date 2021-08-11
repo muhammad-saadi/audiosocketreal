@@ -1,10 +1,10 @@
 class ActiveAdmin::TrackPolicy < ApplicationPolicy
   def index?
-    @user.admin? || @user.accountant?
+    @user.admin?
   end
 
   def show?
-    @user.admin? || @user.accountant?
+    @user.admin?
   end
 
   def create?

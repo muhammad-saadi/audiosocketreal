@@ -1,10 +1,10 @@
 class ActiveAdmin::ContactInformationPolicy < ApplicationPolicy
   def index?
-    @user.admin?
+    @user.admin? || @user.accountant?
   end
 
   def show?
-    @user.admin?
+    @user.admin? || @user.accountant?
   end
 
   def create?

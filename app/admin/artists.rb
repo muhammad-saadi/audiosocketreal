@@ -35,9 +35,9 @@ ActiveAdmin.register User, as: 'Artist' do
     column :updated_at
     column :roles, &:roles_string
     actions defaults: false do |artist|
-      item 'View', admin_artist_path(artist), class: 'member_link'
-      item 'Edit', edit_admin_artist_path(artist, index: true), class: 'member_link'
-      item 'Delete', admin_artist_path(artist), method: :delete, class: 'member_link'
+      item 'View', admin_artist_path(artist), class: 'member_link' if Pundit.policy(current_admin_user, [:active_admin, artist]).show?
+      item 'Edit', edit_admin_artist_path(artist, index: true), class: 'member_link' if Pundit.policy(current_admin_user, [:active_admin, artist]).update?
+      item 'Delete', admin_artist_path(artist), method: :delete, class: 'member_link' if Pundit.policy(current_admin_user, [:active_admin, artist]).destroy?
     end
   end
 
@@ -58,7 +58,9 @@ ActiveAdmin.register User, as: 'Artist' do
         row 'No Record Found'
       else
         panel('', class: 'align-right') do
-          link_to 'Edit artist profile', edit_admin_artist_profile_path(artist.artist_profile), class: 'medium button'
+          if Pundit.policy(current_admin_user, [:active_admin, artist.artist_profile]).update?
+            link_to 'Edit artist profile', edit_admin_artist_profile_path(artist.artist_profile), class: 'medium button'
+          end
         end
         attributes_table_for artist.artist_profile do
           row :name
@@ -104,74 +106,74 @@ ActiveAdmin.register User, as: 'Artist' do
           row :updated_at
 
           panel 'Contact Information' do
-            panel('', class: 'align-right') do
-              if artist.artist_profile.contact_information.present?
-                link_to 'Edit contact Information', edit_admin_contact_information_path(artist.artist_profile.contact_information), class: 'medium button'
-              else
-                link_to 'Add contact Information', new_admin_contact_information_path(contact_information: { artist_profile_id: artist.artist_profile.id }), class: 'medium button'
+              panel('', class: 'align-right') do
+                if artist.artist_profile.contact_information.present? && Pundit::policy(current_admin_user, [:active_admin, ContactInformation]).update?
+                  link_to 'Edit contact Information', edit_admin_contact_information_path(artist.artist_profile.contact_information), class: 'medium button'
+                elsif Pundit::policy(current_admin_user, [:active_admin, ContactInformation]).create?
+                  link_to 'Add contact Information', new_admin_contact_information_path(contact_information: { artist_profile_id: artist.artist_profile.id }), class: 'medium button'
+                end
               end
             end
 
-            attributes_table_for artist.artist_profile.contact_information do
-              if artist.artist_profile.contact_information.blank?
-                row 'No Record Found'
-              else
-                row :name
-                row :phone
-                row :email
-                row :street
-                row :postal_code
-                row :city
-                row :state
-                row :country
-              end
+          attributes_table_for artist.artist_profile.contact_information do
+            if artist.artist_profile.contact_information.blank?
+              row 'No Record Found'
+            else
+              row :name
+              row :phone
+              row :email
+              row :street
+              row :postal_code
+              row :city
+              row :state
+              row :country
+            end
+          end
+          end
+
+        panel 'Payment Information' do
+          panel('', class: 'align-right') do
+            if artist.artist_profile.payment_information.present? && Pundit::policy(current_admin_user, [:active_admin, PaymentInformation]).update?
+              link_to 'Edit payment Information', edit_admin_payment_information_path(artist.artist_profile.payment_information), class: 'medium button'
+            elsif Pundit::policy(current_admin_user, [:active_admin, PaymentInformation]).create?
+              link_to 'Add payment Information', new_admin_payment_information_path(payment_information: { artist_profile_id: artist.artist_profile.id }), class: 'medium button'
             end
           end
 
-          panel 'Payment Information' do
-            panel('', class: 'align-right') do
-              if artist.artist_profile.payment_information.present?
-                link_to 'Edit payment Information', edit_admin_payment_information_path(artist.artist_profile.payment_information), class: 'medium button'
-              else
-                link_to 'Add payment Information', new_admin_payment_information_path(payment_information: { artist_profile_id: artist.artist_profile.id }), class: 'medium button'
-              end
+          attributes_table_for artist.artist_profile.payment_information do
+            if artist.artist_profile.payment_information.blank?
+              row 'No Record Found'
+            else
+              row :payee_name
+              row :bank_name
+              row :routing
+              row :account_number
+              row :paypal_email
+              row :updated_at
             end
+          end
+        end
 
-            attributes_table_for artist.artist_profile.payment_information do
-              if artist.artist_profile.payment_information.blank?
-                row 'No Record Found'
-              else
-                row :payee_name
-                row :bank_name
-                row :routing
-                row :account_number
-                row :paypal_email
-                row :updated_at
-              end
+        panel 'Tax Information' do
+          panel('', class: 'align-right') do
+            if artist.artist_profile.tax_information.present?  && Pundit::policy(current_admin_user, [:active_admin, TaxInformation]).update?
+              link_to 'Edit tax Information', edit_admin_tax_information_path(artist.artist_profile.tax_information), class: 'medium button'
+            elsif Pundit::policy(current_admin_user, [:active_admin, TaxInformation]).create?
+              link_to 'Add tax Information', new_admin_tax_information_path(tax_information: { artist_profile_id: artist.artist_profile.id }), class: 'medium button'
             end
           end
 
-          panel 'Tax Information' do
-            panel('', class: 'align-right') do
-              if artist.artist_profile.tax_information.present?
-                link_to 'Edit tax Information', edit_admin_tax_information_path(artist.artist_profile.tax_information), class: 'medium button'
-              else
-                link_to 'Add tax Information', new_admin_tax_information_path(tax_information: { artist_profile_id: artist.artist_profile.id }), class: 'medium button'
-              end
-            end
-
-            attributes_table_for artist.artist_profile.tax_information do
-              if artist.artist_profile.tax_information.blank?
-                row 'No Record Found'
-              else
-                row :tax_forms do |tax_information|
-                  ul do
-                    tax_information.tax_forms.each do |form|
-                      li do
-                        link_to 'Preview', rails_blob_url(form), class: 'small button'
-                      end
-                      br
+          attributes_table_for artist.artist_profile.tax_information do
+            if artist.artist_profile.tax_information.blank?
+              row 'No Record Found'
+            else
+              row :tax_forms do |tax_information|
+                ul do
+                  tax_information.tax_forms.each do |form|
+                    li do
+                      link_to 'Preview', rails_blob_url(form), class: 'small button'
                     end
+                    br
                   end
                 end
               end
@@ -202,9 +204,11 @@ ActiveAdmin.register User, as: 'Artist' do
         else
           column :id
           column :name
-          column :actions do |album|
-            span link_to t('active_admin.view'), admin_album_path(album), class: 'small button'
-            span link_to 'Download', download_zip_admin_album_path(album), class: 'small button'
+          if Pundit::policy(current_admin_user, [:active_admin, Album]).show?
+            column :actions do |album|
+              span link_to t('active_admin.view'), admin_album_path(album), class: 'small button'
+              span link_to 'Download', download_zip_admin_album_path(album), class: 'small button'
+            end
           end
         end
       end
@@ -226,16 +230,20 @@ ActiveAdmin.register User, as: 'Artist' do
             users_agreement.status&.titleize
           end
 
-          column :actions do |users_agreement|
-            link_to t('active_admin.view'), admin_users_agreement_path(users_agreement), class: 'small button'
+          if Pundit::policy(current_admin_user, [:active_admin, UsersAgreement]).show?
+            column :actions do |users_agreement|
+              link_to t('active_admin.view'), admin_users_agreement_path(users_agreement), class: 'small button'
+            end
           end
         end
       end
     end
 
     panel 'Publishers' do
-      panel('', class: 'align-right') do
-        link_to 'Add new Publisher', new_admin_publisher_path(publisher: { user_id: artist.id }), class: 'medium button'
+      if Pundit::policy(current_admin_user, [:active_admin, Publisher]).create?
+        panel('', class: 'align-right') do
+          link_to 'Add new Publisher', new_admin_publisher_path(publisher: { user_id: artist.id }), class: 'medium button'
+        end
       end
 
       table_for artist.publishers do
@@ -244,8 +252,10 @@ ActiveAdmin.register User, as: 'Artist' do
         else
           column :id
           column :name
-          column :actions do |publisher|
-            link_to t('active_admin.view'), admin_publisher_path(publisher), class: 'small button'
+          if Pundit::policy(current_admin_user, [:active_admin, Publisher]).show?
+            column :actions do |publisher|
+              link_to t('active_admin.view'), admin_publisher_path(publisher), class: 'small button'
+            end
           end
         end
       end
@@ -278,8 +288,10 @@ ActiveAdmin.register User, as: 'Artist' do
             collaborators_detail.collaborator_profile&.ipi
           end
 
-          column :actions do |collaborator|
-            link_to t('active_admin.view'), admin_artists_collaborator_path(collaborator), class: 'small button'
+          if Pundit::policy(current_admin_user, [:active_admin, ArtistsCollaborator]).show?
+            column :actions do |collaborator|
+              link_to t('active_admin.view'), admin_artists_collaborator_path(collaborator), class: 'small button'
+            end
           end
         end
       end
@@ -308,6 +320,4 @@ ActiveAdmin.register User, as: 'Artist' do
       f.cancel_link(params[:index].present? ? { action: 'index' } : { action: 'show' })
     end
   end
-
-
 end
