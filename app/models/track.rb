@@ -28,7 +28,8 @@ class Track < ApplicationRecord
   enum status: STATUSES
 
   def filename(index = '')
-    title + index + File.extname(file.filename.to_s)
+    name = file.filename.to_s
+    (title.presence || File.basename(name, File.extname(name))) + index + File.extname(name)
   end
 
   def self.to_zip
