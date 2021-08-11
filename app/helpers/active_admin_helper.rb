@@ -108,4 +108,41 @@ module ActiveAdminHelper
       ['Other', 'other']
     ]
   end
+
+  def key_signatures_list
+    [
+      ['A major'],
+      ['A minor'],
+      ['A flat major'],
+      ['A flat minor'],
+      ['B major'],
+      ['B minor'],
+      ['B flat major'],
+      ['B flat minor'],
+      ['C major'],
+      ['C minor'],
+      ['C# major'],
+      ['C# minor'],
+      ['D major'],
+      ['D minor'],
+      ['D flat major'],
+      ['D flat minor'],
+      ['D# major'],
+      ['D# minor'],
+      ['E major'],
+      ['E minor'],
+      ['E flat major'],
+      ['E flat minor'],
+      ['F major'],
+      ['F minor'],
+      ['F# major'],
+      ['F# minor'],
+      ['G major'],
+      ['G minor'],
+      ['G flat major'],
+      ['G flat minor'],
+      ['G# major'],
+      ['G# minor']
+    ]
+  end
 end

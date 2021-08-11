@@ -168,7 +168,7 @@ ActiveAdmin.register Track do
       f.input :admin_note, label: "Notes"
       f.input :description
       f.input :language
-      f.input :key
+      f.input :key, as: :searchable_select, collection: key_signatures_list, include_blank: 'Select a Key Signature', label: "Key Signature"
       f.input :bpm
     end
 

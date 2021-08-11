@@ -1,6 +1,7 @@
 class BlobValidator < ActiveModel::EachValidator
   def validate_each(record, attribute, values)
     return unless values.attached?
+    return if record.attachment_changes[attribute.to_s].blank?
 
     Array(values).each do |value|
       record.errors.add(attribute, 'has invalid content type') unless valid_content_type?(value.blob)

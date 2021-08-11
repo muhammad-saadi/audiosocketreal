@@ -5,7 +5,9 @@ class BitrateValidator < ActiveModel::EachValidator
     return unless values.attached?
     return if record.attachment_changes[attribute.to_s].blank?
 
-    metadata = FFMPEG::Movie.new(record.attachment_changes[attribute.to_s].attachable.path).metadata[:streams][0]
+    metadata = FFMPEG::Movie.new(record.attachment_changes[attribute.to_s].attachable.path).metadata[:streams].first
+    return record.errors.add(attribute, 'is not supported') if metadata.blank?
+
     unless options[:bits].include? metadata[:bits_per_sample]
       record.errors.add(attribute, "bits per sample should be #{options[:bits].map { |bit| "#{bit}-bit" }.join(' or ')}")
     end
