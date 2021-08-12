@@ -82,8 +82,7 @@ class User < ApplicationRecord
 
   def agreements_accepted?(role)
     users_agreements && users_agreements.where(role: role).joins(:agreement).where('agreement.agreement_type':
-                        [Agreement::TYPES[:exclusive], 
-Agreement::TYPES[:non_exclusive]]).pluck(:status).all?('accepted')
+                        [Agreement::TYPES[:exclusive], Agreement::TYPES[:non_exclusive]]).pluck(:status).all?('accepted')
   end
 
   def roles_string

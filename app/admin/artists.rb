@@ -105,16 +105,16 @@ ActiveAdmin.register User, as: 'Artist' do
           row :website_link
           row :created_at
           row :updated_at
+        end
 
-          panel 'Contact Information' do
-              panel('', class: 'align-right') do
-                if artist.artist_profile.contact_information.present? && Pundit::policy(current_admin_user, [:active_admin, ContactInformation]).update?
-                  link_to 'Edit contact Information', edit_admin_contact_information_path(artist.artist_profile.contact_information), class: 'medium button'
-                elsif Pundit::policy(current_admin_user, [:active_admin, ContactInformation]).create?
-                  link_to 'Add contact Information', new_admin_contact_information_path(contact_information: { artist_profile_id: artist.artist_profile.id }), class: 'medium button'
-                end
-              end
+        panel 'Contact Information' do
+          panel('', class: 'align-right') do
+            if artist.artist_profile.contact_information.present? && Pundit::policy(current_admin_user, [:active_admin, ContactInformation]).update?
+              link_to 'Edit contact Information', edit_admin_contact_information_path(artist.artist_profile.contact_information), class: 'medium button'
+            elsif Pundit::policy(current_admin_user, [:active_admin, ContactInformation]).create?
+              link_to 'Add contact Information', new_admin_contact_information_path(contact_information: { artist_profile_id: artist.artist_profile.id }), class: 'medium button'
             end
+          end
 
           attributes_table_for artist.artist_profile.contact_information do
             if artist.artist_profile.contact_information.blank?
@@ -130,7 +130,7 @@ ActiveAdmin.register User, as: 'Artist' do
               row :country
             end
           end
-          end
+        end
 
         panel 'Payment Information' do
           panel('', class: 'align-right') do
@@ -335,7 +335,6 @@ ActiveAdmin.register User, as: 'Artist' do
     column (:routing) { |artist| (artist.artist_profile&.payment_information&.routing) }
     column (:account_number) { |artist| (artist.artist_profile&.payment_information&.account_number) }
     column (:paypal_email) { |artist| (artist.artist_profile&.payment_information&.paypal_email) }
-
   end
 
   form do |f|
