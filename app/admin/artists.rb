@@ -36,9 +36,9 @@ ActiveAdmin.register User, as: 'Artist' do
     column :updated_at
     column :roles, &:roles_string
     actions defaults: false do |artist|
-      item 'View', admin_artist_path(artist), class: 'member_link' if Pundit.policy(current_admin_user, [:active_admin, artist]).show?
-      item 'Edit', edit_admin_artist_path(artist, index: true), class: 'member_link' if Pundit.policy(current_admin_user, [:active_admin, artist]).update?
-      item 'Delete', admin_artist_path(artist), method: :delete, class: 'member_link' if Pundit.policy(current_admin_user, [:active_admin, artist]).destroy?
+      item 'View', admin_artist_path(artist), class: 'member_link' if authorized?(:show, artist)
+      item 'Edit', edit_admin_artist_path(artist, index: true), class: 'member_link' if authorized?(:update, artist)
+      item 'Delete', admin_artist_path(artist), method: :delete, class: 'member_link' if authorized?(:destroy, artist)
     end
   end
 
@@ -59,7 +59,7 @@ ActiveAdmin.register User, as: 'Artist' do
         row 'No Record Found'
       else
         panel('', class: 'align-right') do
-          if Pundit.policy(current_admin_user, [:active_admin, artist.artist_profile]).update?
+          if authorized?(:update, artist.artist_profile)
             link_to 'Edit artist profile', edit_admin_artist_profile_path(artist.artist_profile), class: 'medium button'
           end
         end
@@ -109,9 +109,9 @@ ActiveAdmin.register User, as: 'Artist' do
 
         panel 'Contact Information' do
           panel('', class: 'align-right') do
-            if artist.artist_profile.contact_information.present? && Pundit::policy(current_admin_user, [:active_admin, ContactInformation]).update?
+            if authorized?(:update, ContactInformation)
               link_to 'Edit contact Information', edit_admin_contact_information_path(artist.artist_profile.contact_information), class: 'medium button'
-            elsif Pundit::policy(current_admin_user, [:active_admin, ContactInformation]).create?
+            elsif authorized?(:create, ContactInformation)
               link_to 'Add contact Information', new_admin_contact_information_path(contact_information: { artist_profile_id: artist.artist_profile.id }), class: 'medium button'
             end
           end
@@ -134,9 +134,9 @@ ActiveAdmin.register User, as: 'Artist' do
 
         panel 'Payment Information' do
           panel('', class: 'align-right') do
-            if artist.artist_profile.payment_information.present? && Pundit::policy(current_admin_user, [:active_admin, PaymentInformation]).update?
+            if artist.artist_profile.payment_information.present? && authorized?(:update, PaymentInformation)
               link_to 'Edit payment Information', edit_admin_payment_information_path(artist.artist_profile.payment_information), class: 'medium button'
-            elsif Pundit::policy(current_admin_user, [:active_admin, PaymentInformation]).create?
+            elsif authorized?(:create, PaymentInformation)
               link_to 'Add payment Information', new_admin_payment_information_path(payment_information: { artist_profile_id: artist.artist_profile.id }), class: 'medium button'
             end
           end
@@ -157,9 +157,9 @@ ActiveAdmin.register User, as: 'Artist' do
 
         panel 'Tax Information' do
           panel('', class: 'align-right') do
-            if artist.artist_profile.tax_information.present?  && Pundit::policy(current_admin_user, [:active_admin, TaxInformation]).update?
+            if artist.artist_profile.tax_information.present?  && authorized?(:update, TaxInformation)
               link_to 'Edit tax Information', edit_admin_tax_information_path(artist.artist_profile.tax_information), class: 'medium button'
-            elsif Pundit::policy(current_admin_user, [:active_admin, TaxInformation]).create?
+            elsif authorized?(:create, TaxInformation)
               link_to 'Add tax Information', new_admin_tax_information_path(tax_information: { artist_profile_id: artist.artist_profile.id }), class: 'medium button'
             end
           end
@@ -189,7 +189,7 @@ ActiveAdmin.register User, as: 'Artist' do
             else
               column :id
               column :status
-              if Pundit::policy(current_admin_user, [:active_admin, Note]).show?
+              if authorized?(:show, Note)
                 column :actions do |note|
                   link_to 'view', admin_note_path(note), class: 'small button'
                 end
@@ -207,7 +207,7 @@ ActiveAdmin.register User, as: 'Artist' do
         else
           column :id
           column :name
-          if Pundit::policy(current_admin_user, [:active_admin, Album]).show?
+          if authorized?(:show, Album)
             column :actions do |album|
               span link_to t('active_admin.view'), admin_album_path(album), class: 'small button'
               span link_to 'Download', download_zip_admin_album_path(album), class: 'small button'
@@ -233,7 +233,7 @@ ActiveAdmin.register User, as: 'Artist' do
             users_agreement.status&.titleize
           end
 
-          if Pundit::policy(current_admin_user, [:active_admin, UsersAgreement]).show?
+          if authorized?(:show, UsersAgreement)
             column :actions do |users_agreement|
               link_to t('active_admin.view'), admin_users_agreement_path(users_agreement), class: 'small button'
             end
@@ -243,7 +243,7 @@ ActiveAdmin.register User, as: 'Artist' do
     end
 
     panel 'Publishers' do
-      if Pundit::policy(current_admin_user, [:active_admin, Publisher]).create?
+      if authorized?(:create, Publisher)
         panel('', class: 'align-right') do
           link_to 'Add new Publisher', new_admin_publisher_path(publisher: { user_id: artist.id }), class: 'medium button'
         end
@@ -255,7 +255,7 @@ ActiveAdmin.register User, as: 'Artist' do
         else
           column :id
           column :name
-          if Pundit::policy(current_admin_user, [:active_admin, Publisher]).show?
+          if authorized?(:show, Publisher)
             column :actions do |publisher|
               link_to t('active_admin.view'), admin_publisher_path(publisher), class: 'small button'
             end
@@ -291,7 +291,7 @@ ActiveAdmin.register User, as: 'Artist' do
             collaborators_detail.collaborator_profile&.ipi
           end
 
-          if Pundit::policy(current_admin_user, [:active_admin, ArtistsCollaborator]).show?
+          if authorized?(:show, ArtistsCollaborator)
             column :actions do |collaborator|
               link_to t('active_admin.view'), admin_artists_collaborator_path(collaborator), class: 'small button'
             end
