@@ -188,8 +188,10 @@ ActiveAdmin.register User, as: 'Artist' do
             else
               column :id
               column :status
-              column :actions do |note|
-                link_to 'view', admin_note_path(note), class: 'small button'
+              if Pundit::policy(current_admin_user, [:active_admin, Note]).show?
+                column :actions do |note|
+                  link_to 'view', admin_note_path(note), class: 'small button'
+                end
               end
             end
           end

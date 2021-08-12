@@ -1,5 +1,5 @@
 class ArtistProfile < ApplicationRecord
-  belongs_to :user
+  belongs_to :user, touch: true
 
   has_one :contact_information, dependent: :destroy
   has_one :payment_information, dependent: :destroy

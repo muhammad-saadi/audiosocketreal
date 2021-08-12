@@ -23,6 +23,8 @@ class User < ApplicationRecord
   validates :password, confirmation: true
 
   before_save :validate_manager
+  after_update :mail_accountant
+  after_touch :mail_accountant
 
   scope :ordered, -> { order(created_at: :desc) }
 
@@ -70,7 +72,8 @@ class User < ApplicationRecord
     collaborator.assign_agreements('collaborator', artist_profile)
 
     artist_collaborator = ArtistsCollaborator.find_or_create_by(artist_id: id, collaborator_id: collaborator.id)
-    if artist_collaborator.update(access: params[:access], status: 'pending', collaborator_profile_attributes: params[:collaborator_profile_attributes])
+    if artist_collaborator.update(access: params[:access], status: 'pending', 
+                                  collaborator_profile_attributes: params[:collaborator_profile_attributes])
       CollaboratorMailer.invitation_mail(id, artist_collaborator.id, collaborator.email).deliver_later
     else
       raise ExceptionHandler::ValidationError.new(artist_collaborator.errors.to_h, 'Error inviting collaborator.')
@@ -79,7 +82,8 @@ class User < ApplicationRecord
 
   def agreements_accepted?(role)
     users_agreements && users_agreements.where(role: role).joins(:agreement).where('agreement.agreement_type':
-                        [Agreement::TYPES[:exclusive], Agreement::TYPES[:non_exclusive]]).pluck(:status).all?('accepted')
+                        [Agreement::TYPES[:exclusive], 
+Agreement::TYPES[:non_exclusive]]).pluck(:status).all?('accepted')
   end
 
   def roles_string
@@ -106,5 +110,16 @@ class User < ApplicationRecord
 
   def splited_name(name)
     { first_name: name&.split(/ /, 2)[0], last_name: name&.split(/ /, 2)[1] }
+  end
+
+  def mail_accountant
+    return unless artist?
+
+    changes = previous_changes.merge(artist_profile&.previous_changes.to_h, artist_profile&.contact_information&.previous_changes.to_h,
+                                     artist_profile&.payment_information&.previous_changes.to_h, artist_profile&.tax_information&.previous_changes.to_h)
+    changes.delete('updated_at')
+    changes.delete('created_at')
+    changes.delete('id')
+    ArtistMailer.alert_accountant(id, changes).deliver_later unless changes.blank?
   end
 end
