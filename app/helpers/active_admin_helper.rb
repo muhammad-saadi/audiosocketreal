@@ -55,6 +55,10 @@ module ActiveAdminHelper
     option_groups_from_collection_for_select(Filter.parent_filters.includes(sub_filters: [sub_filters: :sub_filters]), :all_sub_filters, :name, :id, :name )
   end
 
+  def admin_user_roles
+    AdminUser::ROLES.keys.map { |key| [key.to_s.titleize, key.to_s] }
+  end
+
   def pro_list
     [
       ['NS (no society)', 'NS'],
