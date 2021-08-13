@@ -303,34 +303,16 @@ ActiveAdmin.register User, as: 'Artist' do
   end
 
   csv do
-    column :id
-    column :email
-    column :first_name
-    column :last_name
-    column (:created_at) { |artist| formatted_datetime(artist.created_at.localtime) }
-    column (:updated_at) { |artist| formatted_datetime(artist.updated_at.localtime) }
-    column :roles, &:roles_string
-    column (:name) { |artist| (artist.artist_profile&.name) }
-    column (:email) { |artist| (artist.artist_profile&.email) }
-    column (:country) { |artist| (artist.artist_profile&.country) }
+    column (:artist_name) { |artist| (artist.artist_profile&.name) }
     column (:exclusive) { |artist| (artist.artist_profile&.exclusive) }
-    column (:sounds_like) { |artist| (artist.artist_profile&.sounds_like) }
-    column (:pro) { |artist| (artist.artist_profile&.pro) }
-    column (:ipi) { |artist| (artist.artist_profile&.ipi) }
-    column (:genres) { |artist| (artist.artist_profile&.genre_names) }
-    column (:bio) { |artist| (artist.artist_profile&.bio) }
-    column (:key_facts) { |artist| (artist.artist_profile&.key_facts) }
-    column (:social) { |artist| (artist.artist_profile&.social) }
-    column (:website_link) { |artist| (artist.artist_profile&.website_link) }
-    column (:name) { |artist| (artist.artist_profile&.contact_information&.name) }
-    column (:phone) { |artist| (artist.artist_profile&.contact_information&.phone) }
-    column (:email) { |artist| (artist.artist_profile&.contact_information&.email) }
-    column (:street) { |artist| (artist.artist_profile&.contact_information&.street) }
-    column (:postal_code) { |artist| (artist.artist_profile&.contact_information&.postal_code) }
+    column (:payee_name) { |artist| (artist.artist_profile&.payment_information&.payee_name) }
     column (:city) { |artist| (artist.artist_profile&.contact_information&.city) }
     column (:state) { |artist| (artist.artist_profile&.contact_information&.state) }
+    column (:postal_code) { |artist| (artist.artist_profile&.contact_information&.postal_code) }
     column (:country) { |artist| (artist.artist_profile&.contact_information&.country) }
-    column (:payee_name) { |artist| (artist.artist_profile&.payment_information&.payee_name) }
+    column (:phone) { |artist| (artist.artist_profile&.contact_information&.phone) }
+    column (:email) { |artist| (artist.artist_profile&.contact_information&.email) }
+    column (:updated_at) { |artist| formatted_datetime(artist.updated_at.localtime) }
     column (:bank_name) { |artist| (artist.artist_profile&.payment_information&.bank_name) }
     column (:routing) { |artist| (artist.artist_profile&.payment_information&.routing) }
     column (:account_number) { |artist| (artist.artist_profile&.payment_information&.account_number) }

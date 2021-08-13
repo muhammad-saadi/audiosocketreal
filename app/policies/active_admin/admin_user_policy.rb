@@ -12,7 +12,7 @@ class ActiveAdmin::AdminUserPolicy < ApplicationPolicy
   end
 
   def update?
-    @user == record
+    @user.admin?
   end
 
   def destroy?

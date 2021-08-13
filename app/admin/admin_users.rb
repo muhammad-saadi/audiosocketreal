@@ -1,5 +1,5 @@
 ActiveAdmin.register AdminUser do
-  permit_params :email, :password, :password_confirmation
+  permit_params :email, :password, :password_confirmation, :roles_raw
 
   action_item 'Filters', only: :index do
     link_to('Filters', '/', id: 'sidebar_toggle')
@@ -26,6 +26,7 @@ ActiveAdmin.register AdminUser do
   form do |f|
     f.inputs do
       f.input :email
+      f.input :roles_raw, as: :text, label: 'Roles'
       f.input :password
       f.input :password_confirmation
     end
