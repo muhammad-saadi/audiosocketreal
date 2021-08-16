@@ -18,4 +18,8 @@ class ActiveAdmin::PublisherPolicy < ApplicationPolicy
   def destroy?
     @user.admin?
   end
+
+  def destroy_all?
+    @user.admin?
+  end
 end

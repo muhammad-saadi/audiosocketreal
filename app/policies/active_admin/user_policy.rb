@@ -18,6 +18,10 @@ class ActiveAdmin::UserPolicy < ApplicationPolicy
   def destroy?
     @user.admin?
   end
+  
+  def destroy_all?
+    @user.admin?
+  end
 
   class Scope < ApplicationPolicy::Scope
     def resolve
