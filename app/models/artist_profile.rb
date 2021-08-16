@@ -24,6 +24,7 @@ class ArtistProfile < ApplicationRecord
   validates :ipi, numericality: true, length: { minimum: 9 }, allow_blank: true
 
   before_save :reset_ipi
+  before_update :increment_update_count
 
   STATUSES = {
     pending: 'pending',
@@ -69,5 +70,9 @@ class ArtistProfile < ApplicationRecord
 
   def genre_names
     genres.map(&:name).join(', ')
+  end
+
+  def increment_update_count
+    increment(:update_count)
   end
 end

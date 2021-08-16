@@ -304,7 +304,7 @@ ActiveAdmin.register User, as: 'Artist' do
 
   csv do
     column (:artist_name) { |artist| (artist.artist_profile&.name) }
-    column (:exclusive) { |artist| (artist.artist_profile&.exclusive) }
+    column (:exclusive) { |artist| (formatted_boolean(artist.artist_profile&.exclusive)) }
     column (:payee_name) { |artist| (artist.artist_profile&.payment_information&.payee_name) }
     column (:city) { |artist| (artist.artist_profile&.contact_information&.city) }
     column (:state) { |artist| (artist.artist_profile&.contact_information&.state) }
@@ -317,6 +317,7 @@ ActiveAdmin.register User, as: 'Artist' do
     column (:routing) { |artist| (artist.artist_profile&.payment_information&.routing) }
     column (:account_number) { |artist| (artist.artist_profile&.payment_information&.account_number) }
     column (:paypal_email) { |artist| (artist.artist_profile&.payment_information&.paypal_email) }
+    column (:updated?) { |artist| (formatted_boolean(artist.artist_profile&.update_count > 1)) }
   end
 
   form do |f|

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_08_06_103228) do
+ActiveRecord::Schema.define(version: 2021_08_16_042916) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -105,6 +105,7 @@ ActiveRecord::Schema.define(version: 2021_08_06_103228) do
     t.string "website_link"
     t.string "pro"
     t.string "ipi"
+    t.integer "update_count", default: 0
     t.index ["user_id"], name: "index_artist_profiles_on_user_id"
   end
 
