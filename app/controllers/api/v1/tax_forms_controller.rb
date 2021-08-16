@@ -7,12 +7,25 @@ class Api::V1::TaxFormsController < Api::BaseController
   end
 
   def submit_tax_form
-    TaxIdService.submit_form(tax_params)
+    TaxIdService.submit_form(tax_params, param_tax_id)
   end
 
   private
 
   def tax_params
     params.require(:form).permit(:token, :reference)
+  end
+
+  def param_tax_id
+    tax_id = params.require(:form).require(:w9).permit(:ssn, :ein)
+    add_dashes(tax_id)
+  end
+
+  private
+
+  def add_dashes(tax_id)
+    return tax_id[:ssn].insert(3, '-').insert(6, '-') if tax_id[:ssn].present?
+
+    tax_id[:ein]&.insert(2, '-')
   end
 end

@@ -168,6 +168,7 @@ ActiveAdmin.register User, as: 'Artist' do
             if artist.artist_profile.tax_information.blank?
               row 'No Record Found'
             else
+              row :tax_id
               row :tax_forms do |tax_information|
                 ul do
                   tax_information.tax_forms.each do |form|
@@ -312,7 +313,8 @@ ActiveAdmin.register User, as: 'Artist' do
     column (:country) { |artist| (artist.artist_profile&.contact_information&.country) }
     column (:phone) { |artist| (artist.artist_profile&.contact_information&.phone) }
     column (:email) { |artist| (artist.artist_profile&.contact_information&.email) }
-    column (:updated_at) { |artist| formatted_datetime(artist.updated_at.localtime) }
+    column (:tax_id) { |artist| (artist.artist_profile&.tax_information&.tax_id) }
+    column ('Date Updated') { |artist| formatted_datetime(artist.updated_at.localtime) }
     column (:bank_name) { |artist| (artist.artist_profile&.payment_information&.bank_name) }
     column (:routing) { |artist| (artist.artist_profile&.payment_information&.routing) }
     column (:account_number) { |artist| (artist.artist_profile&.payment_information&.account_number) }
