@@ -109,7 +109,7 @@ ActiveAdmin.register User, as: 'Artist' do
 
         panel 'Contact Information' do
           panel('', class: 'align-right') do
-            if authorized?(:update, ContactInformation)
+            if artist.artist_profile.contact_information.present? && authorized?(:update, ContactInformation)
               link_to 'Edit contact Information', edit_admin_contact_information_path(artist.artist_profile.contact_information), class: 'medium button'
             elsif authorized?(:create, ContactInformation)
               link_to 'Add contact Information', new_admin_contact_information_path(contact_information: { artist_profile_id: artist.artist_profile.id }), class: 'medium button'
