@@ -72,7 +72,7 @@ class User < ApplicationRecord
     collaborator.assign_agreements('collaborator', artist_profile)
 
     artist_collaborator = ArtistsCollaborator.find_or_create_by(artist_id: id, collaborator_id: collaborator.id)
-    if artist_collaborator.update(access: params[:access], status: 'pending', 
+    if artist_collaborator.update(access: params[:access], status: 'pending',
                                   collaborator_profile_attributes: params[:collaborator_profile_attributes])
       CollaboratorMailer.invitation_mail(id, artist_collaborator.id, collaborator.email).deliver_later
     else
@@ -114,11 +114,9 @@ class User < ApplicationRecord
   def mail_accountant
     return unless artist?
 
-    changes = previous_changes.merge(artist_profile&.previous_changes.to_h, artist_profile&.contact_information&.previous_changes.to_h,
+    changes = previous_changes.merge(artist_profile&.previous_changes.to_h, artist_profile&.attachment_changes, artist_profile&.contact_information&.previous_changes.to_h,
                                      artist_profile&.payment_information&.previous_changes.to_h, artist_profile&.tax_information&.previous_changes.to_h)
-    changes.delete('updated_at')
-    changes.delete('created_at')
-    changes.delete('id')
-    ArtistMailer.alert_accountant(id, changes).deliver_later unless changes.blank?
+
+    ArtistMailer.alert_accountant(id, changes.keys - %w[updated_at created_at id update_count]).deliver_later unless changes.blank?
   end
 end

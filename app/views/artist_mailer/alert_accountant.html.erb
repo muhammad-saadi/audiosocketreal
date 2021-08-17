@@ -6,14 +6,11 @@
     <%= "Artist update alert" %>
   </h1>
   <div style="padding: 1.2rem 3rem 3rem;border: 1px solid #e3e1e1;background-color: #ffffff;border-radius: 0 0 3px 3px;">
-    <%= @user.full_name %> got following changes:
+    Artist #<%= @user.id %> got changes in:
     <ul>
-      <% @changes.keys.each do |key| %>
+      <% @changes.each do |key| %>
         <li>
-          <b><%= "#{key}: " %></b>
-          <% unless key == 'encrypted_password' %>
-            <%= "from '#{@changes[key].first.presence || " "}' to '#{@changes[key].second.presence || " "}'" %>
-          <% end %>
+          <b><%= key %></b>
         </li>
       <%  end %>
     </ul>
