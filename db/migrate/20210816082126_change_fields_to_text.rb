@@ -1,14 +1,11 @@
 class ChangeFieldsToText < ActiveRecord::Migration[6.1]
   def up
-    change_table :tracks do |t|
-      t.change :description, :text
-      t.change :admin_note, :text
-    end
+    change_column :tracks, :description, :text
+    change_column :tracks, :admin_note, :text
   end
+
   def down
-    change_table :tracks do |t|
-      t.change :description, :string
-       t.change :admin_note, :string
-    end
+    change_column :tracks, :description, :string
+    change_column :tracks, :admin_note, :string
   end
 end
