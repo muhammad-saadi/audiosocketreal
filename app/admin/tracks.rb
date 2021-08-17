@@ -11,9 +11,9 @@ ActiveAdmin.register Track do
   filter :created_at
 
   scope :all, default: true
-  scope :pending
-  scope :unclassified
   scope :approved
+  scope :unclassified
+  scope :pending
   scope :rejected
 
   controller do
@@ -64,7 +64,7 @@ ActiveAdmin.register Track do
   show do
     attributes_table do
       row :title
-      row :file do |track|
+      row "Music File" do |track|
         audio_tag(url_for(track.file), controls: true) if track.file.attached?
       end
 
@@ -137,15 +137,21 @@ ActiveAdmin.register Track do
   form do |f|
     user = f.object.album.user
     f.inputs do
+      panel '', class: 'align-right-button' do
+        link_to 'Show Artist', admin_artist_path(user), class: 'medium button', target: :blank
+      end
       f.input :title
-      f.input :file, as: :file
-      f.input :lyrics
+      f.input :file, label: "Music File", hint: 'Existing File: ' + f.object.file.filename.to_s
+      f.input :description, input_html: { class: 'autogrow', rows: 4, cols: 20 }
       f.input :status, as: :select, collection: tracks_status_list, include_blank: false
       f.input :album, as: :searchable_select, collection: user.albums, include_blank: false
       f.input :public_domain
       f.input :explicit
       f.input :instrumental
       f.input :publisher, as: :searchable_select, collection: user.publishers, include_blank: 'Select a Publisher'
+      panel '', class: 'align-left-button' do
+        link_to 'Edit Publisher', edit_admin_publisher_path(user), class: 'small button', target: :blank
+      end
       f.input :artists_collaborator, as: :searchable_select, collection: collaborators_details_list(user),
                                      include_blank: 'Select a Collaborator'
 
@@ -165,11 +171,11 @@ ActiveAdmin.register Track do
       end
 
       f.input :composer
-      f.input :admin_note, label: "Notes"
-      f.input :description
       f.input :language
       f.input :key, as: :searchable_select, collection: key_signatures_list, include_blank: 'Select a Key Signature', label: "Key Signature"
       f.input :bpm
+      f.input :lyrics, input_html: { class: 'autogrow', rows: 4, cols: 20 }
+      f.input :admin_note, label: "Notes", input_html: { class: 'autogrow', rows: 4, cols: 20 }
     end
 
     f.actions do

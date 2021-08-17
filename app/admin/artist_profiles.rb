@@ -1,7 +1,7 @@
 ActiveAdmin.register ArtistProfile do
   menu false
 
-  actions :edit, :update
+  actions :edit, :update, :index, :show
 
   controller do
     def index
