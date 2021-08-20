@@ -10,7 +10,7 @@ ActiveAdmin.register AdminUser do
     id_column
     column :email
     column :roles
-    column :created_at
+    column (:created_at) { |object| formatted_datetime(object.created_at.localtime) }
     actions
   end
 

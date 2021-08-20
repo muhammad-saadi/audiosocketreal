@@ -24,8 +24,8 @@ ActiveAdmin.register Album do
     column :name
     column :release_date
     column :user
-    column :created_at
-    column :updated_at
+    column (:created_at) { |object| formatted_datetime(object.created_at.localtime) }
+    column (:updated_at) { |object| formatted_datetime(object.updated_at.localtime) }
     column :actions do |album|
       span link_to t('active_admin.view'), admin_album_path(album), class: 'small button'
       span link_to t('active_admin.edit'), edit_admin_album_path(album), class: 'small button'

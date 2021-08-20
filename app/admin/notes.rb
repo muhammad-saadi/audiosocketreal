@@ -25,8 +25,8 @@ ActiveAdmin.register Note do
     end
     column :notable_type
     column :notable
-    column :created_at
-    column :updated_at
+    column (:created_at) { |object| formatted_datetime(object.created_at.localtime) }
+    column (:updated_at) { |object| formatted_datetime(object.updated_at.localtime) }
     actions
   end
 

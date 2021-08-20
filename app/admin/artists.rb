@@ -32,8 +32,8 @@ ActiveAdmin.register User, as: 'Artist' do
     column :email
     column :first_name
     column :last_name
-    column :created_at
-    column :updated_at
+    column (:created_at) { |object| formatted_datetime(object.created_at.localtime) }
+    column (:updated_at) { |object| formatted_datetime(object.updated_at.localtime) }
     column :roles, &:roles_string
     actions defaults: false do |artist|
       item 'View', admin_artist_path(artist), class: 'member_link' if authorized?(:show, artist)

@@ -34,8 +34,8 @@ ActiveAdmin.register ArtistsCollaborator do
     column :access do |artists_collaborator|
       artists_collaborator.access&.titleize
     end
-    column :created_at
-    column :updated_at
+    column (:created_at) { |object| formatted_datetime(object.created_at.localtime) }
+    column (:updated_at) { |object| formatted_datetime(object.updated_at.localtime) }
     actions defaults: false do |artists_collaborator|
       item 'View', admin_artists_collaborator_path(artists_collaborator), class: 'member_link'
     end

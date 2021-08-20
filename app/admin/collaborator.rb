@@ -41,8 +41,8 @@ ActiveAdmin.register User, as: 'Collaborator' do
     column :email
     column :first_name
     column :last_name
-    column :created_at
-    column :updated_at
+    column (:created_at) { |object| formatted_datetime(object.created_at.localtime) }
+    column (:updated_at) { |object| formatted_datetime(object.updated_at.localtime) }
     column :roles, &:roles_string
     actions
   end

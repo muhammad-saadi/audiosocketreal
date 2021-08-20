@@ -160,9 +160,6 @@ ActiveAdmin.register Track do
       f.input :explicit
       f.input :instrumental
       f.input :publisher, as: :searchable_select, collection: user.publishers, include_blank: 'Select a Publisher'
-      panel '', class: 'align-left-button' do
-        link_to 'Edit Publisher', edit_admin_publisher_path(user), class: 'small button', target: :blank
-      end
       f.input :artists_collaborator, as: :searchable_select, collection: collaborators_details_list(user),
                                      include_blank: 'Select a Collaborator'
 

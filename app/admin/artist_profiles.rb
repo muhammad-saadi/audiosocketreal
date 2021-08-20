@@ -39,8 +39,8 @@ ActiveAdmin.register ArtistProfile do
     column :profile_image_status do |profile|
       profile.profile_image_status&.titleize
     end
-    column :created_at
-    column :updated_at
+    column (:created_at) { |object| formatted_datetime(object.created_at.localtime) }
+    column (:updated_at) { |object| formatted_datetime(object.updated_at.localtime) }
     actions
   end
 

@@ -35,8 +35,8 @@ ActiveAdmin.register ContactInformation do
     column :state
     column :city
     column :artist_profile
-    column :created_at
-    column :updated_at
+    column (:created_at) { |object| formatted_datetime(object.created_at.localtime) }
+    column (:updated_at) { |object| formatted_datetime(object.updated_at.localtime) }
     actions
   end
 
