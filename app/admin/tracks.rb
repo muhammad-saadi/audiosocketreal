@@ -38,10 +38,10 @@ ActiveAdmin.register Track do
   end
 
   member_action :remove_file, method: :delete do
-      file = Track.find(params[:id]).file.blob
-      return if file.blank?
+    blob = Track.find(params[:id]).file.blob
+    return if blob.blank?
 
-      file.attachments.first.purge
+    blob.attachments.first.purge
   end
 
   index do
@@ -151,7 +151,7 @@ ActiveAdmin.register Track do
       f.input :file, as: :file , label: "Music File"
       div class: 'file-hint' do
         span 'Existing File: ' + file_hint(f.object), id: 'hint'
-        span link_to 'x', remove_file_admin_track_path(f.object), class: 'remove-file', method: :delete if f.object.file.blob&.persisted?
+        span link_to 'x', remove_file_admin_track_path(f.object), class: 'remove-file', method: :delete, remote: true if f.object.file.blob&.persisted?
       end
       f.input :description, input_html: { class: 'autogrow', rows: 4, cols: 20 }
       f.input :status, as: :select, collection: tracks_status_list, include_blank: false

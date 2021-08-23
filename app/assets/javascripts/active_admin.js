@@ -66,10 +66,3 @@ function append_sub_filters(filter){
     }
   });
 }
-
-$(function () {
-  $(document).on('click', '.remove-file', function (e) {
-    $('#hint').text('Existing File: None')
-    $('.remove-file').hide();
-  })
-})
