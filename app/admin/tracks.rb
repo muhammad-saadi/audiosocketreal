@@ -37,6 +37,13 @@ ActiveAdmin.register Track do
     send_data xlsx_sheet, filename: "tracks_data.xlsx", type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
   end
 
+  member_action :remove_file, method: :delete do
+      file = Track.find(params[:id]).file.blob
+      return if file.blank?
+
+      file.attachments.first.purge
+  end
+
   index do
     selectable_column
     id_column
@@ -74,17 +81,17 @@ ActiveAdmin.register Track do
       end
 
       row :explicit
-      row :lyrics
       row :public_domain
       row :publisher
       row :artists_collaborator
       row :composer
-      row :admin_note
       row :description
       row :language
       row :instrumental
       row :key
       row :bpm
+      row :lyrics
+      row :admin_note
       row :created_at
       row :updated_at
 
@@ -141,7 +148,11 @@ ActiveAdmin.register Track do
         link_to 'Show Artist', admin_artist_path(user), class: 'medium button', target: :blank
       end
       f.input :title
-      f.input :file, label: "Music File", hint: 'Existing File: ' + f.object.file.filename.to_s
+      f.input :file, as: :file , label: "Music File"
+      div class: 'file-hint' do
+        span 'Existing File: ' + file_hint(f.object), id: 'hint'
+        span link_to 'x', remove_file_admin_track_path(f.object), class: 'remove-file', method: :delete if f.object.file.blob&.persisted?
+      end
       f.input :description, input_html: { class: 'autogrow', rows: 4, cols: 20 }
       f.input :status, as: :select, collection: tracks_status_list, include_blank: false
       f.input :album, as: :searchable_select, collection: user.albums, include_blank: false
