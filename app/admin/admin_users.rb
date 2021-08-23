@@ -1,6 +1,9 @@
 ActiveAdmin.register AdminUser do
   permit_params :email, :password, :password_confirmation, roles: []
 
+  filter :email
+  filter :created_at
+
   action_item 'Filters', only: :index do
     link_to('Filters', '/', id: 'sidebar_toggle')
   end
@@ -10,17 +13,24 @@ ActiveAdmin.register AdminUser do
     id_column
     column :email
     column :roles
-    column (:created_at) { |object| formatted_datetime(object.created_at.localtime) }
+    column :created_at, &:formatted_created_at
+    column :updated_at, &:formatted_updated_at
     actions
   end
 
-  filter :email
-  filter :created_at
+  show do
+    attributes_table do
+      row :email
+      row :roles
+      row :created_at, &:formatted_created_at
+      row :updated_at, &:formatted_updated_at
+    end
+  end
 
   csv do
     column :id
     column :email
-    column (:created_at) { |object| formatted_datetime(object.created_at.localtime) }
+    column :formatted_created_at
   end
 
   form do |f|

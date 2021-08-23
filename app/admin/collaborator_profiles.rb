@@ -31,8 +31,8 @@ ActiveAdmin.register CollaboratorProfile do
     column :pro
     column :ipi
     column :different_registered_name
-    column (:created_at) { |object| formatted_datetime(object.created_at.localtime) }
-    column (:updated_at) { |object| formatted_datetime(object.updated_at.localtime) }
+    column :created_at, &:formatted_created_at
+    column :updated_at, &:formatted_updated_at
     actions
   end
 

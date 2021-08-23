@@ -24,8 +24,8 @@ ActiveAdmin.register Album do
     column :name
     column :release_date
     column :user
-    column (:created_at) { |object| formatted_datetime(object.created_at.localtime) }
-    column (:updated_at) { |object| formatted_datetime(object.updated_at.localtime) }
+    column :created_at, &:formatted_created_at
+    column :updated_at, &:formatted_updated_at
     column :actions do |album|
       span link_to t('active_admin.view'), admin_album_path(album), class: 'small button'
       span link_to t('active_admin.edit'), edit_admin_album_path(album), class: 'small button'
@@ -37,7 +37,7 @@ ActiveAdmin.register Album do
   show do
     attributes_table do
       row :name
-      row :release_date
+      row :release_date, &:release_date
       row :artwork do
         image_tag(album.artwork, width: 100, height: 100) if album.artwork.attached?
       end
@@ -82,10 +82,10 @@ ActiveAdmin.register Album do
   csv do
     column :id
     column :name
-    column (:release_date) { |object| formatted_date(object.release_date) }
+    column :release_date, &:formatted_release_date
     column (:user) { |album| album.user.full_name }
-    column (:created_at) { |object| formatted_datetime(object.created_at.localtime) }
-    column (:updated_at) { |object| formatted_datetime(object.updated_at.localtime) }
+    column :created_at, &:formatted_created_at
+    column :updated_at, &:formatted_updated_at
   end
 
   form do |f|

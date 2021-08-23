@@ -13,8 +13,8 @@ ActiveAdmin.register Filter do
     selectable_column
     column :name
     column :featured
-    column (:created_at) { |object| formatted_datetime(object.created_at.localtime) }
-    column (:updated_at) { |object| formatted_datetime(object.updated_at.localtime) }
+    column :created_at, &:formatted_created_at
+    column :updated_at, &:formatted_updated_at
     actions
   end
 
@@ -24,8 +24,8 @@ ActiveAdmin.register Filter do
       row :max_levels_allowed
       row :featured
       row :parent_filter
-      row :created_at
-      row :updated_at
+      row :created_at, &:formatted_created_at
+      row :updated_at, &:formatted_updated_at
     end
 
     if filter.max_levels_allowed.positive?

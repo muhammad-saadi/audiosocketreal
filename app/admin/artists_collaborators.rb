@@ -34,8 +34,8 @@ ActiveAdmin.register ArtistsCollaborator do
     column :access do |artists_collaborator|
       artists_collaborator.access&.titleize
     end
-    column (:created_at) { |object| formatted_datetime(object.created_at.localtime) }
-    column (:updated_at) { |object| formatted_datetime(object.updated_at.localtime) }
+    column :created_at, &:formatted_created_at
+    column :updated_at, &:formatted_updated_at
     actions defaults: false do |artists_collaborator|
       item 'View', admin_artists_collaborator_path(artists_collaborator), class: 'member_link'
     end
@@ -52,8 +52,8 @@ ActiveAdmin.register ArtistsCollaborator do
         row :email
         row :first_name
         row :last_name
-        row :created_at
-        row :updated_at
+        row :created_at, &:formatted_created_at
+        row :updated_at, &:formatted_updated_at
         row :roles, &:roles_string
       end
     end
@@ -72,8 +72,8 @@ ActiveAdmin.register ArtistsCollaborator do
           artists_collaborator.access&.titleize
         end
 
-        row :created_at
-        row :updated_at
+        row :created_at, &:formatted_created_at
+        row :updated_at, &:formatted_updated_at
       end
     end
 
@@ -92,8 +92,8 @@ ActiveAdmin.register ArtistsCollaborator do
           row :pro
           row :ipi
           row :different_registered_name
-          row :created_at
-          row :updated_at
+          row :created_at, &:formatted_created_at
+          row :updated_at, &:formatted_updated_at
         end
       end
     end
@@ -154,8 +154,8 @@ ActiveAdmin.register ArtistsCollaborator do
     column (:collaborator) { |artists_collaborator| artists_collaborator.collaborator.full_name }
     column (:status) { |artists_collaborator| artists_collaborator.status&.titleize }
     column (:access) { |artists_collaborator| artists_collaborator.access&.titleize }
-    column (:created_at) { |object| formatted_datetime(object.created_at.localtime) }
-    column (:updated_at) { |object| formatted_datetime(object.updated_at.localtime) }
+    column :created_at, &:formatted_created_at
+    column :updated_at, &:formatted_updated_at
   end
 
   form do |f|

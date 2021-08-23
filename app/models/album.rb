@@ -25,4 +25,8 @@ class Album < ApplicationRecord
     end
     messages
   end
+
+  def formatted_release_date
+    release_date&.strftime('%B %d, %Y')
+  end
 end

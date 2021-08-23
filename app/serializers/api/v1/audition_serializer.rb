@@ -12,6 +12,6 @@ class Api::V1::AuditionSerializer < BaseSerializer
   end
 
   def submitted_at
-    formatted_datetime(object.created_at.localtime)
+    object.formatted_created_at
   end
 end

@@ -41,8 +41,8 @@ ActiveAdmin.register User, as: 'Collaborator' do
     column :email
     column :first_name
     column :last_name
-    column (:created_at) { |object| formatted_datetime(object.created_at.localtime) }
-    column (:updated_at) { |object| formatted_datetime(object.updated_at.localtime) }
+    column :created_at, &:formatted_created_at
+    column :updated_at, &:formatted_updated_at
     column :roles, &:roles_string
     actions
   end
@@ -52,8 +52,8 @@ ActiveAdmin.register User, as: 'Collaborator' do
       row :email
       row :first_name
       row :last_name
-      row :created_at
-      row :updated_at
+      row :created_at, &:formatted_created_at
+      row :updated_at, &:formatted_updated_at
       row :roles do
         collaborator.roles_string
       end
@@ -129,8 +129,8 @@ ActiveAdmin.register User, as: 'Collaborator' do
     column :email
     column :first_name
     column :last_name
-    column (:created_at) { |object| formatted_datetime(object.created_at.localtime) }
-    column (:updated_at) { |object| formatted_datetime(object.updated_at.localtime) }
+    column :created_at, &:formatted_created_at
+    column :updated_at, &:formatted_updated_at
     column :roles, &:roles_string
   end
 

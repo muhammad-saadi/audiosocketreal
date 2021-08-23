@@ -56,8 +56,8 @@ ActiveAdmin.register Track do
     end
     column :explicit
     column :public_domain
-    column :created_at
-    column :updated_at
+    column :created_at, &:formatted_created_at
+    column :updated_at, &:formatted_updated_at
     column :file do |track|
       audio_tag(url_for(track.file), controls: true) if track.file.attached?
     end
@@ -92,8 +92,8 @@ ActiveAdmin.register Track do
       row :bpm
       row :lyrics
       row :admin_note
-      row :created_at
-      row :updated_at
+      row :created_at, &:formatted_created_at
+      row :updated_at, &:formatted_updated_at
 
       panel 'Filters' do
         @track = Track.find(params[:id])
@@ -137,8 +137,8 @@ ActiveAdmin.register Track do
     column(:status) { |track| track.status&.titleize }
     column(:explicit) { |object| formatted_boolean(object.explicit) }
     column(:public_domain) { |object| formatted_boolean(object.public_domain) }
-    column(:created_at) { |object| formatted_datetime(object.created_at.localtime) }
-    column(:updated_at) { |object| formatted_datetime(object.updated_at.localtime) }
+    column :created_at, &:formatted_created_at
+    column :updated_at, &:formatted_updated_at
   end
 
   form do |f|

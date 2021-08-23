@@ -28,8 +28,8 @@ ActiveAdmin.register Publisher do
     column :name
     column :pro
     column :ipi
-    column (:created_at) { |object| formatted_datetime(object.created_at.localtime) }
-    column (:updated_at) { |object| formatted_datetime(object.updated_at.localtime) }
+    column :created_at, &:formatted_created_at
+    column :updated_at, &:formatted_updated_at
     actions
   end
 
@@ -39,8 +39,8 @@ ActiveAdmin.register Publisher do
       row :pro
       row :ipi
       row :user
-      row :created_at
-      row :updated_at
+      row :created_at, &:formatted_created_at
+      row :updated_at, &:formatted_updated_at
     end
 
     active_admin_comments
@@ -52,8 +52,8 @@ ActiveAdmin.register Publisher do
     column :name
     column :pro
     column :ipi
-    column (:created_at) { |object| formatted_datetime(object.created_at.localtime) }
-    column (:updated_at) { |object| formatted_datetime(object.updated_at.localtime) }
+    column :created_at, &:formatted_created_at
+    column :updated_at, &:formatted_updated_at
   end
 
   form do |f|

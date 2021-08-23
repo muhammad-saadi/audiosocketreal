@@ -32,8 +32,8 @@ ActiveAdmin.register User, as: 'Artist' do
     column :email
     column :first_name
     column :last_name
-    column (:created_at) { |object| formatted_datetime(object.created_at.localtime) }
-    column (:updated_at) { |object| formatted_datetime(object.updated_at.localtime) }
+    column :created_at, &:formatted_created_at
+    column :updated_at, &:formatted_updated_at
     column :roles, &:roles_string
     actions defaults: false do |artist|
       item 'View', admin_artist_path(artist), class: 'member_link' if authorized?(:show, artist)
@@ -47,8 +47,8 @@ ActiveAdmin.register User, as: 'Artist' do
       row :email
       row :first_name
       row :last_name
-      row :created_at
-      row :updated_at
+      row :created_at, &:formatted_created_at
+      row :updated_at, &:formatted_updated_at
       row :roles do
         artist.roles_string
       end
@@ -103,8 +103,8 @@ ActiveAdmin.register User, as: 'Artist' do
           row :key_facts
           row :social
           row :website_link
-          row :created_at
-          row :updated_at
+          row :created_at, &:formatted_created_at
+          row :updated_at, &:formatted_updated_at
         end
 
         panel 'Contact Information' do
@@ -150,7 +150,7 @@ ActiveAdmin.register User, as: 'Artist' do
               row :routing
               row :account_number
               row :paypal_email
-              row :updated_at
+              row :updated_at, &:formatted_updated_at
             end
           end
         end
@@ -314,7 +314,7 @@ ActiveAdmin.register User, as: 'Artist' do
     column (:phone) { |artist| (artist.artist_profile&.contact_information&.phone) }
     column (:email) { |artist| (artist.artist_profile&.contact_information&.email) }
     column (:tax_id) { |artist| (artist.artist_profile&.tax_information&.tax_id) }
-    column ('Date Updated') { |artist| formatted_datetime(artist.updated_at.localtime) }
+    column ('Date Updated') { |artist| artist.formatted_updated_at }
     column (:bank_name) { |artist| (artist.artist_profile&.payment_information&.bank_name) }
     column (:routing) { |artist| (artist.artist_profile&.payment_information&.routing) }
     column (:account_number) { |artist| (artist.artist_profile&.payment_information&.account_number) }
