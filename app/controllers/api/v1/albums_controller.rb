@@ -8,7 +8,8 @@ class Api::V1::AlbumsController < Api::BaseController
   param_group :doc_albums
   def index
     @albums = current_user.albums.pagination(pagination_params)
-    render json: @albums.includes(tracks: [:publisher, :file_attachment, artists_collaborator: :collaborator]), meta: { count: @albums.count }, adapter: :json
+    render json: @albums.includes(tracks: [:publishers, :file_attachment, { artists_collaborators: :collaborator }]),
+           meta: { count: @albums.count }, adapter: :json
   end
 
   param_group :doc_create_album
@@ -55,13 +56,14 @@ class Api::V1::AlbumsController < Api::BaseController
 
   def bulk_upload_tracks
     messages = @album.upload_tracks(params[:files].to_a)
-    render json: @album, meta: { total: params[:files].to_a.count, uploaded: params[:files].to_a.count - messages.count, messages: messages }, adapter: :json
+    render json: @album, 
+           meta: { total: params[:files].to_a.count, uploaded: params[:files].to_a.count - messages.count, messages: messages }, adapter: :json
   end
 
   private
 
   def set_album
-    @album = current_user.albums.includes(tracks: [:publisher, :file_attachment, artists_collaborator: :collaborator]).find(params[:id])
+    @album = current_user.albums.includes(tracks: [:publishers, :file_attachment, { artists_collaborators: :collaborator }]).find(params[:id])
   end
 
   def album_params
