@@ -4,7 +4,8 @@ class ArtistsCollaborator < ApplicationRecord
   belongs_to :artist, class_name: "User", optional: true
   belongs_to :collaborator, class_name: "User", optional: true
 
-  has_many :tracks, dependent: :restrict_with_exception
+  has_many :track_writers
+  has_many :tracks, through: :track_writers, dependent: :restrict_with_exception
 
   has_one :collaborator_profile, dependent: :destroy
 

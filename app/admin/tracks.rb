@@ -1,6 +1,7 @@
 ActiveAdmin.register Track do
   config.remove_action_item(:new)
-  permit_params :title, :file, :status, :album_id, :public_domain, :publisher_id, :artists_collaborator_id, :lyrics, :explicit, :composer, :description, :language, :instrumental, :key, :bpm, :admin_note, filter_ids: []
+  permit_params :title, :file, :status, :album_id, :public_domain, :lyrics, :explicit, :composer, :description, :language,
+                :instrumental, :key, :bpm, :admin_note, filter_ids: [], publisher_ids: [], artists_collaborator_ids: []
 
   includes :album, file_attachment: :blob
 
@@ -82,8 +83,8 @@ ActiveAdmin.register Track do
 
       row :explicit
       row :public_domain
-      row :publisher
-      row :artists_collaborator
+      row :publishers
+      row :artists_collaborators
       row :composer
       row :description
       row :language
@@ -159,8 +160,8 @@ ActiveAdmin.register Track do
       f.input :public_domain
       f.input :explicit
       f.input :instrumental
-      f.input :publisher, as: :searchable_select, collection: user.publishers, include_blank: 'Select a Publisher'
-      f.input :artists_collaborator, as: :searchable_select, collection: collaborators_details_list(user),
+      f.input :publishers, as: :searchable_select, collection: user.publishers, include_blank: 'Select a Publisher'
+      f.input :artists_collaborators, as: :searchable_select, collection: collaborators_details_list(user),
                                      include_blank: 'Select a Collaborator'
 
       Filter.parent_filters.includes(sub_filters: [sub_filters: :sub_filters]).each do |filter|

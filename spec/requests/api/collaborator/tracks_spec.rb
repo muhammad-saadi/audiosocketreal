@@ -54,8 +54,8 @@ RSpec.describe 'api/collaborator/tracks', type: :request do
       parameter name: :title, in: :formData, type: :string
       parameter name: :public_domain, in: :formData, type: :boolean
       parameter name: :file, in: :formData, type: :file
-      parameter name: :collaborator_id, in: :formData, type: :integer
-      parameter name: :publisher_id, in: :formData, type: :integer
+      parameter name: 'collaborator_ids[]', in: :formData, type: :integer
+      parameter name: 'publisher_ids[]', in: :formData, type: :integer
       parameter name: :status, in: :formData, type: :string
       parameter name: :lyrics, in: :formData, type: :string
       parameter name: :explicit, in: :formData, type: :boolean
@@ -94,8 +94,8 @@ RSpec.describe 'api/collaborator/tracks', type: :request do
       parameter name: :title, in: :formData, type: :string
       parameter name: :public_domain, in: :formData, type: :boolean
       parameter name: :file, in: :formData, type: :file
-      parameter name: :collaborator_id, in: :formData, type: :integer
-      parameter name: :publisher_id, in: :formData, type: :integer
+      parameter name: 'collaborator_ids[]', in: :formData, type: :integer
+      parameter name: 'publisher_ids[]', in: :formData, type: :integer
       parameter name: :status, in: :formData, type: :string
       parameter name: :lyrics, in: :formData, type: :string
       parameter name: :explicit, in: :formData, type: :boolean

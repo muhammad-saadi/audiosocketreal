@@ -3,7 +3,8 @@ class Publisher < ApplicationRecord
 
   belongs_to :user
 
-  has_many :tracks, dependent: :restrict_with_exception
+  has_many :track_publishers
+  has_many :tracks, through: :track_publishers, dependent: :restrict_with_exception
 
   validates :name, :pro, presence: true
   validates :ipi, presence: true, unless: -> { pro == 'NS' }
