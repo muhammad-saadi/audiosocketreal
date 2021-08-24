@@ -3765,10 +3765,10 @@ paths:
       - name: file
         in: formData
         type: file
-      - name: collaborator_id
+      - name: collaborator_ids[]
         in: formData
         type: integer
-      - name: publisher_id
+      - name: publisher_ids[]
         in: formData
         type: integer
       - name: status
@@ -3835,10 +3835,10 @@ paths:
       - name: file
         in: formData
         type: file
-      - name: collaborator_id
+      - name: collaborator_ids[]
         in: formData
         type: integer
-      - name: publisher_id
+      - name: publisher_ids[]
         in: formData
         type: integer
       - name: status

@@ -15,6 +15,11 @@ class Track < ApplicationRecord
   has_many :notes, as: :notable, dependent: :destroy
   has_many :track_filters, dependent: :destroy
   has_many :filters, through: :track_filters
+  has_many :track_publishers
+  has_many :publishers, through: :track_publishers
+  has_many :track_writers
+  has_many :artists_collaborators, through: :track_writers
+
 
   accepts_nested_attributes_for :track_filters
 

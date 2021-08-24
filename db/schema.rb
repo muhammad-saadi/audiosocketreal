@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_08_16_085809) do
+ActiveRecord::Schema.define(version: 2021_08_24_065952) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -265,6 +265,24 @@ ActiveRecord::Schema.define(version: 2021_08_16_085809) do
     t.datetime "updated_at", precision: 6, null: false
     t.index ["filter_id"], name: "index_track_filters_on_filter_id"
     t.index ["track_id"], name: "index_track_filters_on_track_id"
+  end
+
+  create_table "track_publishers", force: :cascade do |t|
+    t.bigint "track_id"
+    t.bigint "publisher_id"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["publisher_id"], name: "index_track_publishers_on_publisher_id"
+    t.index ["track_id"], name: "index_track_publishers_on_track_id"
+  end
+
+  create_table "track_writers", force: :cascade do |t|
+    t.bigint "track_id"
+    t.bigint "artists_collaborator_id"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["artists_collaborator_id"], name: "index_track_writers_on_artists_collaborator_id"
+    t.index ["track_id"], name: "index_track_writers_on_track_id"
   end
 
   create_table "tracks", force: :cascade do |t|
