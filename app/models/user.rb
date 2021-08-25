@@ -71,7 +71,11 @@ class User < ApplicationRecord
     collaborator.save(validate: false)
     collaborator.assign_agreements('collaborator', artist_profile)
 
-    artist_collaborator = ArtistsCollaborator.find_or_create_by(artist_id: id, collaborator_id: collaborator.id)
+    artist_collaborator = ArtistsCollaborator.find_or_initialize_by(artist_id: id, collaborator_id: collaborator.id)
+
+    raise ExceptionHandler::InvalidAccess, 'Invitation already sent to this email.' if artist_collaborator.persisted?
+
+    artist_collaborator.save
     if artist_collaborator.update(access: params[:access], status: 'pending',
                                   collaborator_profile_attributes: params[:collaborator_profile_attributes])
       CollaboratorMailer.invitation_mail(id, artist_collaborator.id, collaborator.email).deliver_later
@@ -108,7 +112,7 @@ class User < ApplicationRecord
   end
 
   def splited_name(name)
-    { first_name: name&.split(/ /, 2)[0], last_name: name&.split(/ /, 2)[1] }
+    { first_name: name&.split(/ /, 2)&.first, last_name: name&.split(/ /, 2)&.second }
   end
 
   def mail_accountant

@@ -19,7 +19,9 @@ class Api::V1::TrackSerializer < BaseSerializer
         id: artists_collaborator.id,
         first_name: artists_collaborator.collaborator.first_name,
         last_name: artists_collaborator.collaborator.last_name,
-        email: artists_collaborator.collaborator.email
+        email: artists_collaborator.collaborator.email,
+        status: artists_collaborator.status,
+        access: artists_collaborator.access
       }
     end
   end
