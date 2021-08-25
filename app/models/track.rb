@@ -6,7 +6,7 @@ class Track < ApplicationRecord
   validates :file, blob: { content_type: %w[audio/vnd.wave audio/wave audio/aiff audio/x-aiff] }
   validates :file, bitrate: { bits: [16, 24], sample_rate: 48_000 }
   validates :artists_collaborators, presence: true
-  before_save :publishers_and_collaborators
+  validate :publishers_and_collaborators
 
   belongs_to :album
 
@@ -56,23 +56,34 @@ class Track < ApplicationRecord
     end
   end
 
+  def publishers_ids=(ids)
+    transaction do
+      super
+      raise ActiveRecord::Rollback unless valid?
+    end
+  end
+
+  def artists_collaborator_ids=(ids)
+    transaction do
+      super
+      raise ActiveRecord::Rollback unless valid?
+    end
+  end
+
   def publishers_and_collaborators
     publishers.each do |publisher|
       if album.user.publishers.exclude?(publisher)
         errors.add('publishers', "#{publisher.id} not belongs to this artist")
-        publishers.delete(publisher)
       end
     end
 
     artists_collaborators.each do |collaborator|
       if album.user.collaborators_details.exclude?(collaborator)
         errors.add('artists_collaborators', "##{collaborator.id} not belongs to this artist")
-        artists_collaborators.delete(collaborator)
       end
 
       unless collaborator.accepted?
         errors.add('artists_collaborators', "##{collaborator.id} not accepted invitation")
-        artists_collaborators.delete(collaborator)
       end
     end
   end
