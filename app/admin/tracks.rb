@@ -160,9 +160,9 @@ ActiveAdmin.register Track do
       f.input :public_domain
       f.input :explicit
       f.input :instrumental
-      f.input :publishers, as: :searchable_select, collection: user.publishers, include_blank: 'Select a Publisher'
-      f.input :artists_collaborators, as: :searchable_select, collection: collaborators_details_list(user),
-                                     include_blank: 'Select a Collaborator'
+      f.input :publishers, as: :searchable_select, collection: user.publishers, input_html: { data: { placeholder: 'Select Publishers' } }
+      f.input :artists_collaborators, as: :searchable_select, collection: collaborators_details_list(user), disabled: disabled_collaborators(user),
+                                      input_html: { data: { placeholder: 'Select Collaborators' } }
 
       Filter.parent_filters.includes(sub_filters: [sub_filters: :sub_filters]).each do |filter|
         next unless filter.sub_filters.size.positive?
