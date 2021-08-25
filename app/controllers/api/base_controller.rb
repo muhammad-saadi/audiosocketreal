@@ -7,6 +7,8 @@ class Api::BaseController < ActionController::API
   before_action :authorize_request
   before_action :authenticate_user!
 
+  skip_before_action :authenticate_user!, only: :route_not_found
+
   rescue_from ActiveRecord::RecordNotFound, with: :record_not_found
   rescue_from ActiveRecord::RecordNotUnique, with: :record_not_unique
   rescue_from ActionController::ParameterMissing, with: :parameter_missing
