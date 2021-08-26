@@ -10,6 +10,8 @@ module ExceptionHandler
 
   class InvalidAccess < StandardError; end
 
+  class ArgumentError < StandardError; end
+
   class TokenError < StandardError
     attr_reader :message
 

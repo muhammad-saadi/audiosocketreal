@@ -55,6 +55,7 @@ class Api::V1::Collaborator::AlbumsController < Api::V1::Collaborator::BaseContr
   end
 
   def bulk_upload_tracks
+    raise ExceptionHandler::ArgumentError.new('File attachment limit of 20 files exceeded') if params[:files].length > 20
     messages = @album.upload_tracks(params[:files].to_a)
     render json: @album, serializer: Api::V1::AlbumSerializer, adapter: :json,
            meta: { total: params[:files].to_a.count, uploaded: params[:files].to_a.count - messages.count, messages: messages }

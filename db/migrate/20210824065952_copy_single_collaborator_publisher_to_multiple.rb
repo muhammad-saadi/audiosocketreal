@@ -1,8 +1,10 @@
 class CopySingleCollaboratorPublisherToMultiple < ActiveRecord::Migration[6.1]
   def up
     Track.all.each do |track|
-      track.publishers << track.publisher if track.publisher.present?
-      track.artists_collaborators << track.artists_collaborator if track.artists_collaborator.present?
+      publisher =  Publisher.find_by(id: track.publisher_id)
+      track.publishers << publisher if publisher.present?
+      artists_collaborator = ArtistsCollaborator.find_by(id: track.artists_collaborator_id)
+      track.artists_collaborators << artists_collaborator if artists_collaborator.present?
     end
   end
 

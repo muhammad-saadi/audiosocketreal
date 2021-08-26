@@ -14,7 +14,7 @@ class Album < ApplicationRecord
   def upload_tracks(files)
     messages = []
     files.each do |file|
-      track = Track.new(file: file)
+      track = Track.new(file: file, title: file.original_filename)
       track.valid?
       if track.errors[:file].present?
         messages.append({ file: file.original_filename, error: track.errors[:file] })
