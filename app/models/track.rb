@@ -32,6 +32,8 @@ class Track < ApplicationRecord
   accepts_nested_attributes_for :track_publishers, allow_destroy: true
   accepts_nested_attributes_for :track_writers, allow_destroy: true
 
+  after_save :aims_add_track, :aims_delete_track
+
   STATUSES = {
     pending: 'pending',
     unclassified: 'unclassified',
@@ -129,5 +131,19 @@ class Track < ApplicationRecord
     return unless current_writers.present? && current_writers.map(&:percentage).compact.sum != 100
 
     errors.add('track_writers', 'percentage sum is not 100')
+  end
+
+  def aims_add_track
+    byebug
+    return unless saved_change_to_status?
+    return unless approved?
+    AimsApiService.create_track(self)
+  end
+
+  def aims_delete_track
+    byebug
+    return unless saved_change_to_status?
+    return unless status_previously_was ==  "approved"
+    AimsApiService.delete_track(self)
   end
 end

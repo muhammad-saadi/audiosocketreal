@@ -150,6 +150,12 @@ Rails.application.routes.draw do
           post :submit_tax_form
         end
       end
+
+      resources :aims_api, only: %i[] do
+        collection do
+          post :track_response
+        end
+      end
     end
 
     match '*unmatched', to: 'base#route_not_found', via: :all
