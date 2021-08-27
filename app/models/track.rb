@@ -69,7 +69,7 @@ class Track < ApplicationRecord
       end
     end
 
-    self.track_writers_attributes = existing_writers + attributes.reject { |attr| attr[:artists_collaborator_id].in?(existing_writers.pluck(:artists_collaborator_id)) }
+    self.track_writers_attributes = existing_writers + attributes.reject { |attr| attr[:artists_collaborator_id].to_i.in?(existing_writers.pluck(:artists_collaborator_id)) }
   end
 
   def track_publishers=(attributes)
