@@ -6,7 +6,10 @@ class Track < ApplicationRecord
   validates :file, blob: { content_type: %w[audio/vnd.wave audio/wave audio/aiff audio/x-aiff] }
   validates :file, bitrate: { bits: [16, 24], sample_rate: 48_000 }
   validates :track_writers, presence: true
-  validate :publishers_and_collaborators
+  validate :publishers_validation
+  validate :artists_collaborators_validation
+  validate :writers_percentage_validation
+  validate :publishers_percentage_validation
 
   belongs_to :album
 
@@ -57,7 +60,7 @@ class Track < ApplicationRecord
   def track_writers=(attributes)
     existing_writers = track_writers.map { |writer| writer.attributes.slice('id', 'percentage', 'artists_collaborator_id').symbolize_keys }
     existing_writers.each do |writer|
-      artist_attributes = attributes.find { |attr| attr[:artists_collaborator_id] == writer[:artists_collaborator_id] }
+      artist_attributes = attributes.find { |attr| attr[:artists_collaborator_id].to_i == writer[:artists_collaborator_id] }
       if artist_attributes.present?
         writer[:percentage] = artist_attributes[:percentage]
       else
@@ -71,7 +74,7 @@ class Track < ApplicationRecord
   def track_publishers=(attributes)
     existing_publishers = track_publishers.map { |publisher| publisher.attributes.slice('id', 'percentage', 'publisher_id').symbolize_keys }
     existing_publishers.each do |publisher|
-      publisher_attributes = attributes.find { |attr| attr[:publisher_id] == publisher[:publisher_id] }
+      publisher_attributes = attributes.find { |attr| attr[:publisher_id].to_i == publisher[:publisher_id] }
       if publisher_attributes.present?
         publisher[:percentage] = publisher_attributes[:percentage]
       else
@@ -79,7 +82,7 @@ class Track < ApplicationRecord
       end
     end
 
-    self.track_publishers_attributes = existing_publishers + attributes.reject { |attr| attr[:publisher_id].in?(existing_publishers.pluck(:publisher_id)) }
+    self.track_publishers_attributes = existing_publishers + attributes.reject { |attr| attr[:publisher_id].to_i.in?(existing_publishers.pluck(:publisher_id)) }
   end
 
   def publishers_ids=(ids)
@@ -96,22 +99,28 @@ class Track < ApplicationRecord
     end
   end
 
-  def publishers_and_collaborators
-    publishers.each do |publisher|
-      errors.add('publishers', "#{publisher.name} not belongs to this artist") if user.publishers.exclude?(publisher)
+  def publishers_validation
+    track_publishers.each do |publisher|
+      errors.add('publishers', "#{publisher.publisher_name} not belongs to this artist") if user.publisher_ids.exclude?(publisher.publisher_id)
     end
+  end
 
-    artists_collaborators.each do |collaborator|
-      errors.add('artists_collaborators', "##{collaborator.collaborator_email} not belongs to this artist") if user.collaborators_details.exclude?(collaborator)
-      errors.add('artists_collaborators', "##{collaborator.collaborator_email} not accepted invitation") unless collaborator.accepted?
+  def artists_collaborators_validation
+    track_writers.each do |collaborator|
+      errors.add('artists_collaborators', "#{collaborator.collaborator_email} not belongs to this artist") if user.collaborators_detail_ids.exclude?(collaborator.artists_collaborator_id)
+      errors.add('artists_collaborators', "#{collaborator.collaborator_email} not accepted invitation") unless collaborator.artists_collaborator.accepted?
     end
+  end
 
-    if track_publishers.present? && track_publishers.map(&:percentage).sum != 100
-      errors.add('track_publishers', 'percentage sum is not 100')
-    end
+  def publishers_percentage_validation
+    return unless track_publishers.present? && track_publishers.reject(&:marked_for_destruction?).map(&:percentage).sum != 100
 
-    if track_writers.present? && track_writers.map(&:percentage).sum != 100
-      errors.add('track_writers', 'percentage sum is not 100')
-    end
+    errors.add('track_publishers', 'percentage sum is not 100')
+  end
+
+  def writers_percentage_validation
+    return unless track_writers.present? && track_writers.reject(&:marked_for_destruction?).map(&:percentage).sum != 100
+
+    errors.add('track_writers', 'percentage sum is not 100')
   end
 end

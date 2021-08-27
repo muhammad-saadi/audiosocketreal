@@ -51,10 +51,6 @@ class ArtistsCollaborator < ApplicationRecord
     CollaboratorMailer.invitation_status_update(id).deliver_later if status_previously_changed?
   end
 
-  def collaborator_email
-    collaborator.email
-  end
-
   private
 
   def collaborator_invite

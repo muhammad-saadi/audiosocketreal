@@ -25,7 +25,7 @@ class Api::V1::TracksController < Api::BaseController
   param_group :doc_update_track
   def update
     if @track.update(track_params)
-      render json: @track.reload
+      render json: @track
     else
       raise ExceptionHandler::ValidationError.new(@track.errors.to_h, 'Error updating track.')
     end

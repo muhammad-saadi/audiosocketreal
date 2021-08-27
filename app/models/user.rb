@@ -24,6 +24,8 @@ class User < ApplicationRecord
   validates :email, uniqueness: { case_sensitive: false }, presence: true
   validates :password, confirmation: true
 
+  attr_accessor :skip_password_validation
+
   before_save :validate_manager
   after_update :mail_accountant
   after_touch :mail_accountant
@@ -66,9 +68,10 @@ class User < ApplicationRecord
   def initialize_collaborator(params)
     collaborator = User.find_or_initialize_by(email: params[:email])
     collaborator.assign_attributes(split_name(params[:name])) if collaborator.new_record?
-
+    collaborator.skip_password_validation = true
     collaborator.add_collaborator_role
-    collaborator.save(validate: false)
+    raise ExceptionHandler::ValidationError.new(collaborator.errors.to_h, 'Error inviting collaborator.') unless collaborator.save
+
     collaborator.assign_agreements('collaborator', artist_profile)
     collaborator
   end
@@ -127,5 +130,11 @@ class User < ApplicationRecord
                                      artist_profile&.payment_information&.previous_changes.to_h, artist_profile&.tax_information&.previous_changes.to_h)
 
     ArtistMailer.alert_accountant(id, changes.keys - %w[updated_at created_at id update_count]).deliver_later unless changes.blank?
+  end
+
+  def password_required?
+    return false if skip_password_validation
+
+    super
   end
 end

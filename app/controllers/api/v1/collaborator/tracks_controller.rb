@@ -27,7 +27,7 @@ class Api::V1::Collaborator::TracksController < Api::V1::Collaborator::BaseContr
   param_group :doc_update_track
   def update
     if @track.update(track_params)
-      render json: @track.reload, serializer: Api::V1::TrackSerializer
+      render json: @track, serializer: Api::V1::TrackSerializer
     else
       raise ExceptionHandler::ValidationError.new(@track.errors.to_h, 'Error updating track.')
     end

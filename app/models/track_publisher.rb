@@ -3,4 +3,8 @@ class TrackPublisher < ApplicationRecord
   belongs_to :track
 
   validates_uniqueness_of :publisher_id, scope: [:track_id]
+
+  def publisher_name
+    publisher.name
+  end
 end
