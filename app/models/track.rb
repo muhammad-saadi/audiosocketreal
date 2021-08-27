@@ -5,7 +5,7 @@ class Track < ApplicationRecord
   validates :title, :file, presence: true
   validates :file, blob: { content_type: %w[audio/vnd.wave audio/wave audio/aiff audio/x-aiff] }
   validates :file, bitrate: { bits: [16, 24], sample_rate: 48_000 }
-  validates :artists_collaborators, presence: true
+  validates :track_writers, presence: true
   validate :publishers_and_collaborators
 
   belongs_to :album
@@ -56,6 +56,20 @@ class Track < ApplicationRecord
     end
   end
 
+  def track_writers=(attributes)
+    self.artists_collaborator_ids = attributes.map { |atr| atr[:artists_collaborator_id] }
+    attributes.each do |object|
+      track_writers.find_by(artists_collaborator_id: object[:artists_collaborator_id])&.update(percentage: object[:percentage])
+     end
+  end
+
+  def track_publishers=(attributes)
+    self.publisher_ids = attributes.map { |atr| atr[:publisher_id] }
+    attributes.each do |object|
+      track_publishers.find_by(publisher_id: object[:publisher_id])&.update(percentage: object[:percentage])
+    end
+  end
+
   def publishers_ids=(ids)
     transaction do
       super
@@ -71,20 +85,28 @@ class Track < ApplicationRecord
   end
 
   def publishers_and_collaborators
-    publishers.each do |publisher|
-      if album.user.publishers.exclude?(publisher)
+    users_publishers = album.user.publishers
+    track_publishers.map(&:publisher).compact.each do |publisher|
+      if users_publishers.exclude?(publisher)
         errors.add('publishers', "#{publisher.id} not belongs to this artist")
       end
     end
 
-    artists_collaborators.each do |collaborator|
-      if album.user.collaborators_details.exclude?(collaborator)
+    users_collaborators = album.user.collaborators_details
+    track_writers.map(&:artists_collaborator).compact.each do |collaborator|
+      if users_collaborators.exclude?(collaborator)
         errors.add('artists_collaborators', "##{collaborator.id} not belongs to this artist")
       end
 
-      unless collaborator.accepted?
-        errors.add('artists_collaborators', "##{collaborator.id} not accepted invitation")
-      end
+      errors.add('artists_collaborators', "##{collaborator.id} not accepted invitation") unless collaborator.accepted?
+    end
+
+    if track_publishers.present? && track_publishers.sum(:percentage) != 100
+      errors.add('track_publishers[percentage]', 'Total sum of percentage is not 100')
+    end
+
+    if track_writers.present? && track_writers.sum(:percentage) != 100
+      errors.add('track_writers[percentage]', 'Total sum of percentage is not 100')
     end
   end
 end

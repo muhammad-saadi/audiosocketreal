@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_08_24_083442) do
+ActiveRecord::Schema.define(version: 2021_08_26_060041) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -272,6 +272,7 @@ ActiveRecord::Schema.define(version: 2021_08_24_083442) do
     t.bigint "publisher_id"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.integer "percentage", default: 0
     t.index ["publisher_id"], name: "index_track_publishers_on_publisher_id"
     t.index ["track_id"], name: "index_track_publishers_on_track_id"
   end
@@ -281,6 +282,7 @@ ActiveRecord::Schema.define(version: 2021_08_24_083442) do
     t.bigint "artists_collaborator_id"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.integer "percentage", default: 0
     t.index ["artists_collaborator_id"], name: "index_track_writers_on_artists_collaborator_id"
     t.index ["track_id"], name: "index_track_writers_on_track_id"
   end

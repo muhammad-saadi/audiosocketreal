@@ -25,7 +25,7 @@ class Api::V1::TracksController < Api::BaseController
   param_group :doc_update_track
   def update
     if @track.update(track_params)
-      render json: @track
+      render json: @track.reload
     else
       raise ExceptionHandler::ValidationError.new(@track.errors.to_h, 'Error updating track.')
     end
@@ -48,8 +48,9 @@ class Api::V1::TracksController < Api::BaseController
   private
 
   def track_params
-    params.permit(:title, :file, :public_domain, :artists_collaborator_id, :status, :lyrics, :explicit,
-                  :composer, :description, :language, :instrumental, :key, :bpm, :admin_note, publisher_ids: [], artists_collaborator_ids: [])
+    params.permit(:title, :file, :public_domain, :status, :lyrics, :explicit, :composer, :description,
+                  :language, :instrumental, :key, :bpm, :admin_note, track_publishers: %i[publisher_id percentage],
+                                                                     track_writers: %i[artists_collaborator_id percentage])
   end
 
   def set_album
