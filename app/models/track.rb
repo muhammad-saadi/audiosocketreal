@@ -43,9 +43,10 @@ class Track < ApplicationRecord
   end
 
   def self.to_zip
-    all.each_with_index.inject([]) do |zip_list, track_details, index|
-      track = track_details.first
-      file_name = zip_list.pluck(1).include?(track.filename) ? track.filename(index) : track.filename
+    all.each_with_index.inject([]) do |zip_list, (track, index)|
+      next zip_list unless track.file.attached?
+
+      file_name = zip_list.pluck(1).include?(track.filename) ? track.filename(" (#{index})") : track.filename
       zip_list << [track.file, file_name]
     end
   end
