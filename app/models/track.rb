@@ -10,18 +10,20 @@ class Track < ApplicationRecord
 
   belongs_to :album
 
+  has_one :user, through: :album
+
   has_one_attached :file
 
   has_many :notes, as: :notable, dependent: :destroy
   has_many :track_filters, dependent: :destroy
   has_many :filters, through: :track_filters
-  has_many :track_publishers
+  has_many :track_publishers, dependent: :destroy
   has_many :publishers, through: :track_publishers
-  has_many :track_writers
+  has_many :track_writers, dependent: :destroy
   has_many :artists_collaborators, through: :track_writers
 
-
-  accepts_nested_attributes_for :track_filters
+  accepts_nested_attributes_for :track_publishers, allow_destroy: true
+  accepts_nested_attributes_for :track_writers, allow_destroy: true
 
   STATUSES = {
     pending: 'pending',
@@ -38,14 +40,10 @@ class Track < ApplicationRecord
   end
 
   def self.to_zip
-    track_files = all.map do |track|
-      next unless track.file.attached?
-
-      [track.file, track.filename]
-    end.compact
-
-    track_files.each_with_index.inject([]) do |zip_list, track_file, index|
-      zip_list << [track_file.first.first, (zip_list.pluck(1).include?(track_file.first.second) ? track_file.first.first.record.filename("(#{track_file.second})") : track_file.first.second)]
+    all.each_with_index.inject([]) do |zip_list, track_details, index|
+      track = track_details.first
+      file_name = zip_list.pluck(1).include?(track.filename) ? track.filename(index) : track.filename
+      zip_list << [track.file, file_name]
     end
   end
 
@@ -57,17 +55,31 @@ class Track < ApplicationRecord
   end
 
   def track_writers=(attributes)
-    self.artists_collaborator_ids = attributes.map { |atr| atr[:artists_collaborator_id] }
-    attributes.each do |object|
-      track_writers.find_by(artists_collaborator_id: object[:artists_collaborator_id])&.update(percentage: object[:percentage])
-     end
+    existing_writers = track_writers.map { |writer| writer.attributes.slice('id', 'percentage', 'artists_collaborator_id').symbolize_keys }
+    existing_writers.each do |writer|
+      artist_attributes = attributes.find { |attr| attr[:artists_collaborator_id] == writer[:artists_collaborator_id] }
+      if artist_attributes.present?
+        writer[:percentage] = artist_attributes[:percentage]
+      else
+        writer[:_destroy] = true
+      end
+    end
+
+    self.track_writers_attributes = existing_writers + attributes.reject { |attr| attr[:artists_collaborator_id].in?(existing_writers.pluck(:artists_collaborator_id)) }
   end
 
   def track_publishers=(attributes)
-    self.publisher_ids = attributes.map { |atr| atr[:publisher_id] }
-    attributes.each do |object|
-      track_publishers.find_by(publisher_id: object[:publisher_id])&.update(percentage: object[:percentage])
+    existing_publishers = track_publishers.map { |publisher| publisher.attributes.slice('id', 'percentage', 'publisher_id').symbolize_keys }
+    existing_publishers.each do |publisher|
+      publisher_attributes = attributes.find { |attr| attr[:publisher_id] == publisher[:publisher_id] }
+      if publisher_attributes.present?
+        publisher[:percentage] = publisher_attributes[:percentage]
+      else
+        publisher[:_destroy] = true
+      end
     end
+
+    self.track_publishers_attributes = existing_publishers + attributes.reject { |attr| attr[:publisher_id].in?(existing_publishers.pluck(:publisher_id)) }
   end
 
   def publishers_ids=(ids)
@@ -85,28 +97,21 @@ class Track < ApplicationRecord
   end
 
   def publishers_and_collaborators
-    users_publishers = album.user.publishers
-    track_publishers.map(&:publisher).compact.each do |publisher|
-      if users_publishers.exclude?(publisher)
-        errors.add('publishers', "#{publisher.id} not belongs to this artist")
-      end
+    publishers.each do |publisher|
+      errors.add('publishers', "#{publisher.name} not belongs to this artist") if user.publishers.exclude?(publisher)
     end
 
-    users_collaborators = album.user.collaborators_details
-    track_writers.map(&:artists_collaborator).compact.each do |collaborator|
-      if users_collaborators.exclude?(collaborator)
-        errors.add('artists_collaborators', "##{collaborator.id} not belongs to this artist")
-      end
-
-      errors.add('artists_collaborators', "##{collaborator.id} not accepted invitation") unless collaborator.accepted?
+    artists_collaborators.each do |collaborator|
+      errors.add('artists_collaborators', "##{collaborator.collaborator_email} not belongs to this artist") if user.collaborators_details.exclude?(collaborator)
+      errors.add('artists_collaborators', "##{collaborator.collaborator_email} not accepted invitation") unless collaborator.accepted?
     end
 
-    if track_publishers.present? && track_publishers.sum(:percentage) != 100
-      errors.add('track_publishers[percentage]', 'Total sum of percentage is not 100')
+    if track_publishers.present? && track_publishers.map(&:percentage).sum != 100
+      errors.add('track_publishers', 'percentage sum is not 100')
     end
 
-    if track_writers.present? && track_writers.sum(:percentage) != 100
-      errors.add('track_writers[percentage]', 'Total sum of percentage is not 100')
+    if track_writers.present? && track_writers.map(&:percentage).sum != 100
+      errors.add('track_writers', 'percentage sum is not 100')
     end
   end
 end

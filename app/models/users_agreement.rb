@@ -21,4 +21,12 @@ class UsersAgreement < ApplicationRecord
   scope :artists, -> { where(role: ROLES[:artist]) }
   scope :collaborators, -> { where(role: ROLES[:collaborator]) }
   scope :by_role, ->(role) { where(role: role) }
+
+  def self.by_agreements
+    joins(:agreement).where('agreement.agreement_type': [Agreement::TYPES[:exclusive], Agreement::TYPES[:non_exclusive]])
+  end
+
+  def self.accepted?(role)
+    by_role(role).by_agreements.pluck(:status).all?('accepted')
+  end
 end

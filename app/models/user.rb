@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class User < ApplicationRecord
   include Roles
   include Pagination
@@ -13,8 +15,8 @@ class User < ApplicationRecord
   has_many :agreements, through: :users_agreements
   has_many :albums, dependent: :destroy
   has_many :publishers, dependent: :destroy
-  has_many :artists_details, foreign_key: "collaborator_id", class_name: 'ArtistsCollaborator', dependent: :destroy
-  has_many :collaborators_details, foreign_key: "artist_id", class_name: 'ArtistsCollaborator', dependent: :destroy
+  has_many :artists_details, foreign_key: 'collaborator_id', class_name: 'ArtistsCollaborator', dependent: :destroy
+  has_many :collaborators_details, foreign_key: 'artist_id', class_name: 'ArtistsCollaborator', dependent: :destroy
   has_many :artists, through: :artists_details
   has_many :collaborators, through: :collaborators_details
   has_many :notes, dependent: :destroy
@@ -28,8 +30,8 @@ class User < ApplicationRecord
 
   scope :ordered, -> { order(created_at: :desc) }
 
-  W9_FORM = "w9"
-  W8BEN_FORM = "w8ben"
+  W9_FORM = 'w9'
+  W8BEN_FORM = 'w8ben'
 
   def self.authenticate(email, password)
     user = User.find_for_authentication(email: email)
@@ -45,9 +47,7 @@ class User < ApplicationRecord
   enum_roles roles: ROLES
 
   def self.find_by_id(id)
-    return nil if id == 'null'
-
-    find(id)
+    super(id.to_i)
   end
 
   def full_name
@@ -63,30 +63,35 @@ class User < ApplicationRecord
     users_agreements.create(new_agreements.ids.map { |id| { agreement_id: id, role: role } })
   end
 
-  def invite_collaborator(params)
+  def initialize_collaborator(params)
     collaborator = User.find_or_initialize_by(email: params[:email])
-    collaborator.assign_attributes(splited_name(params[:name])) if collaborator.new_record?
+    collaborator.assign_attributes(split_name(params[:name])) if collaborator.new_record?
 
     collaborator.add_collaborator_role
     collaborator.save(validate: false)
     collaborator.assign_agreements('collaborator', artist_profile)
+    collaborator
+  end
 
+  def collaborator_invite_init(collaborator)
     artist_collaborator = ArtistsCollaborator.find_or_initialize_by(artist_id: id, collaborator_id: collaborator.id)
-
     raise ExceptionHandler::InvalidAccess, 'Invitation already sent to this email.' if artist_collaborator.persisted?
 
-    artist_collaborator.save
-    if artist_collaborator.update(access: params[:access], status: 'pending',
-                                  collaborator_profile_attributes: params[:collaborator_profile_attributes])
-      CollaboratorMailer.invitation_mail(id, artist_collaborator.id, collaborator.email).deliver_later
-    else
+    artist_collaborator
+  end
+
+  def invite_collaborator(params)
+    collaborator = initialize_collaborator(params)
+    artist_collaborator = collaborator_invite_init(collaborator)
+    unless artist_collaborator.update(access: params[:access], status: 'pending', collaborator_profile_attributes: params[:collaborator_profile_attributes])
       raise ExceptionHandler::ValidationError.new(artist_collaborator.errors.to_h, 'Error inviting collaborator.')
     end
+
+    CollaboratorMailer.invitation_mail(id, artist_collaborator.id, collaborator.email).deliver_later
   end
 
   def agreements_accepted?(role)
-    users_agreements && users_agreements.where(role: role).joins(:agreement).where('agreement.agreement_type':
-                        [Agreement::TYPES[:exclusive], Agreement::TYPES[:non_exclusive]]).pluck(:status).all?('accepted')
+    users_agreements&.accepted?(role) || false
   end
 
   def roles_string
@@ -94,7 +99,7 @@ class User < ApplicationRecord
   end
 
   def form_number
-    return W9_FORM if artist_profile.country == "United States"
+    return W9_FORM if artist_profile.country == 'United States'
 
     W8BEN_FORM
   end
@@ -111,7 +116,7 @@ class User < ApplicationRecord
     raise ActiveRecord::Rollback
   end
 
-  def splited_name(name)
+  def split_name(name)
     { first_name: name&.split(/ /, 2)&.first, last_name: name&.split(/ /, 2)&.second }
   end
 

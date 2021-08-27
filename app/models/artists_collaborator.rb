@@ -1,8 +1,8 @@
 class ArtistsCollaborator < ApplicationRecord
   include Pagination
 
-  belongs_to :artist, class_name: "User", optional: true
-  belongs_to :collaborator, class_name: "User", optional: true
+  belongs_to :artist, class_name: 'User', optional: true
+  belongs_to :collaborator, class_name: 'User', optional: true
 
   has_many :track_writers
   has_many :tracks, through: :track_writers, dependent: :restrict_with_exception
@@ -49,6 +49,10 @@ class ArtistsCollaborator < ApplicationRecord
     return unless accepted? || rejected?
 
     CollaboratorMailer.invitation_status_update(id).deliver_later if status_previously_changed?
+  end
+
+  def collaborator_email
+    collaborator.email
   end
 
   private

@@ -45,8 +45,6 @@ class ArtistProfile < ApplicationRecord
   has_one_attached :banner_image
   has_many_attached :additional_images
 
-  attr_accessor :social_raw
-
   def social_raw
     social&.join("\n")
   end
