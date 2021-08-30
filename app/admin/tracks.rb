@@ -165,6 +165,7 @@ ActiveAdmin.register Track do
         p.input :publisher, as: :searchable_select, collection: user.publishers, input_html: { data: { placeholder: 'Select Publisher' } }
         p.input :percentage
       end
+
       f.semantic_errors :track_publishers
 
       f.has_many :track_writers, heading: 'Writers', allow_destroy: true do |p|
@@ -172,6 +173,7 @@ ActiveAdmin.register Track do
                                        input_html: { data: { placeholder: 'Select Collaborator' } }
         p.input :percentage
       end
+
       f.semantic_errors :track_writers
 
       Filter.parent_filters.includes(sub_filters: [sub_filters: :sub_filters]).each do |filter|

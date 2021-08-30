@@ -114,13 +114,15 @@ class Track < ApplicationRecord
   end
 
   def publishers_percentage_validation
-    return unless track_publishers.reject(&:marked_for_destruction?).present? && track_publishers.reject(&:marked_for_destruction?).map(&:percentage).sum != 100
+    current_publishers = track_publishers.reject(&:marked_for_destruction?)
+    return unless current_publishers.present? && current_publishers.map(&:percentage).sum != 100
 
     errors.add('track_publishers', 'percentage sum is not 100')
   end
 
   def writers_percentage_validation
-    return unless track_writers.reject(&:marked_for_destruction?).present? && track_writers.reject(&:marked_for_destruction?).map(&:percentage).sum != 100
+    current_writers = track_writers.reject(&:marked_for_destruction?)
+    return unless current_writers.present? && current_writers.map(&:percentage).sum != 100
 
     errors.add('track_writers', 'percentage sum is not 100')
   end
