@@ -109,20 +109,20 @@ class Track < ApplicationRecord
   def artists_collaborators_validation
     track_writers.each do |collaborator|
       errors.add('artists_collaborators', "#{collaborator.collaborator_email} not belongs to this artist") if user.collaborators_detail_ids.exclude?(collaborator.artists_collaborator_id)
-      errors.add('artists_collaborators', "#{collaborator.collaborator_email} not accepted invitation") unless collaborator.artists_collaborator.accepted?
+      errors.add('artists_collaborators', "#{collaborator.collaborator_email} not accepted invitation") unless collaborator.artists_collaborator&.accepted?
     end
   end
 
   def publishers_percentage_validation
     current_publishers = track_publishers.reject(&:marked_for_destruction?)
-    return unless current_publishers.present? && current_publishers.map(&:percentage).sum != 100
+    return unless current_publishers.present? && current_publishers.map(&:percentage).compact.sum != 100
 
     errors.add('track_publishers', 'percentage sum is not 100')
   end
 
   def writers_percentage_validation
     current_writers = track_writers.reject(&:marked_for_destruction?)
-    return unless current_writers.present? && current_writers.map(&:percentage).sum != 100
+    return unless current_writers.present? && current_writers.map(&:percentage).compact.sum != 100
 
     errors.add('track_writers', 'percentage sum is not 100')
   end

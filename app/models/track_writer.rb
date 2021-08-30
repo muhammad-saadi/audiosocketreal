@@ -9,6 +9,6 @@ class TrackWriter < ApplicationRecord
   validates :percentage, numericality: { greater_than_or_equal_to: 0 }
 
   def collaborator_email
-    collaborator.email
+    collaborator&.email
   end
 end
