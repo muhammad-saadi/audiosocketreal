@@ -84,8 +84,6 @@ ActiveAdmin.register Track do
 
       row :explicit
       row :public_domain
-      row :publishers
-      row :artists_collaborators
       row :composer
       row :description
       row :language
@@ -96,19 +94,45 @@ ActiveAdmin.register Track do
       row :admin_note
       row :created_at, &:formatted_created_at
       row :updated_at, &:formatted_updated_at
+    end
 
-      panel 'Filters' do
-        @track = Track.find(params[:id])
+    panel 'Writers' do
+      @track = Track.find(params[:id])
+      table_for @track.track_writers do
+        if @track.track_writers.blank?
+          column 'No Records Found'
+        else
+          column :collaborator do |writer|
+            link_to writer.collaborator_email, admin_artists_collaborator_path(writer.artists_collaborator)
+          end
+          column :percentage
+        end
+      end
+    end
 
-        table_for @track.filters do
-          if @track.filters.blank?
-            column 'No Records Found'
-          else
-            column :id
-            column :name
-            column :actions do |filter|
-              link_to t('active_admin.view'), admin_filter_path(filter), class: 'small button'
-            end
+    panel 'Publishers' do
+      @track = Track.find(params[:id])
+      table_for @track.track_publishers do
+        if @track.track_publishers.blank?
+          column 'No Records Found'
+        else
+          column :publisher
+          column :percentage
+        end
+      end
+    end
+
+    panel 'Filters' do
+      @track = Track.find(params[:id])
+
+      table_for @track.filters do
+        if @track.filters.blank?
+          column 'No Records Found'
+        else
+          column :id
+          column :name
+          column :actions do |filter|
+            link_to t('active_admin.view'), admin_filter_path(filter), class: 'small button'
           end
         end
       end
@@ -166,8 +190,10 @@ ActiveAdmin.register Track do
         p.input :percentage
       end
 
-      
       f.semantic_errors :track_publishers
+
+      br
+
       f.has_many :track_writers, heading: 'Writers', allow_destroy: true do |p|
         p.input :artists_collaborator, as: :searchable_select, collection: collaborators_details_list(user), disabled: disabled_collaborators(user),
                                        input_html: { data: { placeholder: 'Select Collaborator' } }
@@ -175,6 +201,8 @@ ActiveAdmin.register Track do
       end
 
       f.semantic_errors :track_writers
+
+      br
 
       Filter.parent_filters.includes(sub_filters: [sub_filters: :sub_filters]).each do |filter|
         next unless filter.sub_filters.size.positive?
