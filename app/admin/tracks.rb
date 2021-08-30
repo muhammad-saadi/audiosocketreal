@@ -166,8 +166,8 @@ ActiveAdmin.register Track do
         p.input :percentage
       end
 
+      
       f.semantic_errors :track_publishers
-
       f.has_many :track_writers, heading: 'Writers', allow_destroy: true do |p|
         p.input :artists_collaborator, as: :searchable_select, collection: collaborators_details_list(user), disabled: disabled_collaborators(user),
                                        input_html: { data: { placeholder: 'Select Collaborator' } }
