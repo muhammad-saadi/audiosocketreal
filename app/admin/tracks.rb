@@ -1,7 +1,8 @@
 ActiveAdmin.register Track do
   config.remove_action_item(:new)
   permit_params :title, :file, :status, :album_id, :public_domain, :lyrics, :explicit, :composer, :description, :language,
-                :instrumental, :key, :bpm, :admin_note, filter_ids: [], publisher_ids: [], artists_collaborator_ids: []
+                :instrumental, :key, :bpm, :admin_note, filter_ids: [], track_publishers_attributes: %i[id publisher_id percentage _destroy],
+                                                        track_writers_attributes: %i[id artists_collaborator_id percentage _destroy]
 
   includes :album, file_attachment: :blob
 
@@ -34,7 +35,7 @@ ActiveAdmin.register Track do
   end
 
   batch_action :download_xlsx do |ids|
-    xlsx_sheet = batch_action_collection.where(id: ids).includes(file_attachment: :blob, filters: [:parent_filter, :sub_filters], album: [:user]).track_detail_sheet
+    xlsx_sheet = batch_action_collection.where(id: ids).includes(file_attachment: :blob, filters: %i[parent_filter sub_filters], album: [:user]).track_detail_sheet
     send_data xlsx_sheet, filename: "tracks_data.xlsx", type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
   end
 
@@ -160,9 +161,18 @@ ActiveAdmin.register Track do
       f.input :public_domain
       f.input :explicit
       f.input :instrumental
-      f.input :publishers, as: :searchable_select, collection: user.publishers, input_html: { data: { placeholder: 'Select Publishers' } }
-      f.input :artists_collaborators, as: :searchable_select, collection: collaborators_details_list(user), disabled: disabled_collaborators(user),
-                                      input_html: { data: { placeholder: 'Select Collaborators' } }
+      f.has_many :track_publishers, heading: 'Publishers', allow_destroy: true do |p|
+        p.input :publisher, as: :searchable_select, collection: user.publishers, input_html: { data: { placeholder: 'Select Publisher' } }
+        p.input :percentage
+      end
+      f.semantic_errors :track_publishers
+
+      f.has_many :track_writers, heading: 'Writers', allow_destroy: true do |p|
+        p.input :artists_collaborator, as: :searchable_select, collection: collaborators_details_list(user), disabled: disabled_collaborators(user),
+                                       input_html: { data: { placeholder: 'Select Collaborator' } }
+        p.input :percentage
+      end
+      f.semantic_errors :track_writers
 
       Filter.parent_filters.includes(sub_filters: [sub_filters: :sub_filters]).each do |filter|
         next unless filter.sub_filters.size.positive?
