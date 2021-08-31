@@ -185,14 +185,6 @@ ActiveAdmin.register Track do
     column :updated_at, &:formatted_updated_at
   end
 
-  controller do
-    def destroy
-      byebug
-      super
-      AimsApiService.delete_track(resource)
-    end
-  end
-
   form do |f|
     user = f.object.album.user
     f.inputs do
