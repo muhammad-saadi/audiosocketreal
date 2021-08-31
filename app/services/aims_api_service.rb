@@ -1,4 +1,3 @@
-
 class AimsApiService
   BASE_URL = "https://api-demo.aimsapi.com/v1"
   AUTHORIZATION = ENV['AIMS_AUTHORIZATION']
@@ -7,7 +6,6 @@ class AimsApiService
     track_filters = track.filters.includes(:parent_filter)
     hook_url = ENV['AIMS_HOOK_URL']
     id_client = track.id
-    byebug
     track_file = File.open(filepath) if filepath.present?
     track_name = track.title
     release_year = 1991
@@ -32,25 +30,23 @@ class AimsApiService
     moods = track_filters.select { |filter| filter.parent_filter.name.downcase.include?('moods') }.pluck(:name)
     instruments = track_filters.select { |filter| filter.parent_filter.name.downcase.include?('instruments') }.pluck(:name)
     sub_instruments = track_filters.select{ |filter| filter.parent_filter.name.in?(instruments) }.pluck(:name)
+
     @options = { headers: { Authorization: AUTHORIZATION }, body: { id_client: id_client, track: track_file, track_name: track_name, release_year: release_year, track_description: track_description, album_name: album_name, tempo: tempo, bpm: bpm, music_key: music_key, lyrics: lyrics, lyrics_language: lyrics_language, artists: artists, composers: composers, publisher: publisher, genres: genres, instruments: instruments, moods: moods, filepath: filepath, music_for: music_for, track_number: track_number, version_tag: version_tag, label_name: label_name, label_code: label_code, album_number: album_number, hook_url: hook_url, detailed: 1 } }
-    byebug
     @options[:body].except!(:id_client, :track, :filepath, :hook_url) if type == 'update'
+
     return @options
   end
 
   def self.create_track(track, filepath)
-    byebug
     HTTParty.post("#{BASE_URL}/tracks", fields(track, 'create', filepath)).parsed_response
   end
 
   def self.delete_track(track)
-    byebug
     @options = { headers: { Authorization: AUTHORIZATION } }
     HTTParty.delete("#{BASE_URL}/tracks/client/#{track.id}", @options).parsed_response
   end
 
   def self.update_track(track)
-    byebug
     HTTParty.post("#{BASE_URL}/tracks/client/#{track.id}", fields(track, 'update')).parsed_response
   end
 end
