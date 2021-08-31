@@ -3,6 +3,7 @@ class Api::V1::AimsApiController < Api::BaseController
   skip_before_action :authorize_request, only: %i[track_response]
 
   def track_response
+    byebug
     track_client_id = params[:aims_api][:id_client]
     track = Track.find(track_client_id)
     track.aims_id = params[:aims_api][:id]
