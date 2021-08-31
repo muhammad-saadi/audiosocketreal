@@ -32,7 +32,8 @@ class Track < ApplicationRecord
   accepts_nested_attributes_for :track_publishers, allow_destroy: true
   accepts_nested_attributes_for :track_writers, allow_destroy: true
 
-  after_save :aims_add_track, :aims_delete_track
+  after_save :aims_add_track, :aims_delete_track_by_status, :aims_update_track, :aims_replace_file
+  after_destroy :aims_delete_track
 
   STATUSES = {
     pending: 'pending',
@@ -133,17 +134,48 @@ class Track < ApplicationRecord
     errors.add('track_writers', 'percentage sum is not 100')
   end
 
+  def delete_aims_fields
+    self.update(aims_id: nil, aims_status: nil)
+  end
+
   def aims_add_track
     byebug
     return unless saved_change_to_status?
     return unless approved?
-    AimsApiService.create_track(self)
+    filepath = ActiveStorage::Blob.service.send(:path_for, self.file.key)
+    AimsApiService.create_track(self, filepath)
+  end
+
+  def aims_delete_track_by_status
+    byebug
+    return unless saved_change_to_status?
+    return unless status_previously_was ==  'approved'
+    AimsApiService.delete_track(self)
+    delete_aims_fields
+    byebug
+  end
+
+  def aims_replace_file
+    byebug
+    return if self.attachment_changes.empty?
+    return if id_previously_changed?
+    filepath = self.attachment_changes['file'].attachable.path
+    byebug
+    AimsApiService.delete_track(self)
+    AimsApiService.create_track(self, filepath)
   end
 
   def aims_delete_track
     byebug
-    return unless saved_change_to_status?
-    return unless status_previously_was ==  "approved"
     AimsApiService.delete_track(self)
+    byebug
+  end
+
+  def aims_update_track
+    return if saved_change_to_status?
+    return unless self.attachment_changes.empty?
+    return if saved_change_to_aims_id?
+    byebug
+    AimsApiService.update_track(self)
   end
 end
