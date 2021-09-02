@@ -4,7 +4,7 @@ ActiveAdmin.register Track do
                 :instrumental, :key, :bpm, :admin_note, filter_ids: [], track_publishers_attributes: %i[id publisher_id percentage _destroy],
                                                         track_writers_attributes: %i[id artists_collaborator_id percentage _destroy]
 
-  includes :album, file_attachment: :blob
+  includes :publishers, file_attachment: :blob, album: [:user], track_writers: [:collaborator], filters: %i[parent_filter sub_filters]
 
   filter :title_or_album_name_or_filters_name_cont, as: :string, label: 'Search'
   filter :title_cont, as: :string, label: 'Title'
@@ -35,7 +35,7 @@ ActiveAdmin.register Track do
   end
 
   batch_action :download_xlsx do |ids|
-    xlsx_sheet = batch_action_collection.where(id: ids).includes(file_attachment: :blob, filters: %i[parent_filter sub_filters], album: [:user]).track_detail_sheet
+    xlsx_sheet = batch_action_collection.where(id: ids).track_detail_sheet
     send_data xlsx_sheet, filename: "tracks_data.xlsx", type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
   end
 
