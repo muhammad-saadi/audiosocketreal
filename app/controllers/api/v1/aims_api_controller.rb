@@ -7,6 +7,9 @@ class Api::V1::AimsApiController < Api::BaseController
     track = Track.find(track_client_id)
     track.aims_id = params[:aims_api][:id]
     track.aims_status = params[:aims_api][:status]
+    track.aims_error_details = params[:aims_api][:process_input_error_details]
     track.save!
+
+    render json: { status: :ok }
   end
 end
