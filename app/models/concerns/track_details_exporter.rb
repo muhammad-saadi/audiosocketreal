@@ -7,11 +7,10 @@ module TrackDetailsExporter
       xlsx = Xlsxtream::Workbook.new(io)
       xlsx.write_worksheet 'Sheet1' do |sheet|
 
-        sheet << ['SynchTank ID', 'Parent track', 'MP3 File', 'WAV File', 'AIFF File', 'Title', 'Performed By', 'Album', 'Composer', 'Notes', 'Description', 'Lyrics', 'Language', 'Instrumental', 'Explicit', 'Vocals', 'Key', 'BPM', 'Tempo', 'Genres :: Comma Sep', 'Subgenres :: Comma Sep', 'Moods :: Comma Sep', 'Instruments :: Comma Sep', 'Subinstruments :: Comma Sep']
-        sheet << ['id', 'parent_id', 'mp3_filename', 'wav_filename', 'aiff_filename', 'title', 'performed_by', 'album', 'composer', 'notes', 'description', 'lyrics', 'language', 'instrumental', 'explicit', 'vocals', 'musical_key', 'bpm', 'tempo', 'metadata_genres_csv', 'metadata_subgenres_csv', 'metadata_moods_csv', 'metadata_instruments_csv', 'metadata_subinstruments_csv']
+        sheet << ['SynchTank ID', 'Parent track', 'MP3 File', 'WAV File', 'AIFF File', 'Title', 'Performed By', 'Album', 'Composer', 'Publishers', 'Writers', 'Notes', 'Description', 'Lyrics', 'Language', 'Instrumental', 'Explicit', 'Vocals', 'Key', 'BPM', 'Tempo', 'Genres :: Comma Sep', 'Subgenres :: Comma Sep', 'Moods :: Comma Sep', 'Instruments :: Comma Sep', 'Subinstruments :: Comma Sep']
+        sheet << ['id', 'parent_id', 'mp3_filename', 'wav_filename', 'aiff_filename', 'title', 'performed_by', 'album', 'composer', 'publishers_csv', 'writers_csv', 'notes', 'description', 'lyrics', 'language', 'instrumental', 'explicit', 'vocals', 'musical_key', 'bpm', 'tempo', 'metadata_genres_csv', 'metadata_subgenres_csv', 'metadata_moods_csv', 'metadata_instruments_csv', 'metadata_subinstruments_csv']
 
         all.each do |track|
-
           mp3_filename = track.file.filename if track.file.content_type == "audio/mpeg"
           wav_filename = track.file.filename if track.file.content_type == "audio/vnd.wave" || track.file.content_type == "audio/wave"
           aiff_filename = track.file.filename if track.file.content_type == "audio/aiff" || track.file.content_type == "audio/x-aiff"
@@ -19,6 +18,8 @@ module TrackDetailsExporter
           performed_by = track.album.user.full_name
           album = track.album.name
           composer = track.composer
+          publishers = track.publishers.pluck(:name)
+          writers = track.track_writers.map(&:collaborator_name)
           notes = track.admin_note
           description = track.description
           lyrics = track.lyrics
@@ -35,9 +36,9 @@ module TrackDetailsExporter
           instruments = track.filters.select { |filter| filter.parent_filter.name.downcase.include?('instruments') }.pluck(:name)
           sub_instruments = track.filters.select{ |filter| filter.parent_filter.name.in?(instruments) }.pluck(:name)
 
-          sheet << [nil, nil, mp3_filename, wav_filename, aiff_filename, title, performed_by, album, composer, notes, description, lyrics, language, instrumental, explicit, vocals.join(','), key, bpm, tempo.join(','), genres.join(','), sub_genres.join(','), moods.join(','), instruments.join(','), sub_instruments.join(',')]
-
+          sheet << [nil, nil, mp3_filename, wav_filename, aiff_filename, title, performed_by, album, composer, publishers.join(','), writers.join(','), notes, description, lyrics, language, instrumental, explicit, vocals.join(','), key, bpm, tempo.join(','), genres.join(','), sub_genres.join(','), moods.join(','), instruments.join(','), sub_instruments.join(',')]
         end
+
       end
       xlsx.close
       io.string

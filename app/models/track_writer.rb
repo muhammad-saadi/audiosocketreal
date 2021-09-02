@@ -11,4 +11,8 @@ class TrackWriter < ApplicationRecord
   def collaborator_email
     collaborator&.email
   end
+
+  def collaborator_name
+    collaborator&.full_name
+  end
 end
