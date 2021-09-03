@@ -38,6 +38,13 @@ Rails.application.routes.draw do
         end
       end
 
+      namespace :consumer do
+        resources :consumers, only: %i[index]
+        resource :session, only: %i[create] do
+          post :signup, on: :collection
+        end
+      end
+
       resources :auditions do
         member do
           patch :assign_manager
