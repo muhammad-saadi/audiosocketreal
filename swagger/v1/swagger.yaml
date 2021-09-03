@@ -3340,6 +3340,69 @@ paths:
                   type: string
                 explicit:
                   type: boolean
+  "/api/v1/consumer/session/signup":
+    post:
+      summary: Signup a new consumer
+      tags:
+      - Consumer-Session
+      produces:
+      - application/json
+      parameters:
+      - name: email
+        in: formData
+        type: string
+      - name: first_name
+        in: formData
+        type: string
+      - name: last_name
+        in: formData
+        type: string
+      - name: password
+        in: formData
+        type: string
+      - name: password_confirmation
+        in: formData
+        type: string
+      - name: content_type
+        in: formData
+        type: string
+      security:
+      - api_auth: []
+      responses:
+        '200':
+          description: Sign-up successful
+          schema:
+            type: object
+            properties:
+              auth-token:
+                type: string
+  "/api/v1/consumer/session":
+    post:
+      summary: Login a consumer
+      tags:
+      - Consumer-Session
+      produces:
+      - application/json
+      parameters:
+      - name: email
+        in: formData
+        type: string
+      - name: password
+        in: formData
+        type: string
+      - name: remember_me
+        in: formData
+        type: boolean
+      security:
+      - api_auth: []
+      responses:
+        '200':
+          description: Login successful
+          schema:
+            type: object
+            properties:
+              auth-token:
+                type: string
   "/api/v1/filters":
     get:
       summary: Get all filters
