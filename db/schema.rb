@@ -177,6 +177,21 @@ ActiveRecord::Schema.define(version: 2022_01_14_055643) do
     t.index ["artists_collaborator_id"], name: "index_collaborator_profiles_on_artists_collaborator_id"
   end
 
+  create_table "consumers", force: :cascade do |t|
+    t.string "email", default: "", null: false
+    t.string "encrypted_password", default: "", null: false
+    t.string "first_name"
+    t.string "last_name"
+    t.string "content_type"
+    t.string "reset_password_token"
+    t.datetime "reset_password_sent_at"
+    t.datetime "remember_created_at"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["email"], name: "index_consumers_on_email", unique: true
+    t.index ["reset_password_token"], name: "index_consumers_on_reset_password_token", unique: true
+  end
+
   create_table "contact_informations", force: :cascade do |t|
     t.string "name"
     t.string "street"
