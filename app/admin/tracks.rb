@@ -1,5 +1,5 @@
 ActiveAdmin.register Track do
-  config.remove_action_item(:new)
+  actions :all, except: [:new]
   permit_params :title, :file, :status, :album_id, :public_domain, :lyrics, :explicit, :composer, :description, :language,
                 :instrumental, :key, :bpm, :admin_note, filter_ids: [], track_publishers_attributes: %i[id publisher_id percentage _destroy],
                                                         track_writers_attributes: %i[id artists_collaborator_id percentage _destroy]
@@ -23,6 +23,10 @@ ActiveAdmin.register Track do
       return end_of_association_chain.distinct if params[:action] == 'index'
 
       super
+    end
+
+    def new
+      super 
     end
   end
 

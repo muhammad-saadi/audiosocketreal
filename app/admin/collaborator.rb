@@ -1,6 +1,6 @@
 ActiveAdmin.register User, as: 'Collaborator' do
   menu false
-  config.remove_action_item(:new)
+  actions :all, except: [:new]
   permit_params :first_name, :last_name
 
   filter :first_name_or_last_name_cont, as: :string, label: 'Name'
