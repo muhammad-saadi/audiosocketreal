@@ -1,5 +1,5 @@
 ActiveAdmin.register Track do
-  actions :all, except: [:new]
+  config.remove_action_item(:new)
   permit_params :title, :file, :status, :album_id, :public_domain, :lyrics, :explicit, :composer, :description, :language,
                 :instrumental, :key, :bpm, :admin_note, filter_ids: [], track_publishers_attributes: %i[id publisher_id percentage _destroy],
                                                         track_writers_attributes: %i[id artists_collaborator_id percentage _destroy]
@@ -23,10 +23,6 @@ ActiveAdmin.register Track do
       return end_of_association_chain.distinct if params[:action] == 'index'
 
       super
-    end
-
-    def new
-      super 
     end
   end
 
@@ -181,7 +177,7 @@ ActiveAdmin.register Track do
       f.input :file, as: :file , label: "Music File"
       div class: 'file-hint' do
         span 'Existing File: ' + file_hint(f.object), id: 'hint'
-        span link_to 'x', remove_file_admin_track_path(f.object), class: 'remove-file', data: { confirm: 'Are you sure you want to remove this audio?' }, method: :delete, remote: true if f.object.file.blob&.persisted?
+        span link_to 'x', remove_file_admin_track_path(f.object), class: 'remove-file', method: :delete, remote: true if f.object.file.blob&.persisted?
       end
       f.input :description, input_html: { class: 'autogrow', rows: 4, cols: 20 }
       f.input :status, as: :select, collection: tracks_status_list, include_blank: false

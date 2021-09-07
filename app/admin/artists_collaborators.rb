@@ -1,6 +1,6 @@
 ActiveAdmin.register ArtistsCollaborator do
   menu label: 'Collaborators'
-  actions :all, except: [:new]
+  config.remove_action_item(:new)
 
   permit_params :status, :access
 

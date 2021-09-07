@@ -1,5 +1,5 @@
 ActiveAdmin.register User, as: 'Artist' do
-  actions :all, except: [:new]
+  config.remove_action_item(:new)
   permit_params :first_name, :last_name
 
   filter :first_name_or_last_name_cont, as: :string, label: 'Name'

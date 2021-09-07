@@ -341,3 +341,11 @@ end
 ActiveAdmin::BaseController.class_eval do
   include Zipline
 end
+
+class ActiveAdmin::Views::Pages::Index
+  protected
+
+  def render_blank_slate
+    render_empty_results
+  end
+end
