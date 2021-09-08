@@ -126,10 +126,12 @@ class User < ApplicationRecord
   def mail_accountant
     return unless artist?
 
-    changes = previous_changes.merge(artist_profile&.previous_changes.to_h, artist_profile&.attachment_changes, artist_profile&.contact_information&.previous_changes.to_h,
+    changes = previous_changes.merge(artist_profile&.previous_changes.to_h, artist_profile&.attachment_changes.to_h, artist_profile&.contact_information&.previous_changes.to_h,
                                      artist_profile&.payment_information&.previous_changes.to_h, artist_profile&.tax_information&.previous_changes.to_h)
+    return if changes[:created_at]&.second&.eql?(changes[:updated_at]&.second)
 
-    ArtistMailer.alert_accountant(id, changes.keys - %w[updated_at created_at id update_count]).deliver_later unless changes.blank?
+    keys = changes.keys - %w[updated_at created_at id update_count]
+    ArtistMailer.alert_accountant(id, keys).deliver_later unless keys.blank?
   end
 
   def password_required?
