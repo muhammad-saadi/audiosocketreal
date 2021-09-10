@@ -14,4 +14,8 @@ class Consumer < ApplicationRecord
     user = Consumer.find_for_authentication(email: email)
     user&.valid_password?(password) ? user : nil
   end
+
+  def full_name
+    [first_name, last_name].compact.join(' ')
+  end
 end
