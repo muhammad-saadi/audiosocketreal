@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_09_02_112057) do
+ActiveRecord::Schema.define(version: 2021_09_10_051342) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -170,11 +170,26 @@ ActiveRecord::Schema.define(version: 2021_09_02_112057) do
   create_table "collaborator_profiles", force: :cascade do |t|
     t.string "pro"
     t.string "ipi"
-    t.string "different_registered_name"
     t.bigint "artists_collaborator_id"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.string "different_registered_name"
     t.index ["artists_collaborator_id"], name: "index_collaborator_profiles_on_artists_collaborator_id"
+  end
+
+  create_table "consumer_profiles", force: :cascade do |t|
+    t.string "phone"
+    t.string "organization"
+    t.string "address"
+    t.string "city"
+    t.string "country"
+    t.string "postal_code"
+    t.string "youtube_url"
+    t.boolean "white_listing_enabled", default: false
+    t.bigint "consumer_id"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["consumer_id"], name: "index_consumer_profiles_on_consumer_id"
   end
 
   create_table "consumers", force: :cascade do |t|
