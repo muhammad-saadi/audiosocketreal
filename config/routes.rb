@@ -39,7 +39,15 @@ Rails.application.routes.draw do
       end
 
       namespace :consumer do
-        resources :consumers, only: %i[index]
+        resources :consumers, only: %i[index] do
+          collection do
+            get :show_profile
+            patch :update_email
+            patch :update_password
+            patch :update_profile
+          end
+        end
+
         resource :session, only: %i[create] do
           post :signup, on: :collection
         end
@@ -85,7 +93,7 @@ Rails.application.routes.draw do
         end
       end
 
-      resources :artists, only: %i[index] do
+      resources :artists, only: %i[] do
         collection do
           get :show_profile
           patch :update_profile
