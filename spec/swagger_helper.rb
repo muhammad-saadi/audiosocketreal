@@ -33,6 +33,12 @@ RSpec.configure do |config|
           type: :apiKey,
           name: 'auth-token',
           in: :header
+        },
+        consumer_auth: {
+          description: 'Json web token for consumer authentication',
+          type: :apiKey,
+          name: 'auth-token',
+          in: :header
         }
       },
       paths: {}

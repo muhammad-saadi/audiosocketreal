@@ -19,7 +19,7 @@ RSpec.describe 'api/consumer/sessions', type: :request do
       response '200', 'Sign-up successful' do
         schema type: :object,
                properties: {
-                 'auth-token': { type: :string },
+                 'auth-token': { type: :string }
                }
         run_test!
       end
@@ -40,7 +40,7 @@ RSpec.describe 'api/consumer/sessions', type: :request do
       response '200', 'Login successful' do
         schema type: :object,
                properties: {
-                 'auth-token': { type: :string },
+                 'auth-token': { type: :string }
                }
         run_test!
       end
