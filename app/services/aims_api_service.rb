@@ -2,14 +2,12 @@ class AimsApiService
   BASE_URL = ENV['AIMS_BASE_URL']
   AUTHORIZATION = ENV['AIMS_AUTHORIZATION']
 
-  def self.track_json(track, file_path)
+  def self.track_json(track)
     track_filters = track.filters.includes(:parent_filter)
-    file = file_path.present? ? File.open(file_path) : nil
 
     {
       id_client: track.id,
-      track: file,
-      filepath: file_path,
+      filepath: track.file_path,
       track_name: track.title,
       release_year: 1991,
       track_description: track.description.to_s,
@@ -36,15 +34,26 @@ class AimsApiService
     }
   end
 
-  def self.fields(track, type, filepath = nil)
-    options = { headers: { Authorization: AUTHORIZATION }, body: track_json(track, filepath) }
+  def self.fields(track, type)
+    options = { headers: { Authorization: AUTHORIZATION }, body: track_json(track) }
     options[:body].except!(:id_client, :track, :filepath, :hook_url) if type == 'update'
 
     options
   end
 
-  def self.create_track(track, filepath)
-    HTTParty.post("#{BASE_URL}/tracks", fields(track, 'create', filepath)).parsed_response
+  def self.create_track(track, filepath: nil, create: false)
+    if create
+      track.file.open do |file|
+        fields = fields(track, 'create')
+        fields[:body][:track] = file
+        HTTParty.post("#{BASE_URL}/tracks", fields).parsed_response
+      end
+    else
+      file = filepath.present? ? File.open(filepath) : nil
+      fields = fields(track, 'create')
+      fields[:body][:track] = file
+      HTTParty.post("#{BASE_URL}/tracks", fields).parsed_response
+    end
   end
 
   def self.delete_track(track)

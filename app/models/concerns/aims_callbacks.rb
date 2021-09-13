@@ -5,6 +5,10 @@ module AimsCallbacks
     after_save :aims_add_track, :aims_delete_track_by_status, :aims_update_track, :aims_replace_file
     after_destroy :aims_delete_track
 
+    def file_path
+      [album.name, filename].join('/')
+    end
+
     def delete_aims_fields
       return unless self.aims_id.present?
 
@@ -15,8 +19,7 @@ module AimsCallbacks
       return unless saved_change_to_status?
       return unless approved?
 
-      filepath = ActiveStorage::Blob.service.send(:path_for, self.file.key)
-      AimsApiService.create_track(self, filepath)
+      AimsApiService.create_track(self, create: true)
     end
 
     def aims_delete_track_by_status
@@ -33,7 +36,7 @@ module AimsCallbacks
 
       filepath = self.attachment_changes['file'].attachable.path
       AimsApiService.delete_track(self)
-      AimsApiService.create_track(self, filepath)
+      AimsApiService.create_track(self, filepath: filepath)
     end
 
     def aims_delete_track
