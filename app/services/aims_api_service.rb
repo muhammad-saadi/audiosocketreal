@@ -31,7 +31,7 @@ class AimsApiService
       genres: track_filters.select { |filter| filter.parent_filter.name.downcase.include?('genres') }.pluck(:name),
       moods: track_filters.select { |filter| filter.parent_filter.name.downcase.include?('moods') }.pluck(:name),
       instruments: track_filters.select { |filter| filter.parent_filter.name.downcase.include?('instruments') }.pluck(:name),
-      hook_url: ENV['AIMS_HOOK_URL'],
+      hook_url: UrlHelpers.track_response_api_v1_aims_api_index_url,
       detailed: 1
     }
   end
