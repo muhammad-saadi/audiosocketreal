@@ -45,10 +45,6 @@ class Audition < ApplicationRecord
     by_status(status)
   end
 
-  def self.filter(key, query)
-    ransack("#{key}_cont": query).result
-  end
-
   def self.pagination(params)
     return all if params[:pagination] == 'false'
 
