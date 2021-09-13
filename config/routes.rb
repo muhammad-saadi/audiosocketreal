@@ -51,6 +51,8 @@ Rails.application.routes.draw do
         resource :session, only: %i[create] do
           post :signup, on: :collection
         end
+
+        resources :tracks, only: %i[index show]
       end
 
       resources :auditions do
