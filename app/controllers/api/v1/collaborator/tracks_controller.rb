@@ -50,7 +50,7 @@ class Api::V1::Collaborator::TracksController < Api::V1::Collaborator::BaseContr
   private
 
   def track_params
-    params.permit(:title, :file, :public_domain, :status, :lyrics, :explicit, track_publishers: %i[publisher_id percentage],
+    params.permit(:title, :file, :public_domain, :status, :lyrics, :explicit, :parent_track_id, track_publishers: %i[publisher_id percentage],
                                                                               track_writers: %i[artists_collaborator_id percentage])
   end
 

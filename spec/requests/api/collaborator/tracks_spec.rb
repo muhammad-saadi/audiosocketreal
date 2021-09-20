@@ -26,6 +26,7 @@ RSpec.describe 'api/collaborator/tracks', type: :request do
                        id: { type: :integer },
                        title: { type: :string },
                        file: { type: :string },
+                       parent_track_id: { type: :integer },
                        status: { type: :string },
                        public_domain: { type: :boolean },
                        created_at: { type: :string, format: :date },
@@ -52,6 +53,7 @@ RSpec.describe 'api/collaborator/tracks', type: :request do
       parameter name: :artist_id, in: :query, type: :string
       parameter name: :album_id, in: :path, type: :string
       parameter name: :title, in: :formData, type: :string
+      parameter name: :parent_track_id, in: :formData, type: :string
       parameter name: :public_domain, in: :formData, type: :boolean
       parameter name: :file, in: :formData, type: :file
       parameter name: 'collaborator_ids[]', in: :formData, type: :integer
@@ -68,6 +70,7 @@ RSpec.describe 'api/collaborator/tracks', type: :request do
                  id: { type: :integer },
                  title: { type: :string },
                  file: { type: :string },
+                 parent_track_id: { type: :integer },
                  status: { type: :string },
                  public_domain: { type: :boolean },
                  created_at: { type: :string, format: :date },
@@ -92,6 +95,7 @@ RSpec.describe 'api/collaborator/tracks', type: :request do
       parameter name: :album_id, in: :path, type: :string
       parameter name: :id, in: :path, type: :string
       parameter name: :title, in: :formData, type: :string
+      parameter name: :parent_track_id, in: :formData, type: :string
       parameter name: :public_domain, in: :formData, type: :boolean
       parameter name: :file, in: :formData, type: :file
       parameter name: 'collaborator_ids[]', in: :formData, type: :integer
@@ -108,6 +112,7 @@ RSpec.describe 'api/collaborator/tracks', type: :request do
                  id: { type: :integer },
                  title: { type: :string },
                  file: { type: :string },
+                 parent_track_id: { type: :integer },
                  status: { type: :string },
                  public_domain: { type: :boolean },
                  created_at: { type: :string, format: :date },
@@ -140,6 +145,7 @@ RSpec.describe 'api/collaborator/tracks', type: :request do
                  id: { type: :integer },
                  title: { type: :string },
                  file: { type: :string },
+                 parent_track_id: { type: :integer },
                  status: { type: :string },
                  public_domain: { type: :boolean },
                  created_at: { type: :string, format: :date },
@@ -174,6 +180,7 @@ RSpec.describe 'api/collaborator/tracks', type: :request do
                    id: { type: :integer },
                    title: { type: :string },
                    file: { type: :string },
+                   parent_track_id: { type: :integer },
                    status: { type: :string },
                    public_domain: { type: :boolean },
                    created_at: { type: :string, format: :date },
