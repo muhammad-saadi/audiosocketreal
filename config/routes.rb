@@ -62,6 +62,18 @@ Rails.application.routes.draw do
         end
 
         resources :tracks, only: %i[index show]
+
+        resources :folders, except: %i[new edit]
+
+        resources :consumers_playlists, except: %i[new edit] do
+          member do
+            post :add_track
+          end
+
+          member do
+            patch :rename
+          end
+        end
       end
 
       resources :auditions do

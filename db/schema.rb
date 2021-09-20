@@ -192,6 +192,14 @@ ActiveRecord::Schema.define(version: 2021_09_27_082026) do
     t.index ["consumer_id"], name: "index_consumer_profiles_on_consumer_id"
   end
 
+  create_table "consumer_playlists", force: :cascade do |t|
+    t.string "name"
+    t.bigint "folder_id"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["folder_id"], name: "index_consumer_playlists_on_folder_id"
+  end
+
   create_table "consumers", force: :cascade do |t|
     t.string "email", default: "", null: false
     t.string "encrypted_password", default: "", null: false
@@ -243,6 +251,17 @@ ActiveRecord::Schema.define(version: 2021_09_27_082026) do
     t.index ["parent_filter_id"], name: "index_filters_on_parent_filter_id"
   end
 
+  create_table "folders", force: :cascade do |t|
+    t.string "name"
+    t.bigint "consumer_id"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.bigint "parent_folder_id"
+    t.boolean "deletable", default: true
+    t.index ["consumer_id"], name: "index_folders_on_consumer_id"
+    t.index ["parent_folder_id"], name: "index_folders_on_parent_folder_id"
+  end
+
   create_table "genres", force: :cascade do |t|
     t.string "name"
     t.datetime "created_at", precision: 6, null: false
@@ -271,6 +290,17 @@ ActiveRecord::Schema.define(version: 2021_09_27_082026) do
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.index ["artist_profile_id"], name: "index_payment_informations_on_artist_profile_id"
+  end
+
+  create_table "playlist_tracks", force: :cascade do |t|
+    t.text "note"
+    t.bigint "track_id"
+    t.string "listable_type"
+    t.bigint "listable_id"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["listable_type", "listable_id"], name: "index_playlist_tracks_on_listable"
+    t.index ["track_id"], name: "index_playlist_tracks_on_track_id"
   end
 
   create_table "publishers", force: :cascade do |t|
@@ -372,4 +402,5 @@ ActiveRecord::Schema.define(version: 2021_09_27_082026) do
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
   add_foreign_key "artists_collaborators", "users", column: "artist_id"
   add_foreign_key "artists_collaborators", "users", column: "collaborator_id"
+  add_foreign_key "folders", "folders", column: "parent_folder_id"
 end
