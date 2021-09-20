@@ -50,8 +50,8 @@ class Api::V1::TracksController < Api::BaseController
 
   def track_params
     params.permit(:title, :file, :public_domain, :status, :lyrics, :explicit, :composer, :description,
-                  :language, :instrumental, :key, :bpm, :admin_note, track_publishers: %i[publisher_id percentage],
-                                                                     track_writers: %i[artists_collaborator_id percentage])
+                  :language, :instrumental, :key, :bpm, :admin_note, :parent_track_id, track_publishers: %i[publisher_id percentage],
+                                                                                       track_writers: %i[artists_collaborator_id percentage])
   end
 
   def set_album
