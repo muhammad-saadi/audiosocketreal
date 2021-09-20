@@ -341,7 +341,9 @@ ActiveRecord::Schema.define(version: 2022_01_14_055643) do
     t.boolean "instrumental"
     t.string "key"
     t.integer "bpm"
+    t.bigint "parent_track_id"
     t.index ["album_id"], name: "index_tracks_on_album_id"
+    t.index ["parent_track_id"], name: "index_tracks_on_parent_track_id"
   end
 
   create_table "users", force: :cascade do |t|
