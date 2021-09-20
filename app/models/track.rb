@@ -12,6 +12,7 @@ class Track < ApplicationRecord
   validate :publishers_percentage_validation
 
   belongs_to :album
+  belongs_to :parent_track, class_name: 'Track', optional: true
 
   has_one :user, through: :album
 
@@ -24,6 +25,7 @@ class Track < ApplicationRecord
   has_many :publishers, through: :track_publishers
   has_many :track_writers, dependent: :destroy
   has_many :artists_collaborators, through: :track_writers
+  has_many :alternate_versions, foreign_key: 'parent_track_id', class_name: 'Track'
 
   accepts_nested_attributes_for :track_publishers, allow_destroy: true
   accepts_nested_attributes_for :track_writers, allow_destroy: true
