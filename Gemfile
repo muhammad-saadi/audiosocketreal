@@ -83,4 +83,6 @@ gem 'xlsxtream'
 gem 'activestorage-audio'
 gem 'streamio-ffmpeg'
 gem "pundit"
-
+gem 'omniauth', '~> 1.0.0.pr2'
+gem 'omniauth-google-oauth2'
+gem 'omniauth-facebook'

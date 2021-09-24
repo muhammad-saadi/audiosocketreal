@@ -14,6 +14,15 @@ class Api::V1::Consumer::SessionsController < Api::V1::Consumer::BaseController
     render json: { auth_token: auth_token }
   end
 
+  def google_callback
+    code = params[:code]
+    render json: { auth_token: OmniauthLogin.google_callback_response(code) }
+  end
+
+  def google_auth
+    render json: { url: OmniauthLogin.google_url }
+  end
+
   private
 
   def auth_token
