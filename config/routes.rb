@@ -50,8 +50,13 @@ Rails.application.routes.draw do
 
         resource :session, only: %i[create] do
           post :signup, on: :collection
-          post :google_callback, to: 'sessions#google_callback'
-          get :google_auth, to: 'sessions#google_auth'
+        end
+
+        resource :oauth, controller: 'oauth', only: [] do
+          post :google_callback
+          post :facebook_callback
+          get :google_login
+          get :facebook_login
         end
 
         resources :tracks, only: %i[index show]
