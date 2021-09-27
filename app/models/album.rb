@@ -8,7 +8,7 @@ class Album < ApplicationRecord
 
   has_one_attached :artwork
 
-  validates :name, :artwork, presence: true
+  validates :name, :release_date, :artwork, presence: true
   validates :artwork, blob: { content_type: :image }, dimension: { min: 353..353, message: 'must be minimum 353x353' }
 
   def upload_tracks(files)
