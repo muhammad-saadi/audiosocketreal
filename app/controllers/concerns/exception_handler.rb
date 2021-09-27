@@ -30,6 +30,15 @@ module ExceptionHandler
       @message = message
     end
   end
+  
+  class OAuth2::Error < StandardError
+    attr_reader :message
+
+    def initialize(response)
+      super(response)
+      @message = JSON.parse(response.body)['error']['message']
+    end
+  end
 
   class TaxFormError < StandardError; end
 
@@ -44,6 +53,7 @@ module ExceptionHandler
     rescue_from InvalidAccess, with: :four_zero_three
     rescue_from ActiveRecord::DeleteRestrictionError, with: :four_hundred
     rescue_from TaxFormError, with: :four_twenty_two
+    rescue_from OAuth2::Error, with: :five_hundred_standard
 
     rescue_from ActiveRecord::RecordNotFound do |e|
       render json: { message: e.message }, status: :not_found
