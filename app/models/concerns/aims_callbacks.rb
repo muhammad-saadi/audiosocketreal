@@ -31,6 +31,7 @@ module AimsCallbacks
     end
 
     def aims_replace_file
+      return unless approved?
       return if self.attachment_changes.empty?
       return if id_previously_changed?
 
