@@ -86,3 +86,4 @@ gem "pundit"
 gem 'omniauth', '~> 1.0.0.pr2'
 gem 'omniauth-google-oauth2'
 gem 'omniauth-facebook'
+gem 'omniauth-linkedin-oauth2'
