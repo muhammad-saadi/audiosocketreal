@@ -25,6 +25,14 @@ class Consumer < ApplicationRecord
     JsonWebToken.encode({ consumer_id: id })
   end
 
+  def set_name(first_name, last_name)
+    if new_record?
+      assign_attributes(first_name: first_name, last_name: last_name)
+      self.skip_password_validation = true
+    end
+    save!
+  end
+
   private
 
   def password_required?
