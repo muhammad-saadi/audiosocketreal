@@ -42,7 +42,6 @@ class OmniauthLogin
   def self.linkedin_url
     linkedin_client.auth_code.authorize_url({
                                               scope: 'r_liteprofile r_emailaddress',
-                                              fields: %w[id email-address first-name last-name],
                                               redirect_uri: ENV['FRONTEND_LINKEDIN_CALLBACK'],
                                               access_type: 'offline',
                                               prompt: 'consent'
@@ -52,26 +51,18 @@ class OmniauthLogin
   def self.google_callback_response(code)
     access_token = google_client.auth_code.get_token(code, redirect_uri: ENV['FRONTEND_GOOGLE_CALLBACK'])
     response = HTTParty.get('https://www.googleapis.com/oauth2/v1/userinfo?alt=json', headers: { Authorization: "Bearer #{access_token.token}" }).parsed_response
-    consumer = Consumer.find_or_initialize_by(email: response['email'])
-
-    if consumer.new_record?
-      consumer.assign_attributes(first_name: response['given_name'], last_name: response['family_name'])
-      consumer.skip_password_validation = true
-      consumer.save!
-    end
+    consumer = Consumer.find_by(google_id: response['id']) || Consumer.find_or_initialize_by(email: response['email']) || Consumer.new(google_id: response['id'])
+    consumer.assign_attributes(google_id: response['id']) if consumer.google_id.blank?
+    consumer.set_name(response['given_name'], response['family_name'])
     consumer.encoded_id
   end
 
   def self.facebook_callback_response(code)
     access_token = facebook_client.auth_code.get_token(code, redirect_uri: ENV['FRONTEND_FACEBOOK_CALLBACK'])
     response = HTTParty.get("https://graph.facebook.com/me?fields=id, first_name, last_name, email&access_token=#{access_token.token}").parsed_response
-    consumer = (response['email'].present? && Consumer.find_or_initialize_by(email: response['email'])) || Consumer.find_or_initialize_by(provider_id: response['id'])
-
-    if consumer.new_record?
-      consumer.assign_attributes(email: response['email'], first_name: response['first_name'], last_name: response['last_name'])
-      consumer.skip_password_validation = true
-      consumer.save!
-    end
+    consumer = Consumer.find_by(facebook_id: response['id']) || (response['email'].present? && Consumer.find_or_initialize_by(email: response['email'])) || Consumer.new(facebook_id: response['id'])
+    consumer.assign_attributes(facebook_id: response['id']) if consumer.facebook_id.blank?
+    consumer.set_name(response['first_name'], response['last_name'])
     consumer.encoded_id
   end
 
@@ -80,13 +71,9 @@ class OmniauthLogin
     profile_response = HTTParty.get("https://api.linkedin.com/v2/me?oauth2_access_token=#{access_token.token}").parsed_response
     email_response = HTTParty.get("https://api.linkedin.com/v2/emailAddress?q=members&projection=(elements*(handle~))&oauth2_access_token=#{access_token.token}").parsed_response
     email = email_response['elements'].map { |h| h['handle~']['emailAddress'] }&.first
-    consumer = (email.present? && Consumer.find_or_initialize_by(email: email)) || Consumer.find_or_initialize_by(provider_id: profile_response['id'])
-
-    if consumer.new_record?
-      consumer.assign_attributes(email: email, first_name: profile_response['localizedFirstName'], last_name: profile_response['localizedLastName'])
-      consumer.skip_password_validation = true
-      consumer.save!
-    end
+    consumer = Consumer.find_by(linkedin_id: profile_response['id']) || (email.present? && Consumer.find_or_initialize_by(email: email)) || Consumer.new(linkedin_id: profile_response['id'])
+    consumer.assign_attributes(linkedin_id: profile_response['id']) if consumer.linkedin_id.blank?
+    consumer.set_name(profile_response['localizedFirstName'], profile_response['localizedLastName'])
     consumer.encoded_id
   end
 end
