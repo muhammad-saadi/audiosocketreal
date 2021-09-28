@@ -55,8 +55,10 @@ Rails.application.routes.draw do
         resource :oauth, controller: 'oauth', only: [] do
           post :google_callback
           post :facebook_callback
+          post :linkedin_callback
           get :google_login
           get :facebook_login
+          get :linkedin_login
         end
 
         resources :tracks, only: %i[index show]
