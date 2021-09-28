@@ -203,7 +203,7 @@ ActiveRecord::Schema.define(version: 2021_09_27_082026) do
     t.datetime "remember_created_at"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-    t.bigint "provider_id"
+    t.string "provider_id"
     t.index ["email"], name: "index_consumers_on_email", unique: true
     t.index ["reset_password_token"], name: "index_consumers_on_reset_password_token", unique: true
   end
