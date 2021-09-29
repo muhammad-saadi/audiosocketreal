@@ -3595,6 +3595,108 @@ paths:
                     type: string
                   white_listing_enabled:
                     type: string
+  "/api/v1/consumer/oauth/google_login":
+    get:
+      summary: Get google login/signup url
+      tags:
+      - Consumer-oauth
+      security:
+      - api_auth: []
+      responses:
+        '200':
+          description: Google URL
+          schema:
+            type: object
+            properties:
+              url:
+                type: string
+  "/api/v1/consumer/oauth/facebook_login":
+    get:
+      summary: Get facebook login/signup url
+      tags:
+      - Consumer-oauth
+      security:
+      - api_auth: []
+      responses:
+        '200':
+          description: Facebook URL
+          schema:
+            type: object
+            properties:
+              url:
+                type: string
+  "/api/v1/consumer/oauth/linkedin_login":
+    get:
+      summary: Get linkedin login/signup url
+      tags:
+      - Consumer-oauth
+      security:
+      - api_auth: []
+      responses:
+        '200':
+          description: Facebook URL
+          schema:
+            type: object
+            properties:
+              url:
+                type: string
+  "/api/v1/consumer/oauth/google_callback":
+    post:
+      summary: Login with google
+      tags:
+      - Consumer-oauth
+      parameters:
+      - name: code
+        in: formData
+        type: string
+      security:
+      - api_auth: []
+      responses:
+        '200':
+          description: Login successful
+          schema:
+            type: object
+            properties:
+              auth_token:
+                type: string
+  "/api/v1/consumer/oauth/facebook_callback":
+    post:
+      summary: Login with facebook
+      tags:
+      - Consumer-oauth
+      parameters:
+      - name: code
+        in: formData
+        type: string
+      security:
+      - api_auth: []
+      responses:
+        '200':
+          description: Login successful
+          schema:
+            type: object
+            properties:
+              auth_token:
+                type: string
+  "/api/v1/consumer/oauth/linkedin_callback":
+    post:
+      summary: Login with linkedin
+      tags:
+      - Consumer-oauth
+      parameters:
+      - name: code
+        in: formData
+        type: string
+      security:
+      - api_auth: []
+      responses:
+        '200':
+          description: Login successful
+          schema:
+            type: object
+            properties:
+              auth_token:
+                type: string
   "/api/v1/consumer/session/signup":
     post:
       summary: Signup a new consumer
