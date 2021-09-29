@@ -30,13 +30,14 @@ module ExceptionHandler
       @message = message
     end
   end
-  
+
   class OAuth2::Error < StandardError
     attr_reader :message
 
     def initialize(response)
       super(response)
-      @message = JSON.parse(response.body)['error']['message']
+      @message = JSON.parse(response.body)
+      @message = @message['error_description'] || @message['error']['message']
     end
   end
 
