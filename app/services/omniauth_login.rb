@@ -64,19 +64,23 @@ class OmniauthLogin
     def google_callback_response(code)
       access_token = google_client.auth_code.get_token(code, redirect_uri: ENV['FRONTEND_GOOGLE_CALLBACK'])
       response = HTTParty.get('https://www.googleapis.com/oauth2/v1/userinfo?alt=json', headers: { Authorization: "Bearer #{access_token.token}" }).parsed_response
-      consumer = Consumer.find_by(google_id: response['id']) || Consumer.find_or_initialize_by(email: response['email']) || Consumer.new(google_id: response['id'])
-      consumer.assign_attributes(google_id: response['id']) if consumer.google_id.blank?
-      consumer.set_name(response['given_name'], response['family_name'])
-      consumer.encoded_id
+      set_consumer_attributes('google_id', {
+        google_id: response['id'],
+        first_name: response['given_name'],
+        last_name: response['family_name'],
+        email: response['email']
+      }.with_indifferent_access)
     end
 
     def facebook_callback_response(code)
       access_token = facebook_client.auth_code.get_token(code, redirect_uri: ENV['FRONTEND_FACEBOOK_CALLBACK'])
       response = HTTParty.get("https://graph.facebook.com/me?fields=id, first_name, last_name, email&access_token=#{access_token.token}").parsed_response
-      consumer = Consumer.find_by(facebook_id: response['id']) || (response['email'].present? && Consumer.find_or_initialize_by(email: response['email'])) || Consumer.new(facebook_id: response['id'])
-      consumer.assign_attributes(facebook_id: response['id']) if consumer.facebook_id.blank?
-      consumer.set_name(response['first_name'], response['last_name'])
-      consumer.encoded_id
+      set_consumer_attributes('facebook_id', {
+        facebook_id: response['id'],
+        first_name: response['first_name'],
+        last_name: response['last_name'],
+        email: response['email']
+      }.with_indifferent_access)
     end
 
     def linkedin_callback_response(code)
@@ -84,9 +88,20 @@ class OmniauthLogin
       profile_response = HTTParty.get("https://api.linkedin.com/v2/me?oauth2_access_token=#{access_token.token}").parsed_response
       email_response = HTTParty.get("https://api.linkedin.com/v2/emailAddress?q=members&projection=(elements*(handle~))&oauth2_access_token=#{access_token.token}").parsed_response
       email = email_response['elements'].map { |h| h['handle~']['emailAddress'] }&.first
-      consumer = Consumer.find_by(linkedin_id: profile_response['id']) || (email.present? && Consumer.find_or_initialize_by(email: email)) || Consumer.new(linkedin_id: profile_response['id'])
-      consumer.assign_attributes(linkedin_id: profile_response['id']) if consumer.linkedin_id.blank?
-      consumer.set_name(profile_response['localizedFirstName'], profile_response['localizedLastName'])
+      set_consumer_attributes('linkedin_id', {
+        linkedin_id: profile_response['id'],
+        first_name: profile_response['localizedFirstName'],
+        last_name: profile_response['localizedLastName'],
+        email: email
+      }.with_indifferent_access)
+    end
+
+    def set_consumer_attributes(type, response)
+      consumer = Consumer.find_by(type => response[type]) || (response['email'].present? && Consumer.find_or_initialize_by(email: response['email'])) || Consumer.new(type => response[type])
+      consumer.assign_attributes(type => response[type]) if consumer.public_send(type).blank?
+      consumer.assign_attributes(response.slice(:first_name, :last_name)) if consumer.new_record?
+      consumer.skip_password_validation = true
+      consumer.save!
       consumer.encoded_id
     end
   end
