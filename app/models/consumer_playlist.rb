@@ -1,5 +1,6 @@
 class ConsumerPlaylist < ApplicationRecord
-  belongs_to :folder
+  belongs_to :consumer
+  belongs_to :folder, optional: true
   has_many :playlist_tracks, as: :listable
   has_many :tracks, through: :playlist_tracks, dependent: :destroy
 

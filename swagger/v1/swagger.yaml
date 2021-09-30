@@ -3361,6 +3361,599 @@ paths:
                   type: string
                 explicit:
                   type: boolean
+  "/api/v1/consumer/consumers_playlists":
+    get:
+      summary: Consumer Playlists List
+      tags:
+      - Consumer Playlists
+      produces:
+      - application/json
+      security:
+      - api_auth: []
+      - consumer_auth: []
+      responses:
+        '200':
+          description: Consumer Playlists
+          schema:
+            type: object
+            properties:
+              id:
+                type: integer
+              name:
+                type: string
+              folder_id:
+                type: integer
+              playlist_image:
+                type: string
+              banner_image:
+                type: string
+              playlist_tracks:
+                type: object
+                properties:
+                  id:
+                    type: integer
+                  note:
+                    type: string
+                  track:
+                    type: object
+                    properties:
+                      id:
+                        type: integer
+                      title:
+                        type: string
+                      file:
+                        type: string
+                      status:
+                        type: string
+                      public_domain:
+                        type: boolean
+                      created_at:
+                        type: string
+                        format: date
+                      lyrics:
+                        type: string
+                      explicit:
+                        type: boolean
+                      composer:
+                        type: string
+                      description:
+                        type: string
+                      language:
+                        type: string
+                      instrumental:
+                        type: string
+                      key:
+                        type: string
+                      bpm:
+                        type: integer
+                      admin_note:
+                        type: string
+                      filter:
+                        type: object
+                        properties:
+                          id:
+                            type: integer
+                          name:
+                            type: string
+                          max_levels_allowed:
+                            type: integer
+                          featured:
+                            type: string
+                          parent_filter_id:
+                            type: integer
+                          created_at:
+                            type: string
+                            format: date
+                          updated_at:
+                            type: string
+                            format: date
+    post:
+      summary: Create a Consumer Playlist
+      tags:
+      - Consumer Playlists
+      produces:
+      - application/json
+      parameters:
+      - name: name
+        in: formData
+        type: string
+      - name: folder_id
+        in: formData
+        type: integer
+      security:
+      - api_auth: []
+      - consumer_auth: []
+      responses:
+        '200':
+          description: Consumer Playlist Created
+          schema:
+            type: object
+            properties:
+              id:
+                type: integer
+              name:
+                type: string
+              folder_id:
+                type: integer
+              playlist_image:
+                type: string
+              banner_image:
+                type: string
+              playlist_tracks:
+                type: object
+                properties:
+                  id:
+                    type: integer
+                  note:
+                    type: string
+                  track:
+                    type: object
+                    properties:
+                      id:
+                        type: integer
+                      title:
+                        type: string
+                      file:
+                        type: string
+                      status:
+                        type: string
+                      public_domain:
+                        type: boolean
+                      created_at:
+                        type: string
+                        format: date
+                      lyrics:
+                        type: string
+                      explicit:
+                        type: boolean
+                      composer:
+                        type: string
+                      description:
+                        type: string
+                      language:
+                        type: string
+                      instrumental:
+                        type: string
+                      key:
+                        type: string
+                      bpm:
+                        type: integer
+                      admin_note:
+                        type: string
+                      filter:
+                        type: object
+                        properties:
+                          id:
+                            type: integer
+                          name:
+                            type: string
+                          max_levels_allowed:
+                            type: integer
+                          featured:
+                            type: string
+                          parent_filter_id:
+                            type: integer
+                          created_at:
+                            type: string
+                            format: date
+                          updated_at:
+                            type: string
+                            format: date
+  "/api/v1/consumer/consumers_playlists/{id}":
+    get:
+      summary: Show a Consumer Playlist
+      tags:
+      - Consumer Playlists
+      produces:
+      - application/json
+      parameters:
+      - name: id
+        in: path
+        type: integer
+        required: true
+      security:
+      - api_auth: []
+      - consumer_auth: []
+      responses:
+        '200':
+          description: Consumer Playlist
+          schema:
+            type: object
+            properties:
+              id:
+                type: integer
+              name:
+                type: string
+              folder_id:
+                type: integer
+              playlist_image:
+                type: string
+              banner_image:
+                type: string
+              playlist_tracks:
+                type: object
+                properties:
+                  id:
+                    type: integer
+                  note:
+                    type: string
+                  track:
+                    type: object
+                    properties:
+                      id:
+                        type: integer
+                      title:
+                        type: string
+                      file:
+                        type: string
+                      status:
+                        type: string
+                      public_domain:
+                        type: boolean
+                      created_at:
+                        type: string
+                        format: date
+                      lyrics:
+                        type: string
+                      explicit:
+                        type: boolean
+                      composer:
+                        type: string
+                      description:
+                        type: string
+                      language:
+                        type: string
+                      instrumental:
+                        type: string
+                      key:
+                        type: string
+                      bpm:
+                        type: integer
+                      admin_note:
+                        type: string
+                      filter:
+                        type: object
+                        properties:
+                          id:
+                            type: integer
+                          name:
+                            type: string
+                          max_levels_allowed:
+                            type: integer
+                          featured:
+                            type: string
+                          parent_filter_id:
+                            type: integer
+                          created_at:
+                            type: string
+                            format: date
+                          updated_at:
+                            type: string
+                            format: date
+    delete:
+      summary: Destroy a Consumer Playlist
+      tags:
+      - Consumer Playlists
+      produces:
+      - application/json
+      parameters:
+      - name: id
+        in: path
+        type: integer
+        required: true
+      security:
+      - api_auth: []
+      - consumer_auth: []
+      responses:
+        '200':
+          description: Consumer Playlist Destroyed
+          schema:
+            type: object
+            properties:
+              id:
+                type: integer
+              name:
+                type: string
+              folder_id:
+                type: integer
+              playlist_image:
+                type: string
+              banner_image:
+                type: string
+              playlist_tracks:
+                type: object
+                properties:
+                  id:
+                    type: integer
+                  note:
+                    type: string
+                  track:
+                    type: object
+                    properties:
+                      id:
+                        type: integer
+                      title:
+                        type: string
+                      file:
+                        type: string
+                      status:
+                        type: string
+                      public_domain:
+                        type: boolean
+                      created_at:
+                        type: string
+                        format: date
+                      lyrics:
+                        type: string
+                      explicit:
+                        type: boolean
+                      composer:
+                        type: string
+                      description:
+                        type: string
+                      language:
+                        type: string
+                      instrumental:
+                        type: string
+                      key:
+                        type: string
+                      bpm:
+                        type: integer
+                      admin_note:
+                        type: string
+                      filter:
+                        type: object
+                        properties:
+                          id:
+                            type: integer
+                          name:
+                            type: string
+                          max_levels_allowed:
+                            type: integer
+                          featured:
+                            type: string
+                          parent_filter_id:
+                            type: integer
+                          created_at:
+                            type: string
+                            format: date
+                          updated_at:
+                            type: string
+                            format: date
+    patch:
+      summary: Update a Consumer Playlist
+      tags:
+      - Consumer Playlists
+      produces:
+      - application/json
+      parameters:
+      - name: id
+        in: path
+        type: integer
+        required: true
+      - name: name
+        in: formData
+        type: string
+      - name: folder_id
+        in: formData
+        type: integer
+      - name: playlist_image
+        in: formData
+        type: string
+      - name: banner_image
+        in: formData
+        type: string
+      - name: playlist_tracks_attributes[][id]
+        in: formData
+        type: integer
+      - name: playlist_tracks_attributes[][_destroy]
+        in: formData
+        type: string
+      - name: playlist_tracks_attributes[][track_id]
+        in: formData
+        type: integer
+      - name: playlist_tracks_attributes[][note]
+        in: formData
+        type: string
+      security:
+      - api_auth: []
+      - consumer_auth: []
+      responses:
+        '200':
+          description: Consumer Playlist Updated
+          schema:
+            type: object
+            properties:
+              id:
+                type: integer
+              name:
+                type: string
+              folder_id:
+                type: integer
+              playlist_image:
+                type: string
+              banner_image:
+                type: string
+              playlist_tracks:
+                type: object
+                properties:
+                  id:
+                    type: integer
+                  note:
+                    type: string
+                  track:
+                    type: object
+                    properties:
+                      id:
+                        type: integer
+                      title:
+                        type: string
+                      file:
+                        type: string
+                      status:
+                        type: string
+                      public_domain:
+                        type: boolean
+                      created_at:
+                        type: string
+                        format: date
+                      lyrics:
+                        type: string
+                      explicit:
+                        type: boolean
+                      composer:
+                        type: string
+                      description:
+                        type: string
+                      language:
+                        type: string
+                      instrumental:
+                        type: string
+                      key:
+                        type: string
+                      bpm:
+                        type: integer
+                      admin_note:
+                        type: string
+                      filter:
+                        type: object
+                        properties:
+                          id:
+                            type: integer
+                          name:
+                            type: string
+                          max_levels_allowed:
+                            type: integer
+                          featured:
+                            type: string
+                          parent_filter_id:
+                            type: integer
+                          created_at:
+                            type: string
+                            format: date
+                          updated_at:
+                            type: string
+                            format: date
+  "/api/v1/consumer/consumers_playlists/{id}/rename":
+    patch:
+      summary: Rename a Consumer Playlist
+      tags:
+      - Consumer Playlists
+      produces:
+      - application/json
+      parameters:
+      - name: id
+        in: path
+        type: integer
+        required: true
+      - name: name
+        in: formData
+        type: string
+      security:
+      - api_auth: []
+      - consumer_auth: []
+      responses:
+        '200':
+          description: Consumer Playlist Renamed
+          schema:
+            type: object
+            properties:
+              id:
+                type: integer
+              name:
+                type: string
+              folder_id:
+                type: integer
+              playlist_image:
+                type: string
+              banner_image:
+                type: string
+              playlist_tracks:
+                type: object
+                properties:
+                  id:
+                    type: integer
+                  note:
+                    type: string
+                  track:
+                    type: object
+                    properties:
+                      id:
+                        type: integer
+                      title:
+                        type: string
+                      file:
+                        type: string
+                      status:
+                        type: string
+                      public_domain:
+                        type: boolean
+                      created_at:
+                        type: string
+                        format: date
+                      lyrics:
+                        type: string
+                      explicit:
+                        type: boolean
+                      composer:
+                        type: string
+                      description:
+                        type: string
+                      language:
+                        type: string
+                      instrumental:
+                        type: string
+                      key:
+                        type: string
+                      bpm:
+                        type: integer
+                      admin_note:
+                        type: string
+                      filter:
+                        type: object
+                        properties:
+                          id:
+                            type: integer
+                          name:
+                            type: string
+                          max_levels_allowed:
+                            type: integer
+                          featured:
+                            type: string
+                          parent_filter_id:
+                            type: integer
+                          created_at:
+                            type: string
+                            format: date
+                          updated_at:
+                            type: string
+                            format: date
+  "/api/v1/consumer/consumers_playlists/{id}/add_track":
+    post:
+      summary: Add a track to Consumer Playlist
+      tags:
+      - Consumer Playlists
+      produces:
+      - application/json
+      parameters:
+      - name: id
+        in: path
+        type: integer
+        required: true
+      - name: track_id
+        in: formData
+        type: integer
+      security:
+      - api_auth: []
+      - consumer_auth: []
+      responses:
+        '200':
+          description: Consumer Playlist Renamed
+          schema:
+            type: object
+            properties:
+              status:
+                type: string
   "/api/v1/consumer/consumers/show_profile":
     get:
       summary: Get
@@ -3513,88 +4106,6 @@ paths:
                     type: string
                   white_listing_enabled:
                     type: string
-  "/api/v1/consumer/consumers/update_profile":
-    patch:
-      summary: Update profile
-      tags:
-      - Consumers
-      parameters:
-      - name: first_name
-        in: formData
-        type: string
-      - name: last_name
-        in: formData
-        type: string
-      - name: password
-        in: formData
-        type: string
-      - name: consumer_profile_attributes[id]
-        in: formData
-        type: string
-      - name: consumer_profile_attributes[phone]
-        in: formData
-        type: string
-      - name: consumer_profile_attributes[organization]
-        in: formData
-        type: string
-      - name: consumer_profile_attributes[address]
-        in: formData
-        type: string
-      - name: consumer_profile_attributes[city]
-        in: formData
-        type: string
-      - name: consumer_profile_attributes[country]
-        in: formData
-        type: string
-      - name: consumer_profile_attributes[postal_code]
-        in: formData
-        type: string
-      - name: consumer_profile_attributes[youtube_url]
-        in: formData
-        type: string
-      - name: consumer_profile_attributes[white_listing_enabled]
-        in: formData
-        type: boolean
-      produces:
-      - application/json
-      security:
-      - api_auth: []
-      - consumer_auth: []
-      responses:
-        '200':
-          description: Profile updated
-          schema:
-            type: object
-            properties:
-              fisrt_name:
-                type: string
-              last_name:
-                type: string
-              email_name:
-                type: string
-              content_type:
-                type: string
-              consumer_profile:
-                type: object
-                properties:
-                  id:
-                    type: integer
-                  phone:
-                    type: string
-                  organization:
-                    type: string
-                  address:
-                    type: string
-                  city:
-                    type: string
-                  country:
-                    type: string
-                  postal_code:
-                    type: string
-                  youtube_url:
-                    type: string
-                  white_listing_enabled:
-                    type: string
   "/api/v1/consumer/oauth/google_login":
     get:
       summary: Get google login/signup url
@@ -3697,6 +4208,588 @@ paths:
             properties:
               auth_token:
                 type: string
+  "/api/v1/consumer/consumers/update_profile":
+    patch:
+      summary: Update profile
+      tags:
+      - Consumers
+      parameters:
+      - name: first_name
+        in: formData
+        type: string
+      - name: last_name
+        in: formData
+        type: string
+      - name: password
+        in: formData
+        type: string
+      - name: consumer_profile_attributes[id]
+        in: formData
+        type: string
+      - name: consumer_profile_attributes[phone]
+        in: formData
+        type: string
+      - name: consumer_profile_attributes[organization]
+        in: formData
+        type: string
+      - name: consumer_profile_attributes[address]
+        in: formData
+        type: string
+      - name: consumer_profile_attributes[city]
+        in: formData
+        type: string
+      - name: consumer_profile_attributes[country]
+        in: formData
+        type: string
+      - name: consumer_profile_attributes[postal_code]
+        in: formData
+        type: string
+      - name: consumer_profile_attributes[youtube_url]
+        in: formData
+        type: string
+      - name: consumer_profile_attributes[white_listing_enabled]
+        in: formData
+        type: boolean
+      produces:
+      - application/json
+      security:
+      - api_auth: []
+      - consumer_auth: []
+      responses:
+        '200':
+          description: Profile updated
+          schema:
+            type: object
+            properties:
+              fisrt_name:
+                type: string
+              last_name:
+                type: string
+              email_name:
+                type: string
+              content_type:
+                type: string
+              consumer_profile:
+                type: object
+                properties:
+                  id:
+                    type: integer
+                  phone:
+                    type: string
+                  organization:
+                    type: string
+                  address:
+                    type: string
+                  city:
+                    type: string
+                  country:
+                    type: string
+                  postal_code:
+                    type: string
+                  youtube_url:
+                    type: string
+                  white_listing_enabled:
+                    type: string
+  "/api/v1/consumer/folders":
+    get:
+      summary: Folders List
+      tags:
+      - Consumer Folders
+      produces:
+      - application/json
+      security:
+      - api_auth: []
+      - consumer_auth: []
+      responses:
+        '200':
+          description: Folders
+          schema:
+            type: object
+            properties:
+              id:
+                type: integer
+              name:
+                type: string
+              consumer_playlists:
+                type: object
+                properties:
+                  id:
+                    type: integer
+                  name:
+                    type: string
+                  folder_id:
+                    type: integer
+                  playlist_image:
+                    type: string
+                  banner_image:
+                    type: string
+                  playlist_tracks:
+                    type: object
+                    properties:
+                      id:
+                        type: integer
+                      note:
+                        type: string
+                      track:
+                        type: object
+                        properties:
+                          id:
+                            type: integer
+                          title:
+                            type: string
+                          file:
+                            type: string
+                          status:
+                            type: string
+                          public_domain:
+                            type: boolean
+                          created_at:
+                            type: string
+                            format: date
+                          lyrics:
+                            type: string
+                          explicit:
+                            type: boolean
+                          composer:
+                            type: string
+                          description:
+                            type: string
+                          language:
+                            type: string
+                          instrumental:
+                            type: string
+                          key:
+                            type: string
+                          bpm:
+                            type: integer
+                          admin_note:
+                            type: string
+                          filter:
+                            type: object
+                            properties:
+                              id:
+                                type: integer
+                              name:
+                                type: string
+                              max_levels_allowed:
+                                type: integer
+                              featured:
+                                type: string
+                              parent_filter_id:
+                                type: integer
+                              created_at:
+                                type: string
+                                format: date
+                              updated_at:
+                                type: string
+                                format: date
+              sub_folders:
+                type: object
+    post:
+      summary: Create a Folder
+      tags:
+      - Consumer Folders
+      produces:
+      - application/json
+      parameters:
+      - name: name
+        in: formData
+        type: string
+      - name: parent_folder_id
+        in: formData
+        type: integer
+      security:
+      - api_auth: []
+      - consumer_auth: []
+      responses:
+        '200':
+          description: Folders
+          schema:
+            type: object
+            properties:
+              id:
+                type: integer
+              name:
+                type: string
+              consumer_playlists:
+                type: object
+                properties:
+                  id:
+                    type: integer
+                  name:
+                    type: string
+                  folder_id:
+                    type: integer
+                  playlist_image:
+                    type: string
+                  banner_image:
+                    type: string
+                  playlist_tracks:
+                    type: object
+                    properties:
+                      id:
+                        type: integer
+                      note:
+                        type: string
+                      track:
+                        type: object
+                        properties:
+                          id:
+                            type: integer
+                          title:
+                            type: string
+                          file:
+                            type: string
+                          status:
+                            type: string
+                          public_domain:
+                            type: boolean
+                          created_at:
+                            type: string
+                            format: date
+                          lyrics:
+                            type: string
+                          explicit:
+                            type: boolean
+                          composer:
+                            type: string
+                          description:
+                            type: string
+                          language:
+                            type: string
+                          instrumental:
+                            type: string
+                          key:
+                            type: string
+                          bpm:
+                            type: integer
+                          admin_note:
+                            type: string
+                          filter:
+                            type: object
+                            properties:
+                              id:
+                                type: integer
+                              name:
+                                type: string
+                              max_levels_allowed:
+                                type: integer
+                              featured:
+                                type: string
+                              parent_filter_id:
+                                type: integer
+                              created_at:
+                                type: string
+                                format: date
+                              updated_at:
+                                type: string
+                                format: date
+              sub_folders:
+                type: object
+  "/api/v1/consumer/folders/{id}":
+    get:
+      summary: Show a Folder
+      tags:
+      - Consumer Folders
+      produces:
+      - application/json
+      parameters:
+      - name: id
+        in: path
+        type: integer
+        required: true
+      security:
+      - api_auth: []
+      - consumer_auth: []
+      responses:
+        '200':
+          description: Folders
+          schema:
+            type: object
+            properties:
+              id:
+                type: integer
+              name:
+                type: string
+              consumer_playlists:
+                type: object
+                properties:
+                  id:
+                    type: integer
+                  name:
+                    type: string
+                  folder_id:
+                    type: integer
+                  playlist_image:
+                    type: string
+                  banner_image:
+                    type: string
+                  playlist_tracks:
+                    type: object
+                    properties:
+                      id:
+                        type: integer
+                      note:
+                        type: string
+                      track:
+                        type: object
+                        properties:
+                          id:
+                            type: integer
+                          title:
+                            type: string
+                          file:
+                            type: string
+                          status:
+                            type: string
+                          public_domain:
+                            type: boolean
+                          created_at:
+                            type: string
+                            format: date
+                          lyrics:
+                            type: string
+                          explicit:
+                            type: boolean
+                          composer:
+                            type: string
+                          description:
+                            type: string
+                          language:
+                            type: string
+                          instrumental:
+                            type: string
+                          key:
+                            type: string
+                          bpm:
+                            type: integer
+                          admin_note:
+                            type: string
+                          filter:
+                            type: object
+                            properties:
+                              id:
+                                type: integer
+                              name:
+                                type: string
+                              max_levels_allowed:
+                                type: integer
+                              featured:
+                                type: string
+                              parent_filter_id:
+                                type: integer
+                              created_at:
+                                type: string
+                                format: date
+                              updated_at:
+                                type: string
+                                format: date
+              sub_folders:
+                type: object
+    delete:
+      summary: Destroy a Folder
+      tags:
+      - Consumer Folders
+      produces:
+      - application/json
+      parameters:
+      - name: id
+        in: path
+        type: integer
+        required: true
+      security:
+      - api_auth: []
+      - consumer_auth: []
+      responses:
+        '200':
+          description: Folders
+          schema:
+            type: object
+            properties:
+              id:
+                type: integer
+              name:
+                type: string
+              consumer_playlists:
+                type: object
+                properties:
+                  id:
+                    type: integer
+                  name:
+                    type: string
+                  folder_id:
+                    type: integer
+                  playlist_image:
+                    type: string
+                  banner_image:
+                    type: string
+                  playlist_tracks:
+                    type: object
+                    properties:
+                      id:
+                        type: integer
+                      note:
+                        type: string
+                      track:
+                        type: object
+                        properties:
+                          id:
+                            type: integer
+                          title:
+                            type: string
+                          file:
+                            type: string
+                          status:
+                            type: string
+                          public_domain:
+                            type: boolean
+                          created_at:
+                            type: string
+                            format: date
+                          lyrics:
+                            type: string
+                          explicit:
+                            type: boolean
+                          composer:
+                            type: string
+                          description:
+                            type: string
+                          language:
+                            type: string
+                          instrumental:
+                            type: string
+                          key:
+                            type: string
+                          bpm:
+                            type: integer
+                          admin_note:
+                            type: string
+                          filter:
+                            type: object
+                            properties:
+                              id:
+                                type: integer
+                              name:
+                                type: string
+                              max_levels_allowed:
+                                type: integer
+                              featured:
+                                type: string
+                              parent_filter_id:
+                                type: integer
+                              created_at:
+                                type: string
+                                format: date
+                              updated_at:
+                                type: string
+                                format: date
+              sub_folders:
+                type: object
+    patch:
+      summary: Update a Folder
+      tags:
+      - Consumer Folders
+      produces:
+      - application/json
+      parameters:
+      - name: id
+        in: path
+        type: integer
+        required: true
+      - name: name
+        in: formData
+        type: string
+      - name: parent_folder_id
+        in: formData
+        type: integer
+      security:
+      - api_auth: []
+      - consumer_auth: []
+      responses:
+        '200':
+          description: Folders
+          schema:
+            type: object
+            properties:
+              id:
+                type: integer
+              name:
+                type: string
+              consumer_playlists:
+                type: object
+                properties:
+                  id:
+                    type: integer
+                  name:
+                    type: string
+                  folder_id:
+                    type: integer
+                  playlist_image:
+                    type: string
+                  banner_image:
+                    type: string
+                  playlist_tracks:
+                    type: object
+                    properties:
+                      id:
+                        type: integer
+                      note:
+                        type: string
+                      track:
+                        type: object
+                        properties:
+                          id:
+                            type: integer
+                          title:
+                            type: string
+                          file:
+                            type: string
+                          status:
+                            type: string
+                          public_domain:
+                            type: boolean
+                          created_at:
+                            type: string
+                            format: date
+                          lyrics:
+                            type: string
+                          explicit:
+                            type: boolean
+                          composer:
+                            type: string
+                          description:
+                            type: string
+                          language:
+                            type: string
+                          instrumental:
+                            type: string
+                          key:
+                            type: string
+                          bpm:
+                            type: integer
+                          admin_note:
+                            type: string
+                          filter:
+                            type: object
+                            properties:
+                              id:
+                                type: integer
+                              name:
+                                type: string
+                              max_levels_allowed:
+                                type: integer
+                              featured:
+                                type: string
+                              parent_filter_id:
+                                type: integer
+                              created_at:
+                                type: string
+                                format: date
+                              updated_at:
+                                type: string
+                                format: date
+              sub_folders:
+                type: object
   "/api/v1/consumer/session/signup":
     post:
       summary: Signup a new consumer
