@@ -4,11 +4,9 @@ class Consumer < ApplicationRecord
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :validatable, :omniauthable
 
-  after_create :create_default_folders
-
   has_one :consumer_profile, dependent: :destroy
   has_many :folders, dependent: :destroy
-  has_many :consumer_playlists, through: :folders
+  has_many :consumer_playlists
 
   validates :first_name, :last_name, presence: true
 

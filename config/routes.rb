@@ -68,9 +68,6 @@ Rails.application.routes.draw do
         resources :consumers_playlists, except: %i[new edit] do
           member do
             post :add_track
-          end
-
-          member do
             patch :rename
           end
         end

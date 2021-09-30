@@ -19,6 +19,7 @@ class Api::V1::Consumer::ConsumersPlaylistsController < Api::V1::Consumer::BaseC
 
   def create
     @playlist = current_consumer.consumer_playlists.new(playlist_params)
+    set_folder if params[:folder_id].present?
     if @playlist.save
       render json: @playlist
     else
@@ -35,6 +36,7 @@ class Api::V1::Consumer::ConsumersPlaylistsController < Api::V1::Consumer::BaseC
   end
 
   def update
+    set_folder if params[:folder_id].present?
     if @playlist.update(update_playlist_params)
       render json: @playlist
     else
@@ -62,5 +64,9 @@ class Api::V1::Consumer::ConsumersPlaylistsController < Api::V1::Consumer::BaseC
 
   def playlist_params
     params.permit(:name)
+  end
+
+  def set_folder
+    @playlist.folder = current_consumer.folders.find(params[:folder_id])
   end
 end
