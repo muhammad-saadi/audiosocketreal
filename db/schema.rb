@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_09_27_082026) do
+ActiveRecord::Schema.define(version: 2021_09_28_110556) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -177,6 +177,16 @@ ActiveRecord::Schema.define(version: 2021_09_27_082026) do
     t.index ["artists_collaborator_id"], name: "index_collaborator_profiles_on_artists_collaborator_id"
   end
 
+  create_table "consumer_playlists", force: :cascade do |t|
+    t.string "name"
+    t.bigint "folder_id"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.bigint "consumer_id"
+    t.index ["consumer_id"], name: "index_consumer_playlists_on_consumer_id"
+    t.index ["folder_id"], name: "index_consumer_playlists_on_folder_id"
+  end
+
   create_table "consumer_profiles", force: :cascade do |t|
     t.string "phone"
     t.string "organization"
@@ -257,7 +267,6 @@ ActiveRecord::Schema.define(version: 2021_09_27_082026) do
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.bigint "parent_folder_id"
-    t.boolean "deletable", default: true
     t.index ["consumer_id"], name: "index_folders_on_consumer_id"
     t.index ["parent_folder_id"], name: "index_folders_on_parent_folder_id"
   end
@@ -402,5 +411,4 @@ ActiveRecord::Schema.define(version: 2021_09_27_082026) do
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
   add_foreign_key "artists_collaborators", "users", column: "artist_id"
   add_foreign_key "artists_collaborators", "users", column: "collaborator_id"
-  add_foreign_key "folders", "folders", column: "parent_folder_id"
 end

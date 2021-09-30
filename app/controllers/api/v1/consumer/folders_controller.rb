@@ -13,6 +13,7 @@ class Api::V1::Consumer::FoldersController < Api::V1::Consumer::BaseController
 
   def create
     @folder = current_consumer.folders.new(folder_params)
+    set_parent_folder if params[:parent_folder_id].present?
     if @folder.save
       render json: @folder
     else
@@ -21,6 +22,7 @@ class Api::V1::Consumer::FoldersController < Api::V1::Consumer::BaseController
   end
 
   def update
+    set_parent_folder if params[:parent_folder_id].present?
     if @folder.update(folder_params)
       render json: @folder
     else
@@ -44,5 +46,9 @@ class Api::V1::Consumer::FoldersController < Api::V1::Consumer::BaseController
 
   def folder_params
     params.permit(:name)
+  end
+
+  def set_parent_folder
+    @folder.parent_folder = current_consumer.folders.find(params[:parent_folder_id])
   end
 end
