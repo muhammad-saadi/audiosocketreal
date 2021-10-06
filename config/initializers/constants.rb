@@ -6,7 +6,9 @@ EMAIL_TEMPLATES = {
 <p>Please sign up to our artist portal <a href=%{signup_path}>here</a> and review our artist agreement. We're happy to answer any questions you might have. There will also be a section to complete your W8/W9 details.</p>
 <p>Please note, all co-writers and rights-holders (publishers, labels, etc) must sign off on the agreement. Please add them to the ‘Collaborators’ section.</p>
 <p>Once you’ve accepted the agreement you can update your artist profile, submit music, artwork, promotional images, etc. The more assets you can give us the better we can feature you and your work.</p>
-<p>Please remember to submit the instrumentals, stems, SFX & Sound Design if you have any. These are valuable to our clients and are often required for some placements. Once submitted, our team will review and will start the ingestion into our catalog.<br>Thank you and welcome to the Audiosocket family!<br>Vanessa<br>Music Licensing Coordinator<br>Audiosocket</p>",
+<p>Please remember to submit the instrumentals, stems, SFX & Sound Design if you have any. These are valuable to our clients and are often required for some placements. Once submitted, our team will review and will start the ingestion into our catalog.</p>
+<p>Thank you and welcome to the Audiosocket family!</p>
+<p>Vanessa<br>Music Licensing Coordinator<br>Audiosocket</p>",
 
   approved_exclusive_artist: "<p>Hi [name]!</p><p>Thanks for submitting music to Audiosocket, we have listened to your link and would love to work with you! You can check out some of our recent placements <a href='https://www.youtube.com/playlist?list=PL8474481F2967477D'>here</a>, it's a great time to come onboard.</p>
 <p>We have two separate arms of our business, ASX (Audiosocket Exclusives) and Audiosocket. ASX focuses on high end Film/TV/Ad placements. It is a much smaller catalog, pitched in a very high touch way. Exclusivity is required at the highest end of sync licensing, it can be on a track level or an artist level. Exclusivity comes with additional benefits such as monthly payments, quarterly pitch updates, tracks coming up first insearch, additional marketing benefits and more.</p>
