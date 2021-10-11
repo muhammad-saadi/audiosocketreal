@@ -1,10 +1,10 @@
 class Api::V1::Consumer::FoldersController < Api::V1::Consumer::BaseController
-
   before_action :set_folder, only: %i[show update destroy]
+  before_action :limit_reached, only: :create
 
   def index
     @folders = current_consumer.folders
-    render json: @folders.includes(:consumer_playlists), meta: {count: @folders.count}, adapter: :json
+    render json: @folders.includes(Folder.eagerload_cols), meta: {count: @folders.count}, adapter: :json
   end
 
   def show
@@ -13,7 +13,6 @@ class Api::V1::Consumer::FoldersController < Api::V1::Consumer::BaseController
 
   def create
     @folder = current_consumer.folders.new(folder_params)
-    set_parent_folder if params[:parent_folder_id].present?
     if @folder.save
       render json: @folder
     else
@@ -22,7 +21,6 @@ class Api::V1::Consumer::FoldersController < Api::V1::Consumer::BaseController
   end
 
   def update
-    set_parent_folder if params[:parent_folder_id].present?
     if @folder.update(folder_params)
       render json: @folder
     else
@@ -41,14 +39,14 @@ class Api::V1::Consumer::FoldersController < Api::V1::Consumer::BaseController
   private
 
   def set_folder
-    @folder = current_consumer.folders.includes(:consumer_playlists).find(params[:id])
+    @folder = current_consumer.folders.includes(Folder.eagerload_cols).find(params[:id])
   end
 
   def folder_params
-    params.permit(:name)
+    params.permit(:name, :parent_folder_id)
   end
 
-  def set_parent_folder
-    @folder.parent_folder = current_consumer.folders.find(params[:parent_folder_id])
+  def limit_reached
+    raise ExceptionHandler::LimitError.new('Folder Limit for the day reached') if current_consumer.folders.where(["DATE(created_at) = ?", Date.today]).count == Consumer::FOLDER_LIMIT
   end
 end

@@ -27,7 +27,8 @@ class Track < ApplicationRecord
   has_many :track_writers, dependent: :destroy
   has_many :artists_collaborators, through: :track_writers
   has_many :alternate_versions, foreign_key: 'parent_track_id', class_name: 'Track'
-  has_many :consumer_playlists, through: :playlist_tracks, dependent: :destroy
+  has_many :playlist_tracks
+  has_many :consumer_playlists, through: :playlist_tracks, source: :listable, source_type: 'ConsumerPlaylist', dependent: :destroy
 
   accepts_nested_attributes_for :track_publishers, allow_destroy: true
   accepts_nested_attributes_for :track_writers, allow_destroy: true

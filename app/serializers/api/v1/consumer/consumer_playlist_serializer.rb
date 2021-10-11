@@ -4,10 +4,10 @@ class Api::V1::Consumer::ConsumerPlaylistSerializer < ActiveModel::Serializer
   has_many :playlist_tracks, serializer: Api::V1::Consumer::PlaylistTrackSerializer
 
   def playlist_image
-    object.playlist_image.presence && UrlHelpers.rails_blob_url(object.playlist_image)
+    object.playlist_image_url
   end
 
   def banner_image
-    object.banner_image.presence && UrlHelpers.rails_blob_url(object.banner_image)
+    object.banner_image_url
   end
 end
