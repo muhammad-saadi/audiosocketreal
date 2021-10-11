@@ -1,16 +1,15 @@
 class Api::V1::Consumer::ConsumersPlaylistsController < Api::V1::Consumer::BaseController
-
-  before_action :set_playlist, only: %i[update rename show destroy]
+  before_action :set_playlist, only: %i[update rename show destroy add_track]
+  before_action :limit_reached, only: :create
 
   def add_track
-    @playlist = current_consumer.consumer_playlists.find(params[:id])
     @playlist.tracks << Track.find(params[:track_id])
     render json: { status: "Track added to playlist" }
   end
 
   def index
     @playlists = current_consumer.consumer_playlists
-    render json: @playlists.includes(banner_image_attachment: :blob, playlist_image_attachment: :blob , tracks: [:filters, file_attachment: :blob]), meta: {count: @playlists.count}, adapter: :json
+    render json: @playlists.includes(ConsumerPlaylist.eagerload_columns), meta: { count: @playlists.count }, adapter: :json
   end
 
   def show
@@ -19,7 +18,6 @@ class Api::V1::Consumer::ConsumersPlaylistsController < Api::V1::Consumer::BaseC
 
   def create
     @playlist = current_consumer.consumer_playlists.new(playlist_params)
-    set_folder if params[:folder_id].present?
     if @playlist.save
       render json: @playlist
     else
@@ -36,7 +34,6 @@ class Api::V1::Consumer::ConsumersPlaylistsController < Api::V1::Consumer::BaseC
   end
 
   def update
-    set_folder if params[:folder_id].present?
     if @playlist.update(update_playlist_params)
       render json: @playlist
     else
@@ -55,18 +52,18 @@ class Api::V1::Consumer::ConsumersPlaylistsController < Api::V1::Consumer::BaseC
   private
 
   def set_playlist
-    @playlist = current_consumer.consumer_playlists.includes(banner_image_attachment: :blob, playlist_image_attachment: :blob, tracks: [:filters, file_attachment: :blob]).find(params[:id])
+    @playlist = current_consumer.consumer_playlists.includes(ConsumerPlaylist.eagerload_columns).find(params[:id])
   end
 
   def update_playlist_params
-    params.permit(:name, :playlist_image, :banner_image, playlist_tracks_attributes: [:id, :track_id, :note, :_destroy] )
+    params.permit(:name, :folder_id, :playlist_image, :banner_image, playlist_tracks_attributes: [:id, :track_id, :note, :_destroy] )
   end
 
   def playlist_params
-    params.permit(:name)
+    params.permit(:name, :folder_id)
   end
 
-  def set_folder
-    @playlist.folder = current_consumer.folders.find(params[:folder_id])
+  def limit_reached
+    raise ExceptionHandler::LimitError.new('Playlists Limit for the day reached') if current_consumer.consumer_playlists.where(["DATE(created_at) = ?", Date.today]).count == Consumer::PLAYLIST_LIMIT
   end
 end

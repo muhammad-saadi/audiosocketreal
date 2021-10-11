@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_09_28_110556) do
+ActiveRecord::Schema.define(version: 2021_10_07_073221) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -202,14 +202,6 @@ ActiveRecord::Schema.define(version: 2021_09_28_110556) do
     t.index ["consumer_id"], name: "index_consumer_profiles_on_consumer_id"
   end
 
-  create_table "consumer_playlists", force: :cascade do |t|
-    t.string "name"
-    t.bigint "folder_id"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
-    t.index ["folder_id"], name: "index_consumer_playlists_on_folder_id"
-  end
-
   create_table "consumers", force: :cascade do |t|
     t.string "email", default: "", null: false
     t.string "encrypted_password", default: "", null: false
@@ -267,6 +259,7 @@ ActiveRecord::Schema.define(version: 2021_09_28_110556) do
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.bigint "parent_folder_id"
+    t.integer "max_levels_allowed", default: 0
     t.index ["consumer_id"], name: "index_folders_on_consumer_id"
     t.index ["parent_folder_id"], name: "index_folders_on_parent_folder_id"
   end
@@ -308,6 +301,7 @@ ActiveRecord::Schema.define(version: 2021_09_28_110556) do
     t.bigint "listable_id"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.integer "order"
     t.index ["listable_type", "listable_id"], name: "index_playlist_tracks_on_listable"
     t.index ["track_id"], name: "index_playlist_tracks_on_track_id"
   end
