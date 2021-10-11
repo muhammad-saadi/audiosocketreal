@@ -6,13 +6,16 @@ class Consumer < ApplicationRecord
 
   has_one :consumer_profile, dependent: :destroy
   has_many :folders, dependent: :destroy
-  has_many :consumer_playlists
+  has_many :consumer_playlists, dependent: :destroy
 
   validates :first_name, :last_name, presence: true
 
   accepts_nested_attributes_for :consumer_profile
 
   attr_accessor :skip_password_validation
+
+  PLAYLIST_LIMIT = 100
+  FOLDER_LIMIT = 100
 
   def self.authenticate(email, password)
     user = Consumer.find_for_authentication(email: email)
