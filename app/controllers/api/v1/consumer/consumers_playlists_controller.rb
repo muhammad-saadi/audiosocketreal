@@ -56,7 +56,7 @@ class Api::V1::Consumer::ConsumersPlaylistsController < Api::V1::Consumer::BaseC
   end
 
   def update_playlist_params
-    params.permit(:name, :folder_id, :playlist_image, :banner_image, playlist_tracks_attributes: [:id, :track_id, :note, :_destroy] )
+    params.permit(:name, :folder_id, :playlist_image, :banner_image, playlist_tracks_attributes: [:id, :track_id, :note, :_destroy])
   end
 
   def playlist_params
