@@ -42,7 +42,7 @@ class Folder < ApplicationRecord
   end
 
   def level
-    errors.add(:parent_folder, 'Folder limit reached') if parent_folder&.max_levels_allowed > 0
+    errors.add(:parent_folder, 'Folder limit reached') if parent_folder.present? && parent_folder.max_levels_allowed > 0
   end
   
   def check_parent_folder(folder, parent_folders_sum = 0)

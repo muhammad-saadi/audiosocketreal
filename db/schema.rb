@@ -170,10 +170,10 @@ ActiveRecord::Schema.define(version: 2021_10_20_064458) do
   create_table "collaborator_profiles", force: :cascade do |t|
     t.string "pro"
     t.string "ipi"
-    t.string "different_registered_name"
     t.bigint "artists_collaborator_id"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.string "different_registered_name"
     t.index ["artists_collaborator_id"], name: "index_collaborator_profiles_on_artists_collaborator_id"
   end
 
@@ -270,6 +270,15 @@ ActiveRecord::Schema.define(version: 2021_10_20_064458) do
     t.datetime "updated_at", precision: 6, null: false
   end
 
+  create_table "limits", force: :cascade do |t|
+    t.integer "value"
+    t.string "limitable_type"
+    t.bigint "limitable_id"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["limitable_type", "limitable_id"], name: "index_limits_on_limitable"
+  end
+
   create_table "notes", force: :cascade do |t|
     t.text "description"
     t.string "status", default: "pending"
@@ -301,6 +310,7 @@ ActiveRecord::Schema.define(version: 2021_10_20_064458) do
     t.bigint "listable_id"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.integer "order"
     t.index ["listable_type", "listable_id"], name: "index_playlist_tracks_on_listable"
     t.index ["track_id"], name: "index_playlist_tracks_on_track_id"
   end
