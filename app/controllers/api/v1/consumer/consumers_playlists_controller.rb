@@ -1,6 +1,6 @@
 class Api::V1::Consumer::ConsumersPlaylistsController < Api::V1::Consumer::BaseController
   before_action :set_playlist, only: %i[update rename show destroy add_track]
-  before_action :limit_reached, only: :create
+  before_action :increment_usage, only: :create
 
   def add_track
     @playlist.tracks << Track.find(params[:track_id])
@@ -63,7 +63,7 @@ class Api::V1::Consumer::ConsumersPlaylistsController < Api::V1::Consumer::BaseC
     params.permit(:name, :folder_id)
   end
 
-  def limit_reached
-    raise ExceptionHandler::LimitError.new('Playlists Limit for the day reached') if current_consumer.consumer_playlists.where(["DATE(created_at) = ?", Date.today]).count == Consumer::PLAYLIST_LIMIT
+  def increment_usage
+    current_consumer.increment_playlist_usage!
   end
 end
