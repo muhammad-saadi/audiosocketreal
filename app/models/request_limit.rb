@@ -7,7 +7,7 @@ class RequestLimit < ApplicationRecord
 
   def increment_usage(max_limit: 100)
     reset_usage if last_used != Date.today
-    raise ExceptionHandler::LimitError("#{request_type.humanize} limit for the day reached") if daily_limit_reached?(max_limit: max_limit)
+    raise ExceptionHandler::LimitError.new("#{request_type.humanize} limit for the day reached") if daily_limit_reached?(max_limit: max_limit)
 
     increment!(:daily_usage)
   end
