@@ -1,10 +1,10 @@
 class Api::V1::Consumer::FoldersController < Api::V1::Consumer::BaseController
   before_action :set_folder, only: %i[show update destroy]
-  before_action :limit_reached, only: :create
+  before_action :increment_usage, only: :create
 
   def index
     @folders = current_consumer.folders
-    render json: @folders.includes(Folder.eagerload_cols), meta: {count: @folders.count}, adapter: :json
+    render json: @folders.includes(Folder.eagerload_cols), meta: { count: @folders.count }, adapter: :json
   end
 
   def show
@@ -46,7 +46,7 @@ class Api::V1::Consumer::FoldersController < Api::V1::Consumer::BaseController
     params.permit(:name, :parent_folder_id)
   end
 
-  def limit_reached
-    raise ExceptionHandler::LimitError.new('Folder Limit for the day reached') if current_consumer.folders.where(["DATE(created_at) = ?", Date.today]).count == Consumer::FOLDER_LIMIT
+  def increment_usage
+    current_consumer.increment_folder_usage!
   end
 end

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_10_07_073221) do
+ActiveRecord::Schema.define(version: 2021_10_20_064458) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -170,10 +170,10 @@ ActiveRecord::Schema.define(version: 2021_10_07_073221) do
   create_table "collaborator_profiles", force: :cascade do |t|
     t.string "pro"
     t.string "ipi"
+    t.string "different_registered_name"
     t.bigint "artists_collaborator_id"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-    t.string "different_registered_name"
     t.index ["artists_collaborator_id"], name: "index_collaborator_profiles_on_artists_collaborator_id"
   end
 
@@ -301,7 +301,6 @@ ActiveRecord::Schema.define(version: 2021_10_07_073221) do
     t.bigint "listable_id"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-    t.integer "order"
     t.index ["listable_type", "listable_id"], name: "index_playlist_tracks_on_listable"
     t.index ["track_id"], name: "index_playlist_tracks_on_track_id"
   end
@@ -314,6 +313,17 @@ ActiveRecord::Schema.define(version: 2021_10_07_073221) do
     t.string "pro"
     t.string "ipi"
     t.index ["user_id"], name: "index_publishers_on_user_id"
+  end
+
+  create_table "request_limits", force: :cascade do |t|
+    t.integer "daily_usage"
+    t.date "last_used"
+    t.string "request_type"
+    t.string "limitable_type"
+    t.bigint "limitable_id"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["limitable_type", "limitable_id"], name: "index_request_limits_on_limitable"
   end
 
   create_table "tax_informations", force: :cascade do |t|
