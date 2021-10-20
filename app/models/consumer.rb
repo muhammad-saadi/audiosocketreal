@@ -1,4 +1,5 @@
 class Consumer < ApplicationRecord
+  include RequestLimitConcern
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable, :trackable and :omniauthable
   devise :database_authenticatable, :registerable,
@@ -16,6 +17,8 @@ class Consumer < ApplicationRecord
 
   PLAYLIST_LIMIT = 100
   FOLDER_LIMIT = 100
+
+  define_request_limits types: { folder: FOLDER_LIMIT, playlist: PLAYLIST_LIMIT }
 
   def self.authenticate(email, password)
     user = Consumer.find_for_authentication(email: email)

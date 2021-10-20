@@ -12,6 +12,10 @@ module ExceptionHandler
 
   class ArgumentError < StandardError; end
 
+  class TaxFormError < StandardError; end
+
+  class LimitError < StandardError; end
+
   class TokenError < StandardError
     attr_reader :message
 
@@ -40,10 +44,6 @@ module ExceptionHandler
       @message = @message['error_description'] || @message['error']['message']
     end
   end
-
-  class TaxFormError < StandardError; end
-
-  class LimitError < StandardError; end
 
   included do
     rescue_from ActiveRecord::RecordInvalid, with: :four_twenty_two
