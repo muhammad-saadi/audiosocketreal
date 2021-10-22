@@ -243,6 +243,14 @@ ActiveRecord::Schema.define(version: 2021_10_22_065645) do
     t.index ["key"], name: "index_contents_on_key", unique: true
   end
 
+  create_table "curated_playlists", force: :cascade do |t|
+    t.string "name"
+    t.string "category"
+    t.integer "order"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+  end
+
   create_table "filters", force: :cascade do |t|
     t.string "name"
     t.integer "max_levels_allowed"
@@ -301,6 +309,7 @@ ActiveRecord::Schema.define(version: 2021_10_22_065645) do
     t.bigint "listable_id"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.integer "order"
     t.index ["listable_type", "listable_id"], name: "index_playlist_tracks_on_listable"
     t.index ["track_id"], name: "index_playlist_tracks_on_track_id"
   end
