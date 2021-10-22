@@ -3,6 +3,7 @@ class CreateConsumerPlaylists < ActiveRecord::Migration[6.1]
     create_table :consumer_playlists do |t|
       t.string :name
       t.references :folder
+      t.references :consumer
 
       t.timestamps
     end

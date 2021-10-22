@@ -1,6 +1,7 @@
 class ConsumerPlaylist < ApplicationRecord
   belongs_to :consumer
   belongs_to :folder, optional: true
+
   has_many :playlist_tracks, as: :listable
   has_many :tracks, through: :playlist_tracks, dependent: :destroy
 
@@ -9,7 +10,8 @@ class ConsumerPlaylist < ApplicationRecord
 
   validates :playlist_image, dimension: { min: 353..353, message: 'must be minimum 353x353' }
   validates :banner_image, dimension: { min: 1440..448, message: 'must be minimum 1440x448' }
-  validate :set_folder, on: [:create, :update]
+
+  validate :folder_validation
 
   accepts_nested_attributes_for :playlist_tracks, allow_destroy: true
 
@@ -17,8 +19,10 @@ class ConsumerPlaylist < ApplicationRecord
     { banner_image_attachment: :blob, playlist_image_attachment: :blob, tracks: [:alternate_versions, filters: [:parent_filter, sub_filters: [sub_filters: :sub_filters]], file_attachment: :blob] }
   end
 
-  def set_folder
-    consumer.folders.find(folder_id) if folder_id.present?
+  def folder_validation
+    return if folder_id.blank?
+
+    errors.add(:folder, 'is invalid') if consumer_id != folder&.consumer_id
   end
 
   def playlist_image_url
