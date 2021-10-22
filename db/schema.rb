@@ -180,9 +180,9 @@ ActiveRecord::Schema.define(version: 2022_01_14_055643) do
   create_table "consumer_playlists", force: :cascade do |t|
     t.string "name"
     t.bigint "folder_id"
+    t.bigint "consumer_id"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-    t.bigint "consumer_id"
     t.index ["consumer_id"], name: "index_consumer_playlists_on_consumer_id"
     t.index ["folder_id"], name: "index_consumer_playlists_on_folder_id"
   end
@@ -243,6 +243,14 @@ ActiveRecord::Schema.define(version: 2022_01_14_055643) do
     t.index ["key"], name: "index_contents_on_key", unique: true
   end
 
+  create_table "curated_playlists", force: :cascade do |t|
+    t.string "name"
+    t.string "category"
+    t.integer "order"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+  end
+
   create_table "filters", force: :cascade do |t|
     t.string "name"
     t.integer "max_levels_allowed"
@@ -256,10 +264,10 @@ ActiveRecord::Schema.define(version: 2022_01_14_055643) do
   create_table "folders", force: :cascade do |t|
     t.string "name"
     t.bigint "consumer_id"
+    t.bigint "parent_folder_id"
+    t.integer "level", default: 0
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-    t.bigint "parent_folder_id"
-    t.integer "max_levels_allowed", default: 0
     t.index ["consumer_id"], name: "index_folders_on_consumer_id"
     t.index ["parent_folder_id"], name: "index_folders_on_parent_folder_id"
   end
@@ -268,15 +276,6 @@ ActiveRecord::Schema.define(version: 2022_01_14_055643) do
     t.string "name"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-  end
-
-  create_table "limits", force: :cascade do |t|
-    t.integer "value"
-    t.string "limitable_type"
-    t.bigint "limitable_id"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
-    t.index ["limitable_type", "limitable_id"], name: "index_limits_on_limitable"
   end
 
   create_table "notes", force: :cascade do |t|
@@ -321,7 +320,6 @@ ActiveRecord::Schema.define(version: 2022_01_14_055643) do
     t.bigint "listable_id"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-    t.integer "order"
     t.index ["listable_type", "listable_id"], name: "index_playlist_tracks_on_listable"
     t.index ["track_id"], name: "index_playlist_tracks_on_track_id"
   end
