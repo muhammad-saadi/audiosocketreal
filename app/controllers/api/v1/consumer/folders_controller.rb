@@ -4,7 +4,7 @@ class Api::V1::Consumer::FoldersController < Api::V1::Consumer::BaseController
 
   def index
     @folders = current_consumer.folders
-    render json: @folders.includes(Folder.eagerload_cols), meta: { count: @folders.count }, adapter: :json
+    render json: @folders.includes(Folder.eagerload_cols(current_consumer)), meta: { count: @folders.count }, adapter: :json
   end
 
   def show
@@ -39,7 +39,7 @@ class Api::V1::Consumer::FoldersController < Api::V1::Consumer::BaseController
   private
 
   def set_folder
-    @folder = current_consumer.folders.includes(Folder.eagerload_cols).find(params[:id])
+    @folder = current_consumer.folders.includes(Folder.eagerload_cols(current_consumer)).find(params[:id])
   end
 
   def folder_params
