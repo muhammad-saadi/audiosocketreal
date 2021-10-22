@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_10_22_051023) do
+ActiveRecord::Schema.define(version: 2021_10_22_065645) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -301,7 +301,6 @@ ActiveRecord::Schema.define(version: 2021_10_22_051023) do
     t.bigint "listable_id"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-    t.integer "order"
     t.index ["listable_type", "listable_id"], name: "index_playlist_tracks_on_listable"
     t.index ["track_id"], name: "index_playlist_tracks_on_track_id"
   end
@@ -380,9 +379,6 @@ ActiveRecord::Schema.define(version: 2021_10_22_051023) do
     t.boolean "instrumental"
     t.string "key"
     t.integer "bpm"
-    t.string "aims_id"
-    t.string "aims_status"
-    t.string "aims_error_details"
     t.bigint "parent_track_id"
     t.index ["album_id"], name: "index_tracks_on_album_id"
     t.index ["parent_track_id"], name: "index_tracks_on_parent_track_id"
