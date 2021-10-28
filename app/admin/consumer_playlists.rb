@@ -1,5 +1,4 @@
 ActiveAdmin.register ConsumerPlaylist do
-
   actions :all, except: [:new, :create]
 
   permit_params :name, :folder_id
@@ -21,7 +20,7 @@ ActiveAdmin.register ConsumerPlaylist do
       span link_to t('active_admin.view'), admin_consumer_playlist_path(consumer_playlist), class: 'small button'
       span link_to t('active_admin.edit'), edit_admin_consumer_playlist_path(consumer_playlist), class: 'small button'
       span link_to t('active_admin.delete'), admin_consumer_playlist_path(consumer_playlist), class: 'small button', method: :delete, data: { confirm: 'Are you sure you want to delete this?' }
-      span link_to 'Add To Curated Playlist',  add_admin_curated_playlist_path(consumer_playlist), class: 'small button', method: :post
+      span link_to 'Add To Curated Playlist', add_admin_curated_playlist_path(consumer_playlist), class: 'small button', method: :post
     end
   end
 
@@ -40,9 +39,9 @@ ActiveAdmin.register ConsumerPlaylist do
       row :updated_at, &:formatted_updated_at
 
       panel 'Playlist Tracks' do
-        @consumer_playlist = ConsumerPlaylist.find(params[:id])
-        table_for @consumer_playlist.playlist_tracks do
-          if @consumer_playlist.playlist_tracks.blank?
+        consumer_playlist = ConsumerPlaylist.find(params[:id])
+        table_for consumer_playlist.playlist_tracks do
+          if consumer_playlist.playlist_tracks.blank?
             column 'No Records Found'
           else
             column :id
@@ -53,6 +52,7 @@ ActiveAdmin.register ConsumerPlaylist do
         end
       end
     end
+
     active_admin_comments
   end
 end

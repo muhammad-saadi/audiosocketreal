@@ -42,9 +42,9 @@ ActiveAdmin.register CuratedPlaylist do
       row :updated_at, &:formatted_updated_at
 
       panel 'Playlist Tracks' do
-        @curated_playlist = CuratedPlaylist.find(params[:id])
-        table_for @curated_playlist.playlist_tracks do
-          if @curated_playlist.playlist_tracks.blank?
+        curated_playlist = CuratedPlaylist.find(params[:id])
+        table_for curated_playlist.playlist_tracks do
+          if curated_playlist.playlist_tracks.blank?
             column 'No Records Found'
           else
             column :id
@@ -55,6 +55,7 @@ ActiveAdmin.register CuratedPlaylist do
         end
       end
     end
+
     active_admin_comments
   end
 
