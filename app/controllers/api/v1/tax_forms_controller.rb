@@ -17,6 +17,8 @@ class Api::V1::TaxFormsController < Api::BaseController
   end
 
   def param_tax_id
+    return if params.dig(:form, :w9).blank?
+
     tax_id = params.require(:form).require(:w9).permit(:ssn, :ein)
     add_dashes(tax_id)
   end
