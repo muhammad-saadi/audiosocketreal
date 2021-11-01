@@ -11,9 +11,14 @@ ActiveAdmin.register CuratedPlaylist do
 
   member_action :add, method: :post do
     consumer_playlist = ConsumerPlaylist.find(params[:id])
-    curated_playlist = CuratedPlaylist.create(name: consumer_playlist.name, playlist_image: consumer_playlist.playlist_image.blob, banner_image: consumer_playlist.banner_image.blob)
-    curated_playlist.tracks = consumer_playlist.tracks
-    redirect_to admin_consumer_playlists_path, notice: 'Added to Curated Playlist'
+    curated_playlist = CuratedPlaylist.new(name: consumer_playlist.name, playlist_image: consumer_playlist.playlist_image&.blob, banner_image: consumer_playlist.banner_image&.blob)
+    if curated_playlist.save && curated_playlist.tracks << consumer_playlist.tracks
+      flash[:notice] = 'Added to Curated Playlist'
+    else
+      flash[:alert] = curated_playlist.errors.full_messages.to_sentence
+    end
+
+    redirect_to admin_consumer_playlists_path
   end
 
   index do
@@ -21,11 +26,7 @@ ActiveAdmin.register CuratedPlaylist do
     id_column
     column :name
     column :order
-    column :actions do |curated_playlist|
-      span link_to t('active_admin.view'), admin_curated_playlist_path(curated_playlist), class: 'small button'
-      span link_to t('active_admin.edit'), edit_admin_curated_playlist_path(curated_playlist), class: 'small button'
-      span link_to t('active_admin.delete'), admin_curated_playlist_path(curated_playlist), class: 'small button', method: :delete, data: { confirm: 'Are you sure you want to delete this?' }
-    end
+    actions
   end
 
   show do
@@ -68,8 +69,7 @@ ActiveAdmin.register CuratedPlaylist do
 
     f.actions do
       f.action :submit
-      f.cancel_link(f.object.persisted? ? { action: 'show' } : admin_albums_path)
+      f.cancel_link({ action: 'show' })
     end
   end
-
 end
