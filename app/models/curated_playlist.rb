@@ -16,9 +16,9 @@ class CuratedPlaylist < ApplicationRecord
   before_validation :shift_order, on: :update
   after_destroy :decrement_orders
 
-  scope :decrement_list, -> (order) { where("curated_playlists.order > ?", order) }
+  scope :above_order, -> (order) { where("curated_playlists.order > ?", order) }
   scope :items_between, -> (order1, order2) { where("curated_playlists.order >= ? and curated_playlists.order <= ?", order1, order2) }
-  scope :except_self, -> (id) { where.not(id: id) }
+  scope :exclude, -> (id) { where.not(id: id) }
 
   def max_order
     CuratedPlaylist.maximum('order').to_i
@@ -29,15 +29,14 @@ class CuratedPlaylist < ApplicationRecord
   end
 
   def decrement_orders
-    decrement_list = CuratedPlaylist.decrement_list(self.order)
-    CuratedPlaylist.decrement_counter(:order, decrement_list)
+    CuratedPlaylist.decrement_counter(:order, CuratedPlaylist.above_order(self.order))
   end
 
   def shift_order
     return errors.add(:order, 'Order out of bounds') if order > max_order
     return if order_was == order
-    return CuratedPlaylist.increment_counter(:order, CuratedPlaylist.items_between(order, order_was).except_self(id)) if order_was > order
+    return CuratedPlaylist.increment_counter(:order, CuratedPlaylist.items_between(order, order_was).exclude(id)) if order_was > order
 
-    CuratedPlaylist.decrement_counter(:order, CuratedPlaylist.items_between(order_was, order).except_self(id))
+    CuratedPlaylist.decrement_counter(:order, CuratedPlaylist.items_between(order_was, order).exclude(id))
   end
 end

@@ -12,7 +12,7 @@ ActiveAdmin.register CuratedPlaylist do
   member_action :add, method: :post do
     consumer_playlist = ConsumerPlaylist.find(params[:id])
     curated_playlist = CuratedPlaylist.new(name: consumer_playlist.name, playlist_image: consumer_playlist.playlist_image&.blob, banner_image: consumer_playlist.banner_image&.blob)
-    if curated_playlist.save && curated_playlist.tracks << consumer_playlist.tracks
+    if curated_playlist.save && (curated_playlist.tracks = consumer_playlist.tracks)
       flash[:notice] = 'Added to Curated Playlist'
     else
       flash[:alert] = curated_playlist.errors.full_messages.to_sentence
