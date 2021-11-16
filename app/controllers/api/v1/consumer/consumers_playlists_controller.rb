@@ -1,5 +1,5 @@
 class Api::V1::Consumer::ConsumersPlaylistsController < Api::V1::Consumer::BaseController
-  before_action :set_playlist, only: %i[update rename show destroy add_track]
+  before_action :set_playlist, only: %i[update rename show destroy add_track favorite unfavorite follow unfollow]
   before_action :increment_usage, only: :create
 
   def add_track
@@ -46,6 +46,33 @@ class Api::V1::Consumer::ConsumersPlaylistsController < Api::V1::Consumer::BaseC
       render json: current_consumer.consumer_playlists
     else
       raise ExceptionHandler::ValidationError.new(@playlist.errors.to_h, 'Error deleting playlist.')
+    end
+  end
+
+  def favorite
+    current_consumer.favorite_follow!(@playlist, 'favorite')
+    render json: { status: "ConsumerPlaylist favorited" }
+  end
+
+  def unfavorite
+    if current_consumer.favorite_unfollow!(@playlist, 'favorite')
+      render json: { status: "Playlist removed from favorite" }
+    else
+      raise ExceptionHandler::ValidationError.new(@playlist.errors.to_h, 'Error in unfavoriting playlist.')
+    end
+  end
+
+  def follow
+    raise ExceptionHandler::ValidationError.new(@playlist.errors.to_h, 'Consumer can not follow their own playlist.') if @playlist.consumer == current_consumer
+    current_consumer.favorite_follow!(@playlist, 'follow')
+    render json: { status: "ConsumerPlaylist followed" }
+  end
+
+  def unfollow
+    if current_consumer.favorite_unfollow!(@playlist, 'follow')
+      render json: { status: "Playlist unfollowed" }
+    else
+      raise ExceptionHandler::ValidationError.new(@playlist.errors.to_h, 'Error in unfollowing playlist.')
     end
   end
 

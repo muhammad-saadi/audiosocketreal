@@ -1,5 +1,5 @@
 class Api::V1::Consumer::TracksController < Api::V1::Consumer::BaseController
-  before_action :set_track, only: [:show]
+  before_action :set_track, only: %i[show favorite unfavorite]
   skip_before_action :authenticate_consumer!, only: %i[show index]
 
   def index
@@ -22,6 +22,19 @@ class Api::V1::Consumer::TracksController < Api::V1::Consumer::BaseController
     @tracks = AimsApiService.aims_tracks(params[:id], 'id')
 
     render json: @tracks
+  end
+
+  def favorite
+    current_consumer.favorite_follow!(@track, 'favorite')
+    render json: { status: "Track added to favorite" }
+  end
+
+  def unfavorite
+    if current_consumer.favorite_unfollow!(@track, 'favorite')
+      render json: { status: "Track removed from favorite" }
+    else
+      raise ExceptionHandler::ValidationError.new(@track.errors.to_h, 'Error in unfavoriting track.')
+    end
   end
 
   private

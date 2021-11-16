@@ -1,6 +1,9 @@
 class CuratedPlaylist < ApplicationRecord
+  include FavoriteFollowable
+
   has_many :playlist_tracks, as: :listable
   has_many :tracks, through: :playlist_tracks, dependent: :destroy
+  has_many :favorite_follows, as: :favorite_followable, dependent: :destroy
 
   has_one_attached :playlist_image
   has_one_attached :banner_image

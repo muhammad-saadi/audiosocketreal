@@ -18,4 +18,8 @@ class ActiveAdmin::CuratedPlaylistPolicy < ApplicationPolicy
   def destroy?
     @user.admin?
   end
+
+  def destroy_all?
+    @user.admin?
+  end
 end

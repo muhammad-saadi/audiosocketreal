@@ -251,6 +251,18 @@ ActiveRecord::Schema.define(version: 2022_01_14_055643) do
     t.datetime "updated_at", precision: 6, null: false
   end
 
+  create_table "favorite_follows", force: :cascade do |t|
+    t.string "kind"
+    t.string "favorite_followable_type"
+    t.bigint "favorite_followable_id"
+    t.string "favorite_follower_type"
+    t.bigint "favorite_follower_id"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["favorite_followable_type", "favorite_followable_id"], name: "index_favorite_follows_on_favorite_followable"
+    t.index ["favorite_follower_type", "favorite_follower_id"], name: "index_favorite_follows_on_favorite_follower"
+  end
+
   create_table "filters", force: :cascade do |t|
     t.string "name"
     t.integer "max_levels_allowed"

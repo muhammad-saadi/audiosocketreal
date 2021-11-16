@@ -42,6 +42,10 @@ Rails.application.routes.draw do
         resources :consumers, only: %i[index] do
           collection do
             get :show_profile
+            get :favorite_tracks
+            get :favorite_playlists
+            get :followed_playlists
+            get :followed_artists
             patch :update_email
             patch :update_password
             patch :update_profile
@@ -68,6 +72,15 @@ Rails.application.routes.draw do
 
           member do
             post :similar_tracks
+            post :favorite
+            post :unfavorite
+          end
+        end
+
+        resources :users, only: %i[index show] do
+          member do
+            post :follow
+            post :unfollow
           end
         end
 
@@ -75,6 +88,10 @@ Rails.application.routes.draw do
 
         resources :consumers_playlists, except: %i[new edit] do
           member do
+            post :favorite
+            post :unfavorite
+            post :follow
+            post :unfollow
             post :add_track
             patch :rename
           end
