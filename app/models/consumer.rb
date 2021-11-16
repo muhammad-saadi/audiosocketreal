@@ -1,5 +1,6 @@
 class Consumer < ApplicationRecord
   include RequestLimitConcern
+  include FavoriteFollower
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable, :trackable and :omniauthable
   devise :database_authenticatable, :registerable,
@@ -8,6 +9,7 @@ class Consumer < ApplicationRecord
   has_one :consumer_profile, dependent: :destroy
   has_many :folders, dependent: :destroy
   has_many :consumer_playlists, dependent: :destroy
+  has_many :favorite_follows, as: :favorite_follower, dependent: :destroy
 
   validates :first_name, :last_name, presence: true
 
@@ -31,6 +33,22 @@ class Consumer < ApplicationRecord
 
   def encoded_id
     JsonWebToken.encode({ consumer_id: id })
+  end
+
+  def self.filter_eagerload_columns
+    { filters: [:parent_filter, sub_filters: [sub_filters: :sub_filters]], file_attachment: :blob }
+  end
+
+  def self.track_eagerload_columns
+    [:alternate_versions, filter_eagerload_columns]
+  end
+
+  def self.consumer_playlist_eagerload_columns
+    { banner_image_attachment: :blob, playlist_image_attachment: :blob, tracks: [:alternate_versions, filters: [:parent_filter, sub_filters: [sub_filters: :sub_filters]], file_attachment: :blob] }
+  end
+
+  def self.curated_playlist_eagerload_columns
+
   end
 
   private

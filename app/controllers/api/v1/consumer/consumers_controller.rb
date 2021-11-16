@@ -29,6 +29,46 @@ class Api::V1::Consumer::ConsumersController < Api::V1::Consumer::BaseController
     end
   end
 
+  def favorite_tracks
+    @tracks = current_consumer.favorite_followables('Track', 'favorite')
+    if @tracks.present?
+      render json: @tracks.includes(Consumer.track_eagerload_columns), meta: { count: @tracks.size }, adapter: :json
+    else
+      render json: { status: "No favorite tracks" }
+    end
+  end
+
+  def favorite_playlists
+    consumer_playlists = current_consumer.favorite_followables('ConsumerPlaylist', 'favorite').includes(Consumer.consumer_playlist_eagerload_columns)
+    curated_playlists = current_consumer.favorite_followables('CuratedPlaylist', 'favorite').includes(Consumer.curated_playlist_eagerload_columns)
+    @playlists = consumer_playlists | curated_playlists
+    if @playlists.present?
+      render json: @playlists , meta: { count: @playlists.size }, adapter: :json
+    else
+      render json: { status: "No followed playlists" }
+    end
+  end
+
+  def followed_playlists
+    consumer_playlists = current_consumer.favorite_followables('ConsumerPlaylist', 'follow').includes(Consumer.consumer_playlist_eagerload_columns)
+    curated_playlists = current_consumer.favorite_followables('CuratedPlaylist', 'follow').includes(Consumer.curated_playlist_eagerload_columns)
+    @playlists = consumer_playlists | curated_playlists
+    if @playlists.present?
+      render json: @playlists , meta: { count: @playlists.size }, adapter: :json
+    else
+      render json: { status: "No followed playlists" }
+    end
+  end
+
+  def followed_artists
+    @followed_artists = current_consumer.favorite_followables('User', 'follow')
+    if @followed_artists.present?
+      render json: @followed_artists, meta: { count: @followed_artists.size }, adapter: :json
+    else
+      render json: { status: "No followed artists" }
+    end
+  end
+
   private
 
   def validate_password
