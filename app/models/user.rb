@@ -102,7 +102,7 @@ class User < ApplicationRecord
   end
 
   def form_number
-    return W9_FORM if artist_profile.country == 'United States'
+    return W9_FORM if artist_profile&.contact_information&.country == 'United States'
 
     W8BEN_FORM
   end
