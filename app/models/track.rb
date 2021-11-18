@@ -36,7 +36,6 @@ class Track < ApplicationRecord
   has_many :playlist_tracks
   has_many :consumer_playlists, through: :playlist_tracks, source: :listable, source_type: 'ConsumerPlaylist', dependent: :destroy
   has_many :curated_playlists, through: :playlist_tracks, source: :listable, source_type: 'CuratedPlaylist', dependent: :destroy
-  has_many :favorite_follows, as: :favorite_followable, dependent: :destroy
 
   accepts_nested_attributes_for :track_publishers, allow_destroy: true
   accepts_nested_attributes_for :track_writers, allow_destroy: true

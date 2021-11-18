@@ -1,6 +1,10 @@
 module FavoriteFollower
   extend ActiveSupport::Concern
 
+  included do
+    has_many :favorite_follows, as: :favorite_follower, dependent: :destroy
+  end
+
   def favorite_follow!(followable, kind)
     FavoriteFollow.favorite_follow!(self, followable, kind)
   end
