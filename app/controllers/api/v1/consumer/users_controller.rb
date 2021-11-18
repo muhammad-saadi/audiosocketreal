@@ -16,16 +16,15 @@ class Api::V1::Consumer::UsersController < Api::V1::Consumer::BaseController
   end
 
   def unfollow
-    if current_consumer.favorite_unfollow!(@artist, 'follow')
-      render json: { status: "Artist unfollowed" }
-    else
-      raise ExceptionHandler::ValidationError.new(@artist.errors.to_h, 'Error in unfollowing artist.')
-    end
+    return render json: { status: "Artist unfollowed" } if current_consumer.favorite_unfollow!(@artist, 'follow')
+
+    raise ExceptionHandler::ValidationError.new(@artist.errors.to_h, 'Error in unfollowing artist.')
   end
 
   private
 
   def set_artist
-    @artist = User.artist.find(params[:id])
+    @artist = User.artist.find_by(id: params[:id])
+    failure_response(404, 'Could not find artist with given id') if @artist.blank?
   end
 end

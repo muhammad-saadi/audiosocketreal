@@ -1,6 +1,8 @@
 class Api::V1::Consumer::ConsumersController < Api::V1::Consumer::BaseController
   before_action :validate_password, only: %i[update_email update_password]
 
+  include Api::V1::PlaylistsConcern
+
   def show_profile
     render json: current_consumer
   end
@@ -31,6 +33,7 @@ class Api::V1::Consumer::ConsumersController < Api::V1::Consumer::BaseController
 
   def favorite_tracks
     @tracks = current_consumer.favorite_followables('Track', 'favorite')
+
     if @tracks.present?
       render json: @tracks.includes(Consumer.track_eagerload_columns), meta: { count: @tracks.size }, adapter: :json
     else
@@ -39,9 +42,8 @@ class Api::V1::Consumer::ConsumersController < Api::V1::Consumer::BaseController
   end
 
   def favorite_playlists
-    consumer_playlists = current_consumer.favorite_followables('ConsumerPlaylist', 'favorite').includes(Consumer.consumer_playlist_eagerload_columns)
-    curated_playlists = current_consumer.favorite_followables('CuratedPlaylist', 'favorite').includes(Consumer.curated_playlist_eagerload_columns)
-    @playlists = consumer_playlists | curated_playlists
+    @playlists = playlists('favorite')
+
     if @playlists.present?
       render json: @playlists , meta: { count: @playlists.size }, adapter: :json
     else
@@ -50,9 +52,8 @@ class Api::V1::Consumer::ConsumersController < Api::V1::Consumer::BaseController
   end
 
   def followed_playlists
-    consumer_playlists = current_consumer.favorite_followables('ConsumerPlaylist', 'follow').includes(Consumer.consumer_playlist_eagerload_columns)
-    curated_playlists = current_consumer.favorite_followables('CuratedPlaylist', 'follow').includes(Consumer.curated_playlist_eagerload_columns)
-    @playlists = consumer_playlists | curated_playlists
+    @playlists = playlists('follow')
+
     if @playlists.present?
       render json: @playlists , meta: { count: @playlists.size }, adapter: :json
     else
@@ -62,6 +63,7 @@ class Api::V1::Consumer::ConsumersController < Api::V1::Consumer::BaseController
 
   def followed_artists
     @followed_artists = current_consumer.favorite_followables('User', 'follow')
+
     if @followed_artists.present?
       render json: @followed_artists, meta: { count: @followed_artists.size }, adapter: :json
     else

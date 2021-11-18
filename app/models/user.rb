@@ -23,7 +23,6 @@ class User < ApplicationRecord
   has_many :artists, through: :artists_details
   has_many :collaborators, through: :collaborators_details
   has_many :notes, dependent: :destroy
-  has_many :favorite_follows, as: :favorite_followable, dependent: :destroy
 
   validates :email, uniqueness: { case_sensitive: false }, presence: true
   validates :password, confirmation: true

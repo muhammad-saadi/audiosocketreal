@@ -9,7 +9,6 @@ class Consumer < ApplicationRecord
   has_one :consumer_profile, dependent: :destroy
   has_many :folders, dependent: :destroy
   has_many :consumer_playlists, dependent: :destroy
-  has_many :favorite_follows, as: :favorite_follower, dependent: :destroy
 
   validates :first_name, :last_name, presence: true
 
@@ -45,10 +44,6 @@ class Consumer < ApplicationRecord
 
   def self.consumer_playlist_eagerload_columns
     { banner_image_attachment: :blob, playlist_image_attachment: :blob, tracks: [:alternate_versions, filters: [:parent_filter, sub_filters: [sub_filters: :sub_filters]], file_attachment: :blob] }
-  end
-
-  def self.curated_playlist_eagerload_columns
-
   end
 
   private
