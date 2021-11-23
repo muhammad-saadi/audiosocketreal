@@ -49,6 +49,33 @@ class Track < ApplicationRecord
     (title.presence || File.basename(name, File.extname(name))) + index + File.extname(name)
   end
 
+  def self.search(query, query_type, filters, order_by)
+    scope = self.all
+    scope = scope.aims_search(query) if query_type == 'aims_search' && query.present?
+    scope = scope.filter_search(filters) if filters.present?
+    scope = scope.db_search(query) if query_type == 'local_search' && query.present?
+    scope = scope.order(order_by).includes(:alternate_versions, filters: [:parent_filter, { sub_filters: :sub_filters }], file_attachment: :blob)
+
+    scope
+  end
+
+  def self.aims_search(url)
+    self.where(id: AimsApiService.track_ids_by_url(url))
+  end
+
+  def self.db_search(query)
+    query_words = query.split(' ')
+    query_words << query
+    query_array = query_words.flatten.uniq
+    query_array = query_array.map{ |obj| "%#{obj}%" }
+
+    self.ransack("title_or_album_name_or_user_first_name_or_user_last_name_or_filters_name_matches_any": query_array).result(distinct: true)
+  end
+
+  def self.filter_search(filters)
+    self.ransack("filters_name_in": filters).result(distinct: true)
+  end
+
   def self.to_zip
     all.each_with_index.inject([]) do |zip_list, (track, index)|
       next zip_list unless track.file.attached?
