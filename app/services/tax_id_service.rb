@@ -13,7 +13,7 @@ class TaxIdService
 
     response = HTTParty.post("#{BASE_URL}/formRequests", @options).parsed_response
 
-    response.is_a?(Hash) ? response : { message: response }
+    set_response(response)
   end
 
   def self.submit_form(params, tax_id)
@@ -22,5 +22,11 @@ class TaxIdService
     tax_information = TaxInformation.find_or_create_by(artist_profile_id: params[:reference])
     tax_information.update(tax_id: tax_id) if tax_id.present?
     tax_information.tax_forms.attach(io: open(pdf_link['pdf']), filename: 'taxform.pdf')
+  end
+
+  def self.set_response(response)
+    return response if response.is_a?(Hash)
+
+    { error: response }
   end
 end
