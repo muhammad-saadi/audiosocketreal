@@ -60,4 +60,18 @@ class AimsApiService
   def self.update_track(track)
     HTTParty.post("#{BASE_URL}/tracks/client/#{track.id}", fields(track, 'update')).parsed_response
   end
+
+  def self.track_ids_by_url(url)
+    response_hash = search_by_url(url)
+    tracks = response_hash['tracks']
+    return Track.none if response_hash.blank? || tracks.blank?
+
+    tracks.map { |track| track['id_client'] }
+  end
+
+  def self.search_by_url(url)
+    options = { headers: { Authorization: AUTHORIZATION }, body: {"link": url} }
+
+    HTTParty.post("#{BASE_URL}/query/by-url", options).parsed_response
+  end
 end
