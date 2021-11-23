@@ -11,9 +11,7 @@ class TaxIdService
 
     @options = { body: { key: key, thankYouUrl: thankYouUrl, formNumber: formNumber, reference: reference } }
 
-    response = HTTParty.post("#{BASE_URL}/formRequests", @options).parsed_response
-
-    set_response(response)
+    response(HTTParty.post("#{BASE_URL}/formRequests", @options).parsed_response)
   end
 
   def self.submit_form(params, tax_id)
@@ -24,7 +22,7 @@ class TaxIdService
     tax_information.tax_forms.attach(io: open(pdf_link['pdf']), filename: 'taxform.pdf')
   end
 
-  def self.set_response(response)
+  def self.response(response)
     return response if response.is_a?(Hash)
 
     { error: response }
