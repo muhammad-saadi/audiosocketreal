@@ -11,7 +11,9 @@ class TaxIdService
 
     @options = { body: { key: key, thankYouUrl: thankYouUrl, formNumber: formNumber, reference: reference } }
 
-    HTTParty.post("#{BASE_URL}/formRequests", @options).parsed_response
+    response = HTTParty.post("#{BASE_URL}/formRequests", @options).parsed_response
+
+    response.is_a?(Hash) ? response : { message: response }
   end
 
   def self.submit_form(params, tax_id)
