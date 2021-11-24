@@ -4898,12 +4898,17 @@ paths:
       - name: pagination
         in: query
         type: string
-      - name: search_key
+      - name: query
         in: query
         type: string
-      - name: search_query
+      - name: query_type
         in: query
         type: string
+      - name: filters
+        in: query
+        type: array
+        items:
+          type: string
       - name: order_by
         in: query
         type: string
