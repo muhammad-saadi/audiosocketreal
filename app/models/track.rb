@@ -53,7 +53,7 @@ class Track < ApplicationRecord
     scope = scope.aims_search(query) if query_type == 'aims_search' && query.present?
     scope = scope.filter_search(filters) if filters.present?
     scope = scope.db_search(query) if query_type == 'local_search' && query.present?
-    scope = scope.order(order_by).includes(:alternate_versions, filters: [:parent_filter, { sub_filters: :sub_filters }], file_attachment: :blob)
+    scope = scope.order(order_by).includes(:alternate_versions, filters: [:parent_filter, :tracks, sub_filters: [:tracks, sub_filters: [:tracks, :sub_filters]]], file_attachment: :blob)
 
     scope
   end
