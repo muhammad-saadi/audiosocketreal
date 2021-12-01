@@ -3,6 +3,8 @@ ActiveAdmin.register CuratedPlaylist do
 
   actions :all, except: [:new, :create]
 
+  includes :playlist_tracks
+
   permit_params :name, :category, :order
 
   filter :name
