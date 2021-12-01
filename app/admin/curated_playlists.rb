@@ -5,6 +5,10 @@ ActiveAdmin.register CuratedPlaylist do
 
   permit_params :name, :category, :order
 
+  filter :name
+  filter :created_at
+  filter :updated_at
+
   action_item 'Filters', only: :index do
     link_to('Filters', '/', id: 'sidebar_toggle')
   end
@@ -23,16 +27,18 @@ ActiveAdmin.register CuratedPlaylist do
 
   index do
     selectable_column
-    id_column
-    column :name
     column :order
-    actions
+    column :name
+    column 'No. of Tracks' do |curated_playlist|
+      curated_playlist.playlist_tracks.size
+    end
+    column :updated_at
+    actions(name: 'Actions')
   end
 
   show do
     attributes_table do
       row :name
-      row :consumer
       row :banner_image do
         image_tag(resource.banner_image, width: 320, height: 100) if curated_playlist.banner_image.attached?
       end

@@ -6,6 +6,10 @@ ActiveAdmin.register ConsumerPlaylist do
   includes :folder
 
   filter :folder
+  filter :consumer
+  filter :name
+  filter :created_at
+  filter :updated_at
 
   action_item 'Filters', only: :index do
     link_to('Filters', '/', id: 'sidebar_toggle')
@@ -13,9 +17,12 @@ ActiveAdmin.register ConsumerPlaylist do
 
   index do
     selectable_column
-    id_column
     column :name
-    column :folder_id
+    column :consumer
+    column 'No. of Tracks' do |consumer_playlist|
+      consumer_playlist.playlist_tracks.size
+    end
+    column :updated_at
     column :actions do |consumer_playlist|
       span link_to t('active_admin.view'), admin_consumer_playlist_path(consumer_playlist), class: 'small button'
       span link_to t('active_admin.edit'), edit_admin_consumer_playlist_path(consumer_playlist), class: 'small button'
@@ -27,7 +34,9 @@ ActiveAdmin.register ConsumerPlaylist do
   show do
     attributes_table do
       row :name
-      row :folder_id
+      row :folder_id do |consumer_playlist|
+        consumer_playlist.folder.name
+      end
       row :consumer
       row :banner_image do
         image_tag(resource.banner_image, width: 320, height: 100) if consumer_playlist.banner_image.attached?
