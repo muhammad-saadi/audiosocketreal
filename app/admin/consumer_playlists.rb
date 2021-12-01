@@ -3,7 +3,7 @@ ActiveAdmin.register ConsumerPlaylist do
 
   permit_params :name, :folder_id
 
-  includes :folder
+  includes :folder, :playlist_tracks
 
   filter :folder
   filter :consumer
