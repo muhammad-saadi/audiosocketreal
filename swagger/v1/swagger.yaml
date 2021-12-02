@@ -4898,6 +4898,9 @@ paths:
       - name: pagination
         in: query
         type: string
+      - name: direction
+        in: query
+        type: string
       - name: query
         in: query
         type: string

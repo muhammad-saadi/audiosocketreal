@@ -43,17 +43,23 @@ class Track < ApplicationRecord
 
   enum status: STATUSES
 
+  scope :order_by, -> (attr, direction){ order("#{attr} #{direction}") }
+
+  ransacker :id do
+    Arel.sql("to_char(\"tracks\".\"id\", '99999')")
+  end
+
   def filename(index = '')
     name = file.filename.to_s
     (title.presence || File.basename(name, File.extname(name))) + index + File.extname(name)
   end
 
-  def self.search(query, query_type, filters, order_by)
+  def self.search(query, query_type, filters, order_by_attr, direction)
     scope = self.all
     scope = scope.aims_search(query) if query_type == 'aims_search' && query.present?
     scope = scope.filter_search(filters) if filters.present?
     scope = scope.db_search(query) if query_type == 'local_search' && query.present?
-    scope = scope.order(order_by).includes(:alternate_versions, filters: [:parent_filter, :tracks, sub_filters: [:tracks, sub_filters: [:tracks, :sub_filters]]], file_attachment: :blob)
+    scope = scope.order_by(order_by_attr, direction).includes(:alternate_versions, filters: [:parent_filter, :tracks, sub_filters: [:tracks, sub_filters: [:tracks, :sub_filters]]], file_attachment: :blob)
 
     scope
   end
@@ -68,7 +74,7 @@ class Track < ApplicationRecord
     query_array = query_words.flatten.uniq
     query_array = query_array.map{ |obj| "%#{obj}%" }
 
-    self.ransack("title_or_album_name_or_user_first_name_or_user_last_name_or_filters_name_matches_any": query_array).result(distinct: true)
+    self.ransack("id_or_title_or_album_name_or_user_first_name_or_user_last_name_or_filters_name_matches_any": query_array).result(distinct: true)
   end
 
   def self.filter_search(filters)
