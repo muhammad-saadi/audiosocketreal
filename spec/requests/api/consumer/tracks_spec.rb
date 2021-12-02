@@ -9,6 +9,7 @@ RSpec.describe 'api/consumer/tracks', type: :request do
       parameter name: :page, in: :query, type: :string
       parameter name: :per_page, in: :query, type: :string
       parameter name: :pagination, in: :query, type: :string
+      parameter name: :direction, in: :query, type: :string
       parameter name: :query, in: :query, type: :string
       parameter name: :query_type, in: :query, type: :string
       parameter name: :filters, in: :query, type: :array, items: { type: :string }
