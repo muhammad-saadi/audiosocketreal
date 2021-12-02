@@ -44,7 +44,7 @@ class Track < ApplicationRecord
 
   enum status: STATUSES
 
-  scope :order_by, -> (attr, direction){ order("#{attr} #{direction}") }
+  scope :order_by, ->(attr, direction) { order("#{attr} #{direction}") }
 
   ransacker :id do
     Arel.sql("to_char(\"tracks\".\"id\", '99999')")
