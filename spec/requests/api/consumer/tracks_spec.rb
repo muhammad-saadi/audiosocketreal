@@ -13,6 +13,7 @@ RSpec.describe 'api/consumer/tracks', type: :request do
       parameter name: :query, in: :query, type: :string
       parameter name: :query_type, in: :query, type: :string
       parameter name: :filters, in: :query, type: :array, items: { type: :string }
+      parameter name: :ids, in: :query, type: :array, items: { type: :string }
       parameter name: :order_by, in: :query, type: :string
 
       security [{ api_auth: [] }, { consumer_auth: [] }]

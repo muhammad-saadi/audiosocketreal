@@ -4912,6 +4912,11 @@ paths:
         type: array
         items:
           type: string
+      - name: ids
+        in: query
+        type: array
+        items:
+          type: string
       - name: order_by
         in: query
         type: string
