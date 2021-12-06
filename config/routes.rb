@@ -61,7 +61,11 @@ Rails.application.routes.draw do
           get :linkedin_login
         end
 
-        resources :tracks, only: %i[index show]
+        resources :tracks, only: %i[index show] do
+          collection do
+            post :upload_track_search
+          end
+        end
 
         resources :folders, except: %i[new edit]
 
