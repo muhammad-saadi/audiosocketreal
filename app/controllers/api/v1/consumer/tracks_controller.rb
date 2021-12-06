@@ -3,7 +3,7 @@ class Api::V1::Consumer::TracksController < Api::V1::Consumer::BaseController
   skip_before_action :authenticate_consumer!, only: %i[show index]
 
   def index
-    @tracks = Track.search(params[:query], params[:query_type], params[:filters], params[:order_by], params[:direction])
+    @tracks = Track.search(params[:query], params[:query_type], params[:filters], params[:order_by], params[:ids], params[:direction])
 
     render json: @tracks.pagination(pagination_params)
   end

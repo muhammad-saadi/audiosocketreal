@@ -23,6 +23,7 @@ class Track < ApplicationRecord
   has_many :notes, as: :notable, dependent: :destroy
   has_many :track_filters, dependent: :destroy
   has_many :filters, through: :track_filters
+  has_many :mood_sub_filters, -> { parent_filters.mood_sub_filters }, through: :track_filters, source: :filter
   has_many :track_publishers, dependent: :destroy
   has_many :publishers, through: :track_publishers
   has_many :track_writers, dependent: :destroy
@@ -46,7 +47,7 @@ class Track < ApplicationRecord
 
   scope :order_by, ->(attr, direction) { order("#{attr} #{direction}") }
 
-  ransacker :id do
+  ransacker :char_id do
     Arel.sql("to_char(\"tracks\".\"id\", '99999')")
   end
 
@@ -55,18 +56,24 @@ class Track < ApplicationRecord
     (title.presence || File.basename(name, File.extname(name))) + index + File.extname(name)
   end
 
-  def self.search(query, query_type, filters, order_by_attr, direction)
-    scope = self.all
-    scope = scope.aims_search(query) if query_type == 'aims_search' && query.present?
-    scope = scope.filter_search(filters) if filters.present?
+  def self.search(query, query_type, filters, order_by_attr, ids, direction = 'ASC')
+    scope = self
+    scope = scope.with_ids(ids) if ids.present?
+    scope = scope.with_ids(aims_search_results(query)) if query_type == 'aims_search' && query.present?
+    scope = scope.filter_search(filters)
     scope = scope.db_search(query) if query_type == 'local_search' && query.present?
-    scope = scope.order_by(order_by_attr, direction).includes(:alternate_versions, filters: [:parent_filter, :tracks, sub_filters: [:tracks, sub_filters: [:tracks, :sub_filters]]], file_attachment: :blob)
+    scope = scope.includes(:mood_sub_filters, :alternate_versions, filters: [:parent_filter, :tracks, sub_filters: [:tracks, sub_filters: [:tracks, :sub_filters]]], file_attachment: :blob)
+    scope = scope.order_by(order_by_attr, direction)
 
     scope
   end
 
-  def self.aims_search(url)
-    self.where(id: AimsApiService.track_ids_by_url(url))
+  def self.aims_search_results(url)
+    AimsApiService.track_ids_by_url(url)
+  end
+
+  def self.with_ids(ids)
+    self.ransack('id_in': ids).result(distinct: true)
   end
 
   def self.db_search(query)
@@ -75,11 +82,11 @@ class Track < ApplicationRecord
     query_array = query_words.flatten.uniq
     query_array = query_array.map{ |obj| "%#{obj}%" }
 
-    self.ransack("id_or_title_or_album_name_or_user_first_name_or_user_last_name_or_filters_name_matches_any": query_array).result(distinct: true)
+    self.ransack("char_id_or_title_or_album_name_or_user_first_name_or_user_last_name_or_filters_name_matches_any": query_array).result(distinct: true)
   end
 
   def self.filter_search(filters)
-    self.ransack("filters_name_in": filters).result(distinct: true)
+    self.ransack("filters_name_matches_any": filters).result(distinct: true)
   end
 
   def self.to_zip
