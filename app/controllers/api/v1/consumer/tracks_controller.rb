@@ -12,6 +12,12 @@ class Api::V1::Consumer::TracksController < Api::V1::Consumer::BaseController
     render json: @track
   end
 
+  def upload_track_search
+    @tracks = Track.aims_upload_track(params[:file])
+  
+    render json: @tracks 
+  end
+
   private
 
   def set_track

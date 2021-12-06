@@ -62,7 +62,7 @@ class Track < ApplicationRecord
     scope = scope.with_ids(aims_search_results(query)) if query_type == 'aims_search' && query.present?
     scope = scope.filter_search(filters) if filters.present?
     scope = scope.db_search(query) if query_type == 'local_search' && query.present?
-    scope = scope.includes(:alternate_versions, filters: [:parent_filter, :tracks, sub_filters: [:tracks, sub_filters: [:tracks, :sub_filters]]], file_attachment: :blob)
+    scope = scope.includes(eagerload_cols)
     scope = scope.order_by(order_by_attr, direction)
 
     scope
@@ -74,6 +74,18 @@ class Track < ApplicationRecord
 
   def self.with_ids(ids)
     self.ransack('id_in': ids).result(distinct: true)
+  end
+
+  def self.aims_upload_track(file)
+    track_ids = AimsApiService.track_ids_by_file(file)
+
+    Track.where(id: track_ids).includes(eagerload_cols)
+  end
+
+  def self.eagerload_cols
+    [
+      :alternate_versions, { filters: [:parent_filter, :tracks, sub_filters: [:tracks, sub_filters: [:tracks, :sub_filters]]], file_attachment: :blob }
+    ]
   end
 
   def self.db_search(query)
