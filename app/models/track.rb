@@ -60,9 +60,9 @@ class Track < ApplicationRecord
     scope = self.all
     scope = scope.with_ids(ids) if ids.present?
     scope = scope.with_ids(aims_search_results(query)) if query_type == 'aims_search' && query.present?
-    scope = scope.filter_search(filters)
+    scope = scope.filter_search(filters) if filters.present?
     scope = scope.db_search(query) if query_type == 'local_search' && query.present?
-    scope = scope.includes(:mood_sub_filters, :alternate_versions, filters: [:parent_filter, :tracks, sub_filters: [:tracks, sub_filters: [:tracks, :sub_filters]]], file_attachment: :blob)
+    scope = scope.includes(:alternate_versions, filters: [:parent_filter, :tracks, sub_filters: [:tracks, sub_filters: [:tracks, :sub_filters]]], file_attachment: :blob)
     scope = scope.order_by(order_by_attr, direction)
 
     scope
