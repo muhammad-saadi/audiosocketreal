@@ -57,7 +57,7 @@ class Track < ApplicationRecord
   end
 
   def self.search(query, query_type, filters, order_by_attr, ids, direction = 'ASC')
-    scope = self
+    scope = self.all
     scope = scope.with_ids(ids) if ids.present?
     scope = scope.with_ids(aims_search_results(query)) if query_type == 'aims_search' && query.present?
     scope = scope.filter_search(filters)
