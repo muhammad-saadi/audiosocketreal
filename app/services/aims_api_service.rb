@@ -16,7 +16,7 @@ class AimsApiService
       lyrics_language: track.language.to_s,
       artists: Array(track.album.user.artist_profile.name),
       composers: Array(track.composer),
-      music_for: [],
+      music_for: ['Null'],
       track_number: track.id,
       version_tag: 'Null',
       label_name: 'Null',
@@ -61,31 +61,18 @@ class AimsApiService
     HTTParty.post("#{BASE_URL}/tracks/client/#{track.id}", fields(track, 'update')).parsed_response
   end
 
-  def self.track_ids_by_url(url)
-    response_hash = search_by_url(url)
-    tracks = response_hash['tracks']
+   def self.search_by(key, value, by)
+    link_or_track_or_id = {"#{key}": value , input_id_type: 'client'}
+    options = { headers: { Authorization: AUTHORIZATION }, body: link_or_track_or_id }
+    options[:body].except!(:input_id_type) unless by == 'id'
+
+    track_ids_by(HTTParty.post("#{BASE_URL}/query/by-#{by}", options).parsed_response)
+  end
+
+  def self.track_ids_by(response_hash)
+    tracks = response_hash['tracks'] #response hash error message to be displayed somehow
     return Track.none if response_hash.blank? || tracks.blank?
 
     tracks.map { |track| track['id_client'] }
-  end
-
-  def self.search_by_url(url)
-    options = { headers: { Authorization: AUTHORIZATION }, body: {"link": url} }
-
-    HTTParty.post("#{BASE_URL}/query/by-url", options).parsed_response
-  end
-
-  def self.track_ids_by_file(file)
-    response_hash = search_by_file(file)
-    tracks = response_hash['tracks']
-    return Track.none if response_hash.blank? || tracks.blank?
-
-    tracks.map { |track| track['id_client'] }
-  end
-
-  def self.search_by_file(file)
-    options = { headers: { Authorization: AUTHORIZATION }, body: {"track": file} }
-
-    HTTParty.post("#{BASE_URL}/query/by-file", options).parsed_response
   end
 end
