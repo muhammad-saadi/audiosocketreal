@@ -23,7 +23,6 @@ class Track < ApplicationRecord
   has_many :notes, as: :notable, dependent: :destroy
   has_many :track_filters, dependent: :destroy
   has_many :filters, through: :track_filters
-  has_many :mood_sub_filters, -> { parent_filters.mood_sub_filters }, through: :track_filters, source: :filter
   has_many :track_publishers, dependent: :destroy
   has_many :publishers, through: :track_publishers
   has_many :track_writers, dependent: :destroy
@@ -45,6 +44,8 @@ class Track < ApplicationRecord
 
   enum status: STATUSES
 
+  TRACK_EAGER_LOAD_COLS = [:alternate_versions, { filters: [:parent_filter, :tracks, sub_filters: [:tracks, sub_filters: [:tracks, :sub_filters]]], file_attachment: :blob }].freeze
+
   scope :order_by, ->(attr, direction) { order("#{attr} #{direction}") }
 
   ransacker :char_id do
@@ -62,30 +63,25 @@ class Track < ApplicationRecord
     scope = scope.with_ids(aims_search_results(query)) if query_type == 'aims_search' && query.present?
     scope = scope.filter_search(filters) if filters.present?
     scope = scope.db_search(query) if query_type == 'local_search' && query.present?
-    scope = scope.includes(eagerload_cols)
+    scope = scope.includes(TRACK_EAGER_LOAD_COLS)
     scope = scope.order_by(order_by_attr, direction)
 
     scope
   end
 
   def self.aims_search_results(url)
-    AimsApiService.track_ids_by_url(url)
+    AimsApiService.search_by('link', url, 'url')
   end
 
   def self.with_ids(ids)
     self.ransack('id_in': ids).result(distinct: true)
   end
 
-  def self.aims_upload_track(file)
-    track_ids = AimsApiService.track_ids_by_file(file)
+  def self.aims_tracks(track, type)
+    type == 'file' ? key = 'track' : key = 'track_id'
+    track_ids = AimsApiService.search_by(key, track, type)
 
-    Track.where(id: track_ids).includes(eagerload_cols)
-  end
-
-  def self.eagerload_cols
-    [
-      :alternate_versions, { filters: [:parent_filter, :tracks, sub_filters: [:tracks, sub_filters: [:tracks, :sub_filters]]], file_attachment: :blob }
-    ]
+    Track.where(id: track_ids).includes(TRACK_EAGER_LOAD_COLS)
   end
 
   def self.db_search(query)

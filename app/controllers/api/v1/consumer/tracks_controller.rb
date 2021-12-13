@@ -13,9 +13,15 @@ class Api::V1::Consumer::TracksController < Api::V1::Consumer::BaseController
   end
 
   def upload_track_search
-    @tracks = Track.aims_upload_track(params[:file])
-  
-    render json: @tracks 
+    @tracks = Track.aims_tracks(params[:file], 'file')
+
+    render json: @tracks
+  end
+
+  def similar_tracks
+    @tracks = Track.aims_tracks(params[:id], 'id')
+
+    render json: @tracks
   end
 
   private

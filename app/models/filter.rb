@@ -8,7 +8,12 @@ class Filter < ApplicationRecord
   belongs_to :parent_filter, class_name: 'Filter', optional: true
 
   scope :parent_filters, -> { where(parent_filter: nil) }
-  scope :mood_sub_filters, -> { find_by('lower(name) LIKE ?', '%mood%').sub_filters }
+  scope :parent_sub_filters, -> (filter_name) { select { |filter| filter.parent_filter.name_like(filter_name) }&.map(&:name) }
+
+  MOODS = 'moods'.freeze
+  GENRES = 'genres'.freeze
+  INSTRUMENTS = 'instruments'.freeze
+  THEMES = 'themes'.freeze
 
   def filter_options
     sub_filters.pluck(:name, :id)
@@ -16,5 +21,9 @@ class Filter < ApplicationRecord
 
   def all_sub_filters
     sub_filters + sub_filters.map(&:sub_filters).flatten
+  end
+
+  def name_like(filter_name)
+    name.downcase.include?(filter_name)
   end
 end

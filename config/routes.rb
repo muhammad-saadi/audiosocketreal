@@ -65,6 +65,10 @@ Rails.application.routes.draw do
           collection do
             post :upload_track_search
           end
+
+          member do
+            post :similar_tracks
+          end
         end
 
         resources :folders, except: %i[new edit]
