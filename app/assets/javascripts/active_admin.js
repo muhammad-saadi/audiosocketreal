@@ -66,3 +66,33 @@ function append_sub_filters(filter){
     }
   });
 }
+
+$(function () {
+  $(document).on('change', '.license_select', function (e) {
+    let parent = e.target
+    append_license(parent);
+  })
+})
+
+function append_license(collection) {
+  var values = Array.from(collection.selectedOptions).map(({ value }) => value);
+  $.ajax({
+    dataType: 'json',
+    type: 'GET',
+    url: '/license',
+    data: { ids: values },
+    success: function(data) {
+      let license = document.getElementById('collection_license')
+      license.innerHTML = ''
+
+      for (let i = 0; i < data.length; i+=2){
+        let child = data[i]
+        let option = document.createElement('option');
+        option.value = child;
+        option.innerHTML = child;
+        option.selected = true
+        license.appendChild(option)
+      }
+    }
+  })
+}

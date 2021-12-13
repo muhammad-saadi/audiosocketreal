@@ -1,7 +1,7 @@
 ActiveAdmin.register Track do
   config.remove_action_item(:new)
   permit_params :title, :file, :status, :album_id, :public_domain, :lyrics, :explicit, :composer, :description, :language,
-                :instrumental, :key, :bpm, :admin_note, :parent_track_id, filter_ids: [], track_publishers_attributes: %i[id publisher_id percentage _destroy],
+                :instrumental, :key, :bpm, :admin_note, :parent_track_id, license_ids: [], collection_ids: [], filter_ids: [], track_publishers_attributes: %i[id publisher_id percentage _destroy],
                                                                           track_writers_attributes: %i[id artists_collaborator_id percentage _destroy]
 
   includes :publishers, file_attachment: :blob, album: [:user], track_writers: [:collaborator], filters: %i[parent_filter sub_filters]
@@ -9,6 +9,7 @@ ActiveAdmin.register Track do
   filter :title_or_album_name_or_filters_name_cont, as: :string, label: 'Search'
   filter :title_cont, as: :string, label: 'Title'
   filter :status, as: :select, collection: -> { tracks_status_list }
+  filter :collections, as: :select, collection: -> { Collection.all.pluck(:id) }
   filter :filters_id, as: :searchable_select, multiple: true, collection: -> { filters_list }
   filter :created_at
 
@@ -58,6 +59,7 @@ ActiveAdmin.register Track do
     end
     column :explicit
     column :public_domain
+    column :licenses
     column :created_at, &:formatted_created_at
     column :updated_at, &:formatted_updated_at
     column :file do |track|
@@ -204,6 +206,9 @@ ActiveAdmin.register Track do
       f.input :public_domain
       f.input :explicit
       f.input :instrumental
+      f.input :collections, as: :searchable_select, collection: Collection.all.pluck(:id), multiple: true, input_html: {
+        class: 'license_select' }
+      f.input :licenses, as: :searchable_select, collection: params[:ids], multiple: true, input_html: { id: 'collection_license' }
       f.has_many :track_publishers, heading: 'Publishers', allow_destroy: true do |p|
         p.input :publisher, as: :searchable_select, collection: user.publishers, input_html: { data: { placeholder: 'Select Publisher' } }
         p.input :percentage
