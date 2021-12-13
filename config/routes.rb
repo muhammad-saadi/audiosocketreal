@@ -161,7 +161,7 @@ Rails.application.routes.draw do
     match '*unmatched', to: 'base#route_not_found', via: :all
   end
 
-  get '/license', to: 'collections#license', defaults: {fromat: 'json'}
+  get '/license', to: 'collections#license', defaults: {format: 'json'}
 
   root to: 'admin/dashboard#index'
 end

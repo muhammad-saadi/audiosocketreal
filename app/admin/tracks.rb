@@ -9,7 +9,7 @@ ActiveAdmin.register Track do
   filter :title_or_album_name_or_filters_name_cont, as: :string, label: 'Search'
   filter :title_cont, as: :string, label: 'Title'
   filter :status, as: :select, collection: -> { tracks_status_list }
-  filter :collections, as: :select, collection: -> { Collection.all.pluck(:id) }
+  filter :collections, as: :select, collection: -> { Collection.collections_list }
   filter :filters_id, as: :searchable_select, multiple: true, collection: -> { filters_list }
   filter :created_at
 
@@ -206,7 +206,7 @@ ActiveAdmin.register Track do
       f.input :public_domain
       f.input :explicit
       f.input :instrumental
-      f.input :collections, as: :searchable_select, collection: Collection.all.pluck(:id), multiple: true, input_html: {
+      f.input :collections, as: :searchable_select, collection: Collection.collections_list, multiple: true, input_html: {
         class: 'license_select' }
       f.input :licenses, as: :searchable_select, collection: params[:ids], multiple: true, input_html: { id: 'collection_license' }
       f.has_many :track_publishers, heading: 'Publishers', allow_destroy: true do |p|
