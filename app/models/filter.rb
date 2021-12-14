@@ -8,7 +8,6 @@ class Filter < ApplicationRecord
   belongs_to :parent_filter, class_name: 'Filter', optional: true
 
   scope :parent_filters, -> { where(parent_filter: nil) }
-  scope :parent_sub_filters, -> (filter_name) { select { |filter| filter.parent_filter.name_like(filter_name) }&.map(&:name) }
 
   MOODS = 'moods'.freeze
   GENRES = 'genres'.freeze
