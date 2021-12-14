@@ -7,19 +7,19 @@ class Api::V1::Consumer::TrackSerializer < ActiveModel::Serializer
   has_many :alternate_versions, serializer: Api::V1::TrackSerializer
 
   def moods
-    object.filters.parent_sub_filters(Filter::MOODS)
+    parent_sub_filters(Filter::MOODS)
   end
 
   def genres
-    object.filters.parent_sub_filters(Filter::GENRES)
+    parent_sub_filters(Filter::GENRES)
   end
 
   def instruments
-    object.filters.parent_sub_filters(Filter::INSTRUMENTS)
+    parent_sub_filters(Filter::INSTRUMENTS)
   end
 
   def themes
-    object.filters.parent_sub_filters(Filter::THEMES)
+    parent_sub_filters(Filter::THEMES)
   end
 
   def file
@@ -32,5 +32,11 @@ class Api::V1::Consumer::TrackSerializer < ActiveModel::Serializer
 
   def created_at
     object.formatted_created_at
+  end
+
+  private
+
+  def parent_sub_filters(filter_name)
+    object.filters.select { |filter| filter.parent_filter.name_like(filter_name) }&.map(&:name)
   end
 end
