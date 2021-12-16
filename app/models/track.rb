@@ -77,13 +77,6 @@ class Track < ApplicationRecord
     self.ransack('id_in': ids).result(distinct: true)
   end
 
-  def self.aims_tracks(track, type)
-    type == 'file' ? key = 'track' : key = 'track_id'
-    track_ids = AimsApiService.search_by(key, track, type)
-
-    Track.where(id: track_ids).includes(TRACK_EAGER_LOAD_COLS)
-  end
-
   def self.db_search(query)
     query_words = query.split(' ')
     query_words << query

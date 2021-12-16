@@ -61,6 +61,13 @@ class AimsApiService
     HTTParty.post("#{BASE_URL}/tracks/client/#{track.id}", fields(track, 'update')).parsed_response
   end
 
+  def self.aims_tracks(track, type)
+    key = type == 'file' ? 'track' : 'track_id'
+    track_ids = search_by(key, track, type)
+
+    Track.where(id: track_ids).includes(Track::TRACK_EAGER_LOAD_COLS)
+  end
+
   def self.search_by(key, value, by)
     link_or_track_or_id = {"#{key}": value , input_id_type: 'client'}
     options = { headers: { Authorization: AUTHORIZATION }, body: link_or_track_or_id }
