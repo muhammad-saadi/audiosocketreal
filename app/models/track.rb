@@ -1,3 +1,5 @@
+require 'streamio-ffmpeg'
+
 class Track < ApplicationRecord
   include Pagination
   include TrackDetailsExporter
@@ -15,6 +17,8 @@ class Track < ApplicationRecord
 
   belongs_to :album
   belongs_to :parent_track, class_name: 'Track', optional: true
+
+  after_save :set_duration
 
   has_one :user, through: :album
 
@@ -173,5 +177,12 @@ class Track < ApplicationRecord
     return unless current_writers.present? && current_writers.map(&:percentage).compact.sum != 100
 
     errors.add('track_writers', 'percentage sum is not 100')
+  end
+
+  def set_duration
+    return if self.attachment_changes.empty?
+
+    filepath = self.attachment_changes['file'].attachable.path
+    self.update_columns(duration: FFMPEG::Movie.new(filepath).duration&.round(2))
   end
 end

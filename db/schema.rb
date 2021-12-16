@@ -352,10 +352,10 @@ ActiveRecord::Schema.define(version: 2022_01_14_055643) do
   end
 
   create_table "track_filters", force: :cascade do |t|
-    t.bigint "track_id"
     t.bigint "filter_id"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.bigint "track_id"
     t.index ["filter_id"], name: "index_track_filters_on_filter_id"
     t.index ["track_id"], name: "index_track_filters_on_track_id"
   end
@@ -400,6 +400,7 @@ ActiveRecord::Schema.define(version: 2022_01_14_055643) do
     t.string "aims_id"
     t.string "aims_status"
     t.string "aims_error_details"
+    t.float "duration"
     t.index ["album_id"], name: "index_tracks_on_album_id"
     t.index ["parent_track_id"], name: "index_tracks_on_parent_track_id"
   end
