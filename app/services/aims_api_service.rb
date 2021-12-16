@@ -61,7 +61,7 @@ class AimsApiService
     HTTParty.post("#{BASE_URL}/tracks/client/#{track.id}", fields(track, 'update')).parsed_response
   end
 
-   def self.search_by(key, value, by)
+  def self.search_by(key, value, by)
     link_or_track_or_id = {"#{key}": value , input_id_type: 'client'}
     options = { headers: { Authorization: AUTHORIZATION }, body: link_or_track_or_id }
     options[:body].except!(:input_id_type) unless by == 'id'
@@ -70,7 +70,7 @@ class AimsApiService
   end
 
   def self.track_ids_by(response_hash)
-    tracks = response_hash['tracks'] #response hash error message to be displayed somehow
+    tracks = response_hash['tracks']
     return Track.none if response_hash.blank? || tracks.blank?
 
     tracks.map { |track| track['id_client'] }
