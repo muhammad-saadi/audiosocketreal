@@ -17,7 +17,7 @@ class Api::V1::Consumer::TracksController < Api::V1::Consumer::BaseController
   def upload_track_search
     @tracks = AimsApiService.aims_tracks(params[:file], 'file')
 
-    render json: @tracks
+    render json: @tracks, meta: { query_type: 'AIMS' }, adapter: :json
   end
 
   def similar_tracks

@@ -19,7 +19,7 @@ class Track < ApplicationRecord
   belongs_to :album
   belongs_to :parent_track, class_name: 'Track', optional: true
 
-  after_save :set_duration
+  after_save :set_duration, :set_publish_date
 
   has_one :user, through: :album
 
@@ -185,5 +185,16 @@ class Track < ApplicationRecord
 
     filepath = self.attachment_changes['file'].attachable.path
     self.update_columns(duration: FFMPEG::Movie.new(filepath).duration&.round(2))
+  end
+
+  def set_publish_date
+    return unless saved_change_to_status?
+    return unless approved?
+
+    self.update_columns(publish_date: DateTime.now)
+  end
+
+  def formatted_publish_date
+    publish_date.localtime.strftime('%B %d, %Y %R')
   end
 end
