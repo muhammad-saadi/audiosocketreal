@@ -81,6 +81,7 @@ ActiveAdmin.register Track do
         track.status&.titleize
       end
 
+      row :publish_date, &:formatted_publish_date
       row :parent_track
       row :explicit
       row :public_domain
