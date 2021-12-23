@@ -20,3 +20,7 @@ EMAIL_TEMPLATES = {
   <p>Thank you again for your consideration,</p>
   <p>Team Audiosocket<br></p>"
 }.freeze
+
+DEFAULT_PUBLISHER_NAME = 'Leoponas Sub'.freeze
+DEFAULT_PUBLISHER_PRO = 'ns'.freeze
+DEFAULT_PUBLISHER_IPI = 123456789.freeze
