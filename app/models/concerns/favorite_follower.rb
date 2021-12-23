@@ -5,12 +5,20 @@ module FavoriteFollower
     has_many :favorite_follows, as: :favorite_follower, dependent: :destroy
   end
 
-  def favorite_follow!(followable, kind)
-    FavoriteFollow.favorite_follow!(self, followable, kind)
+  def favorite!(favoritable)
+    FavoriteFollow.favorite_follow!(self, favoritable, 'favorite')
   end
 
-  def favorite_unfollow!(followable, kind)
-    FavoriteFollow.favorite_unfollow!(self, followable, kind)
+  def follow!(followable)
+    FavoriteFollow.favorite_follow!(self, followable, 'follow')
+  end
+
+  def unfavorite!(favoritable)
+    FavoriteFollow.favorite_unfollow!(self, favoritable, 'favorite')
+  end
+
+  def unfollow!(followable)
+    FavoriteFollow.favorite_unfollow!(self, followable, 'follow')
   end
 
   def favorite_followables(klass, kind)

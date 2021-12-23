@@ -1,6 +1,8 @@
 class ConsumerPlaylist < ApplicationRecord
   include FavoriteFollowable
 
+  attr_accessor :current_consumer
+
   belongs_to :consumer
   belongs_to :folder, optional: true
 
@@ -15,6 +17,7 @@ class ConsumerPlaylist < ApplicationRecord
   validates :banner_image, dimension: { min: 1440..448, message: 'must be minimum 1440x448' }
 
   validate :folder_validation
+  validate :follow_playlist_validation
 
   accepts_nested_attributes_for :playlist_tracks, allow_destroy: true
 
@@ -34,5 +37,9 @@ class ConsumerPlaylist < ApplicationRecord
 
   def banner_image_url
     banner_image.presence && UrlHelpers.rails_blob_url(banner_image)
+  end
+
+  def follow_playlist_validation
+    errors.add(:playlist, 'Consumer can not follow their own playlist.') if self.consumer == current_consumer
   end
 end

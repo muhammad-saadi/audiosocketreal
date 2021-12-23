@@ -24,21 +24,10 @@ class Api::V1::Consumer::TracksController < Api::V1::Consumer::BaseController
     render json: @tracks
   end
 
-  def favorite
-    current_consumer.favorite_follow!(@track, 'favorite')
-    render json: { status: "Track added to favorite" }
-  end
-
-  def unfavorite
-    return render json: { status: "Track removed from favorite" } if current_consumer.favorite_unfollow!(@track, 'favorite')
-
-    raise ExceptionHandler::ValidationError.new(@track.errors.to_h, 'Error in unfavoriting track.')
-  end
-
   private
 
   def set_track
     @track = Track.includes(filters: [:parent_filter, { sub_filters: :sub_filters }]).find_by(id: params[:id])
-    failure_response(404, 'Could not find track with given id') if @track.blank?
+    response_msg(404, 'Could not find track with given id') if @track.blank?
   end
 end
