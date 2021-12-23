@@ -1,7 +1,7 @@
 class Api::V1::Consumer::ConsumersPlaylistsController < Api::V1::Consumer::BaseController
   before_action :set_playlist, only: %i[update rename show destroy add_track favorite unfavorite follow unfollow]
   before_action :increment_usage, only: :create
-  before_action :playlist_validation, only: :follow
+  # before_action :playlist_validation, only: :follow
 
   def add_track
     @playlist.tracks << Track.find(params[:track_id])
@@ -50,33 +50,11 @@ class Api::V1::Consumer::ConsumersPlaylistsController < Api::V1::Consumer::BaseC
     end
   end
 
-  def favorite
-    current_consumer.favorite_follow!(@playlist, 'favorite')
-    render json: { status: "ConsumerPlaylist favorited" }
-  end
-
-  def unfavorite    
-    return render json: { status: "Playlist removed from favorite" } if current_consumer.favorite_unfollow!(@playlist, 'favorite')
-
-    raise ExceptionHandler::ValidationError.new(@playlist.errors.to_h, 'Error in unfavoriting playlist.')
-  end
-
-  def follow
-    current_consumer.favorite_follow!(@playlist, 'follow')
-    render json: { status: "ConsumerPlaylist followed" }
-  end
-
-  def unfollow
-    return render json: { status: "Playlist unfollowed" } if current_consumer.favorite_unfollow!(@playlist, 'follow')
-
-    raise ExceptionHandler::ValidationError.new(@playlist.errors.to_h, 'Error in unfollowing playlist.')
-  end
-
   private
 
   def set_playlist
     @playlist = current_consumer.consumer_playlists.includes(ConsumerPlaylist.eagerload_columns).find_by(id: params[:id])
-    failure_response(404, 'Could not find consumer playlist with given id') if @playlist.blank?
+    response_msg(404, 'Could not find consumer playlist with given id') if @playlist.blank?
   end
 
   def update_playlist_params
@@ -89,9 +67,5 @@ class Api::V1::Consumer::ConsumersPlaylistsController < Api::V1::Consumer::BaseC
 
   def increment_usage
     current_consumer.increment_playlist_usage!
-  end
-
-  def playlist_validation
-    raise ExceptionHandler::ValidationError.new(@playlist.errors.to_h, 'Consumer can not follow their own playlist.') if @playlist.consumer == current_consumer
   end
 end

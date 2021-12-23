@@ -17,7 +17,7 @@ class Api::BaseController < ActionController::API
     render json: { error: 'Invalid Access' }, status: :not_found
   end
 
-  def failure_response(status, message)
+  def response_msg(status, message)
     render json: { status: status, message: message }
   end
 
