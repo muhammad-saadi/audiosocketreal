@@ -56,7 +56,9 @@ ActiveAdmin.register User, as: 'Artist' do
 
     panel 'Artist Profile' do
       if artist.artist_profile.blank?
-        row 'No Record Found'
+        attributes_table_for artist.artist_profile do
+          row 'No Record Found'
+        end
       else
         panel('', class: 'align-right') do
           if authorized?(:update, artist.artist_profile)

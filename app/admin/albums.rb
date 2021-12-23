@@ -23,7 +23,7 @@ ActiveAdmin.register Album do
     id_column
     column :name
     column :release_date
-    column :user
+    column 'Artist Name', :user
     column :created_at, &:formatted_created_at
     column :updated_at, &:formatted_updated_at
     column :actions do |album|
@@ -41,7 +41,7 @@ ActiveAdmin.register Album do
       row :artwork do
         image_tag(album.artwork, width: 100, height: 100) if album.artwork.attached?
       end
-      row :user
+      row('Artist Name'){ |r| r.user }
     end
 
     panel 'Tracks' do
@@ -55,6 +55,7 @@ ActiveAdmin.register Album do
         else
           column :id
           column :title
+          column :status
           column :actions do |track|
             link_to 'view', admin_track_path(track), class: 'small button'
           end

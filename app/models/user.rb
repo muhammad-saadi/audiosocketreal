@@ -27,6 +27,7 @@ class User < ApplicationRecord
   attr_accessor :skip_password_validation
 
   before_save :validate_manager
+  after_create :default_artist_publisher, if: :artist?
   after_update :mail_accountant
   after_touch :mail_accountant
 
@@ -138,5 +139,9 @@ class User < ApplicationRecord
     return false if skip_password_validation
 
     super
+  end
+
+  def default_artist_publisher
+    self.publishers.create(name: 'Leoponas Sub', pro: 'ns', ipi: 123456789, default_publisher: true)
   end
 end

@@ -247,6 +247,7 @@ ActiveRecord::Schema.define(version: 2021_08_26_060041) do
     t.datetime "updated_at", precision: 6, null: false
     t.string "pro"
     t.string "ipi"
+    t.boolean "default_publisher", default: false
     t.index ["user_id"], name: "index_publishers_on_user_id"
   end
 
