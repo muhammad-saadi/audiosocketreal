@@ -1,8 +1,7 @@
 class Api::V1::Consumer::ConsumersController < Api::V1::Consumer::BaseController
-  before_action :validate_password, only: %i[update_email update_password]
-  before_action :set_object, only: %i[favorite, unfavorite, follow, unfollow]
-
   include Api::V1::PlaylistsConcern
+
+  before_action :validate_password, only: %i[update_email update_password]
 
   def show_profile
     render json: current_consumer
@@ -62,28 +61,6 @@ class Api::V1::Consumer::ConsumersController < Api::V1::Consumer::BaseController
     end
   end
 
-  def follow#user + consumerplaylists
-    current_consumer.follow!(@object)
-    render json: { status: "#{params[:klass].classify} followed" }
-  end
-
-  def unfollow#user + #consumerplaylists
-    return render json: { status: "#{params[:klass].classify} unfollowed" } if current_consumer.unfollow!(@object)
-
-    raise ExceptionHandler::ValidationError.new(@object.errors.to_h, "Error in unfollowing #{params[:klass].classify}.")
-  end
-
-  def favorite#tracks + consumerplaylists
-    current_consumer.favorite!(@object)
-    render json: { status: "#{params[:klass].classify} added to favorites" }
-  end
-
-  def unfavorite#tracks + #consumerplaylists
-    return render json: { status: "#{params[:klass].classify} removed from favorites" } if current_consumer.unfavorite!(@object)
-
-    raise ExceptionHandler::ValidationError.new(@object.errors.to_h, "Error in unfavoriting #{params[:klass].classify}.")
-  end
-
   private
 
   def validate_password
@@ -99,20 +76,5 @@ class Api::V1::Consumer::ConsumersController < Api::V1::Consumer::BaseController
   def consumer_profile_params
     params.permit(:first_name, :last_name, :email, consumer_profile_attributes: %i[id phone organization address city country
                                                                                    postal_code youtube_url white_listing_enabled])
-  end
-
-  def set_object
-    @object = params[:klass].classify.constantize.find_by(id: params[:id])
-    response_msg(404, "Could not find #{params[:klass].titleize} with given id") if @object.blank?
-
-
-    @track = Track.includes(filters: [:parent_filter, { sub_filters: :sub_filters }]).find_by(id: params[:id])
-    
-
-    @artist = User.artist.find_by(id: params[:id])
-    
-
-    @playlist = current_consumer.consumer_playlists.includes(ConsumerPlaylist.eagerload_columns).find_by(id: params[:id])
-    
   end
 end

@@ -13,7 +13,7 @@ class FavoriteFollow < ApplicationRecord
   end
 
   def self.favorite_unfollow!(follower, followable, kind)
-    self.find_by(favorite_follower: follower, favorite_followable: followable, kind: kind).destroy
+    self.find_by(favorite_follower: follower, favorite_followable: followable, kind: kind)&.destroy
   end
 
   def self.favorite_followables(follower, klass, kind)

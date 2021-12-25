@@ -45,10 +45,6 @@ Rails.application.routes.draw do
             get :favorite_tracks
             get :favorited_followed_playlists
             get :followed_artists
-            post :favorite
-            post :unfavorite
-            post :follow
-            post :unfollow
             patch :update_email
             patch :update_password
             patch :update_profile
@@ -57,6 +53,15 @@ Rails.application.routes.draw do
 
         resource :session, only: %i[create] do
           post :signup, on: :collection
+        end
+
+        resources :favorites_following, only: %i[] do
+          collection do
+            post :favorite
+            post :unfavorite
+            post :follow
+            post :unfollow
+          end
         end
 
         resource :oauth, controller: 'oauth', only: [] do
