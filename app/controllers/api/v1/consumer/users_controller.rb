@@ -1,5 +1,5 @@
 class Api::V1::Consumer::UsersController < Api::V1::Consumer::BaseController
-  before_action :set_artist, only: %i[show follow unfollow]
+  before_action :set_artist, only: %i[show]
 
   def index
     @artists = User.artist

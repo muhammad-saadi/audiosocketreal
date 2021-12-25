@@ -1,7 +1,6 @@
 class Api::V1::Consumer::ConsumersPlaylistsController < Api::V1::Consumer::BaseController
-  before_action :set_playlist, only: %i[update rename show destroy add_track favorite unfavorite follow unfollow]
+  before_action :set_playlist, only: %i[update rename show destroy add_track]
   before_action :increment_usage, only: :create
-  # before_action :playlist_validation, only: :follow
 
   def add_track
     @playlist.tracks << Track.find(params[:track_id])

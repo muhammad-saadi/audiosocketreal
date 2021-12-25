@@ -1,5 +1,5 @@
 class Api::V1::Consumer::TracksController < Api::V1::Consumer::BaseController
-  before_action :set_track, only: %i[show favorite unfavorite]
+  before_action :set_track, only: %i[show]
   skip_before_action :authenticate_consumer!, only: %i[show index]
 
   def index
