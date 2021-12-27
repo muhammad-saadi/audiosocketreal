@@ -9,10 +9,12 @@ class ArtistsCollaborator < ApplicationRecord
 
   has_one :collaborator_profile, dependent: :destroy
 
-  validate :collaborator_invite
   validates_uniqueness_of :artist_id, scope: [:collaborator_id]
 
   accepts_nested_attributes_for :collaborator_profile
+
+  scope :ordered, -> { order(created_at: :desc) }
+  scope :non_self_collaborators, -> { where.not('artist_id = collaborator_id') }
 
   STATUSES = {
     pending: 'pending',
@@ -49,11 +51,5 @@ class ArtistsCollaborator < ApplicationRecord
     return unless accepted? || rejected?
 
     CollaboratorMailer.invitation_status_update(id).deliver_later if status_previously_changed?
-  end
-
-  private
-
-  def collaborator_invite
-    errors.add(:base, 'Could not invite yourself as collaborator') if artist_id == collaborator_id
   end
 end

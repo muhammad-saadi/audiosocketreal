@@ -16,6 +16,14 @@ ActiveAdmin.register ArtistsCollaborator do
     link_to('Filters', '/', id: 'sidebar_toggle')
   end
 
+ controller do
+   def scoped_collection
+     return end_of_association_chain.non_self_collaborators if params[:action] == 'index'
+
+     super
+   end
+ end
+
   index do
     selectable_column
     id_column
