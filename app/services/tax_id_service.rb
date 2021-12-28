@@ -11,14 +11,20 @@ class TaxIdService
 
     @options = { body: { key: key, thankYouUrl: thankYouUrl, formNumber: formNumber, reference: reference } }
 
-    HTTParty.post("#{BASE_URL}/formRequests", @options).parsed_response
+    response(HTTParty.post("#{BASE_URL}/formRequests", @options).parsed_response)
   end
 
   def self.submit_form(params, tax_id)
     form_token = params[:token]
     pdf_link = HTTParty.get("#{BASE_URL}/forms/#{form_token}/pdf", { body: { key: ENV['TAXID_KEY'] } }).parsed_response
     tax_information = TaxInformation.find_or_create_by(artist_profile_id: params[:reference])
-    tax_information.update(tax_id: tax_id)
+    tax_information.update(tax_id: tax_id) if tax_id.present?
     tax_information.tax_forms.attach(io: open(pdf_link['pdf']), filename: 'taxform.pdf')
+  end
+
+  def self.response(response)
+    return response if response.is_a?(Hash)
+
+    { error: response }
   end
 end
