@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_08_26_060041) do
+ActiveRecord::Schema.define(version: 2021_10_22_065645) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -170,11 +170,54 @@ ActiveRecord::Schema.define(version: 2021_08_26_060041) do
   create_table "collaborator_profiles", force: :cascade do |t|
     t.string "pro"
     t.string "ipi"
-    t.string "different_registered_name"
     t.bigint "artists_collaborator_id"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.string "different_registered_name"
     t.index ["artists_collaborator_id"], name: "index_collaborator_profiles_on_artists_collaborator_id"
+  end
+
+  create_table "consumer_playlists", force: :cascade do |t|
+    t.string "name"
+    t.bigint "folder_id"
+    t.bigint "consumer_id"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["consumer_id"], name: "index_consumer_playlists_on_consumer_id"
+    t.index ["folder_id"], name: "index_consumer_playlists_on_folder_id"
+  end
+
+  create_table "consumer_profiles", force: :cascade do |t|
+    t.string "phone"
+    t.string "organization"
+    t.string "address"
+    t.string "city"
+    t.string "country"
+    t.string "postal_code"
+    t.string "youtube_url"
+    t.boolean "white_listing_enabled", default: false
+    t.bigint "consumer_id"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["consumer_id"], name: "index_consumer_profiles_on_consumer_id"
+  end
+
+  create_table "consumers", force: :cascade do |t|
+    t.string "email", default: "", null: false
+    t.string "encrypted_password", default: "", null: false
+    t.string "first_name"
+    t.string "last_name"
+    t.string "content_type"
+    t.string "reset_password_token"
+    t.datetime "reset_password_sent_at"
+    t.datetime "remember_created_at"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.string "google_id"
+    t.string "facebook_id"
+    t.string "linkedin_id"
+    t.index ["email"], name: "index_consumers_on_email", unique: true
+    t.index ["reset_password_token"], name: "index_consumers_on_reset_password_token", unique: true
   end
 
   create_table "contact_informations", force: :cascade do |t|
@@ -200,6 +243,14 @@ ActiveRecord::Schema.define(version: 2021_08_26_060041) do
     t.index ["key"], name: "index_contents_on_key", unique: true
   end
 
+  create_table "curated_playlists", force: :cascade do |t|
+    t.string "name"
+    t.string "category"
+    t.integer "order"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+  end
+
   create_table "filters", force: :cascade do |t|
     t.string "name"
     t.integer "max_levels_allowed"
@@ -208,6 +259,17 @@ ActiveRecord::Schema.define(version: 2021_08_26_060041) do
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.index ["parent_filter_id"], name: "index_filters_on_parent_filter_id"
+  end
+
+  create_table "folders", force: :cascade do |t|
+    t.string "name"
+    t.bigint "consumer_id"
+    t.bigint "parent_folder_id"
+    t.integer "level", default: 0
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["consumer_id"], name: "index_folders_on_consumer_id"
+    t.index ["parent_folder_id"], name: "index_folders_on_parent_folder_id"
   end
 
   create_table "genres", force: :cascade do |t|
@@ -240,6 +302,18 @@ ActiveRecord::Schema.define(version: 2021_08_26_060041) do
     t.index ["artist_profile_id"], name: "index_payment_informations_on_artist_profile_id"
   end
 
+  create_table "playlist_tracks", force: :cascade do |t|
+    t.text "note"
+    t.bigint "track_id"
+    t.string "listable_type"
+    t.bigint "listable_id"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.integer "order"
+    t.index ["listable_type", "listable_id"], name: "index_playlist_tracks_on_listable"
+    t.index ["track_id"], name: "index_playlist_tracks_on_track_id"
+  end
+
   create_table "publishers", force: :cascade do |t|
     t.string "name"
     t.bigint "user_id"
@@ -248,6 +322,17 @@ ActiveRecord::Schema.define(version: 2021_08_26_060041) do
     t.string "pro"
     t.string "ipi"
     t.index ["user_id"], name: "index_publishers_on_user_id"
+  end
+
+  create_table "request_limits", force: :cascade do |t|
+    t.integer "daily_usage"
+    t.date "last_used"
+    t.string "request_type"
+    t.string "limitable_type"
+    t.bigint "limitable_id"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["limitable_type", "limitable_id"], name: "index_request_limits_on_limitable"
   end
 
   create_table "tax_informations", force: :cascade do |t|
@@ -303,7 +388,12 @@ ActiveRecord::Schema.define(version: 2021_08_26_060041) do
     t.boolean "instrumental"
     t.string "key"
     t.integer "bpm"
+    t.bigint "parent_track_id"
+    t.string "aims_id"
+    t.string "aims_status"
+    t.string "aims_error_details"
     t.index ["album_id"], name: "index_tracks_on_album_id"
+    t.index ["parent_track_id"], name: "index_tracks_on_parent_track_id"
   end
 
   create_table "users", force: :cascade do |t|

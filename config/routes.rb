@@ -38,6 +38,41 @@ Rails.application.routes.draw do
         end
       end
 
+      namespace :consumer do
+        resources :consumers, only: %i[index] do
+          collection do
+            get :show_profile
+            patch :update_email
+            patch :update_password
+            patch :update_profile
+          end
+        end
+
+        resource :session, only: %i[create] do
+          post :signup, on: :collection
+        end
+
+        resource :oauth, controller: 'oauth', only: [] do
+          post :google_callback
+          post :facebook_callback
+          post :linkedin_callback
+          get :google_login
+          get :facebook_login
+          get :linkedin_login
+        end
+
+        resources :tracks, only: %i[index show]
+
+        resources :folders, except: %i[new edit]
+
+        resources :consumers_playlists, except: %i[new edit] do
+          member do
+            post :add_track
+            patch :rename
+          end
+        end
+      end
+
       resources :auditions do
         member do
           patch :assign_manager
@@ -78,7 +113,7 @@ Rails.application.routes.draw do
         end
       end
 
-      resources :artists, only: %i[index] do
+      resources :artists, only: %i[] do
         collection do
           get :show_profile
           patch :update_profile
@@ -113,6 +148,12 @@ Rails.application.routes.draw do
         collection do
           post :create_tax_form
           post :submit_tax_form
+        end
+      end
+
+      resources :aims_api, only: %i[] do
+        collection do
+          post :track_response
         end
       end
     end

@@ -1,8 +1,8 @@
 ActiveAdmin.register Track do
   config.remove_action_item(:new)
   permit_params :title, :file, :status, :album_id, :public_domain, :lyrics, :explicit, :composer, :description, :language,
-                :instrumental, :key, :bpm, :admin_note, filter_ids: [], track_publishers_attributes: %i[id publisher_id percentage _destroy],
-                                                        track_writers_attributes: %i[id artists_collaborator_id percentage _destroy]
+                :instrumental, :key, :bpm, :admin_note, :parent_track_id, filter_ids: [], track_publishers_attributes: %i[id publisher_id percentage _destroy],
+                                                                          track_writers_attributes: %i[id artists_collaborator_id percentage _destroy]
 
   includes :publishers, file_attachment: :blob, album: [:user], track_writers: [:collaborator], filters: %i[parent_filter sub_filters]
 
@@ -82,6 +82,7 @@ ActiveAdmin.register Track do
         track.status&.titleize
       end
 
+      row :parent_track
       row :explicit
       row :public_domain
       row :composer
@@ -94,6 +95,23 @@ ActiveAdmin.register Track do
       row :admin_note
       row :created_at, &:formatted_created_at
       row :updated_at, &:formatted_updated_at
+    end
+
+    panel 'Alternate Versions' do
+      @track = Track.find(params[:id])
+      table_for @track.alternate_versions do
+        if @track.alternate_versions.blank?
+          column 'No Records Found'
+        else
+          column :title do |track|
+            link_to track.title, admin_track_path(track)
+          end
+          column :album
+          column :file do |track|
+            audio_tag(url_for(track.file), controls: true) if track.file.attached?
+          end
+        end
+      end
     end
 
     panel 'Writers' do
@@ -181,6 +199,7 @@ ActiveAdmin.register Track do
       end
       f.input :description, input_html: { class: 'autogrow', rows: 4, cols: 20 }
       f.input :status, as: :select, collection: tracks_status_list, include_blank: false
+      f.input :parent_track, as: :searchable_select, collection: user.tracks, input_html: { data: { placeholder: 'Select a Parent Track' } }
       f.input :album, as: :searchable_select, collection: user.albums, include_blank: false
       f.input :public_domain
       f.input :explicit

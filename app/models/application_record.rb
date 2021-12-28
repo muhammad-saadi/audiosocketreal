@@ -14,4 +14,8 @@ class ApplicationRecord < ActiveRecord::Base
   def reset_ipi
     self.ipi = nil if pro == 'NS'
   end
+
+  def self.filter(key, query)
+    ransack("#{key}_cont": query).result
+  end
 end

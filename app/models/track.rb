@@ -1,6 +1,7 @@
 class Track < ApplicationRecord
   include Pagination
   include TrackDetailsExporter
+  include AimsCallbacks
 
   validates :title, :file, presence: true
   validates :file, blob: { content_type: %w[audio/vnd.wave audio/wave audio/aiff audio/x-aiff] }
@@ -12,6 +13,7 @@ class Track < ApplicationRecord
   validate :publishers_percentage_validation
 
   belongs_to :album
+  belongs_to :parent_track, class_name: 'Track', optional: true
 
   has_one :user, through: :album
 
@@ -24,6 +26,10 @@ class Track < ApplicationRecord
   has_many :publishers, through: :track_publishers
   has_many :track_writers, dependent: :destroy
   has_many :artists_collaborators, through: :track_writers
+  has_many :alternate_versions, foreign_key: 'parent_track_id', class_name: 'Track'
+  has_many :playlist_tracks
+  has_many :consumer_playlists, through: :playlist_tracks, source: :listable, source_type: 'ConsumerPlaylist', dependent: :destroy
+  has_many :curated_playlists, through: :playlist_tracks, source: :listable, source_type: 'CuratedPlaylist', dependent: :destroy
 
   accepts_nested_attributes_for :track_publishers, allow_destroy: true
   accepts_nested_attributes_for :track_writers, allow_destroy: true
@@ -37,9 +43,42 @@ class Track < ApplicationRecord
 
   enum status: STATUSES
 
+  scope :order_by, ->(attr, direction) { order("#{attr} #{direction}") }
+
+  ransacker :id do
+    Arel.sql("to_char(\"tracks\".\"id\", '99999')")
+  end
+
   def filename(index = '')
     name = file.filename.to_s
     (title.presence || File.basename(name, File.extname(name))) + index + File.extname(name)
+  end
+
+  def self.search(query, query_type, filters, order_by_attr, direction)
+    scope = self.all
+    scope = scope.aims_search(query) if query_type == 'aims_search' && query.present?
+    scope = scope.filter_search(filters) if filters.present?
+    scope = scope.db_search(query) if query_type == 'local_search' && query.present?
+    scope = scope.order_by(order_by_attr, direction).includes(:alternate_versions, filters: [:parent_filter, :tracks, sub_filters: [:tracks, sub_filters: [:tracks, :sub_filters]]], file_attachment: :blob)
+
+    scope
+  end
+
+  def self.aims_search(url)
+    self.where(id: AimsApiService.track_ids_by_url(url))
+  end
+
+  def self.db_search(query)
+    query_words = query.split(' ')
+    query_words << query
+    query_array = query_words.flatten.uniq
+    query_array = query_array.map{ |obj| "%#{obj}%" }
+
+    self.ransack("id_or_title_or_album_name_or_user_first_name_or_user_last_name_or_filters_name_matches_any": query_array).result(distinct: true)
+  end
+
+  def self.filter_search(filters)
+    self.ransack("filters_name_in": filters).result(distinct: true)
   end
 
   def self.to_zip
