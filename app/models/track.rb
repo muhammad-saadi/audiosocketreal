@@ -31,6 +31,9 @@ class Track < ApplicationRecord
   has_many :consumer_playlists, through: :playlist_tracks, source: :listable, source_type: 'ConsumerPlaylist', dependent: :destroy
   has_many :curated_playlists, through: :playlist_tracks, source: :listable, source_type: 'CuratedPlaylist', dependent: :destroy
 
+  has_and_belongs_to_many :licenses
+  has_and_belongs_to_many :collections
+
   accepts_nested_attributes_for :track_publishers, allow_destroy: true
   accepts_nested_attributes_for :track_writers, allow_destroy: true
 
