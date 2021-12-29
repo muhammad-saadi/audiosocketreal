@@ -4,7 +4,7 @@ class Track < ApplicationRecord
   include Pagination
   include TrackDetailsExporter
   include AimsCallbacks
-  include FavoriteFollowable
+  include Favoritable
 
   validates :title, presence: true
   validates :file, presence: true

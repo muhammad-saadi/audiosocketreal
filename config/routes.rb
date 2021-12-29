@@ -42,9 +42,6 @@ Rails.application.routes.draw do
         resources :consumers, only: %i[index] do
           collection do
             get :show_profile
-            get :favorite_tracks
-            get :favorited_followed_playlists
-            get :followed_artists
             patch :update_email
             patch :update_password
             patch :update_profile
@@ -55,12 +52,15 @@ Rails.application.routes.draw do
           post :signup, on: :collection
         end
 
-        resources :favorites_following, only: %i[] do
+        resources :favorites_following, only: [] do
           collection do
             post :favorite
             post :unfavorite
             post :follow
             post :unfollow
+            get :favorite_tracks
+            get :favorited_followed_playlists
+            get :followed_artists
           end
         end
 

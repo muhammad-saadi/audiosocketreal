@@ -52,8 +52,7 @@ class Api::V1::Consumer::ConsumersPlaylistsController < Api::V1::Consumer::BaseC
   private
 
   def set_playlist
-    @playlist = current_consumer.consumer_playlists.includes(ConsumerPlaylist.eagerload_columns).find_by(id: params[:id])
-    response_msg(404, 'Could not find consumer playlist with given id') if @playlist.blank?
+    @playlist = current_consumer.consumer_playlists.includes(ConsumerPlaylist.eagerload_columns).find(params[:id])
   end
 
   def update_playlist_params

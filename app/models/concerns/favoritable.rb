@@ -1,4 +1,4 @@
-module FavoriteFollowable
+module Favoritable
   extend ActiveSupport::Concern
 
   included do
@@ -6,10 +6,6 @@ module FavoriteFollowable
   end
 
   def is_favoritable?
-    true
-  end
-
-  def is_followable?
     true
   end
 end

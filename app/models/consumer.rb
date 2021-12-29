@@ -34,16 +34,10 @@ class Consumer < ApplicationRecord
     JsonWebToken.encode({ consumer_id: id })
   end
 
-  def self.filter_eagerload_columns
-    { filters: [:parent_filter, sub_filters: [sub_filters: :sub_filters]], file_attachment: :blob }
-  end
-
-  def self.track_eagerload_columns
-    [:alternate_versions, filter_eagerload_columns]
-  end
-
-  def self.consumer_playlist_eagerload_columns
-    { banner_image_attachment: :blob, playlist_image_attachment: :blob, tracks: [:alternate_versions, filters: [:parent_filter, sub_filters: [sub_filters: :sub_filters]], file_attachment: :blob] }
+  def playlists(kind)
+    consumer_playlists = favorite_followables('ConsumerPlaylist', kind).includes(ConsumerPlaylist.eagerload_columns)
+    curated_playlists = favorite_followables('CuratedPlaylist', kind)
+    consumer_playlists | curated_playlists
   end
 
   private

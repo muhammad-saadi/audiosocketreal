@@ -1,5 +1,5 @@
 class Api::V1::Consumer::TracksController < Api::V1::Consumer::BaseController
-  before_action :set_track, only: %i[show]
+  before_action :set_track, only: :show
   skip_before_action :authenticate_consumer!, only: %i[show index]
 
   def index
@@ -27,7 +27,6 @@ class Api::V1::Consumer::TracksController < Api::V1::Consumer::BaseController
   private
 
   def set_track
-    @track = Track.includes(filters: [:parent_filter, { sub_filters: :sub_filters }]).find_by(id: params[:id])
-    response_msg(404, 'Could not find track with given id') if @track.blank?
+    @track = Track.includes(filters: [:parent_filter, { sub_filters: :sub_filters }]).find(params[:id])
   end
 end

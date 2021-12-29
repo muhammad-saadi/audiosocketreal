@@ -3,6 +3,7 @@ class FavoriteFollow < ApplicationRecord
   belongs_to :favorite_follower, polymorphic: true
 
   validates :favorite_followable_id, uniqueness: { scope: %i[favorite_follower_type kind favorite_followable_type favorite_follower_id ], message: "has been already taken" }
+  validate :follow_playlist_validation
 
   def self.human_attribute_name(attr, options = {})
    options[:base][:favorite_followable_type]
@@ -24,11 +25,7 @@ class FavoriteFollow < ApplicationRecord
     .where(kind: kind))
   end
 
-  def self.favorite_followers(followable, klass, kind)
-    klass.constantize.where(id: self.select(:favorite_follower_id)
-    .where(favorite_follower_type: klass)
-    .where(favorite_followable_type: followable.class.to_s)
-    .where(favorite_followable_id: followable.id)
-    .where(kind: kind))
+  def follow_playlist_validation
+    errors.add(:playlist, 'can not follow their own playlist.') if favorite_followable_type == 'ConsumerPlaylist' && favorite_follower == favorite_followable.consumer && kind == 'follow'
   end
 end
