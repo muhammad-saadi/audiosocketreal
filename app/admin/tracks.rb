@@ -1,9 +1,12 @@
 ActiveAdmin.register Track do
   config.remove_action_item(:new)
   permit_params :title, :mp3_file, :wav_file, :aiff_file, :status, :album_id, :public_domain, :lyrics, :explicit, :composer, :description, :language,
-                :instrumental, :key, :bpm, :admin_note, :parent_track_id, filter_ids: [], track_publishers_attributes: %i[id publisher_id percentage _destroy], track_writers_attributes: %i[id artists_collaborator_id percentage _destroy]
+                :instrumental, :key, :bpm, :admin_note, :parent_track_id, filter_ids: [],
+                    track_publishers_attributes: %i[id publisher_id percentage _destroy],
+                        track_writers_attributes: %i[id artists_collaborator_id percentage _destroy]
 
-  includes :publishers, mp3_file_attachment: :blob, wav_file_attachment: :blob, aiff_file_attachment: :blob, album: [:user], track_writers: [:collaborator], filters: %i[parent_filter sub_filters]
+  includes :publishers, mp3_file_attachment: :blob, wav_file_attachment: :blob, aiff_file_attachment: :blob, album: [:user],
+                                                    track_writers: [:collaborator], filters: %i[parent_filter sub_filters]
 
   filter :title_or_album_name_or_filters_name_cont, as: :string, label: 'Search'
   filter :title_cont, as: :string, label: 'Title'
@@ -142,17 +145,17 @@ ActiveAdmin.register Track do
       end
     end
 
-    panel 'Publishers' do
-      @track = Track.find(params[:id])
-      table_for @track.track_publishers do
-        if @track.track_publishers.blank?
-          column 'No Records Found'
-        else
-          column :publisher
-          column :percentage
-        end
-      end
-    end
+    # panel 'Publishers' do
+    #   @track = Track.find(params[:id])
+    #   table_for @track.track_publishers do
+    #     if @track.track_publishers.blank?
+    #       column 'No Records Found'
+    #     else
+    #       column :publisher
+    #       column :percentage
+    #     end
+    #   end
+    # end
 
     panel 'Filters' do
       @track = Track.find(params[:id])
@@ -211,15 +214,18 @@ ActiveAdmin.register Track do
       f.input :aiff_file, as: :file, label: "Aiff File"
       div class: 'file-hint' do
         span 'Existing File: ' + file_hint(f.object, Track::TRACK[:mp3_file]), id: 'hint' if f.object.mp3_file.blob&.persisted?
-        span link_to 'x', remove_file_admin_track_path(f.object, file: 'mp3_file'), class: 'remove-file', data: { confirm: 'Are you sure you want to remove this audio?' }, method: :delete, remote: true if f.object.mp3_file.blob&.persisted?
+        span link_to 'x', remove_file_admin_track_path(f.object, file: 'mp3_file'), class: 'remove-file',
+         data: { confirm: 'Are you sure you want to remove this audio?' }, method: :delete, remote: true if f.object.mp3_file.blob&.persisted?
       end
       div class: 'file-hint' do
         span 'Existing File: ' + file_hint(f.object, Track::TRACK[:wav_file]), id: 'hint' if f.object.wav_file.blob&.persisted?
-        span link_to 'x', remove_file_admin_track_path(f.object, file: 'wav_file'), class: 'remove-file', data: { confirm: 'Are you sure you want to remove this audio?' }, method: :delete, remote: true if f.object.wav_file.blob&.persisted?
+        span link_to 'x', remove_file_admin_track_path(f.object, file: 'wav_file'), class: 'remove-file',
+         data: { confirm: 'Are you sure you want to remove this audio?' }, method: :delete, remote: true if f.object.wav_file.blob&.persisted?
       end
       div class: 'file-hint' do
         span 'Existing File: ' + file_hint(f.object, Track::TRACK[:aiff_file]), id: 'hint' if f.object.aiff_file.blob&.persisted?
-        span link_to 'x', remove_file_admin_track_path(f.object, file: 'aiff_file'), class: 'remove-file', data: { confirm: 'Are you sure you want to remove this audio?' }, method: :delete, remote: true if f.object.aiff_file.blob&.persisted?
+        span link_to 'x', remove_file_admin_track_path(f.object, file: 'aiff_file'), class: 'remove-file',
+         data: { confirm: 'Are you sure you want to remove this audio?' }, method: :delete, remote: true if f.object.aiff_file.blob&.persisted?
       end
       f.input :description, input_html: { class: 'autogrow', rows: 4, cols: 20 }
       f.input :status, as: :select, collection: tracks_status_list, include_blank: false
@@ -228,12 +234,12 @@ ActiveAdmin.register Track do
       f.input :public_domain
       f.input :explicit
       f.input :instrumental
-      f.has_many :track_publishers, heading: 'Publishers', allow_destroy: true do |p|
-        p.input :publisher, as: :searchable_select, collection: user.publishers, input_html: { data: { placeholder: 'Select Publisher' } }
-        p.input :percentage
-      end
+      # f.has_many :track_publishers, heading: 'Publishers', allow_destroy: true do |p|
+      #   p.input :publisher, as: :searchable_select, collection: user.publishers, input_html: { data: { placeholder: 'Select Publisher' } }
+      #   p.input :percentage
+      # end
 
-      f.semantic_errors :track_publishers
+      # f.semantic_errors :track_publishers
 
       br
 

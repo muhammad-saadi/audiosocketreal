@@ -9,11 +9,11 @@ class Track < ApplicationRecord
   validates :wav_file, blob: { content_type: %w[ audio/wave ], size_range: 1..50.megabytes }
   validates :mp3_file, blob: { content_type: %w[ audio/mpeg ], size_range: 1..50.megabytes  }
   validates :aiff_file, blob: { content_type: %w[ audio/x-aiff ], size_range: 1..50.megabytes }
-  validates :track_writers, presence: true
-  validate :publishers_validation
-  validate :artists_collaborators_validation
-  validate :writers_percentage_validation
-  validate :publishers_percentage_validation
+  # validates :track_writers, presence: true
+  # validate :publishers_validation
+  # validate :artists_collaborators_validation
+  # validate :writers_percentage_validation
+  # validate :publishers_percentage_validation
   validate :audio_file_validation
 
   belongs_to :album
@@ -191,16 +191,20 @@ class Track < ApplicationRecord
   end
 
   def convert_to_mp3_audio
-    unless self.attachment_changes.empty?
+    return if attachment_changes['mp3_file'].present? || mp3_file.present?
+    if attachment_changes.present?
       file = self.attachment_changes.first[0]
+      file_path = self.attachment_changes["#{file}"].attachable.path
+      mp3_file_path = file_path.gsub('.aiff' || '.wav', ".mp3")
+    else
+      file = aiff_file.present? ? "aiff_file" : "wav_file"
+      file_key = aiff_file.present? ? aiff_file.key : wav_file.key
+      file_path = ActiveStorage::Blob.service.path_for(file_key)
+      mp3_file_path = "#{file_path}.mp3"
     end
-    return if attachment_changes["#{file}"].blank? || attachment_changes['mp3_file'].present?
-    filepath = self.attachment_changes["#{file}"].attachable.path
-    if file != "mp3_file"
-      mp3_file_path = "#{filepath.split('.').first}" + ".mp3"
-      system("ffmpeg -i #{filepath} -f mp3  #{mp3_file_path}")
-      mp3_file_name = "#{self.aiff_file.blob.filename.to_s.split('.').first}" + ".mp3"
-      self.mp3_file.attach(io: File.open(mp3_file_path), filename: mp3_file_name, content_type: 'audio/mpeg')
-    end
+
+    mp3_file_name = send(file).blob.filename.to_s.gsub('.aiff' || '.wav', ".mp3")
+    system("ffmpeg -i #{file_path} -f mp3  #{mp3_file_path}")
+    self.mp3_file.attach(io: File.open(mp3_file_path), filename: "#{mp3_file_name}", content_type: 'audio/mpeg')
   end
 end

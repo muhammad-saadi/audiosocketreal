@@ -34,6 +34,8 @@ module AimsCallbacks
       return unless approved?
       return if self.attachment_changes.empty?
       return if id_previously_changed?
+      return if self.attachment_changes['mp3_file'].attachable.is_a?(Hash)
+
       file = self.attachment_changes.first[0]
       filepath = self.attachment_changes["#{file}"].attachable.path
 
