@@ -3,17 +3,17 @@ class Track < ApplicationRecord
   include TrackDetailsExporter
   include AimsCallbacks
 
-  before_save :convert_to_mp3_audio
+  after_save :convert_to_mp3_audio
 
   validates :title, presence: true
   validates :wav_file, blob: { content_type: %w[ audio/wave ], size_range: 1..50.megabytes }
   validates :mp3_file, blob: { content_type: %w[ audio/mpeg ], size_range: 1..50.megabytes  }
   validates :aiff_file, blob: { content_type: %w[ audio/x-aiff ], size_range: 1..50.megabytes }
-  # validates :track_writers, presence: true
-  # validate :publishers_validation
-  # validate :artists_collaborators_validation
-  # validate :writers_percentage_validation
-  # validate :publishers_percentage_validation
+  validates :track_writers, presence: true
+  validate :publishers_validation
+  validate :artists_collaborators_validation
+  validate :writers_percentage_validation
+  validate :publishers_percentage_validation
   validate :audio_file_validation
 
   belongs_to :album
@@ -66,7 +66,7 @@ class Track < ApplicationRecord
       name = mp3_file.filename.to_s
     elsif wav_file.present?
       name = wav_file.filename.to_s
-    elsif
+    elsif aiff_file.present?
       name = aiff_file.filename.to_s
     else
       name = ''
@@ -79,7 +79,9 @@ class Track < ApplicationRecord
     scope = scope.aims_search(query) if query_type == 'aims_search' && query.present?
     scope = scope.filter_search(filters) if filters.present?
     scope = scope.db_search(query) if query_type == 'local_search' && query.present?
-    scope = scope.order_by(order_by_attr, direction).includes(:alternate_versions, filters: [:parent_filter, :tracks, sub_filters: [:tracks, sub_filters: [:tracks, :sub_filters]]], mp3_file_attachment: :blob, wav_file_attachment: :blob, aiff_file_attachment: :blob)
+    scope = scope.order_by(order_by_attr, direction).includes(:alternate_versions, filters: [:parent_filter,
+             :tracks, sub_filters: [:tracks, sub_filters: [:tracks, :sub_filters]]],
+                          mp3_file_attachment: :blob, wav_file_attachment: :blob, aiff_file_attachment: :blob)
 
     scope
   end
@@ -192,6 +194,7 @@ class Track < ApplicationRecord
 
   def convert_to_mp3_audio
     return if attachment_changes['mp3_file'].present? || mp3_file.present?
+
     if attachment_changes.present?
       file = self.attachment_changes.first[0]
       file_path = self.attachment_changes["#{file}"].attachable.path

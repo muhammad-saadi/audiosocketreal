@@ -7,7 +7,10 @@ module TrackDetailsExporter
       xlsx = Xlsxtream::Workbook.new(io)
 
       xlsx.write_worksheet 'Sheet1' do |sheet|
-        sheet << ['SynchTank ID', 'Parent track', 'MP3 File', 'WAV File', 'AIFF File', 'Title', 'Performed By', 'Album', 'Composer', 'Publishers', 'Writers', 'Notes', 'Description', 'Lyrics', 'Language', 'Instrumental', 'Explicit', 'Vocals', 'Key', 'BPM', 'Tempo', 'Genres :: Comma Sep', 'Subgenres :: Comma Sep', 'Moods :: Comma Sep', 'Instruments :: Comma Sep', 'Subinstruments :: Comma Sep']
+        sheet << ['SynchTank ID', 'Parent track', 'MP3 File', 'WAV File', 'AIFF File', 'Title', 'Performed By', 'Album',
+                        'Composer', 'Publishers', 'Writers', 'Notes', 'Description', 'Lyrics', 'Language', 'Instrumental', 'Explicit',
+                         'Vocals', 'Key', 'BPM', 'Tempo', 'Genres :: Comma Sep', 'Subgenres :: Comma Sep', 'Moods :: Comma Sep',
+                                               'Instruments :: Comma Sep', 'Subinstruments :: Comma Sep']
         sheet << %w[id parent_id mp3_filename wav_filename aiff_filename title performed_by album composer publishers_csv writers_csv notes description lyrics language instrumental explicit vocals musical_key bpm tempo metadata_genres_csv metadata_subgenres_csv metadata_moods_csv metadata_instruments_csv metadata_subinstruments_csv]
 
         all.each do |track|

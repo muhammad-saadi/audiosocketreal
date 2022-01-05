@@ -145,17 +145,17 @@ ActiveAdmin.register Track do
       end
     end
 
-    # panel 'Publishers' do
-    #   @track = Track.find(params[:id])
-    #   table_for @track.track_publishers do
-    #     if @track.track_publishers.blank?
-    #       column 'No Records Found'
-    #     else
-    #       column :publisher
-    #       column :percentage
-    #     end
-    #   end
-    # end
+    panel 'Publishers' do
+      @track = Track.find(params[:id])
+      table_for @track.track_publishers do
+        if @track.track_publishers.blank?
+          column 'No Records Found'
+        else
+          column :publisher
+          column :percentage
+        end
+      end
+    end
 
     panel 'Filters' do
       @track = Track.find(params[:id])
@@ -234,12 +234,12 @@ ActiveAdmin.register Track do
       f.input :public_domain
       f.input :explicit
       f.input :instrumental
-      # f.has_many :track_publishers, heading: 'Publishers', allow_destroy: true do |p|
-      #   p.input :publisher, as: :searchable_select, collection: user.publishers, input_html: { data: { placeholder: 'Select Publisher' } }
-      #   p.input :percentage
-      # end
+      f.has_many :track_publishers, heading: 'Publishers', allow_destroy: true do |p|
+        p.input :publisher, as: :searchable_select, collection: user.publishers, input_html: { data: { placeholder: 'Select Publisher' } }
+        p.input :percentage
+      end
 
-      # f.semantic_errors :track_publishers
+      f.semantic_errors :track_publishers
 
       br
 
