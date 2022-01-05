@@ -69,7 +69,7 @@ function append_sub_filters(filter){
 
 $(function () {
   $(document).on('change', '.license_select', function (e) {
-    let parent = e.target
+    let parent = e.target;
     append_license(parent);
   })
 })
@@ -82,17 +82,17 @@ function append_license(collection) {
     url: '/license',
     data: { ids: values },
     success: function(data) {
-      let license = document.getElementById('collection_license')
-      license.innerHTML = ''
+      let license = document.getElementById('collection_license');
+      license.innerHTML = '';
 
-      for (let i = 0; i < data.length; i+=2){
-        let child = data[i]
+      $.each(data, function(index, val){
+        let child = val;
         let option = document.createElement('option');
         option.value = child;
         option.innerHTML = child;
-        option.selected = true
-        license.appendChild(option)
-      }
+        option.selected = true ;
+        license.appendChild(option);
+      });
     }
   })
 }
