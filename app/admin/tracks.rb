@@ -2,8 +2,8 @@ ActiveAdmin.register Track do
   config.remove_action_item(:new)
   permit_params :title, :mp3_file, :wav_file, :aiff_file, :status, :album_id, :public_domain, :lyrics, :explicit, :composer, :description, :language,
                 :instrumental, :key, :bpm, :admin_note, :parent_track_id, filter_ids: [],
-                    track_publishers_attributes: %i[id publisher_id percentage _destroy],
-                        track_writers_attributes: %i[id artists_collaborator_id percentage _destroy]
+                                                                          track_publishers_attributes: %i[id publisher_id percentage _destroy],
+                                                                          track_writers_attributes: %i[id artists_collaborator_id percentage _destroy]
 
   includes :publishers, mp3_file_attachment: :blob, wav_file_attachment: :blob, aiff_file_attachment: :blob, album: [:user],
                                                     track_writers: [:collaborator], filters: %i[parent_filter sub_filters]
@@ -215,17 +215,17 @@ ActiveAdmin.register Track do
       div class: 'file-hint' do
         span 'Existing File: ' + file_hint(f.object, Track::TRACK[:mp3_file]), id: 'hint' if f.object.mp3_file.blob&.persisted?
         span link_to 'x', remove_file_admin_track_path(f.object, file: 'mp3_file'), class: 'remove-file',
-         data: { confirm: 'Are you sure you want to remove this audio?' }, method: :delete, remote: true if f.object.mp3_file.blob&.persisted?
+        data: { confirm: 'Are you sure you want to remove this audio?' }, method: :delete, remote: true if f.object.mp3_file.blob&.persisted?
       end
       div class: 'file-hint' do
         span 'Existing File: ' + file_hint(f.object, Track::TRACK[:wav_file]), id: 'hint' if f.object.wav_file.blob&.persisted?
         span link_to 'x', remove_file_admin_track_path(f.object, file: 'wav_file'), class: 'remove-file',
-         data: { confirm: 'Are you sure you want to remove this audio?' }, method: :delete, remote: true if f.object.wav_file.blob&.persisted?
+        data: { confirm: 'Are you sure you want to remove this audio?' }, method: :delete, remote: true if f.object.wav_file.blob&.persisted?
       end
       div class: 'file-hint' do
         span 'Existing File: ' + file_hint(f.object, Track::TRACK[:aiff_file]), id: 'hint' if f.object.aiff_file.blob&.persisted?
         span link_to 'x', remove_file_admin_track_path(f.object, file: 'aiff_file'), class: 'remove-file',
-         data: { confirm: 'Are you sure you want to remove this audio?' }, method: :delete, remote: true if f.object.aiff_file.blob&.persisted?
+        data: { confirm: 'Are you sure you want to remove this audio?' }, method: :delete, remote: true if f.object.aiff_file.blob&.persisted?
       end
       f.input :description, input_html: { class: 'autogrow', rows: 4, cols: 20 }
       f.input :status, as: :select, collection: tracks_status_list, include_blank: false

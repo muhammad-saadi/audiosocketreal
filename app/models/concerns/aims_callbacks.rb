@@ -16,7 +16,7 @@ module AimsCallbacks
     end
 
     def aims_add_track
-      return if self.attachment_changes['mp3_file'].nil?
+      return if self.attachment_changes['mp3_file'].blank?
       return unless saved_change_to_status?
       return unless approved?
 
@@ -33,14 +33,11 @@ module AimsCallbacks
 
     def aims_replace_file
       return unless approved?
-      return if self.attachment_changes['mp3_file'].nil?
+      return if self.attachment_changes['mp3_file'].blank?
       return if id_previously_changed?
 
-      if self.attachment_changes['mp3_file'].attachable.is_a?(Hash)
-        filepath = self.attachment_changes['mp3_file'].attachable[:io].path
-      else
-        filepath = self.attachment_changes['mp3_file'].attachable.path
-      end
+      mp3_changes = self.attachment_changes['mp3_file'].attachable
+      filepath = mp3_changes.is_a?(Hash) ? mp3_changes[:io].path : mp3_changes.path
 
       AimsApiService.delete_track(self)
       AimsApiService.create_track(self, filepath: filepath)

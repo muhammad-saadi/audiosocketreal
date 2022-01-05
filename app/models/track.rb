@@ -79,9 +79,9 @@ class Track < ApplicationRecord
     scope = scope.aims_search(query) if query_type == 'aims_search' && query.present?
     scope = scope.filter_search(filters) if filters.present?
     scope = scope.db_search(query) if query_type == 'local_search' && query.present?
-    scope = scope.order_by(order_by_attr, direction).includes(:alternate_versions, filters: [:parent_filter,
-             :tracks, sub_filters: [:tracks, sub_filters: [:tracks, :sub_filters]]],
-                          mp3_file_attachment: :blob, wav_file_attachment: :blob, aiff_file_attachment: :blob)
+    scope = scope.order_by(order_by_attr, direction).includes(:alternate_versions, filters: [:parent_filter, :tracks,
+                                                     sub_filters: [:tracks, sub_filters: [:tracks, :sub_filters]]],
+                                                    mp3_file_attachment: :blob, wav_file_attachment: :blob, aiff_file_attachment: :blob)
 
     scope
   end
@@ -201,7 +201,7 @@ class Track < ApplicationRecord
       mp3_file_path = file_path.gsub('.aiff' || '.wav', ".mp3")
     else
       file = aiff_file.present? ? "aiff_file" : "wav_file"
-      file_key = aiff_file.present? ? aiff_file.key : wav_file.key
+      file_key = send(file).key
       file_path = ActiveStorage::Blob.service.path_for(file_key)
       mp3_file_path = "#{file_path}.mp3"
     end

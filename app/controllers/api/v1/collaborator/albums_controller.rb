@@ -64,8 +64,8 @@ class Api::V1::Collaborator::AlbumsController < Api::V1::Collaborator::BaseContr
   private
 
   def set_album
-    @album = @current_artist.albums.includes(tracks: [:publishers, :mp3_file_attachment, :wav_file_attachment,
-                       :aiff_file_attachment, { artists_collaborators: :collaborator }]).find(params[:id])
+    @album = @current_artist.albums.includes(tracks: [:publishers, :mp3_file_attachment, :wav_file_attachment, :aiff_file_attachment,
+                                             { artists_collaborators: :collaborator }]).find(params[:id])
   end
 
   def album_params

@@ -1,7 +1,6 @@
 class Api::V1::TrackSerializer < BaseSerializer
-  attributes :id, :title, :mp3_file, :wav_file, :aiff_file, :status, :public_domain, :parent_track_id,
-                                 :created_at, :lyrics, :explicit, :composer, :description, :language, :instrumental, :key,
-                                             :bpm, :admin_note, :filters, :publishers, :artists_collaborators
+  attributes :id, :title, :mp3_file, :wav_file, :aiff_file, :status, :public_domain, :parent_track_id, :created_at, :lyrics, :explicit,
+             :composer, :description, :language, :instrumental, :key, :bpm, :admin_note, :filters, :publishers, :artists_collaborators
 
   has_many :alternate_versions, serializer: Api::V1::TrackSerializer
 
