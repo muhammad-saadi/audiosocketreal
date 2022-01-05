@@ -8,7 +8,7 @@ class Api::V1::ArtistsController < Api::BaseController
 
   param_group :doc_artists
   def index
-    @filtered_artists = current_user.artists_details.includes(artist: :artist_profile, collaborator: :users_agreements).filter_artists(filter_params[:search_key], filter_params[:search_query])
+    @filtered_artists = current_user.artists_details.non_self_collaborators.includes(artist: :artist_profile, collaborator: :users_agreements).filter_artists(filter_params[:search_key], filter_params[:search_query])
     @artists = @filtered_artists.filter_by_access(filter_params[:access]).pagination(pagination_params)
     render json: @artists, meta: count_details, each_serializer: Api::V1::ArtistsSerializer, adapter: :json
   end
