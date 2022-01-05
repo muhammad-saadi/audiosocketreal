@@ -3,21 +3,27 @@ class Track < ApplicationRecord
   include TrackDetailsExporter
   include AimsCallbacks
 
-  validates :title, :file, presence: true
-  validates :file, blob: { content_type: %w[audio/vnd.wave audio/wave audio/aiff audio/x-aiff] }
-  validates :file, bitrate: { bits: [16, 24], sample_rate: 48_000 }
+  after_save :convert_to_mp3_audio
+
+  validates :title, presence: true
+  validates :wav_file, blob: { content_type: %w[ audio/wave ], size_range: 1..50.megabytes }
+  validates :mp3_file, blob: { content_type: %w[ audio/mpeg ], size_range: 1..50.megabytes  }
+  validates :aiff_file, blob: { content_type: %w[ audio/x-aiff ], size_range: 1..50.megabytes }
   validates :track_writers, presence: true
   validate :publishers_validation
   validate :artists_collaborators_validation
   validate :writers_percentage_validation
   validate :publishers_percentage_validation
+  validate :audio_file_validation
 
   belongs_to :album
   belongs_to :parent_track, class_name: 'Track', optional: true
 
   has_one :user, through: :album
 
-  has_one_attached :file
+  has_one_attached :wav_file
+  has_one_attached :mp3_file
+  has_one_attached :aiff_file
 
   has_many :notes, as: :notable, dependent: :destroy
   has_many :track_filters, dependent: :destroy
@@ -41,6 +47,12 @@ class Track < ApplicationRecord
     rejected: 'rejected'
   }.freeze
 
+  TRACK = {
+    mp3_file: 'mp3_file',
+    aiff_file: 'aiff_file',
+    wav_file: 'wav_file'
+  }.freeze
+
   enum status: STATUSES
 
   scope :order_by, ->(attr, direction) { order("#{attr} #{direction}") }
@@ -50,7 +62,15 @@ class Track < ApplicationRecord
   end
 
   def filename(index = '')
-    name = file.filename.to_s
+    if mp3_file.present?
+      name = mp3_file.filename.to_s
+    elsif wav_file.present?
+      name = wav_file.filename.to_s
+    elsif aiff_file.present?
+      name = aiff_file.filename.to_s
+    else
+      name = ''
+    end
     (title.presence || File.basename(name, File.extname(name))) + index + File.extname(name)
   end
 
@@ -59,7 +79,9 @@ class Track < ApplicationRecord
     scope = scope.aims_search(query) if query_type == 'aims_search' && query.present?
     scope = scope.filter_search(filters) if filters.present?
     scope = scope.db_search(query) if query_type == 'local_search' && query.present?
-    scope = scope.order_by(order_by_attr, direction).includes(:alternate_versions, filters: [:parent_filter, :tracks, sub_filters: [:tracks, sub_filters: [:tracks, :sub_filters]]], file_attachment: :blob)
+    scope = scope.order_by(order_by_attr, direction).includes(:alternate_versions, filters: [:parent_filter, :tracks,
+                                                     sub_filters: [:tracks, sub_filters: [:tracks, :sub_filters]]],
+                                                    mp3_file_attachment: :blob, wav_file_attachment: :blob, aiff_file_attachment: :blob)
 
     scope
   end
@@ -164,5 +186,28 @@ class Track < ApplicationRecord
     return unless current_writers.present? && current_writers.map(&:percentage).compact.sum != 100
 
     errors.add('track_writers', 'percentage sum is not 100')
+  end
+
+  def audio_file_validation
+    errors.add('track_audio_file', "Atleast one audio file required") if self.mp3_file.blank? && self.wav_file.blank? && self.aiff_file.blank?
+  end
+
+  def convert_to_mp3_audio
+    return if attachment_changes['mp3_file'].present? || mp3_file.present?
+
+    if attachment_changes.present?
+      file = self.attachment_changes.first[0]
+      file_path = self.attachment_changes["#{file}"].attachable.path
+      mp3_file_path = file_path.gsub('.aiff' || '.wav', ".mp3")
+    else
+      file = aiff_file.present? ? "aiff_file" : "wav_file"
+      file_key = send(file).key
+      file_path = ActiveStorage::Blob.service.path_for(file_key)
+      mp3_file_path = "#{file_path}.mp3"
+    end
+
+    mp3_file_name = send(file).blob.filename.to_s.gsub('.aiff' || '.wav', ".mp3")
+    system("ffmpeg -i #{file_path} -f mp3  #{mp3_file_path}")
+    self.mp3_file.attach(io: File.open(mp3_file_path), filename: "#{mp3_file_name}", content_type: 'audio/mpeg')
   end
 end

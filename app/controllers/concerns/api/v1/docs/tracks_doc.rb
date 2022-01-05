@@ -15,7 +15,9 @@ module Api::V1::Docs::TracksDoc
     def_param_group :doc_create_track do
       api :POST, '/v1/albums/:album_id/tracks', 'Create a new track'
       param :title, String, desc: 'Title of the track'
-      param :file, File, desc: 'Music file of the track'
+      param :mp3_file, File, desc: 'Mp3 file of the track'
+      param :wav_file, File, desc: 'Wave file of the track'
+      param :aiff_file, File, desc: 'Aiff file of the track'
       param :public_domain, [true, false], desc: 'Public domain of track'
       param :album_id, :number, desc: 'Id of the album in which track is going to add'
       param :collaborator_id, :number, desc: "Id of tracks's collaborator"
@@ -31,7 +33,9 @@ module Api::V1::Docs::TracksDoc
       param :album_id, :number, desc: 'Id of the album of track'
       param :title, String, desc: 'Title of the track'
       param :public_domain, [true, false], desc: 'Public domain of track'
-      param :file, File, desc: 'Music file of the track'
+      param :mp3_file, File, desc: 'Mp3 file of the track'
+      param :wav_file, File, desc: 'Wave file of the track'
+      param :aiff_file, File, desc: 'Aiff file of the track'
       param :collaborator_id, :number, desc: "Id of tracks's collaborator"
       param :publisher_id, :number, desc: "Id of track's publisher"
       param :status, String, desc: "Status of the track"

@@ -1,11 +1,19 @@
 class Api::V1::TrackSerializer < BaseSerializer
-  attributes :id, :title, :file, :status, :public_domain, :parent_track_id, :created_at, :lyrics, :explicit, :composer, :description,
-             :language, :instrumental, :key, :bpm, :admin_note, :filters, :publishers, :artists_collaborators
+  attributes :id, :title, :mp3_file, :wav_file, :aiff_file, :status, :public_domain, :parent_track_id, :created_at, :lyrics, :explicit,
+             :composer, :description, :language, :instrumental, :key, :bpm, :admin_note, :filters, :publishers, :artists_collaborators
 
   has_many :alternate_versions, serializer: Api::V1::TrackSerializer
 
-  def file
-    object.file.presence && UrlHelpers.rails_blob_url(object.file)
+  def mp3_file
+    object.mp3_file.presence && UrlHelpers.rails_blob_url(object.mp3_file)
+  end
+
+  def wav_file
+    object.wav_file.presence && UrlHelpers.rails_blob_url(object.wav_file)
+  end
+
+  def aiff_file
+    object.aiff_file.presence && UrlHelpers.rails_blob_url(object.aiff_file)
   end
 
   def created_at

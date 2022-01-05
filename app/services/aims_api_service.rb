@@ -16,7 +16,7 @@ class AimsApiService
       lyrics_language: track.language.to_s,
       artists: Array(track.album.user.artist_profile.name),
       composers: Array(track.composer),
-      music_for: [],
+      music_for: ['Null'],
       track_number: track.id,
       version_tag: 'Null',
       label_name: 'Null',
@@ -39,7 +39,7 @@ class AimsApiService
 
   def self.create_track(track, filepath: nil, create: false)
     if create
-      track.file.open do |file|
+      track.mp3_file.open do |file|
         fields = fields(track, 'create')
         fields[:body][:track] = file
         HTTParty.post("#{BASE_URL}/tracks", fields).parsed_response

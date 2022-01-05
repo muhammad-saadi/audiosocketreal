@@ -1,10 +1,12 @@
 ActiveAdmin.register Track do
   config.remove_action_item(:new)
-  permit_params :title, :file, :status, :album_id, :public_domain, :lyrics, :explicit, :composer, :description, :language,
-                :instrumental, :key, :bpm, :admin_note, :parent_track_id, filter_ids: [], track_publishers_attributes: %i[id publisher_id percentage _destroy],
+  permit_params :title, :mp3_file, :wav_file, :aiff_file, :status, :album_id, :public_domain, :lyrics, :explicit, :composer, :description, :language,
+                :instrumental, :key, :bpm, :admin_note, :parent_track_id, filter_ids: [],
+                                                                          track_publishers_attributes: %i[id publisher_id percentage _destroy],
                                                                           track_writers_attributes: %i[id artists_collaborator_id percentage _destroy]
 
-  includes :publishers, file_attachment: :blob, album: [:user], track_writers: [:collaborator], filters: %i[parent_filter sub_filters]
+  includes :publishers, mp3_file_attachment: :blob, wav_file_attachment: :blob, aiff_file_attachment: :blob, album: [:user],
+                                                    track_writers: [:collaborator], filters: %i[parent_filter sub_filters]
 
   filter :title_or_album_name_or_filters_name_cont, as: :string, label: 'Search'
   filter :title_cont, as: :string, label: 'Title'
@@ -40,7 +42,8 @@ ActiveAdmin.register Track do
   end
 
   member_action :remove_file, method: :delete do
-    blob = Track.find(params[:id]).file.blob
+    file = params[:file]
+    blob = Track.find(params[:id]).send(file).blob
     return if blob.blank?
 
     blob.attachments.first.purge
@@ -60,8 +63,8 @@ ActiveAdmin.register Track do
     column :public_domain
     column :created_at, &:formatted_created_at
     column :updated_at, &:formatted_updated_at
-    column :file do |track|
-      audio_tag(url_for(track.file), controls: true) if track.file.attached?
+    column :mp3_file do |track|
+      audio_tag(url_for(track.mp3_file), controls: true) if track.mp3_file.attached?
     end
     actions defaults: false do |track|
       item 'View', admin_track_path(track), class: 'member_link'
@@ -73,8 +76,14 @@ ActiveAdmin.register Track do
   show do
     attributes_table do
       row :title
-      row "Music File" do |track|
-        audio_tag(url_for(track.file), controls: true) if track.file.attached?
+      row "MP3 File" do |track|
+        audio_tag(url_for(track.mp3_file), controls: true) if track.mp3_file.attached?
+      end
+      row "WAV File" do |track|
+        audio_tag(url_for(track.wav_file), controls: true) if track.wav_file.attached?
+      end
+      row "AIFF File" do |track|
+        audio_tag(url_for(track.aiff_file), controls: true) if track.aiff_file.attached?
       end
 
       row :album
@@ -85,6 +94,8 @@ ActiveAdmin.register Track do
       row :parent_track
       row :explicit
       row :public_domain
+      row :filename
+      row :file_path
       row :composer
       row :description
       row :language
@@ -107,8 +118,14 @@ ActiveAdmin.register Track do
             link_to track.title, admin_track_path(track)
           end
           column :album
-          column :file do |track|
-            audio_tag(url_for(track.file), controls: true) if track.file.attached?
+          column :mp3_file do |track|
+            audio_tag(url_for(track.mp3_file), controls: true) if track.mp3_file.attached?
+          end
+          column :wav_file do |track|
+            audio_tag(url_for(track.wav_file), controls: true) if track.wav_file.attached?
+          end
+          column :aiff_file do |track|
+            audio_tag(url_for(track.aiff_file), controls: true) if track.aiff_file.attached?
           end
         end
       end
@@ -192,10 +209,23 @@ ActiveAdmin.register Track do
         link_to 'Show Artist', admin_artist_path(user), class: 'medium button', target: :blank
       end
       f.input :title
-      f.input :file, as: :file , label: "Music File"
+      f.input :mp3_file, as: :file, label: "Mp3 File"
+      f.input :wav_file, as: :file, label: "WAVE File"
+      f.input :aiff_file, as: :file, label: "Aiff File"
       div class: 'file-hint' do
-        span 'Existing File: ' + file_hint(f.object), id: 'hint'
-        span link_to 'x', remove_file_admin_track_path(f.object), class: 'remove-file', data: { confirm: 'Are you sure you want to remove this audio?' }, method: :delete, remote: true if f.object.file.blob&.persisted?
+        span 'Existing File: ' + file_hint(f.object, Track::TRACK[:mp3_file]), id: 'hint' if f.object.mp3_file.blob&.persisted?
+        span link_to 'x', remove_file_admin_track_path(f.object, file: 'mp3_file'), class: 'remove-file',
+        data: { confirm: 'Are you sure you want to remove this audio?' }, method: :delete, remote: true if f.object.mp3_file.blob&.persisted?
+      end
+      div class: 'file-hint' do
+        span 'Existing File: ' + file_hint(f.object, Track::TRACK[:wav_file]), id: 'hint' if f.object.wav_file.blob&.persisted?
+        span link_to 'x', remove_file_admin_track_path(f.object, file: 'wav_file'), class: 'remove-file',
+        data: { confirm: 'Are you sure you want to remove this audio?' }, method: :delete, remote: true if f.object.wav_file.blob&.persisted?
+      end
+      div class: 'file-hint' do
+        span 'Existing File: ' + file_hint(f.object, Track::TRACK[:aiff_file]), id: 'hint' if f.object.aiff_file.blob&.persisted?
+        span link_to 'x', remove_file_admin_track_path(f.object, file: 'aiff_file'), class: 'remove-file',
+        data: { confirm: 'Are you sure you want to remove this audio?' }, method: :delete, remote: true if f.object.aiff_file.blob&.persisted?
       end
       f.input :description, input_html: { class: 'autogrow', rows: 4, cols: 20 }
       f.input :status, as: :select, collection: tracks_status_list, include_blank: false

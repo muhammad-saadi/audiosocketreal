@@ -10,7 +10,7 @@ class Api::V1::Collaborator::TracksController < Api::V1::Collaborator::BaseContr
   param_group :doc_tracks
   def index
     @tracks = @album.tracks.pagination(pagination_params)
-    render json: @tracks.includes(%i[publisher file_attachment], artists_collaborator: :collaborator),
+    render json: @tracks.includes(%i[publisher mp3_file_attachment wav_file_attachment aiff_file_attachment], artists_collaborator: :collaborator),
            meta: { count: @tracks.count }, adapter: :json, each_serializer: Api::V1::TrackSerializer
   end
 
@@ -50,8 +50,8 @@ class Api::V1::Collaborator::TracksController < Api::V1::Collaborator::BaseContr
   private
 
   def track_params
-    params.permit(:title, :file, :public_domain, :status, :lyrics, :explicit, :parent_track_id, track_publishers: %i[publisher_id percentage],
-                                                                              track_writers: %i[artists_collaborator_id percentage])
+    params.permit(:title, :mp3_file, :wav_file, :aiff_file, :public_domain, :status, :lyrics, :explicit, :parent_track_id,
+                  track_publishers: %i[publisher_id percentage], track_writers: %i[artists_collaborator_id percentage])
   end
 
   def set_album
