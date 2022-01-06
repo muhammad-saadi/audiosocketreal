@@ -35,7 +35,7 @@ ActiveAdmin.register ConsumerPlaylist do
     attributes_table do
       row :name
       row :folder_id do |consumer_playlist|
-        consumer_playlist.folder.name
+        consumer_playlist.folder&.name
       end
       row :consumer
       row :banner_image do
