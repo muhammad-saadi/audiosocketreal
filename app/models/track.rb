@@ -3,9 +3,9 @@ class Track < ApplicationRecord
   include TrackDetailsExporter
 
   validates :title, presence: true
-  validates :file, presence: true, unless: :pending?
-  validates :file, blob: { content_type: %w[audio/vnd.wave audio/wave audio/aiff audio/x-aiff] }, unless: :pending?
-  validates :file, bitrate: { bits: [16, 24], sample_rate: 48_000 }, unless: :pending?
+  validates :file, presence: true
+  validates :file, blob: { content_type: %w[audio/vnd.wave audio/wave audio/aiff audio/x-aiff] }
+  validates :file, bitrate: { bits: [16, 24], sample_rate: 48_000 }
   validates :track_writers, presence: true, unless: :pending?
   validate :publishers_validation, unless: :pending?
   validate :artists_collaborators_validation, unless: :pending?
