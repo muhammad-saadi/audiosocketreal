@@ -21,6 +21,6 @@ EMAIL_TEMPLATES = {
   <p>Team Audiosocket<br></p>"
 }.freeze
 
-DEFAULT_PUBLISHER_NAME = 'Leoponas Sub'.freeze
+DEFAULT_PUBLISHER_NAME = 'LEOPONASSUB'.freeze
 DEFAULT_PUBLISHER_PRO = 'ns'.freeze
 DEFAULT_PUBLISHER_IPI = 123456789.freeze

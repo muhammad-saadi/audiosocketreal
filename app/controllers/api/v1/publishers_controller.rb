@@ -4,6 +4,7 @@ class Api::V1::PublishersController < Api::BaseController
   validate_role roles: ['artist']
 
   before_action :set_publisher, only: %i[update destroy]
+  before_action :set_name, only: %i[create update]
 
   param_group :doc_publishers
   def index
@@ -13,7 +14,8 @@ class Api::V1::PublishersController < Api::BaseController
 
   param_group :doc_create_publishers
   def create
-    @publisher = current_user.publishers.new(publisher_params)
+    @publisher = Publisher.find_by(name: params[:name])
+    @publisher = @publisher.present? ? create_publisher_user : current_user.publishers.new(publisher_params)
     if @publisher.save
       render json: current_user.publishers.ordered
     else
@@ -41,11 +43,24 @@ class Api::V1::PublishersController < Api::BaseController
 
   private
 
+  def create_publisher_user
+    @publisher.update(publisher_user_params)
+    @publisher
+  end
+
   def publisher_params
-    params.permit(:name, :pro, :ipi, :default_publisher)
+    params.permit(:name, publisher_users_attributes: [:ipi, :pro, :user_id])
+  end
+
+  def publisher_user_params
+     params.permit(publisher_users_attributes: [:ipi, :pro, :user_id])
   end
 
   def set_publisher
     @publisher = current_user.publishers.find(params[:id])
+  end
+
+  def set_name
+    params[:name] = params[:name].delete(' ').upcase
   end
 end

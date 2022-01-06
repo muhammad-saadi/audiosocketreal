@@ -14,7 +14,8 @@ class User < ApplicationRecord
   has_many :users_agreements, dependent: :destroy
   has_many :agreements, through: :users_agreements
   has_many :albums, dependent: :destroy
-  has_many :publishers, dependent: :destroy
+  has_many :publisher_users, dependent: :destroy
+  has_many :publishers, through: :publisher_users, validate: false
   has_many :artists_details, foreign_key: 'collaborator_id', class_name: 'ArtistsCollaborator', dependent: :destroy
   has_many :collaborators_details, foreign_key: 'artist_id', class_name: 'ArtistsCollaborator', dependent: :destroy
   has_many :artists, through: :artists_details
@@ -145,7 +146,7 @@ class User < ApplicationRecord
   end
 
   def create_default_publisher
-    self.publishers.create(name: DEFAULT_PUBLISHER_NAME, pro: DEFAULT_PUBLISHER_PRO, ipi: DEFAULT_PUBLISHER_IPI, default_publisher: true)
+    self.publisher_users.create(publisher: Publisher.find_by(name: DEFAULT_PUBLISHER_NAME), pro: DEFAULT_PUBLISHER_PRO, ipi: DEFAULT_PUBLISHER_IPI)
   end
 
   def default_artist_collaborator

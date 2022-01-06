@@ -1,3 +1,5 @@
-class Api::V1::PublisherSerializer < ActiveModel::Serializer
-  attributes :id, :name, :pro, :ipi
+class Api::V1::PublisherSerializer < BaseSerializer
+  attributes :id, :name
+
+  has_many :publisher_users
 end
