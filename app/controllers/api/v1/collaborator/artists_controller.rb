@@ -9,7 +9,7 @@ class Api::V1::Collaborator::ArtistsController < Api::V1::Collaborator::BaseCont
   param_group :doc_update_profile
   def update_profile
     if @artist_profile.update(artist_profile_params)
-      render json: @artist_profile, serializer: Api::V1::ArtistProfileSerializer
+      render json: @artist_profile, serializer: Api::V1::Collaborator::ArtistProfileSerializer
     else
       raise ExceptionHandler::ValidationError.new(@artist_profile.errors.to_h, 'Error updating artist profile.')
     end
@@ -17,7 +17,7 @@ class Api::V1::Collaborator::ArtistsController < Api::V1::Collaborator::BaseCont
 
   param_group :doc_show_profile
   def show_profile
-    render json: @artist_profile, serializer: Api::V1::ArtistProfileSerializer
+    render json: @artist_profile, serializer: Api::V1::Collaborator::ArtistProfileSerializer
   end
 
   param_group :doc_collaborators
