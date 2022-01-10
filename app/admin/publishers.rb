@@ -1,21 +1,10 @@
 ActiveAdmin.register Publisher do
-  config.sort_order = 'pro'
-  config.order_clause = false
   config.remove_action_item(:new)
-  permit_params :name, :user_id, :pro, :ipi
+  permit_params :name, publisher_users_attributes: %i[pro ipi user_id]
 
-  includes :user
+  includes :users
 
-  filter :user, as: :searchable_select, collection: User.artist
-  filter :name_cont, as: :string, label: 'Name'
-  filter :pro_cont, as: :string, label: 'PRO'
   filter :created_at
-
-  controller do
-    def scoped_collection
-      end_of_association_chain.ordered_by_pro
-    end
-  end
 
   action_item 'Filters', only: :index do
     link_to('Filters', '/', id: 'sidebar_toggle')
@@ -24,23 +13,34 @@ ActiveAdmin.register Publisher do
   index do
     selectable_column
     id_column
-    column :user
     column :name
-    column :pro
-    column :ipi
     column :created_at, &:formatted_created_at
     column :updated_at, &:formatted_updated_at
+    column :system_generated
     actions
   end
 
   show do
     attributes_table do
       row :name
-      row :pro
-      row :ipi
-      row :user
       row :created_at, &:formatted_created_at
       row :updated_at, &:formatted_updated_at
+
+      panel 'Publisher_User' do
+        @publisher = Publisher.find(params[:id])
+        table_for @publisher.publisher_users do
+          if @publisher.publisher_users.blank?
+            column 'No Records Found'
+          else
+            column :pro
+            column :ipi
+            column :user_id do |publisher|
+              publisher.user
+            end
+          end
+        end
+      end
+
     end
 
     active_admin_comments
@@ -48,20 +48,19 @@ ActiveAdmin.register Publisher do
 
   csv do
     column :id
-    column (:user) { |publisher| publisher.user.full_name }
     column :name
-    column :pro
-    column :ipi
     column :created_at, &:formatted_created_at
     column :updated_at, &:formatted_updated_at
   end
 
   form do |f|
     f.inputs do
-      f.input :user, as: :select, collection: [f.object.user], include_blank: false
       f.input :name
-      f.input :pro, as: :searchable_select, collection: pro_list, include_blank: 'Select a PRO'
-      f.input :ipi
+      f.has_many :publisher_users do |p|
+        p.input :ipi
+        p.input :pro
+        p.input :user_id , as: :select, collection: User.artist
+      end
     end
 
     f.actions do
