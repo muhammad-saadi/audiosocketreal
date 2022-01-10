@@ -29,8 +29,10 @@ class User < ApplicationRecord
   before_save :validate_manager
   after_create :create_default_publisher, if: :artist?
   after_create :default_artist_collaborator, if: :artist?
-  after_update :mail_accountant
-  after_touch :mail_accountant
+
+  # TODO : We do not need this activated currently.
+  # after_update :mail_accountant
+  # after_touch :mail_accountant
 
   scope :ordered, -> { order(created_at: :desc) }
 
