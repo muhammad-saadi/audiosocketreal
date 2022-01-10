@@ -205,8 +205,8 @@ ActiveAdmin.register Track do
       f.input :explicit
       f.input :instrumental
       f.has_many :track_publishers, heading: 'Publishers', allow_destroy: true do |p|
-        p.input :publisher, as: :searchable_select, collection: user.publishers, input_html: { data: { placeholder: 'Select Publisher' } }
-        p.input :percentage
+        p.input :publisher, as: :searchable_select, collection: user.publishers
+        p.input :percentage, input_html: { id: 'publisher-percentage' }
       end
 
       f.semantic_errors :track_publishers

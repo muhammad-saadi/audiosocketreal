@@ -15,7 +15,8 @@ class User < ApplicationRecord
   has_many :agreements, through: :users_agreements
   has_many :albums, dependent: :destroy
   has_many :tracks, through: :albums
-  has_many :publishers, dependent: :destroy
+  has_many :publisher_users, dependent: :destroy
+  has_many :publishers, through: :publisher_users
   has_many :artists_details, foreign_key: 'collaborator_id', class_name: 'ArtistsCollaborator', dependent: :destroy
   has_many :collaborators_details, foreign_key: 'artist_id', class_name: 'ArtistsCollaborator', dependent: :destroy
   has_many :artists, through: :artists_details
@@ -30,6 +31,7 @@ class User < ApplicationRecord
   before_save :validate_manager
   after_update :mail_accountant
   after_touch :mail_accountant
+  after_create :add_default_publisher
 
   scope :ordered, -> { order(created_at: :desc) }
 
@@ -139,5 +141,11 @@ class User < ApplicationRecord
     return false if skip_password_validation
 
     super
+  end
+
+  def add_default_publisher
+    return unless artist?
+    publisher = Publisher.find_by(name: 'AudioSocket')
+    self.publisher_users.create(publisher_id: publisher.id, user_id: self.id)
   end
 end
