@@ -18,6 +18,7 @@ class RemoveColumnsFromPublishers < ActiveRecord::Migration[6.1]
 
     PublisherUser.find_each do |pubu|
       publisher = Publisher.find_by(id: pubu.publisher_id)
+
       if publisher.ipi.blank? && publisher.pro.blank?
         publisher.update_columns(user_id: pubu.user_id, ipi: pubu.ipi, pro: pubu.pro)
         publisher.save!
