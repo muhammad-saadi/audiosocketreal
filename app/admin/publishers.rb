@@ -5,12 +5,6 @@ ActiveAdmin.register Publisher do
   filter :name_cont, as: :string, label: 'Name'
   filter :created_at
 
-  controller do
-    def scoped_collection
-      end_of_association_chain
-    end
-  end
-
   action_item 'Filters', only: :index do
     link_to('Filters', '/', id: 'sidebar_toggle')
   end

@@ -59,7 +59,7 @@ class Api::V1::PublishersController < Api::BaseController
   end
 
   def set_publisher
-    @publisher = params[:id] ? current_user.publishers.find(params[:id]) : Publisher.find_by(name: params[:name])
+    @publisher = current_user.publishers.find_by(id: params[:id]) || Publisher.find_by(name: params[:name])
   end
 
   def set_name
