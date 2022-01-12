@@ -31,7 +31,7 @@ class Api::V1::Consumer::TrackSerializer < ActiveModel::Serializer
   end
 
   def publish_date
-     object.formatted_publish_date
+    object.formatted_publish_date
   end
 
   private
