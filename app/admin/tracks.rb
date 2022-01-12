@@ -56,6 +56,7 @@ ActiveAdmin.register Track do
     end
     column :explicit
     column :public_domain
+    column :featured
     column :created_at, &:formatted_created_at
     column :updated_at, &:formatted_updated_at
     column :file do |track|
@@ -84,6 +85,7 @@ ActiveAdmin.register Track do
       row :publish_date, &:formatted_publish_date
       row :parent_track
       row :explicit
+      row :featured
       row :public_domain
       row :composer
       row :description
@@ -204,6 +206,7 @@ ActiveAdmin.register Track do
       f.input :public_domain
       f.input :explicit
       f.input :instrumental
+      f.input :featured
       f.has_many :track_publishers, heading: 'Publishers', allow_destroy: true do |p|
         p.input :publisher, as: :searchable_select, collection: user.publishers, input_html: { data: { placeholder: 'Select Publisher' } }
         p.input :percentage
