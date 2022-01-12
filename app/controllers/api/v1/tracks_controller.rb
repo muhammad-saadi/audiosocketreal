@@ -9,7 +9,8 @@ class Api::V1::TracksController < Api::BaseController
   param_group :doc_tracks
   def index
     @tracks = @album.tracks.pagination(pagination_params)
-    render json: @tracks.includes(%i[publishers file_attachment], artists_collaborators: :collaborator), meta: { count: @tracks.count }, adapter: :json
+
+    render json: @tracks.includes(:user, track_publishers: [publisher: :publisher_users], artists_collaborators: :collaborator, filters: [sub_filters: [sub_filters: :sub_filters]], file_attachment: :blob), meta: { count: @tracks.size }, adapter: :json
   end
 
   param_group :doc_create_track

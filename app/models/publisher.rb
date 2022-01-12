@@ -11,5 +11,4 @@ class Publisher < ApplicationRecord
   validates :name, presence: true
 
   scope :ordered, -> { order(created_at: :desc) }
-  scope :ordered_by_pro, -> { order(Arel.sql("(case when  pro ILIKE 'us%' then 1 else 0 end) DESC, pro")) }
 end

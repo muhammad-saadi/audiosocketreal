@@ -2,7 +2,8 @@ class RemoveColumnsFromPublishers < ActiveRecord::Migration[6.1]
   def up
     Publisher.find_each do |pub|
       pub.update(name: pub.name.delete(' ').upcase)
-      PublisherUser.create!(publisher_id: pub.id, user_id: pub.user_id, ipi: pub.ipi || '123456789', pro: pub.pro || '-')
+      publisher = PublisherUser.new(publisher_id: pub.id, user_id: pub.user_id, ipi: pub.ipi || '123456789', pro: pub.pro || '-')
+      publisher.save(validate: false)
     end
 
     remove_column :publishers, :user_id, :bigint
@@ -16,12 +17,13 @@ class RemoveColumnsFromPublishers < ActiveRecord::Migration[6.1]
     add_column :publishers, :user_id, :bigint
 
     PublisherUser.find_each do |pubu|
-      current_record = Publisher.find_by(id: pubu.publisher_id)
-      if current_record.ipi.blank? && current_record.pro.blank?
-        current_record.update_columns(user_id: pubu.user_id, ipi: pubu.ipi, pro: pubu.pro)
-        current_record.save!
+      publisher = Publisher.find_by(id: pubu.publisher_id)
+      if publisher.ipi.blank? && publisher.pro.blank?
+        publisher.update_columns(user_id: pubu.user_id, ipi: pubu.ipi, pro: pubu.pro)
+        publisher.save!
       else
-        Publisher.create!(name: current_record.name, user_id: pubu.user_id, ipi: pubu.ipi, pro: pubu.pro)
+        publisher = Publisher.new(name: publisher.name, user_id: pubu.user_id, ipi: pubu.ipi, pro: pubu.pro)
+        publisher.save(validate: false)
       end
     end
 
