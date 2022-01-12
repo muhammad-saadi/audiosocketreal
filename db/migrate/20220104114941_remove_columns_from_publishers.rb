@@ -21,7 +21,6 @@ class RemoveColumnsFromPublishers < ActiveRecord::Migration[6.1]
 
       if publisher.ipi.blank? && publisher.pro.blank?
         publisher.update_columns(user_id: pubu.user_id, ipi: pubu.ipi, pro: pubu.pro)
-        publisher.save!
       else
         publisher = Publisher.new(name: publisher.name, user_id: pubu.user_id, ipi: pubu.ipi, pro: pubu.pro)
         publisher.save(validate: false)
