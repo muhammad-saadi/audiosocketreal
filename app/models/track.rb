@@ -195,6 +195,6 @@ class Track < ApplicationRecord
   end
 
   def formatted_publish_date
-    publish_date.localtime.strftime('%B %d, %Y %R')
+    publish_date&.localtime&.strftime('%B %d, %Y %R')
   end
 end

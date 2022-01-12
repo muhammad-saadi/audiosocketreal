@@ -26,10 +26,6 @@ class Api::V1::Consumer::TrackSerializer < ActiveModel::Serializer
     object.file.presence && UrlHelpers.rails_blob_url(object.file)
   end
 
-  def duration
-    object.file&.metadata.to_h["duration"]&.round(2)
-  end
-
   def created_at
     object.formatted_created_at
   end
