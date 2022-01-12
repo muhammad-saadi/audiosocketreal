@@ -67,6 +67,10 @@ module ActiveAdminHelper
     track.file.blob&.persisted? ? track.file.filename.to_s : 'None'
   end
 
+  def publisher_options
+    User.pluck(:first_name, :last_name, :id).map { |f_name, l_name, id| ["#{f_name} #{l_name}", id] }
+  end
+
   def pro_list
     [
       ['NS (no society)', 'NS'],

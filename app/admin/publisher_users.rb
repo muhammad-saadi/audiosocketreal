@@ -60,7 +60,7 @@ ActiveAdmin.register PublisherUser do
 
   form do |f|
     f.inputs do
-      f.input :user, as: :select, collection: User.all, include_blank: false
+      f.input :user, as: :select, collection: publisher_options, include_blank: false
       f.input :publisher, as: :select, collection: Publisher.pluck(:name, :id), include_blank: false
       f.input :pro, as: :searchable_select, collection: pro_list, include_blank: 'Select a PRO'
       f.input :ipi
