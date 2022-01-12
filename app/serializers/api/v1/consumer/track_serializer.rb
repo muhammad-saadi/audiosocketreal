@@ -1,7 +1,7 @@
 class Api::V1::Consumer::TrackSerializer < ActiveModel::Serializer
 
   attributes :id, :title, :file, :status, :parent_track_id, :public_domain, :created_at, :lyrics, :explicit, :composer, :description,
-             :language, :instrumental, :key, :bpm, :admin_note, :filters, :moods, :genres, :instruments, :themes, :duration
+             :language, :instrumental, :key, :bpm, :admin_note, :filters, :moods, :genres, :instruments, :themes, :duration, :featured, :publish_date
 
   has_many :filters, serializer: Api::V1::FilterSerializer
   has_many :alternate_versions, serializer: Api::V1::TrackSerializer
@@ -28,6 +28,10 @@ class Api::V1::Consumer::TrackSerializer < ActiveModel::Serializer
 
   def created_at
     object.formatted_created_at
+  end
+
+  def publish_date
+     object.formatted_publish_date
   end
 
   private
