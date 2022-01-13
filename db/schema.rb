@@ -412,8 +412,8 @@ ActiveRecord::Schema.define(version: 2022_01_14_055643) do
     t.string "aims_id"
     t.string "aims_status"
     t.string "aims_error_details"
-    t.datetime "publish_date"
     t.float "duration"
+    t.datetime "publish_date"
     t.boolean "featured", default: false
     t.index ["album_id"], name: "index_tracks_on_album_id"
     t.index ["parent_track_id"], name: "index_tracks_on_parent_track_id"
