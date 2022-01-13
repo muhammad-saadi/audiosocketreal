@@ -55,13 +55,11 @@ class Api::V1::PublishersController < Api::BaseController
   end
 
   def publisher_user_params
-     return @publisher_user_params if @publisher_user_params
-
      @publisher_user_params = params.permit(publisher_users_attributes: [:ipi, :pro, :user_id])
-     @publisher_user_params[:publisher_users_attributes].each do |_, p_u_params|
-      p_u_params.merge!(user_id: current_user.id)
-     end
 
+     @publisher_user_params[:publisher_users_attributes].each do |_, publisher_user_params|
+      publisher_user_params.merge!(user_id: current_user.id)
+     end
      @publisher_user_params
   end
 
