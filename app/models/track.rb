@@ -19,7 +19,8 @@ class Track < ApplicationRecord
   belongs_to :album
   belongs_to :parent_track, class_name: 'Track', optional: true
 
-  after_save :set_duration, :set_publish_date
+  after_save :set_duration
+  before_save :set_publish_date
 
   has_one :user, through: :album
 
@@ -188,10 +189,10 @@ class Track < ApplicationRecord
   end
 
   def set_publish_date
-    return unless saved_change_to_status?
+    return unless status_changed?
     return unless approved?
 
-    self.update_columns(publish_date: DateTime.now)
+    self.publish_date = DateTime.now
   end
 
   def formatted_publish_date
