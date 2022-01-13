@@ -46,7 +46,7 @@ class Api::V1::PublishersController < Api::BaseController
   def initialize_publisher
     return current_user.publishers.new(publisher_params) if @publisher.blank?
 
-    @publisher.assign_attributes(publisher_params)
+    @publisher.assign_attributes(publisher_params.except(:name))
     @publisher
   end
 
