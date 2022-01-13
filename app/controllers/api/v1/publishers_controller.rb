@@ -46,17 +46,15 @@ class Api::V1::PublishersController < Api::BaseController
   def initialize_publisher
     return current_user.publishers.new(publisher_params) if @publisher.blank?
 
-    @publisher.assign_attributes(publisher_params.except(:name))
+    @publisher.assign_attributes(publisher_params)
     @publisher
   end
 
   def publisher_params
     @publisher_params = params.permit(:name, publisher_users_attributes: [:ipi, :pro])
+    publisher_user_params = {"publisher_users_attributes"=>{"0"=>{"ipi"=> params[:ipi], "pro"=> params[:pro], user_id: current_user.id}}}
 
-    @publisher_params[:publisher_users_attributes].each do |_, publisher_params|
-      publisher_params.merge!(user_id: current_user.id)
-    end
-
+    @publisher_params.merge!(publisher_user_params)
     @publisher_params
   end
 
