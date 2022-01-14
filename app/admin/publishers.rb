@@ -15,6 +15,7 @@ ActiveAdmin.register Publisher do
     column :name
     column :created_at, &:formatted_created_at
     column :updated_at, &:formatted_updated_at
+    column :default_publisher
     actions
   end
 

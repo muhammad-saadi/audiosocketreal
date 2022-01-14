@@ -51,9 +51,11 @@ class Api::V1::PublishersController < Api::BaseController
   end
 
   def publisher_params
+    params[:publisher_users_attributes] = JSON.parse(params[:publisher_users_attributes])
+
     @publisher_params = params.permit(:name, publisher_users_attributes: [:ipi, :pro])
 
-    @publisher_params[:publisher_users_attributes].each do |_, publisher_params|
+    @publisher_params[:publisher_users_attributes].each do |publisher_params|
       publisher_params.merge!(user_id: current_user.id)
     end
 
