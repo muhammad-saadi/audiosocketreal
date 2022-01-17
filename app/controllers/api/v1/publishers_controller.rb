@@ -64,7 +64,6 @@ class Api::V1::PublishersController < Api::BaseController
   def update_publisher_params
     params[:publisher_users_attributes] = JSON.parse(params[:publisher_users_attributes])
     @publisher_params = params.permit(:name, :id, publisher_users_attributes: [:id, :ipi, :pro])
-    byebug
     publisher_user_id = @publisher.publisher_users.find_by(user_id: current_user.id).id
 
     @publisher_params[:publisher_users_attributes].each do |publisher_params|
