@@ -1,6 +1,6 @@
 ActiveAdmin.register Track do
   config.remove_action_item(:new)
-  permit_params :title, :file, :status, :album_id, :public_domain, :lyrics, :explicit, :composer, :description, :language, :duration, :instrumental, :key, :bpm, :admin_note, :parent_track_id, filter_ids: [], track_publishers_attributes: %i[id publisher_id percentage _destroy], track_writers_attributes: %i[id artists_collaborator_id percentage _destroy]
+  permit_params :title, :file, :status, :album_id, :public_domain, :lyrics, :explicit, :composer, :description, :language, :duration, :featured, :instrumental, :key, :bpm, :admin_note, :parent_track_id, filter_ids: [], track_publishers_attributes: %i[id publisher_id percentage _destroy], track_writers_attributes: %i[id artists_collaborator_id percentage _destroy]
 
   includes :publishers, file_attachment: :blob, album: [:user], track_writers: [:collaborator], filters: %i[parent_filter sub_filters]
 
