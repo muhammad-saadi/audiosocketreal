@@ -25,8 +25,8 @@ class Api::V1::PublishersController < Api::BaseController
 
   param_group :doc_update_publishers
   def update
-    if @publisher.update(publisher_params)
-      render json: current_user.publishers.ordered
+    if @publisher.update(update_publisher_params)
+      render json: current_user.publishers.includes(:publisher_users).ordered
     else
       raise ExceptionHandler::ValidationError.new(@publisher.errors.to_h, 'Error creating publisher.')
     end
@@ -56,6 +56,19 @@ class Api::V1::PublishersController < Api::BaseController
 
     @publisher_params[:publisher_users_attributes].each do |publisher_params|
       publisher_params.merge!(user_id: current_user.id)
+    end
+
+    @publisher_params
+  end
+
+  def update_publisher_params
+    params[:publisher_users_attributes] = JSON.parse(params[:publisher_users_attributes])
+    @publisher_params = params.permit(:name, :id, publisher_users_attributes: [:id, :ipi, :pro])
+    byebug
+    publisher_user_id = @publisher.publisher_users.find_by(user_id: current_user.id).id
+
+    @publisher_params[:publisher_users_attributes].each do |publisher_params|
+      publisher_params.merge!(id: publisher_user_id)
     end
 
     @publisher_params
