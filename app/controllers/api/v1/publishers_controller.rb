@@ -51,7 +51,7 @@ class Api::V1::PublishersController < Api::BaseController
   end
 
   def publisher_params
-    params[:publisher_users_attributes] = JSON.parse(params[:publisher_users_attributes])
+    parse_publisher_user_params
     @publisher_params = params.permit(:name, publisher_users_attributes: [:ipi, :pro])
 
     @publisher_params[:publisher_users_attributes].each do |publisher_params|
@@ -62,15 +62,18 @@ class Api::V1::PublishersController < Api::BaseController
   end
 
   def update_publisher_params
-    params[:publisher_users_attributes] = JSON.parse(params[:publisher_users_attributes])
+    parse_publisher_user_params
     @publisher_params = params.permit(:name, :id, publisher_users_attributes: [:id, :ipi, :pro])
-    publisher_user_id = @publisher.publisher_users.find_by(user_id: current_user.id).id
-
-    @publisher_params[:publisher_users_attributes].each do |publisher_params|
-      publisher_params.merge!(id: publisher_user_id)
-    end
 
     @publisher_params
+  end
+
+  def parse_publisher_user_params
+    begin
+      params[:publisher_users_attributes] = JSON.parse(params[:publisher_users_attributes])
+    rescue JSON::ParseError => e
+      render status: 400, json: { errors: e.message }
+    end
   end
 
   def set_publisher
