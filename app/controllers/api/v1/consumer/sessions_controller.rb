@@ -11,7 +11,9 @@ class Api::V1::Consumer::SessionsController < Api::V1::Consumer::BaseController
   end
 
   def create
-    render json: { auth_token: auth_token }
+    consumer = Consumer.find(JsonWebToken.decode(auth_token)[:consumer_id])
+
+    render json: { auth_token: auth_token, first_name: consumer.first_name, last_name: consumer.last_name, email: consumer.email }
   end
 
   private
