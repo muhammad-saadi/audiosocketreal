@@ -34,7 +34,7 @@ class Api::V1::Consumer::ConsumersController < Api::V1::Consumer::BaseController
   def validate_password
     return if current_consumer&.valid_password?(params[:current_password])
 
-    raise ExceptionHandler::ValidationError.new(current_consumer.errors.to_h, 'Wrong Password')
+    raise ExceptionHandler::AuthorizationError.new('Wrong Password')
   end
 
   def password_params
