@@ -16,6 +16,8 @@ module ExceptionHandler
 
   class LimitError < StandardError; end
 
+  class AuthorizationError < StandardError; end
+
   class TokenError < StandardError
     attr_reader :message
 
@@ -58,6 +60,7 @@ module ExceptionHandler
     rescue_from TaxFormError, with: :four_twenty_two
     rescue_from OAuth2::Error, with: :five_hundred_standard
     rescue_from LimitError, with: :unauthorized_request
+    rescue_from AuthorizationError, with: :five_hundred_special
 
     rescue_from ActiveRecord::RecordNotFound do |e|
       render json: { message: e.message }, status: :not_found
@@ -94,5 +97,9 @@ module ExceptionHandler
   # JSON response with message; Status code 400 - Bad Request
   def four_hundred(e)
     render json: { message: e.message }, status: :bad_request
+  end
+
+  def five_hundred_special(e)
+    render json: { errors: e.message }, status: :internal_server_error
   end
 end
