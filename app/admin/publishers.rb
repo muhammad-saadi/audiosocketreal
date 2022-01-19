@@ -2,9 +2,8 @@ ActiveAdmin.register Publisher do
   config.remove_action_item(:new)
   permit_params :name, publisher_users_attributes: %i[pro ipi user_id]
 
-  includes :users
-
   filter :created_at
+  filter :name_cont, as: :string, label: 'Name'
 
   action_item 'Filters', only: :index do
     link_to('Filters', '/', id: 'sidebar_toggle')
@@ -59,7 +58,7 @@ ActiveAdmin.register Publisher do
       f.has_many :publisher_users do |p|
         p.input :ipi
         p.input :pro
-        p.input :user_id , as: :select, collection: User.artist
+        p.input :user_id , as: :select, collection: User.artist.pluck(:first_name, :id)
       end
     end
 

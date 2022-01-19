@@ -17,6 +17,8 @@ class Api::V1::TrackSerializer < BaseSerializer
       {
         id: track_publisher.publisher.id,
         name: track_publisher.publisher.name,
+        pro: track_publisher.publisher.publisher_users.find_by(user_id: current_user.id).pro,
+        ipi: track_publisher.publisher.publisher_users.find_by(user_id: current_user.id).ipi,
         percentage: track_publisher.percentage
       }
     end

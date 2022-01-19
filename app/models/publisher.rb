@@ -6,7 +6,7 @@ class Publisher < ApplicationRecord
   has_many :track_publishers
   has_many :tracks, through: :track_publishers, dependent: :restrict_with_exception
 
-  validates :name, :pro, presence: true
+  validates :name, presence: true
 
   scope :ordered, -> { order(created_at: :desc) }
 

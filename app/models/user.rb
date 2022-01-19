@@ -31,7 +31,7 @@ class User < ApplicationRecord
   before_save :validate_manager
   after_update :mail_accountant
   after_touch :mail_accountant
-  after_create :add_default_publisher
+  after_create :add_default_publisher, if: :artist?
 
   scope :ordered, -> { order(created_at: :desc) }
 
@@ -144,7 +144,6 @@ class User < ApplicationRecord
   end
 
   def add_default_publisher
-    return unless artist?
     publisher = Publisher.find_by(name: 'AudioSocket')
     self.publisher_users.create(publisher_id: publisher.id, user_id: self.id)
   end

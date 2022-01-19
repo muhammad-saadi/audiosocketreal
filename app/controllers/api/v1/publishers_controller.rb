@@ -13,9 +13,9 @@ class Api::V1::PublishersController < Api::BaseController
 
   param_group :doc_create_publishers
   def create
-    pubName = params[:name].upcase.delete(' ')
-    @publisher = Publisher.find_by_name(pubName).present? ? @publisher.publisher_users.new(params[:publisher_users_attributes]) : Publisher.new(publisher_params)
-    @publisher.name = pubName
+    byebug
+    @publisher = Publisher.find_or_initialize_by(name: params[:name].upcase.delete(' '))
+    @publisher.publisher_users << current_user.publisher_users.new(publisher_user_params)
 
     if @publisher.save
       render json: current_user.publishers.ordered
@@ -45,7 +45,11 @@ class Api::V1::PublishersController < Api::BaseController
   private
 
   def publisher_params
-    params.permit(:name, publisher_users_attributes: [:ipi, :pro, :user_id])
+    params.permit(:name)
+  end
+
+  def publisher_user_params
+    params.require(:publisher_users_attributes).permit(:ipi, :pro, :user_id)
   end
 
   def set_publisher
