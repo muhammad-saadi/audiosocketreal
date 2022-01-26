@@ -33,8 +33,8 @@ class User < ApplicationRecord
 
   scope :ordered, -> { order(created_at: :desc) }
 
-  W9_FORM = 'w9'
-  W8BEN_FORM = 'w8ben'
+  W9_FORM = 'w9Oct2018'
+  W8BEN_FORM = 'w8benOct2021'
 
   def self.authenticate(email, password)
     user = User.find_for_authentication(email: email)
