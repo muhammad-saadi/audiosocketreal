@@ -36,6 +36,12 @@ Rails.application.routes.draw do
             post :create_tax_form
           end
         end
+
+        resources :next_forms, only: %i[] do
+          collection do
+            post :create_next_form
+          end
+        end
       end
 
       namespace :consumer do
@@ -148,6 +154,13 @@ Rails.application.routes.draw do
         collection do
           post :create_tax_form
           post :submit_tax_form
+        end
+      end
+
+      resources :next_forms, only: %i[] do
+        collection do
+          post :create_next_form
+          post :submit_next_form
         end
       end
 
