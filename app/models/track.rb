@@ -81,6 +81,19 @@ class Track < ApplicationRecord
     self.ransack("filters_name_in": filters).result(distinct: true)
   end
 
+  def self.duration(duration_start, duration_end)
+    ids = []
+
+    self.includes(:file_attachment).find_each do |track|
+      blob = track.file.attachment
+      next if blob.blank? || blob&.metadata[:duration].blank? || !blob&.metadata[:duration].between?(duration_start, duration_end)
+
+      ids.push(track.id)
+    end
+
+    self.where(id: ids)
+  end
+
   def self.to_zip
     all.each_with_index.inject([]) do |zip_list, (track, index)|
       next zip_list unless track.file.attached?

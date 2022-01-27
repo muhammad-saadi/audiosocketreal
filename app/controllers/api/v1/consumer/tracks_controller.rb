@@ -12,6 +12,12 @@ class Api::V1::Consumer::TracksController < Api::V1::Consumer::BaseController
     render json: @track
   end
 
+  def duration_tracks
+    @tracks = Track.duration(params[:start].to_f, params[:end].to_f)
+
+    render json: @tracks.pagination(pagination_params)
+  end
+
   private
 
   def set_track
