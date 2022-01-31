@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_01_14_055643) do
+ActiveRecord::Schema.define(version: 2022_01_20_130007) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -270,6 +270,7 @@ ActiveRecord::Schema.define(version: 2022_01_14_055643) do
     t.bigint "parent_filter_id"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.string "kind"
     t.index ["parent_filter_id"], name: "index_filters_on_parent_filter_id"
   end
 
@@ -288,6 +289,16 @@ ActiveRecord::Schema.define(version: 2022_01_14_055643) do
     t.string "name"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+  end
+
+  create_table "media_filters", force: :cascade do |t|
+    t.bigint "filter_id"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.string "filterable_type"
+    t.bigint "filterable_id"
+    t.index ["filter_id"], name: "index_media_filters_on_filter_id"
+    t.index ["filterable_type", "filterable_id"], name: "index_media_filters_on_filterable"
   end
 
   create_table "notes", force: :cascade do |t|
@@ -314,6 +325,19 @@ ActiveRecord::Schema.define(version: 2022_01_14_055643) do
     t.index ["artist_profile_id"], name: "index_payment_informations_on_artist_profile_id"
   end
 
+  create_table "playlist_tracks", force: :cascade do |t|
+    t.text "note"
+    t.string "listable_type"
+    t.bigint "listable_id"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.integer "order"
+    t.string "mediable_type"
+    t.bigint "mediable_id"
+    t.index ["listable_type", "listable_id"], name: "index_playlist_tracks_on_listable"
+    t.index ["mediable_type", "mediable_id"], name: "index_playlist_tracks_on_mediable"
+  end
+
   create_table "publisher_users", force: :cascade do |t|
     t.string "pro"
     t.string "ipi"
@@ -323,18 +347,6 @@ ActiveRecord::Schema.define(version: 2022_01_14_055643) do
     t.datetime "updated_at", precision: 6, null: false
     t.index ["publisher_id"], name: "index_publisher_users_on_publisher_id"
     t.index ["user_id"], name: "index_publisher_users_on_user_id"
-  end
-
-  create_table "playlist_tracks", force: :cascade do |t|
-    t.text "note"
-    t.bigint "track_id"
-    t.string "listable_type"
-    t.bigint "listable_id"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
-    t.integer "order"
-    t.index ["listable_type", "listable_id"], name: "index_playlist_tracks_on_listable"
-    t.index ["track_id"], name: "index_playlist_tracks_on_track_id"
   end
 
   create_table "publishers", force: :cascade do |t|
@@ -355,21 +367,21 @@ ActiveRecord::Schema.define(version: 2022_01_14_055643) do
     t.index ["limitable_type", "limitable_id"], name: "index_request_limits_on_limitable"
   end
 
+  create_table "sfxes", force: :cascade do |t|
+    t.string "title"
+    t.text "description"
+    t.string "keyword"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.float "duration"
+  end
+
   create_table "tax_informations", force: :cascade do |t|
     t.bigint "artist_profile_id"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.string "tax_id"
     t.index ["artist_profile_id"], name: "index_tax_informations_on_artist_profile_id"
-  end
-
-  create_table "track_filters", force: :cascade do |t|
-    t.bigint "filter_id"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
-    t.bigint "track_id"
-    t.index ["filter_id"], name: "index_track_filters_on_filter_id"
-    t.index ["track_id"], name: "index_track_filters_on_track_id"
   end
 
   create_table "track_publishers", force: :cascade do |t|

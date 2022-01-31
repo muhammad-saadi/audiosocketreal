@@ -7,7 +7,7 @@ class Api::V1::Consumer::TracksController < Api::V1::Consumer::BaseController
     @tracks = Track.approved.search(params[:query], params[:query_type], params[:filters], params[:order_by], params[:ids], params[:direction])
     @favorite_track_ids = current_consumer&.favorite_followables('Track', 'favorite')&.ids
 
-    render json: @tracks.pagination(pagination_params), meta: { total_track_count: @tracks.size, favorite_tracks_ids: @favorite_track_ids }, adapter: :json
+    render json: @tracks.pagination(pagination_params), meta: { total_track_count: @tracks.size, favorite_tracks_ids: @favorite_track_ids, options: 'tracks' }, adapter: :json
   end
 
   def show

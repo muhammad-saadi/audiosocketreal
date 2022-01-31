@@ -152,7 +152,7 @@ ActiveAdmin.register Track do
           column :id
           column :name
           column :actions do |filter|
-            link_to t('active_admin.view'), admin_filter_path(filter), class: 'small button'
+            link_to t('active_admin.view'), admin_track_filter_path(filter), class: 'small button'
           end
         end
       end
@@ -195,10 +195,12 @@ ActiveAdmin.register Track do
       end
       f.input :title
       f.input :file, as: :file , label: "Music File"
+
       div class: 'file-hint' do
         span 'Existing File: ' + file_hint(f.object), id: 'hint'
         span link_to 'x', remove_file_admin_track_path(f.object), class: 'remove-file', data: { confirm: 'Are you sure you want to remove this audio?' }, method: :delete, remote: true if f.object.file.blob&.persisted?
       end
+      
       f.input :description, input_html: { class: 'autogrow', rows: 4, cols: 20 }
       f.input :status, as: :select, collection: tracks_status_list, include_blank: false
       f.input :parent_track, as: :searchable_select, collection: user.tracks, input_html: { data: { placeholder: 'Select a Parent Track' } }
@@ -226,7 +228,7 @@ ActiveAdmin.register Track do
 
       br
 
-      Filter.parent_filters.includes(sub_filters: [sub_filters: :sub_filters]).each do |filter|
+      Filter.parent_filters.track.includes(sub_filters: [sub_filters: :sub_filters]).each do |filter|
         next unless filter.sub_filters.size.positive?
 
         f.input :filter_ids, as: :searchable_select, collection: filter.sub_filters, label: filter.name, multiple: true,

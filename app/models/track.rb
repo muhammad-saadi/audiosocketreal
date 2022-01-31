@@ -27,14 +27,14 @@ class Track < ApplicationRecord
   has_one_attached :file
 
   has_many :notes, as: :notable, dependent: :destroy
-  has_many :track_filters, dependent: :destroy
-  has_many :filters, through: :track_filters
+  has_many :media_filters, as: :filterable, dependent: :destroy
+  has_many :filters, through: :media_filters
   has_many :track_publishers, dependent: :destroy
   has_many :publishers, through: :track_publishers
   has_many :track_writers, dependent: :destroy
   has_many :artists_collaborators, through: :track_writers
   has_many :alternate_versions, foreign_key: 'parent_track_id', class_name: 'Track'
-  has_many :playlist_tracks
+  has_many :playlist_tracks, dependent: :destroy
   has_many :consumer_playlists, through: :playlist_tracks, source: :listable, source_type: 'ConsumerPlaylist', dependent: :destroy
   has_many :curated_playlists, through: :playlist_tracks, source: :listable, source_type: 'CuratedPlaylist', dependent: :destroy
 
@@ -197,5 +197,9 @@ class Track < ApplicationRecord
 
   def formatted_publish_date
     publish_date&.localtime&.strftime('%B %d, %Y %R')
+  end
+
+  def filter_count
+    self.filters.size
   end
 end
