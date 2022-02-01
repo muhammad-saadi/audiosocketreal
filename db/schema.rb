@@ -177,6 +177,18 @@ ActiveRecord::Schema.define(version: 2022_01_20_130007) do
     t.index ["artists_collaborator_id"], name: "index_collaborator_profiles_on_artists_collaborator_id"
   end
 
+  create_table "consumer_licenses", force: :cascade do |t|
+    t.text "consumer_license_html"
+    t.float "consumer_price"
+    t.integer "track_id"
+    t.bigint "consumer_id"
+    t.bigint "license_id"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["consumer_id"], name: "index_consumer_licenses_on_consumer_id"
+    t.index ["license_id"], name: "index_consumer_licenses_on_license_id"
+  end
+
   create_table "consumer_playlists", force: :cascade do |t|
     t.string "name"
     t.bigint "folder_id"
@@ -216,6 +228,7 @@ ActiveRecord::Schema.define(version: 2022_01_20_130007) do
     t.string "google_id"
     t.string "facebook_id"
     t.string "linkedin_id"
+    t.string "subscription_type"
     t.index ["email"], name: "index_consumers_on_email", unique: true
     t.index ["reset_password_token"], name: "index_consumers_on_reset_password_token", unique: true
   end
@@ -289,6 +302,25 @@ ActiveRecord::Schema.define(version: 2022_01_20_130007) do
     t.string "name"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+  end
+
+  create_table "license_tracks", force: :cascade do |t|
+    t.bigint "license_id"
+    t.bigint "track_id"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["license_id"], name: "index_license_tracks_on_license_id"
+    t.index ["track_id"], name: "index_license_tracks_on_track_id"
+  end
+
+  create_table "licenses", force: :cascade do |t|
+    t.string "name"
+    t.text "description"
+    t.text "license_html"
+    t.float "price"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.string "subscription"
   end
 
   create_table "media_filters", force: :cascade do |t|
