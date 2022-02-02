@@ -76,6 +76,7 @@ Rails.application.routes.draw do
         resources :tracks, only: %i[index show] do
           collection do
             post :upload_track_search
+            get :duration_tracks
           end
 
           member do

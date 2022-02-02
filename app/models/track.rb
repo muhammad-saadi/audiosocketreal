@@ -112,6 +112,10 @@ class Track < ApplicationRecord
     end
   end
 
+  def self.get_duration_tracks(duration_start, duration_end)
+    self.where(duration: duration_start...duration_end)
+  end
+
   def track_writers=(attributes)
     existing_writers = track_writers.map { |writer| writer.attributes.slice('id', 'percentage', 'artists_collaborator_id').symbolize_keys }
     existing_writers.each do |writer|
