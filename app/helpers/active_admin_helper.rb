@@ -44,7 +44,7 @@ module ActiveAdminHelper
   end
 
   def disabled_collaborators(user)
-    user.collaborators_details.where(status: %w[pending rejected]).ids.map(&:to_s)
+    user.collaborators_details.where(status: %w[rejected]).ids.map(&:to_s)
   end
 
   def artists_collaborators_list

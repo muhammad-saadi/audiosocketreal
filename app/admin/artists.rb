@@ -44,6 +44,7 @@ ActiveAdmin.register User, as: 'Artist' do
 
   show do
     attributes_table do
+      row :id
       row :email
       row :first_name
       row :last_name
@@ -69,7 +70,11 @@ ActiveAdmin.register User, as: 'Artist' do
           row :name
           row :email
           row :banner_image do
-            image_tag(artist.artist_profile.banner_image, width: 320, height: 100) if artist.artist_profile.banner_image.attached?
+            if artist.artist_profile.banner_image.attached?
+              span image_tag(artist.artist_profile.banner_image, width: 320, height: 100)
+              br
+              span link_to 'Download', rails_blob_path(artist.artist_profile.banner_image, disposition: "attachment"), class: 'small button'
+            end
           end
 
           row :banner_image_status do
@@ -77,7 +82,11 @@ ActiveAdmin.register User, as: 'Artist' do
           end
 
           row :profile_image do
-            image_tag(artist.artist_profile.profile_image, width: 100, height: 100) if artist.artist_profile.profile_image.attached?
+            if artist.artist_profile.profile_image.attached?
+              span image_tag(artist.artist_profile.profile_image, width: 100, height: 100)
+              br
+              span link_to 'Download', rails_blob_path(artist.artist_profile.profile_image, disposition: "attachment"), class: 'small button'
+            end
           end
 
           row :profile_image_status do
@@ -88,7 +97,9 @@ ActiveAdmin.register User, as: 'Artist' do
             ul do
               artist.artist_profile.additional_images.each do |img|
                 li do
-                  image_tag(img, width: 100, height: 100)
+                  span image_tag(img, width: 100, height: 100)
+                  br
+                  span link_to 'Download', rails_blob_path(img, disposition: "attachment"), class: 'small button'
                 end
               end
             end

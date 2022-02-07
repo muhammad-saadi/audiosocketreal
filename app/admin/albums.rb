@@ -30,7 +30,7 @@ ActiveAdmin.register Album do
       span link_to t('active_admin.view'), admin_album_path(album), class: 'small button'
       span link_to t('active_admin.edit'), edit_admin_album_path(album), class: 'small button'
       span link_to t('active_admin.delete'), admin_album_path(album), class: 'small button', method: :delete
-      span link_to 'Download',  download_zip_admin_album_path(album), class: 'small button'
+      span link_to 'Download', download_zip_admin_album_path(album), class: 'small button'
     end
   end
 
@@ -39,7 +39,11 @@ ActiveAdmin.register Album do
       row :name
       row :release_date, &:release_date
       row :artwork do
-        image_tag(album.artwork, width: 100, height: 100) if album.artwork.attached?
+        if album.artwork.attached?
+          span image_tag(album.artwork, width: 100, height: 100)
+          br
+          span link_to 'Download', rails_blob_path(album.artwork, disposition: "attachment"), class: 'small button'
+        end
       end
       row('Artist Name'){ |r| r.user }
     end
