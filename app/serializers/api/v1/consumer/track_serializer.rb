@@ -1,6 +1,6 @@
 class Api::V1::Consumer::TrackSerializer < ActiveModel::Serializer
 
-  attributes :id, :title, :file, :status, :parent_track_id, :public_domain, :created_at, :lyrics, :explicit, :composer, :description,
+  attributes :id, :title, :wav_file, :aiff_file, :mp3_file, :status, :parent_track_id, :public_domain, :created_at, :lyrics, :explicit, :composer, :description,
              :language, :instrumental, :key, :bpm, :admin_note, :filters, :moods, :genres, :instruments, :themes, :duration, :featured, :publish_date
 
   has_many :filters, serializer: Api::V1::FilterSerializer
@@ -22,8 +22,16 @@ class Api::V1::Consumer::TrackSerializer < ActiveModel::Serializer
     filters_by_type(Filter::THEMES)
   end
 
-  def file
-    object.file.presence && UrlHelpers.rails_blob_url(object.file)
+  def wav_file
+    object.wav_file.presence && UrlHelpers.rails_blob_url(object.wav_file)
+  end
+
+  def aiff_file
+    object.aiff_file.presence && UrlHelpers.rails_blob_url(object.aiff_file)
+  end
+
+  def mp3_file
+    object.mp3_file.presence && UrlHelpers.rails_blob_url(object.mp3_file)
   end
 
   def created_at

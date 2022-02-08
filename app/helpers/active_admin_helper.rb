@@ -63,9 +63,9 @@ module ActiveAdminHelper
     AdminUser::ROLES.keys.map { |key| [key.to_s.titleize, key.to_s] }
   end
 
-  def file_hint(object)
-    object.file.blob&.persisted? ? object.file.filename.to_s : 'None'
-  end
+  def file_hint(track, file)
+    track.send(file).blob&.persisted? ? track.send(file).filename.to_s : 'None'
+   end
 
   def publisher_options
     User.pluck(:first_name, :last_name, :id).map { |f_name, l_name, id| ["#{f_name} #{l_name}", id] }

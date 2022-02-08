@@ -12,9 +12,7 @@ module TrackDetailsExporter
 
         all.each do |track|
           row = ['', '']
-          row << (track.mpeg? ? track.file.filename : '')
-          row << (track.wav? ? track.file.filename : '')
-          row << (track.aiff? ? track.file.filename : '')
+          row << (track.mp3_file.present? ? track.filename : '')
           row << track.title
           row << track.album.user.full_name
           row << track.album.name
@@ -47,15 +45,4 @@ module TrackDetailsExporter
     end
   end
 
-  def mpeg?
-    file.content_type == 'audio/mpeg'
-  end
-
-  def wav?
-    file.content_type == 'audio/vnd.wave' || file.content_type == 'audio/wave'
-  end
-
-  def aiff?
-    file.content_type == 'audio/aiff' || file.content_type == 'audio/x-aiff'
-  end
 end

@@ -14,10 +14,11 @@ class Album < ApplicationRecord
   def upload_tracks(files)
     messages = []
     files.each do |file|
-      track = Track.new(file: file, title: file.original_filename)
+      file_type = file.path.split('.').pop.downcase
+      track = Track.new("#{file_type}_file": file, title: file.original_filename)
       track.valid?
-      if track.errors[:file].present?
-        messages.append({ file: file.original_filename, error: track.errors[:file] })
+      if track.errors[:"#{file_type}_file"].present?
+        messages.append({ "#{file_type}_file": file.original_filename, error: track.errors[:"#{file_type}_file"] })
       else
         tracks << track
         track.save(validate: false)

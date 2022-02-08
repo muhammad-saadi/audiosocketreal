@@ -25,7 +25,7 @@ class Folder < ApplicationRecord
   end
 
   def self.consumer_playlist_hash
-    { consumer_playlists: [banner_image_attachment: :blob, playlist_image_attachment: :blob, tracks: [:alternate_versions, filters: [:parent_filter, sub_filters: [sub_filters: :sub_filters]], file_attachment: :blob]] }
+    { consumer_playlists: [banner_image_attachment: :blob, playlist_image_attachment: :blob, tracks: [:alternate_versions, filters: [:parent_filter, sub_filters: [sub_filters: :sub_filters]], wav_file_attachment: :blob, aiff_file_attachment: :blob, mp3_file_attachment: :blob]] }
   end
 
   def self.eagerload_cols(consumer)

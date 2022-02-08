@@ -5,26 +5,23 @@ class Track < ApplicationRecord
   include TrackDetailsExporter
   include AimsCallbacks
   include Favoritable
+  include SoundTrack
 
   validates :title, presence: true
-  validates :file, presence: true
-  validates :file, blob: { content_type: %w[audio/vnd.wave audio/wave audio/aiff audio/x-aiff] }
-  validates :file, bitrate: { bits: [16, 24], sample_rate: 48_000 }
   validates :track_writers, presence: true, unless: :pending?
   validate :publishers_validation, unless: :pending?
   validate :artists_collaborators_validation, unless: :pending?
   validate :writers_percentage_validation, unless: :pending?
   validate :publishers_percentage_validation, unless: :pending?
+  validate :any_audio_file_present?
 
   belongs_to :album
   belongs_to :parent_track, class_name: 'Track', optional: true
 
-  after_save :set_duration
+  after_save :convert_to_mp3_audio
   before_save :set_publish_date
 
   has_one :user, through: :album
-
-  has_one_attached :file
 
   has_many :notes, as: :notable, dependent: :destroy
   has_many :media_filters, as: :filterable, dependent: :destroy
@@ -50,7 +47,7 @@ class Track < ApplicationRecord
 
   enum status: STATUSES
 
-  TRACK_EAGER_LOAD_COLS = [:alternate_versions, { filters: [:parent_filter, :tracks, sub_filters: [:tracks, sub_filters: [:tracks, :sub_filters]]], file_attachment: :blob }].freeze
+  TRACK_EAGER_LOAD_COLS = [:alternate_versions, { filters: [:parent_filter, :tracks, sub_filters: [:tracks, sub_filters: [:tracks, :sub_filters]]], wav_file_attachment: :blob, aiff_file_attachment: :blob, mp3_file_attachment: :blob }].freeze
 
   scope :order_by, ->(attr, direction) { order("#{attr} #{direction}") }
 
@@ -59,7 +56,7 @@ class Track < ApplicationRecord
   end
 
   def filename(index = '')
-    name = file.filename.to_s
+    name = mp3_file.filename.to_s
     (title.presence || File.basename(name, File.extname(name))) + index + File.extname(name)
   end
 
@@ -94,22 +91,6 @@ class Track < ApplicationRecord
 
   def self.filter_search(filters)
     self.ransack("filters_name_matches_any": filters).result(distinct: true)
-  end
-
-  def self.to_zip
-    all.each_with_index.inject([]) do |zip_list, (track, index)|
-      next zip_list unless track.file.attached?
-
-      file_name = zip_list.pluck(1).include?(track.filename) ? track.filename(" (#{index})") : track.filename
-      zip_list << [track.file, file_name]
-    end
-  end
-
-  def filter_ids=(ids)
-    transaction do
-      super
-      raise ActiveRecord::Rollback unless valid?
-    end
   end
 
   def track_writers=(attributes)
@@ -181,13 +162,6 @@ class Track < ApplicationRecord
     errors.add('track_writers', 'percentage sum is not 100')
   end
 
-  def set_duration
-    return if self.attachment_changes.empty?
-
-    filepath = self.attachment_changes['file'].attachable.path
-    self.update_columns(duration: FFMPEG::Movie.new(filepath).duration&.round(2))
-  end
-
   def set_publish_date
     return unless status_changed?
     return unless approved?
@@ -199,7 +173,30 @@ class Track < ApplicationRecord
     publish_date&.localtime&.strftime('%B %d, %Y %R')
   end
 
-  def filter_count
-    self.filters.size
+  def any_audio_file_present?
+    unless FILE_TYPES.any? { |field| self.send(field).present? }
+      FILE_TYPES.each do |field|
+        errors.add(field, 'At least one track must be uploaded.')
+      end
+    end
+  end
+
+  def convert_to_mp3_audio
+    return if attachment_changes['mp3_file'].present? || mp3_file.present?
+
+    if attachment_changes.present?
+      file = self.attachment_changes.first[0]
+      file_path = self.attachment_changes["#{file}"].attachable.path
+      mp3_file_path = file_path.downcase.gsub('.aiff', ".mp3").gsub('.wav', '.mp3')
+    else
+      file = aiff_file.present? ? "aiff_file" : "wav_file"
+      file_key = send(file).key
+      file_path = ActiveStorage::Blob.service.path_for(file_key)
+      mp3_file_path = "#{file_path}.mp3"
+    end
+
+    mp3_file_name = send(file).blob.filename.to_s.downcase.gsub('.aiff', ".mp3").gsub('.wav', '.mp3')
+    system("ffmpeg -i #{file_path} -f mp3  #{mp3_file_path}")
+    self.mp3_file.attach(io: File.open(mp3_file_path), filename: "#{mp3_file_name}", content_type: 'audio/mpeg')
   end
 end

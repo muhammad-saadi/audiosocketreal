@@ -10,7 +10,7 @@ class Api::V1::TracksController < Api::BaseController
   def index
     @tracks = @album.tracks.pagination(pagination_params)
 
-    render json: @tracks.includes(:user, track_publishers: [publisher: :publisher_users], artists_collaborators: :collaborator, filters: [sub_filters: [sub_filters: :sub_filters]], file_attachment: :blob), meta: { count: @tracks.size }, adapter: :json
+    render json: @tracks.includes(:user, track_publishers: [publisher: :publisher_users], artists_collaborators: :collaborator, filters: [sub_filters: [sub_filters: :sub_filters]], wav_file_attachment: :blob, aiff_file_attachment: :blob, mp3_file_attachment: :blob), meta: { count: @tracks.size }, adapter: :json
   end
 
   param_group :doc_create_track
@@ -49,7 +49,7 @@ class Api::V1::TracksController < Api::BaseController
   private
 
   def track_params
-    params.permit(:title, :file, :public_domain, :status, :lyrics, :explicit, :composer, :description,
+    params.permit(:title, :wav_file, :aiff_file, :mp3_file, :public_domain, :status, :lyrics, :explicit, :composer, :description,
                   :language, :instrumental, :key, :bpm, :admin_note, :parent_track_id, track_publishers: %i[publisher_id percentage],
                                                                                        track_writers: %i[artists_collaborator_id percentage])
   end
