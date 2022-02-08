@@ -19,7 +19,7 @@ class ConsumerPlaylist < ApplicationRecord
   accepts_nested_attributes_for :playlist_tracks, allow_destroy: true
 
   def self.eagerload_columns
-    { banner_image_attachment: :blob, playlist_image_attachment: :blob, tracks: [:alternate_versions, filters: [:parent_filter, sub_filters: [sub_filters: :sub_filters]], file_attachment: :blob] }
+    { banner_image_attachment: :blob, playlist_image_attachment: :blob, tracks: [:alternate_versions, filters: [:parent_filter, sub_filters: [sub_filters: :sub_filters]], wav_file_attachment: :blob, aiff_file_attachment: :blob, mp3_file_attachment: :blob] }
   end
 
   def folder_validation

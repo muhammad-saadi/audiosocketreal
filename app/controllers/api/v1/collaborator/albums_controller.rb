@@ -8,7 +8,7 @@ class Api::V1::Collaborator::AlbumsController < Api::V1::Collaborator::BaseContr
   param_group :doc_albums
   def index
     @albums = @current_artist.albums.pagination(pagination_params)
-    render json: @albums.includes(tracks: [:publishers, :file_attachment, { artists_collaborators: :collaborator }]),
+    render json: @albums.includes(tracks: [:publishers, :wav_file_attachment, :aiff_file_attachment, :mp3_file_attachment, { artists_collaborators: :collaborator }]),
            meta: { count: @albums.count }, each_serializer: Api::V1::AlbumSerializer, adapter: :json
   end
 
@@ -64,7 +64,7 @@ class Api::V1::Collaborator::AlbumsController < Api::V1::Collaborator::BaseContr
   private
 
   def set_album
-    @album = @current_artist.albums.includes(tracks: [:publishers, :file_attachment, { artists_collaborators: :collaborator }]).find(params[:id])
+    @album = @current_artist.albums.includes(tracks: [:publishers, :wav_file_attachment, :aiff_file_attachment, :mp3_file_attachment, { artists_collaborators: :collaborator }]).find(params[:id])
   end
 
   def album_params

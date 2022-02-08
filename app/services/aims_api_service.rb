@@ -39,7 +39,7 @@ class AimsApiService
 
   def self.create_track(track, filepath: nil, create: false)
     if create
-      track.file.open do |file|
+      track.mp3_file.open do |file|
         fields = fields(track, 'create')
         fields[:body][:track] = file
         HTTParty.post("#{BASE_URL}/tracks", fields).parsed_response

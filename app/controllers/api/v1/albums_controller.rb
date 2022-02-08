@@ -8,7 +8,7 @@ class Api::V1::AlbumsController < Api::BaseController
   param_group :doc_albums
   def index
     @albums = current_user.albums.pagination(pagination_params)
-    render json: @albums.includes(tracks: [:publishers, :file_attachment, { artists_collaborators: :collaborator }]),
+    render json: @albums.includes(tracks: [:publishers, :wav_file_attachment, :aiff_file_attachment, :mp3_file_attachment, { artists_collaborators: :collaborator }]),
            meta: { count: @albums.count }, adapter: :json
   end
 
@@ -57,14 +57,14 @@ class Api::V1::AlbumsController < Api::BaseController
   def bulk_upload_tracks
     raise ExceptionHandler::ArgumentError.new('File attachment limit of 20 files exceeded') if params[:files].length > 20
     messages = @album.upload_tracks(params[:files].to_a)
-    render json: @album, 
+    render json: @album,
            meta: { total: params[:files].to_a.count, uploaded: params[:files].to_a.count - messages.count, messages: messages }, adapter: :json
   end
 
   private
 
   def set_album
-    @album = current_user.albums.includes(tracks: [:publishers, :file_attachment, { artists_collaborators: :collaborator }]).find(params[:id])
+    @album = current_user.albums.includes(tracks: [:publishers, :wav_file_attachment, :aiff_file_attachment, :mp3_file_attachment, { artists_collaborators: :collaborator }]).find(params[:id])
   end
 
   def album_params
