@@ -1,9 +1,9 @@
-ActiveAdmin.register Filter do
-  permit_params :name, :parent_filter_id, :max_levels_allowed, :featured
+ActiveAdmin.register Filter, as: 'Sfx Filter'   do
+  permit_params :name, :parent_filter_id, :max_levels_allowed, :featured, :kind
 
   controller do
     def scoped_collection
-      return end_of_association_chain.parent_filters if params[:action] == 'index'
+      return end_of_association_chain.parent_filters.sfx if params[:action] == 'index'
 
       super
     end
@@ -28,20 +28,20 @@ ActiveAdmin.register Filter do
       row :updated_at, &:formatted_updated_at
     end
 
-    if filter.max_levels_allowed.positive?
+    if sfx_filter.max_levels_allowed.positive?
       panel 'Sub-Filters' do
         panel('', class: 'align-right') do
-          link_to 'Add new Sub-Filter', new_admin_filter_path(filter: { parent_filter_id: filter.id }), class: 'medium button'
+          link_to 'Add new Sub-Filter', new_admin_sfx_filter_path(filter: { parent_filter_id: sfx_filter.id }), class: 'medium button'
         end
 
-        table_for filter.sub_filters do
-          if filter.sub_filters.blank?
+        table_for sfx_filter.sub_filters do
+          if sfx_filter.sub_filters.blank?
             column 'No Records Found'
           else
             column :name
             column :featured
             column :actions do |filter|
-              link_to 'view', admin_filter_path(filter), class: 'small button'
+              link_to 'view', admin_sfx_filter_path(filter), class: 'small button'
             end
           end
         end
@@ -54,6 +54,8 @@ ActiveAdmin.register Filter do
       f.input :parent_filter, as: :select, collection: [f.object.parent_filter], include_blank: false
       f.input :name
       f.input :featured
+      f.input :kind, input_html: { value: 'Sfx' }, as: :hidden
+
       if f.object.parent_filter.blank?
         f.input :max_levels_allowed
       else
@@ -64,7 +66,7 @@ ActiveAdmin.register Filter do
 
     f.actions do
       f.action :submit
-      f.cancel_link(f.object.persisted? ? { action: 'show' } : (f.object.parent_filter.present? ? admin_filter_path(f.object.parent_filter_id) : admin_filters_path))
+      f.cancel_link(f.object.persisted? ? { action: 'show' } : (f.object.parent_filter.present? ? admin_sfx_filter_path(f.object.parent_filter_id) : admin_sfx_filters_path))
     end
   end
 end

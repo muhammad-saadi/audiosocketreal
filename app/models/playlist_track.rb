@@ -1,5 +1,5 @@
 class PlaylistTrack < ApplicationRecord
-  belongs_to :track
+  belongs_to :mediable, polymorphic: true
   belongs_to :listable, polymorphic: true
   validates_uniqueness_of :track_id, scope: [:listable_id]
   validates_uniqueness_of :order, scope: [:listable_id]

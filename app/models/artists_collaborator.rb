@@ -14,6 +14,7 @@ class ArtistsCollaborator < ApplicationRecord
   accepts_nested_attributes_for :collaborator_profile
 
   scope :ordered, -> { order(created_at: :desc) }
+  scope :by_access, -> (access) { where(access: access) }
   scope :non_self_collaborators, -> { where.not('artist_id = collaborator_id') }
 
   STATUSES = {
@@ -29,9 +30,6 @@ class ArtistsCollaborator < ApplicationRecord
 
   enum status: STATUSES
   enum access: ACCESSES
-
-  scope :by_access, -> (access) { where(access: access) }
-  scope :ordered, -> { order(created_at: :desc) }
 
   def encoded_id
     JsonWebToken.encode({ id: id })

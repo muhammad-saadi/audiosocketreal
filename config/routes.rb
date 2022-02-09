@@ -83,6 +83,8 @@ Rails.application.routes.draw do
           end
         end
 
+        resources :sfxes, only: %i[index show]
+
         resources :users, only: %i[index show]
 
         resources :folders, except: %i[new edit]

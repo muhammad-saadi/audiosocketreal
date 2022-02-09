@@ -63,8 +63,8 @@ module ActiveAdminHelper
     AdminUser::ROLES.keys.map { |key| [key.to_s.titleize, key.to_s] }
   end
 
-  def file_hint(track)
-    track.file.blob&.persisted? ? track.file.filename.to_s : 'None'
+  def file_hint(object)
+    object.file.blob&.persisted? ? object.file.filename.to_s : 'None'
   end
 
   def publisher_options
