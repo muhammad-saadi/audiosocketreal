@@ -38,9 +38,9 @@ ActiveAdmin.register Album do
   index do
     selectable_column
     id_column
-    column :name
+    column 'Album Name', :name
     column :release_date
-    column 'Artist Name', :user
+    column 'Artist Name', :user_id
     column :created_at, &:formatted_created_at
     column :updated_at, &:formatted_updated_at
     column :actions do |album|
@@ -54,17 +54,15 @@ ActiveAdmin.register Album do
 
   show do
     attributes_table do
-      row :name
+      row 'Album Name', &:name
       row :release_date, &:release_date
       row :artwork do
-        if album.artwork.attached?
-          span image_tag(album.artwork, width: 100, height: 100)
-          br
-          span link_to 'Download', rails_blob_path(album.artwork, disposition: "attachment"), class: 'small button'
-        end
+        image_tag(album.artwork, width: 100, height: 100) if album.artwork.attached?
       end
       row('Artist Name'){ |r| r.user }
       row :admin_note
+      row('Artist\'s PRO'){ |r| r.user.artist_profile.pro }
+      row('Artist\'s IPI'){ |r| r.user.artist_profile.ipi }
     end
 
     panel 'Tracks' do
@@ -81,6 +79,36 @@ ActiveAdmin.register Album do
           column :status
           column :actions do |track|
             link_to 'view', admin_track_path(track), class: 'small button'
+          end
+        end
+      end
+    end
+
+    panel 'Publishers' do
+      table_for album.user.publishers do
+        if album.user.publishers.blank?
+          column 'No Records Found'
+        else
+          column :name
+          column :pro
+          column :ipi
+          column :actions do |publisher|
+            link_to 'view', admin_publisher_path(publisher), class: 'small button'
+          end
+        end
+      end
+    end
+
+    panel 'Agreements' do
+      @users_agreements = album.user.users_agreements.includes(:agreement)
+      table_for @users_agreements do
+        if @users_agreements.blank?
+          column 'No Records Found'
+        else
+          column (:agreement_type) { |users_agreement| users_agreement.agreement.agreement_type }
+          column :role
+          column :actions do |user_agreement|
+            link_to 'view', admin_agreement_path(user_agreement.agreement), class: 'small button'
           end
         end
       end
@@ -114,7 +142,7 @@ ActiveAdmin.register Album do
 
   form do |f|
     f.inputs do
-      f.input :name
+      f.input :name, label: "Artist Name"
       f.input :release_date, as: :date_picker
       f.input :artwork, as: :file
       f.input :user, as: :searchable_select , collection: User.artist, label: 'Artist', include_blank: 'Select an Artist'
