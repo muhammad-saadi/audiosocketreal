@@ -35,6 +35,16 @@ class Api::V1::Consumer::FavoritesFollowingController < Api::V1::Consumer::BaseC
     end
   end
 
+  def favorite_sfxes
+    @sfxes = current_consumer.favorite_followables('Sfx', 'favorite')
+
+    if @sfxes.present?
+      render json: @sfxes.includes(Sfx::SFX_EAGER_LOAD_COLS), meta: { count: @sfxes.size }, adapter: :json
+    else
+      render json: { status: "No favorite sound affects" }
+    end
+  end
+
   def favorited_followed_playlists
     @playlists = current_consumer.playlists(params[:type])
 

@@ -1,10 +1,12 @@
 class Api::V1::Consumer::SfxesController < Api::V1::Consumer::BaseController
-  before_action :set_sfx, only: %i[show]
+  before_action :set_sfx, only: :show
   skip_before_action :authenticate_consumer!, only: %i[show index]
 
   def index
-    @sfxes = Sfx.filter(params[:search_key], params[:search_query]).order(params[:order_by]).pagination(pagination_params)
-    render json: @sfxes.includes(Sfx::SFX_EAGER_LOAD_COLS), meta: { options: 'sfxes' }, adapter: :json
+    @sfxes = Sfx.search(params)
+    @favorite_sfx_ids = current_consumer&.favorite_followables('Sfx', 'favorite')&.ids
+
+    render json: @sfxes.pagination(pagination_params), meta: { total_sfx_count: @sfxes.size, favorite_sfx_ids: @favorite_sfx_ids, options: 'sfxes' }, adapter: :json
   end
 
   def show
