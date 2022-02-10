@@ -57,7 +57,11 @@ ActiveAdmin.register Album do
       row 'Album Name', &:name
       row :release_date, &:release_date
       row :artwork do
-        image_tag(album.artwork, width: 100, height: 100) if album.artwork.attached?
+        if album.artwork.attached?
+          span image_tag(album.artwork, width: 100, height: 100)
+          br
+          span link_to 'Download', rails_blob_path(album.artwork, disposition: "attachment"), class: 'small button'
+        end
       end
       row('Artist Name'){ |r| r.user }
       row :admin_note
