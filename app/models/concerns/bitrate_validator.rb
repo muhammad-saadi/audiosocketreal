@@ -12,8 +12,8 @@ class BitrateValidator < ActiveModel::EachValidator
       record.errors.add(attribute, "bits per sample should be #{options[:bits].map { |bit| "#{bit}-bit" }.join(' or ')}")
     end
 
-    unless options[:sample_rate] == metadata[:sample_rate].to_i
-      record.errors.add(attribute, "sample rate should be #{options[:sample_rate] / 1000}k")
+    unless options[:sample_rate].include? metadata[:sample_rate].to_i
+      record.errors.add(attribute, "sample rate should be #{options[:sample_rate].map { |rate| "#{rate.to_f/1000}k" }.join(' or ') }")
     end
   end
 end
