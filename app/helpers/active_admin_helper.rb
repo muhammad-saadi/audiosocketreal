@@ -40,7 +40,7 @@ module ActiveAdminHelper
   end
 
   def collaborators_details_list(user)
-    user.collaborators_details.includes(:collaborator).map { |u| [u.collaborator.email, u.id] }
+    user.collaborators_details.includes(:collaborator).map { |u| ["#{u.collaborator.email} - #{u.status}", u.id] }
   end
 
   def disabled_collaborators(user)
