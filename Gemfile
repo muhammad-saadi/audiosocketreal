@@ -83,4 +83,3 @@ gem 'xlsxtream'
 gem 'activestorage-audio'
 gem 'streamio-ffmpeg'
 gem "pundit"
-

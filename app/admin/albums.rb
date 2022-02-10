@@ -1,5 +1,5 @@
 ActiveAdmin.register Album do
-  permit_params :name, :release_date, :user_id, :artwork
+  permit_params :name, :release_date, :user_id, :artwork, :admin_note
 
   includes :user
 
@@ -15,7 +15,24 @@ ActiveAdmin.register Album do
 
   member_action :download_zip, method: :get do
     album = Album.find(params[:id])
-    zipline(album.tracks.to_zip, "#{album.name}.zip")
+
+    xlsx_sheet = Tempfile.new("#{album.name}_tracks_data.xlsx")
+    xlsx_sheet.write(album.tracks.track_detail_sheet)
+    xlsx_sheet.rewind
+
+    artwork  = [album.artwork, album.artwork.filename]
+    sheet = [xlsx_sheet, "#{album.name}_tracks_data.xlsx"]
+
+    album_file = album.tracks.to_zip << artwork
+    album_file << sheet
+
+    zipline(album_file, "#{album.name}.zip")
+  end
+
+  member_action :download_xlsx, mehtod: :get do
+    album = Album.find(params[:id])
+    xlsx_sheet = album.tracks.track_detail_sheet
+    send_data xlsx_sheet, filename: "#{album.name}_tracks_data.xlsx", type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
   end
 
   index do
@@ -30,7 +47,8 @@ ActiveAdmin.register Album do
       span link_to t('active_admin.view'), admin_album_path(album), class: 'small button'
       span link_to t('active_admin.edit'), edit_admin_album_path(album), class: 'small button'
       span link_to t('active_admin.delete'), admin_album_path(album), class: 'small button', method: :delete
-      span link_to 'Download', download_zip_admin_album_path(album), class: 'small button'
+      span link_to 'Download Zip', download_zip_admin_album_path(album), class: 'small button'
+      span link_to 'Download XLSX', download_xlsx_admin_album_path(album), class: 'small button'
     end
   end
 
@@ -46,6 +64,7 @@ ActiveAdmin.register Album do
         end
       end
       row('Artist Name'){ |r| r.user }
+      row :admin_note
     end
 
     panel 'Tracks' do
@@ -99,6 +118,7 @@ ActiveAdmin.register Album do
       f.input :release_date, as: :date_picker
       f.input :artwork, as: :file
       f.input :user, as: :searchable_select , collection: User.artist, label: 'Artist', include_blank: 'Select an Artist'
+      f.input :admin_note, input_html: { class: 'autogrow', rows: 4, cols: 20 }
     end
 
     f.actions do

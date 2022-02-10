@@ -1,5 +1,6 @@
 class Album < ApplicationRecord
   include Pagination
+  include TrackDetailsExporter
 
   belongs_to :user
 

@@ -1,6 +1,6 @@
 ActiveAdmin.register User, as: 'Artist' do
   config.remove_action_item(:new)
-  permit_params :first_name, :last_name
+  permit_params :first_name, :last_name, :admin_note
 
   filter :first_name_or_last_name_cont, as: :string, label: 'Name'
   filter :artist_profile_name_cont, as: :string, label: 'Artist Name'
@@ -53,6 +53,7 @@ ActiveAdmin.register User, as: 'Artist' do
       row :roles do
         artist.roles_string
       end
+      row :admin_note
     end
 
     panel 'Artist Profile' do
@@ -339,6 +340,7 @@ ActiveAdmin.register User, as: 'Artist' do
     f.inputs do
       f.input :first_name
       f.input :last_name
+      f.input :admin_note, input_html: { class: 'autogrow', rows: 4, cols: 20 }
     end
 
     f.actions do
