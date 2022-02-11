@@ -161,4 +161,8 @@ module ActiveAdminHelper
       ['G# minor']
     ]
   end
+
+  def license_options
+    License.pluck(:name, :subscription, :id).map { |name, sub, id| ["#{name}-#{sub}", id] }
+  end
 end

@@ -37,6 +37,10 @@ class Track < ApplicationRecord
   has_many :playlist_tracks, dependent: :destroy
   has_many :consumer_playlists, through: :playlist_tracks, source: :listable, source_type: 'ConsumerPlaylist', dependent: :destroy
   has_many :curated_playlists, through: :playlist_tracks, source: :listable, source_type: 'CuratedPlaylist', dependent: :destroy
+  has_many :license_tracks, as: :mediable, dependent: :destroy
+  has_many :licenses, through: :license_tracks
+  has_many :collection_tracks, dependent: :destroy
+  has_many :collections, through: :collection_tracks
 
   accepts_nested_attributes_for :track_publishers, allow_destroy: true
   accepts_nested_attributes_for :track_writers, allow_destroy: true
@@ -49,6 +53,13 @@ class Track < ApplicationRecord
   }.freeze
 
   enum status: STATUSES
+  TEMP_PRICE = 50
+
+  scope :order_by, ->(attr, direction) { order("#{attr} #{direction}") }
+
+  ransacker :char_id do
+    Arel.sql("to_char(\"tracks\".\"id\", '99999')")
+  end
 
   TRACK_EAGER_LOAD_COLS = [:alternate_versions, { filters: [:parent_filter, :tracks, sub_filters: [:tracks, sub_filters: [:tracks, :sub_filters]]], file_attachment: :blob }].freeze
 

@@ -80,6 +80,7 @@ Rails.application.routes.draw do
 
           member do
             post :similar_tracks
+            post :buy_license
           end
         end
 

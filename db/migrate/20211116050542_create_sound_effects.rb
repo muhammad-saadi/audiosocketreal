@@ -4,6 +4,7 @@ class CreateSoundEffects < ActiveRecord::Migration[6.1]
       t.string :title
       t.text :description
       t.string :keyword
+      
       t.timestamps
     end
   end

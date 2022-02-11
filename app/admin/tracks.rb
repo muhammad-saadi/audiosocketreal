@@ -1,6 +1,7 @@
 ActiveAdmin.register Track do
   config.remove_action_item(:new)
-  permit_params :title, :file, :status, :album_id, :public_domain, :lyrics, :explicit, :composer, :description, :language, :duration, :featured, :instrumental, :key, :bpm, :admin_note, :parent_track_id, filter_ids: [], track_publishers_attributes: %i[id publisher_id percentage _destroy], track_writers_attributes: %i[id artists_collaborator_id percentage _destroy]
+
+  permit_params :title, :file, :status, :album_id, :public_domain, :lyrics, :explicit, :composer, :description, :language, :duration, :featured, :instrumental, :key, :bpm, :admin_note, :parent_track_id, filter_ids: [], collection_ids: [], license_ids: [], track_publishers_attributes: %i[id publisher_id percentage _destroy], track_writers_attributes: %i[id artists_collaborator_id percentage _destroy]
 
   includes :publishers, file_attachment: :blob, album: [:user], track_writers: [:collaborator], filters: %i[parent_filter sub_filters]
 
@@ -248,6 +249,8 @@ ActiveAdmin.register Track do
       f.input :key, as: :searchable_select, collection: key_signatures_list, include_blank: 'Select a Key Signature', label: "Key Signature"
       f.input :bpm
       f.input :lyrics, input_html: { class: 'autogrow', rows: 4, cols: 20 }
+      f.input :collections, as: :searchable_select, collection: Collection.pluck(:name, :id), input_html: { multiple: true, data: { placeholder: 'Select Collections' }, class: 'collection_select' }
+      f.input :licenses, as: :searchable_select, collection: license_options, input_html: { data: { placeholder: 'Select Associated Licenses' } }
       f.input :admin_note, label: "Notes", input_html: { class: 'autogrow', rows: 4, cols: 20 }
     end
 

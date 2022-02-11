@@ -9,6 +9,8 @@ class Consumer < ApplicationRecord
   has_one :consumer_profile, dependent: :destroy
   has_many :folders, dependent: :destroy
   has_many :consumer_playlists, dependent: :destroy
+  has_many :consumer_licenses, dependent: :destroy
+  has_many :licenses, through: :consumer_licenses
 
   validates :first_name, :last_name, presence: true
 

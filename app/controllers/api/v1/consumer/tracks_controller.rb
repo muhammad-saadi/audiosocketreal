@@ -1,13 +1,22 @@
 class Api::V1::Consumer::TracksController < Api::V1::Consumer::BaseController
-  before_action :set_track, only: :show
+  before_action :set_track, only: %i[show buy_license]
   skip_before_action :authenticate_consumer!, only: %i[show index]
-  before_action :authenticate_consumer!, only: %i[show index], if: :consumer_signed_in?
 
   def index
     @tracks = Track.approved.search(params[:ids], params[:direction], search_attributes)
     @favorite_track_ids = current_consumer&.favorite_followables('Track', 'favorite')&.ids
 
     render json: @tracks.pagination(pagination_params), meta: { total_track_count: @tracks.size, favorite_tracks_ids: @favorite_track_ids, options: 'tracks' }, adapter: :json
+  end
+
+  def buy_license
+    consumer_license = ConsumerLicenseService.consumer_licenser(current_consumer, @track)
+    
+    if consumer_license.save
+      render json: consumer_license
+    else
+      raise ExceptionHandler::ValidationError.new(consumer_license.errors.to_h, 'Error buying license.')
+    end
   end
 
   def show
@@ -40,9 +49,5 @@ class Api::V1::Consumer::TracksController < Api::V1::Consumer::BaseController
 
   def set_track
     @track = Track.approved.includes(Track::TRACK_EAGER_LOAD_COLS).find(params[:id])
-  end
-
-  def consumer_signed_in?
-    request.headers['auth-token'].present?
   end
 end

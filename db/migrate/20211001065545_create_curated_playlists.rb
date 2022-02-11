@@ -4,6 +4,7 @@ class CreateCuratedPlaylists < ActiveRecord::Migration[6.1]
       t.string :name
       t.string :category
       t.integer :order
+      
       t.timestamps
     end
   end
