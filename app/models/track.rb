@@ -53,14 +53,8 @@ class Track < ApplicationRecord
   }.freeze
 
   enum status: STATUSES
+
   TEMP_PRICE = 50
-
-  scope :order_by, ->(attr, direction) { order("#{attr} #{direction}") }
-
-  ransacker :char_id do
-    Arel.sql("to_char(\"tracks\".\"id\", '99999')")
-  end
-
   TRACK_EAGER_LOAD_COLS = [:alternate_versions, { filters: [:parent_filter, :tracks, sub_filters: [:tracks, sub_filters: [:tracks, :sub_filters]]], file_attachment: :blob }].freeze
 
   scope :order_by, ->(attr, direction) { order("#{attr} #{direction}") }
