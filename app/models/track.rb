@@ -63,14 +63,15 @@ class Track < ApplicationRecord
     (title.presence || File.basename(name, File.extname(name))) + index + File.extname(name)
   end
 
-  def self.search(query, query_type, filters, order_by_attr, ids, direction = 'ASC')
-    scope = self.all
+  def self.search(ids, direction = 'ASC', attrs = {})
+    scope = self
     scope = scope.with_ids(ids) if ids.present?
-    scope = scope.with_ids(aims_search_results(query)) if query_type == 'aims_search' && query.present?
-    scope = scope.filter_search(filters) if filters.present?
-    scope = scope.db_search(query) if query_type == 'local_search' && query.present?
+    scope = scope.with_ids(aims_search_results(attrs[:query])) if attrs[:query_type] == 'aims_search' && attrs[:query].present?
+    scope = scope.filter_search(attrs[:filters]) if attrs[:filters].present?
+    scope = scope.db_search(attrs[:query]) if attrs[:query_type] == 'local_search' && attrs[:query].present?
+    scope = scope.where(explicit: attrs[:explicit]) if attrs[:explicit].present?
     scope = scope.includes(TRACK_EAGER_LOAD_COLS)
-    scope = scope.order_by(order_by_attr, direction)
+    scope = scope.order_by(attrs[:order_by_attr], direction)
 
     scope
   end

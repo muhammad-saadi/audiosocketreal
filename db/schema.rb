@@ -410,14 +410,11 @@ ActiveRecord::Schema.define(version: 2022_01_20_130007) do
     t.bigint "album_id"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-    t.boolean "public_domain"
     t.text "lyrics"
-    t.boolean "explicit"
     t.string "composer"
     t.text "admin_note"
     t.text "description"
     t.string "language"
-    t.boolean "instrumental"
     t.string "key"
     t.integer "bpm"
     t.bigint "parent_track_id"
@@ -427,6 +424,9 @@ ActiveRecord::Schema.define(version: 2022_01_20_130007) do
     t.float "duration"
     t.datetime "publish_date"
     t.boolean "featured", default: false
+    t.boolean "explicit", default: false
+    t.boolean "public_domain", default: true
+    t.boolean "instrumental", default: false
     t.index ["album_id"], name: "index_tracks_on_album_id"
     t.index ["parent_track_id"], name: "index_tracks_on_parent_track_id"
   end

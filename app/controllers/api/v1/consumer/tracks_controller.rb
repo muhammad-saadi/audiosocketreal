@@ -4,7 +4,7 @@ class Api::V1::Consumer::TracksController < Api::V1::Consumer::BaseController
   before_action :authenticate_consumer!, only: %i[show index], if: :consumer_signed_in?
 
   def index
-    @tracks = Track.approved.search(params[:query], params[:query_type], params[:filters], params[:order_by], params[:ids], params[:direction])
+    @tracks = Track.approved.search(params[:ids], params[:direction], search_attributes)
     @favorite_track_ids = current_consumer&.favorite_followables('Track', 'favorite')&.ids
 
     render json: @tracks.pagination(pagination_params), meta: { total_track_count: @tracks.size, favorite_tracks_ids: @favorite_track_ids, options: 'tracks' }, adapter: :json
@@ -27,6 +27,16 @@ class Api::V1::Consumer::TracksController < Api::V1::Consumer::BaseController
   end
 
   private
+
+  def search_attributes
+    {
+      query: params[:query],
+      query_type: params[:query_type],
+      filter: params[:filters],
+      order_by_attr: params[:order_by],
+      explicit: params[:explicit]
+    }
+  end
 
   def set_track
     @track = Track.approved.includes(Track::TRACK_EAGER_LOAD_COLS).find(params[:id])
