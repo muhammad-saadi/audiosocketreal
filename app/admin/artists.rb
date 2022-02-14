@@ -197,7 +197,7 @@ ActiveAdmin.register User, as: 'Artist' do
           end
         end
 
-        panel 'Notes' do
+        panel 'Artist Notes' do
           table_for artist.artist_profile.notes do
             if artist.artist_profile.notes.blank?
               column 'No Records Found'

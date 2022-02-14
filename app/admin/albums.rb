@@ -118,7 +118,7 @@ ActiveAdmin.register Album do
       end
     end
 
-    panel 'Notes' do
+    panel 'Artist Notes' do
       table_for album.notes do
         if album.notes.blank?
           column 'No Records Found'
@@ -146,7 +146,7 @@ ActiveAdmin.register Album do
 
   form do |f|
     f.inputs do
-      f.input :name, label: "Artist Name"
+      f.input :name, label: "Album Name"
       f.input :release_date, as: :date_picker
       f.input :artwork, as: :file
       f.input :user, as: :searchable_select , collection: User.artist, label: 'Artist', include_blank: 'Select an Artist'

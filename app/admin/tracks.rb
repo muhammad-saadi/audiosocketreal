@@ -98,7 +98,7 @@ ActiveAdmin.register Track do
 
     panel 'Writers' do
       @track = Track.find(params[:id])
-      table_for @track.track_writers do
+      table_for @track.track_writers.includes(:collaborator, :artists_collaborator) do
         if @track.track_writers.blank?
           column 'No Records Found'
         else
@@ -106,13 +106,16 @@ ActiveAdmin.register Track do
             link_to writer.collaborator_email, admin_artists_collaborator_path(writer.artists_collaborator)
           end
           column :percentage
+          column :status do |writer|
+            writer.artists_collaborator.status
+          end
         end
       end
     end
 
     panel 'Publishers' do
       @track = Track.find(params[:id])
-      table_for @track.track_publishers do
+      table_for @track.track_publishers.includes(:publisher) do
         if @track.track_publishers.blank?
           column 'No Records Found'
         else
@@ -138,7 +141,7 @@ ActiveAdmin.register Track do
       end
     end
 
-    panel 'Notes' do
+    panel 'Artist Notes' do
       @track = Track.find(params[:id])
       table_for @track.notes do
         if @track.notes.blank?
@@ -200,6 +203,7 @@ ActiveAdmin.register Track do
         p.input :percentage
       end
 
+      f.semantic_errors :artists_collaborators
       f.semantic_errors :track_writers
 
       br
@@ -224,7 +228,7 @@ ActiveAdmin.register Track do
       f.input :key, as: :searchable_select, collection: key_signatures_list, include_blank: 'Select a Key Signature', label: "Key Signature"
       f.input :bpm
       f.input :lyrics, input_html: { class: 'autogrow', rows: 4, cols: 20 }
-      f.input :admin_note, label: "Notes", input_html: { class: 'autogrow', rows: 4, cols: 20 }
+      f.input :admin_note, input_html: { class: 'autogrow', rows: 4, cols: 20 }
     end
 
     f.actions do

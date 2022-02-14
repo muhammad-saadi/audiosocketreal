@@ -1,4 +1,4 @@
-ActiveAdmin.register Note do
+ActiveAdmin.register Note, as: 'Artist Notes'  do
   actions :all, except: [:new, :create]
 
   permit_params :description, :status, :user_id, :notable_type, :notable_id

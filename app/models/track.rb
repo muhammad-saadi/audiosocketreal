@@ -9,8 +9,8 @@ class Track < ApplicationRecord
   validates :track_writers, presence: true, unless: :pending?
   validate :publishers_validation, unless: :pending?
   validate :artists_collaborators_validation, unless: :pending?
-  validate :writers_percentage_validation, unless: :pending?
-  validate :publishers_percentage_validation, unless: :pending?
+  validate :writers_percentage_validation
+  validate :publishers_percentage_validation
 
   belongs_to :album
 
