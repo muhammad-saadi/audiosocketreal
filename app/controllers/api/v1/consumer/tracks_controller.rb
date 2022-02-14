@@ -1,7 +1,7 @@
 class Api::V1::Consumer::TracksController < Api::V1::Consumer::BaseController
   before_action :set_track, only: :show
   skip_before_action :authenticate_consumer!, only: %i[show index]
-  before_action :authenticate_consumer!, only: %i[show index], if: :consumer_signed_in?
+  before_action :authenticate_consumer!, only: %i[show index add_download_track get_downloaded_tracks], if: :consumer_signed_in?
 
   def index
     @tracks = Track.approved.search(params[:query], params[:query_type], params[:filters], params[:order_by], params[:ids], params[:direction])
@@ -24,6 +24,28 @@ class Api::V1::Consumer::TracksController < Api::V1::Consumer::BaseController
     @tracks = AimsApiService.aims_tracks(params[:id], 'id')
 
     render json: @tracks
+  end
+
+  def add_download_track
+    consumer_medium = ConsumerMedium.download_media(params[:id], @current_consumer, "Track")
+
+    if consumer_medium.save!
+      @track = Track.find(params[:id])
+
+      render json: { message: "#{@track.title} is successfully downloaded"}
+    else
+       raise ExceptionHandler::ValidationError.new(@current_consumer.errors.to_h, 'Error downloading track.')
+    end
+  end
+
+  def get_downloaded_tracks
+    download_track_list = ConsumerMedium.downloaded_media(@current_consumer.id, 'Track')
+
+    if download_track_list.present?
+      render json: current_consumer.downloaded_tracks.includes(Track::TRACK_EAGER_LOAD_COLS)
+    else
+      render json: { message: "nothing downloaded yet" }
+    end
   end
 
   private
