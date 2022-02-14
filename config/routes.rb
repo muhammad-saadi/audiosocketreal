@@ -92,7 +92,7 @@ Rails.application.routes.draw do
 
         resources :consumers_playlists, except: %i[new edit] do
           member do
-            post :add_track
+            post :add_media
             patch :rename
           end
         end

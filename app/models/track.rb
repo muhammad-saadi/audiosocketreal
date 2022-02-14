@@ -5,6 +5,7 @@ class Track < ApplicationRecord
   include TrackDetailsExporter
   include AimsCallbacks
   include Favoritable
+  include Listable
 
   validates :title, presence: true
   validates :file, presence: true
@@ -34,9 +35,6 @@ class Track < ApplicationRecord
   has_many :track_writers, dependent: :destroy
   has_many :artists_collaborators, through: :track_writers
   has_many :alternate_versions, foreign_key: 'parent_track_id', class_name: 'Track'
-  has_many :playlist_tracks, dependent: :destroy
-  has_many :consumer_playlists, through: :playlist_tracks, source: :listable, source_type: 'ConsumerPlaylist', dependent: :destroy
-  has_many :curated_playlists, through: :playlist_tracks, source: :listable, source_type: 'CuratedPlaylist', dependent: :destroy
   has_many :license_tracks, as: :mediable, dependent: :destroy
   has_many :licenses, through: :license_tracks
   has_many :collection_tracks, dependent: :destroy

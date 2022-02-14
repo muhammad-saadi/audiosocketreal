@@ -1,11 +1,9 @@
 class ConsumerPlaylist < ApplicationRecord
   include FavoriteFollowable
+  include Mediable
 
   belongs_to :consumer
   belongs_to :folder, optional: true
-
-  has_many :playlist_tracks, as: :listable
-  has_many :tracks, through: :playlist_tracks, dependent: :destroy
 
   has_one_attached :playlist_image
   has_one_attached :banner_image
@@ -16,11 +14,11 @@ class ConsumerPlaylist < ApplicationRecord
 
   validate :folder_validation
 
-  accepts_nested_attributes_for :playlist_tracks, allow_destroy: true
+  PLAYLIST_EAGER_LOAD_COLS = [{ banner_image_attachment: :blob, playlist_image_attachment: :blob,
+                                tracks: Track::TRACK_EAGER_LOAD_COLS,
+                                sfxes: Sfx::SFX_EAGER_LOAD_COLS }, :playlist_tracks].freeze
 
-  def self.eagerload_columns
-    { banner_image_attachment: :blob, playlist_image_attachment: :blob, tracks: [:alternate_versions, filters: [:parent_filter, sub_filters: [sub_filters: :sub_filters]], file_attachment: :blob] }
-  end
+  accepts_nested_attributes_for :playlist_tracks, allow_destroy: true
 
   def folder_validation
     return if folder_id.blank?

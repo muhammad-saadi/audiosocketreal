@@ -1,6 +1,7 @@
 class Sfx < ApplicationRecord
   include Pagination
   include Favoritable
+  include Listable
 
   has_many :media_filters, as: :filterable, dependent: :destroy
   has_many :filters, through: :media_filters

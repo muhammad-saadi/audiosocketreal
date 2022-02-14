@@ -1,15 +1,22 @@
 class Api::V1::Consumer::ConsumersPlaylistsController < Api::V1::Consumer::BaseController
-  before_action :set_playlist, only: %i[update rename show destroy add_track]
+  before_action :set_playlist, except: %i[index create]
+  before_action :set_media, only: :add_media
   before_action :increment_usage, only: :create
 
-  def add_track
-    @playlist.tracks << Track.find(params[:track_id])
-    render json: { status: "Track added to playlist" }
+  def add_media
+    @playlist.playlist_tracks.build(mediable: @media)
+
+    if @playlist.save
+      render json: { status: "#{params[:mediable_type].classify} added to playlist" }
+    else
+      raise ExceptionHandler::ValidationError.new(@playlist.errors.to_h, 'Error adding media to playlist.')
+    end
   end
 
   def index
     @playlists = current_consumer.consumer_playlists
-    render json: @playlists.includes(ConsumerPlaylist.eagerload_columns), meta: { count: @playlists.count }, adapter: :json
+
+    render json: @playlists.includes(ConsumerPlaylist::PLAYLIST_EAGER_LOAD_COLS), meta: { count: @playlists.count }, adapter: :json
   end
 
   def show
@@ -18,6 +25,7 @@ class Api::V1::Consumer::ConsumersPlaylistsController < Api::V1::Consumer::BaseC
 
   def create
     @playlist = current_consumer.consumer_playlists.new(playlist_params)
+
     if @playlist.save
       render json: @playlist
     else
@@ -35,7 +43,7 @@ class Api::V1::Consumer::ConsumersPlaylistsController < Api::V1::Consumer::BaseC
 
   def update
     if @playlist.update(update_playlist_params)
-      render json: @playlist
+      render json: load_playlist_queries.find(@playlist.id)
     else
       raise ExceptionHandler::ValidationError.new(@playlist.errors.to_h, 'Error updating playlist.')
     end
@@ -43,7 +51,7 @@ class Api::V1::Consumer::ConsumersPlaylistsController < Api::V1::Consumer::BaseC
 
   def destroy
     if @playlist.destroy
-      render json: current_consumer.consumer_playlists
+      render json: load_playlist_queries
     else
       raise ExceptionHandler::ValidationError.new(@playlist.errors.to_h, 'Error deleting playlist.')
     end
@@ -52,11 +60,13 @@ class Api::V1::Consumer::ConsumersPlaylistsController < Api::V1::Consumer::BaseC
   private
 
   def set_playlist
-    @playlist = current_consumer.consumer_playlists.includes(ConsumerPlaylist.eagerload_columns).find(params[:id])
+    return @playlist = load_playlist_queries.find(params[:id]) unless %w[update destroy].include? params[:action]
+
+    @playlist = current_consumer.consumer_playlists.find(params[:id])
   end
 
   def update_playlist_params
-    params.permit(:name, :folder_id, :playlist_image, :banner_image, playlist_tracks_attributes: [:id, :track_id, :note, :_destroy])
+    params.permit(:name, :folder_id, :playlist_image, :banner_image, playlist_tracks_attributes: [:id, :mediable_id, :mediable_type, :note, :_destroy])
   end
 
   def playlist_params
@@ -65,5 +75,13 @@ class Api::V1::Consumer::ConsumersPlaylistsController < Api::V1::Consumer::BaseC
 
   def increment_usage
     current_consumer.increment_playlist_usage!
+  end
+
+  def load_playlist_queries
+    current_consumer.consumer_playlists.includes(ConsumerPlaylist::PLAYLIST_EAGER_LOAD_COLS)
+  end
+
+  def set_media
+    @media = params[:mediable_type].classify.constantize.find(params[:mediable_id])
   end
 end

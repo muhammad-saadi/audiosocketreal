@@ -18,7 +18,8 @@ ActiveAdmin.register CuratedPlaylist do
   member_action :add, method: :post do
     consumer_playlist = ConsumerPlaylist.find(params[:id])
     curated_playlist = CuratedPlaylist.new(name: consumer_playlist.name, playlist_image: consumer_playlist.playlist_image&.blob, banner_image: consumer_playlist.banner_image&.blob)
-    if curated_playlist.save && (curated_playlist.tracks = consumer_playlist.tracks)
+
+    if curated_playlist.save && CuratedPlaylist::assign_playlist_tracks(curated_playlist, consumer_playlist)
       flash[:notice] = 'Added to Curated Playlist'
     else
       flash[:alert] = curated_playlist.errors.full_messages.to_sentence
@@ -52,12 +53,13 @@ ActiveAdmin.register CuratedPlaylist do
 
       panel 'Playlist Tracks' do
         curated_playlist = CuratedPlaylist.find(params[:id])
-        table_for curated_playlist.playlist_tracks do
+        table_for curated_playlist.playlist_tracks.includes(:mediable) do
           if curated_playlist.playlist_tracks.blank?
             column 'No Records Found'
           else
             column :id
-            column :track
+            column 'Media', :mediable
+            column 'Media Type', :mediable_type
             column :order
             column :note
           end

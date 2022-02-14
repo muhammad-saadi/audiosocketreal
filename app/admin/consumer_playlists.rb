@@ -3,7 +3,7 @@ ActiveAdmin.register ConsumerPlaylist do
 
   permit_params :name, :folder_id
 
-  includes :folder, :playlist_tracks
+  includes :folder, :playlist_tracks, :consumer
 
   filter :folder
   filter :consumer
@@ -49,12 +49,13 @@ ActiveAdmin.register ConsumerPlaylist do
 
       panel 'Playlist Tracks' do
         consumer_playlist = ConsumerPlaylist.find(params[:id])
-        table_for consumer_playlist.playlist_tracks do
+        table_for consumer_playlist.playlist_tracks.includes(:mediable) do
           if consumer_playlist.playlist_tracks.blank?
             column 'No Records Found'
           else
             column :id
-            column :track
+            column 'Media', :mediable
+            column 'Media Type', :mediable_type
             column :order
             column :note
           end

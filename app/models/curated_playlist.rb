@@ -1,8 +1,6 @@
 class CuratedPlaylist < ApplicationRecord
   include FavoriteFollowable
-
-  has_many :playlist_tracks, as: :listable
-  has_many :tracks, through: :playlist_tracks, dependent: :destroy
+  include Mediable
 
   has_one_attached :playlist_image
   has_one_attached :banner_image
@@ -40,5 +38,9 @@ class CuratedPlaylist < ApplicationRecord
     return CuratedPlaylist.increment_counter(:order, CuratedPlaylist.items_between(order, order_was).exclude(id)) if order_was > order
 
     CuratedPlaylist.decrement_counter(:order, CuratedPlaylist.items_between(order_was, order).exclude(id))
+  end
+
+  def self.assign_playlist_tracks(curated_playlist, consumer_playlist)
+    (curated_playlist.tracks = consumer_playlist.tracks) && (curated_playlist.sfxes = consumer_playlist.sfxes)
   end
 end
