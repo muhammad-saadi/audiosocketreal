@@ -1,10 +1,7 @@
 class Api::V1::Collaborator::NotesController < Api::V1::Collaborator::BaseController
-  include Api::V1::Docs::Collaborator::NotesDoc
-
   allow_access roles: ['collaborator'], access: %w[read write], only: %i[index]
   allow_access roles: ['collaborator'], access: %w[write], only: %i[create]
 
-  param_group :doc_create_note
   def create
     @note = @current_artist.notes.new(note_params)
     if @note.save
@@ -14,7 +11,6 @@ class Api::V1::Collaborator::NotesController < Api::V1::Collaborator::BaseContro
     end
   end
 
-  param_group :doc_notes
   def index
     render json: @current_artist.notes.pending.by_notable(params[:notable_type], params[:notable_id]), each_serializer: Api::V1::NoteSerializer
   end

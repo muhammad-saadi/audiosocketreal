@@ -1,12 +1,9 @@
 class Api::V1::Collaborator::ArtistsController < Api::V1::Collaborator::BaseController
-  include Api::V1::Docs::Collaborator::ArtistsDoc
-
   allow_access roles: ['collaborator'], access: %w[read write], only: %i[show_profile collaborators]
   allow_access roles: ['collaborator'], access: %w[write], only: %i[update_profile invite_collaborator resend_collaborator_invitation]
 
   before_action :set_artist_profile, only: %i[update_profile show_profile]
 
-  param_group :doc_update_profile
   def update_profile
     if @artist_profile.update(artist_profile_params)
       render json: @artist_profile, serializer: Api::V1::Collaborator::ArtistProfileSerializer
@@ -15,18 +12,15 @@ class Api::V1::Collaborator::ArtistsController < Api::V1::Collaborator::BaseCont
     end
   end
 
-  param_group :doc_show_profile
   def show_profile
     render json: @artist_profile, serializer: Api::V1::Collaborator::ArtistProfileSerializer
   end
 
-  param_group :doc_collaborators
   def collaborators
     @collaborators = @current_artist.collaborators_details.ordered.pagination(pagination_params)
     render json: @collaborators.includes(:collaborator), meta: { count: @collaborators.count }, each_serializer: Api::V1::CollaboratorSerializer, adapter: :json
   end
 
-  param_group :doc_invite_collaborator
   def invite_collaborator
     @current_artist.invite_collaborator(collaborator_params)
     @collaborators = @current_artist.collaborators_details.ordered.pagination(pagination_params)

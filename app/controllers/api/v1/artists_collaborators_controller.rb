@@ -1,6 +1,4 @@
 class Api::V1::ArtistsCollaboratorsController < Api::BaseController
-  include Api::V1::Docs::ArtistsCollaboratorsDoc
-
   validate_role roles: ['artist'], only: %i[update_access destroy]
   validate_role roles: ['collaborator'], only: %i[update_status]
 
@@ -10,12 +8,10 @@ class Api::V1::ArtistsCollaboratorsController < Api::BaseController
   before_action :set_collaborators_detail, only: %i[update update_access destroy]
   before_action :set_artists_detail, only: %i[update_status]
 
-  param_group :doc_authenticate_token
   def authenticate_token
     render json: @artists_collaborator
   end
 
-  param_group :doc_update_status
   def update_status
     if @artists_collaborator.update(status: params[:status])
       @artists_collaborator.send_status_update_mail
@@ -25,7 +21,6 @@ class Api::V1::ArtistsCollaboratorsController < Api::BaseController
     end
   end
 
-  param_group :doc_update_access
   def update_access
     if @artists_collaborator.update(access: params[:access])
       render json: current_user.collaborators_details.includes(:collaborator), each_serializer: Api::V1::CollaboratorSerializer
@@ -34,7 +29,6 @@ class Api::V1::ArtistsCollaboratorsController < Api::BaseController
     end
   end
 
-  param_group :doc_update_artists_collaborator
   def update
     if @artists_collaborator.update(artists_collaborator_params)
       render json: current_user.collaborators_details.includes(:collaborator).ordered, each_serializer: Api::V1::CollaboratorSerializer
@@ -43,7 +37,6 @@ class Api::V1::ArtistsCollaboratorsController < Api::BaseController
     end
   end
 
-  param_group :doc_destroy_artists_collaborator
   def destroy
     if @artists_collaborator.destroy
       render json: current_user.collaborators_details.includes(:collaborator), each_serializer: Api::V1::CollaboratorSerializer

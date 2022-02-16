@@ -1,18 +1,14 @@
 class Api::V1::AlbumsController < Api::BaseController
-  include Api::V1::Docs::AlbumsDoc
-
   validate_role roles: ['artist']
 
   before_action :set_album, only: %i[update show destroy update_artwork bulk_upload_tracks]
 
-  param_group :doc_albums
   def index
     @albums = current_user.albums.pagination(pagination_params)
     render json: @albums.includes(tracks: [:publishers, :file_attachment, { artists_collaborators: :collaborator }]),
            meta: { count: @albums.count }, adapter: :json
   end
 
-  param_group :doc_create_album
   def create
     @album = current_user.albums.new(album_params)
     if @album.save
@@ -22,7 +18,6 @@ class Api::V1::AlbumsController < Api::BaseController
     end
   end
 
-  param_group :doc_update_album
   def update
     if @album.update(album_params)
       render json: @album
@@ -31,12 +26,10 @@ class Api::V1::AlbumsController < Api::BaseController
     end
   end
 
-  param_group :doc_show_album
   def show
     render json: @album
   end
 
-  param_group :doc_destroy_album
   def destroy
     if @album.destroy
       render json: current_user.albums
@@ -45,7 +38,6 @@ class Api::V1::AlbumsController < Api::BaseController
     end
   end
 
-  param_group :doc_update_artork
   def update_artwork
     if @album.update(artwork_params)
       render json: @album

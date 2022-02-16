@@ -1,18 +1,14 @@
 class Api::V1::PublishersController < Api::BaseController
-  include Api::V1::Docs::PublishersDoc
-
   validate_role roles: ['artist']
 
   before_action :set_name, only: %i[create update]
   before_action :set_publisher, only: %i[create update destroy]
 
-  param_group :doc_publishers
   def index
     @publishers = current_user.publishers.ordered.pagination(pagination_params)
     render json: @publishers, meta: { count: @publishers.count }, adapter: :json
   end
 
-  param_group :doc_create_publishers
   def create
     @publisher = initialize_publisher
 
@@ -23,7 +19,6 @@ class Api::V1::PublishersController < Api::BaseController
     end
   end
 
-  param_group :doc_update_publishers
   def update
     if @publisher.update(update_publisher_params)
       render json: current_user.publishers.includes(:publisher_users).ordered
@@ -32,7 +27,6 @@ class Api::V1::PublishersController < Api::BaseController
     end
   end
 
-  param_group :doc_destroy_publisher
   def destroy
     if @publisher.destroy
       render json: current_user.publishers
