@@ -3,17 +3,18 @@ class Api::V1::Consumer::SessionsController < Api::V1::Consumer::BaseController
 
   def signup
     @consumer = Consumer.new(signup_params)
+
     if @consumer.save
-      render json: { auth_token: auth_token}
+      consumer_success_response
     else
       raise ExceptionHandler::ValidationError.new(@consumer.errors.to_h, 'Error creating consumer.')
     end
   end
 
   def create
-    consumer = Consumer.find(JsonWebToken.decode(auth_token)[:consumer_id])
+    @consumer = Consumer.find(JsonWebToken.decode(auth_token)[:consumer_id])
 
-    render json: { auth_token: auth_token, first_name: consumer.first_name, last_name: consumer.last_name, email: consumer.email }
+    consumer_success_response
   end
 
   private
@@ -28,5 +29,9 @@ class Api::V1::Consumer::SessionsController < Api::V1::Consumer::BaseController
 
   def authentication_params
     params.permit(:email, :password, :remember_me)
+  end
+
+  def consumer_success_response
+    render json: { auth_token: auth_token, first_name: @consumer.first_name, last_name: @consumer.last_name, email: @consumer.email }
   end
 end
