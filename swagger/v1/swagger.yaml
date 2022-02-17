@@ -4216,6 +4216,130 @@ paths:
                     type: string
                   white_listing_enabled:
                     type: string
+  "/api/v1/consumer/curated_playlists":
+    get:
+      summary: Curated Playlists List
+      tags:
+      - Curated Playlists
+      produces:
+      - application/json
+      parameters:
+      - name: query
+        in: query
+        type: string
+      security:
+      - api_auth: []
+      - consumer_auth: []
+      responses:
+        '200':
+          description: Curated Playlists
+          schema:
+            type: object
+            properties:
+              id:
+                type: integer
+              name:
+                type: string
+              category:
+                type: string
+              order:
+                type: integer
+              keywords:
+                type: string
+              playlist_image:
+                type: string
+              banner_image:
+                type: string
+              playlist_tracks:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    id:
+                      type: integer
+                    note:
+                      type: string
+                    order:
+                      type: integer
+                    track:
+                      type: object
+                      properties:
+                        id:
+                          type: integer
+                        title:
+                          type: string
+                        file:
+                          type: string
+                        status:
+                          type: string
+                        parent_track_id:
+                          type: integer
+                        public_domain:
+                          type: boolean
+                        created_at:
+                          type: string
+                          format: date
+                        lyrics:
+                          type: string
+                        explicit:
+                          type: boolean
+                        composer:
+                          type: string
+                        description:
+                          type: string
+                        language:
+                          type: string
+                        instrumental:
+                          type: boolean
+                        key:
+                          type: string
+                        bpm:
+                          type: integer
+                        admin_note:
+                          type: string
+                        filters:
+                          type: array
+                          items:
+                            type: object
+                            properties:
+                              id:
+                                type: integer
+                              name:
+                                type: string
+                              sub_filters:
+                                type: array
+                                items:
+                                  type: object
+                                  properties:
+                                    id:
+                                      type: integer
+                                    name:
+                                      type: string
+                                    sub_filters:
+                                      type: array
+                                      items: object
+                                    track_count:
+                                      type: integer
+                              track_count:
+                                type: integer
+                        moods:
+                          type: array
+                          items: object
+                        genre:
+                          type: array
+                          items: object
+                        instruments:
+                          type: array
+                          items: object
+                        themes:
+                          type: array
+                          items: object
+                        duration:
+                          type: number
+                          format: float
+                        alternate_versions:
+                          type: array
+                          items: object
   "/api/v1/consumer/folders":
     get:
       summary: Folders List

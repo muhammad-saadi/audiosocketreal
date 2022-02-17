@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_02_01_072348) do
+ActiveRecord::Schema.define(version: 2022_02_16_102346) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -277,6 +277,7 @@ ActiveRecord::Schema.define(version: 2022_02_01_072348) do
     t.integer "order"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.text "keywords"
   end
 
   create_table "favorite_follows", force: :cascade do |t|
@@ -458,11 +459,14 @@ ActiveRecord::Schema.define(version: 2022_02_01_072348) do
     t.bigint "album_id"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.boolean "public_domain", default: true
     t.text "lyrics"
+    t.boolean "explicit", default: false
     t.string "composer"
     t.text "admin_note"
     t.text "description"
     t.string "language"
+    t.boolean "instrumental", default: false
     t.string "key"
     t.integer "bpm"
     t.bigint "parent_track_id"
@@ -472,9 +476,6 @@ ActiveRecord::Schema.define(version: 2022_02_01_072348) do
     t.float "duration"
     t.datetime "publish_date"
     t.boolean "featured", default: false
-    t.boolean "explicit", default: false
-    t.boolean "public_domain", default: true
-    t.boolean "instrumental", default: false
     t.index ["album_id"], name: "index_tracks_on_album_id"
     t.index ["parent_track_id"], name: "index_tracks_on_parent_track_id"
   end

@@ -11,6 +11,7 @@
 @import "active_admin/mixins";
 @import "arctic_admin/base";
 @import "active_admin/searchable_select";
+@import "bootstrap-tagsinput";
 
 // Overriding any non-variable Sass must be done after the fact.
 // For example, to change the default status-tag color:
@@ -90,6 +91,27 @@
   font-size: 12px;
 }
 
-.errors{
+.errors {
   color: #dc4747;
+}
+
+.bootstrap-tagsinput {
+  width: 50%;
+}
+
+.bootstrap-tagsinput input{
+  width: 40% !important;
+}
+
+body.logged_in.edit .input .bootstrap-tagsinput .label {
+  width: auto;
+  color: black;
+  background-color: #e4e4e4;
+  border: 1px solid #aaa;
+  border-radius: 4px;
+  cursor: default;
+  float: left;
+  margin-right: 5px;
+  margin-top: 5px;
+  padding: 0 5px;
 }

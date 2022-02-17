@@ -5,7 +5,7 @@ ActiveAdmin.register CuratedPlaylist do
 
   includes :playlist_tracks
 
-  permit_params :name, :category, :order
+  permit_params :name, :category, :order, :keywords
 
   filter :name
   filter :created_at
@@ -48,6 +48,7 @@ ActiveAdmin.register CuratedPlaylist do
       row :playlist_image do
         image_tag(resource.playlist_image, width: 100, height: 100) if curated_playlist.playlist_image.attached?
       end
+      row :keywords
       row :created_at, &:formatted_created_at
       row :updated_at, &:formatted_updated_at
 
@@ -75,6 +76,7 @@ ActiveAdmin.register CuratedPlaylist do
       f.input :name
       f.input :category
       f.input :order
+      f.input :keywords, as: :string, input_html: { data: { role: 'tagsinput' }, class: 'input_tags' }, placeholder: 'Add Keyword'
     end
 
     f.actions do

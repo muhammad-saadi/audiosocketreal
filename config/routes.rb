@@ -90,6 +90,8 @@ Rails.application.routes.draw do
 
         resources :folders, except: %i[new edit]
 
+        resources :curated_playlists, only: %i[index show]
+
         resources :consumers_playlists, except: %i[new edit] do
           member do
             post :add_media

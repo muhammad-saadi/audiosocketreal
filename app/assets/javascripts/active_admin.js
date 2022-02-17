@@ -2,6 +2,7 @@
 //= require ckeditor/init
 //= require ckeditor/config
 //= require active_admin/searchable_select
+//= require bootstrap-tagsinput
 
 $(function () {
   var animationFilterDone = true;
@@ -66,3 +67,12 @@ function append_sub_filters(filter){
     }
   });
 }
+
+$(function () {
+  $('.input_tags').on('beforeItemAdd', function(event) {
+    if (event.item !== event.item.toLowerCase()) {
+      event.cancel = true;
+      $(this).tagsinput('add', event.item.toLowerCase());
+    }
+  });
+});

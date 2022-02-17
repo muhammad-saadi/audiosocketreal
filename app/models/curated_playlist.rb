@@ -20,6 +20,24 @@ class CuratedPlaylist < ApplicationRecord
   scope :items_between, -> (order1, order2) { where("curated_playlists.order >= ? and curated_playlists.order <= ?", order1, order2) }
   scope :exclude, -> (id) { where.not(id: id) }
 
+  def self.search(query)
+    scope = self.all
+    scope = scope.with_keywords_or_title(query) if query.present?
+    scope
+  end
+
+  def self.with_keywords_or_title(query)
+    query_words = query.split(' ')
+    query_words << query
+    query_array = query_words.flatten.uniq
+    query_array = query_array.map{ |obj| "%#{obj}%" }
+    self.ransack("keywords_or_name_matches_any": query_array).result(distinct: true)
+  end
+
+  def self.eagerload_columns
+    { banner_image_attachment: :blob, playlist_image_attachment: :blob, tracks: [:alternate_versions, filters: [:parent_filter, sub_filters: [sub_filters: :sub_filters]], file_attachment: :blob] }
+  end
+
   def max_order
     CuratedPlaylist.maximum('order').to_i
   end
