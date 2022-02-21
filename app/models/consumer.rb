@@ -37,7 +37,7 @@ class Consumer < ApplicationRecord
   end
 
   def playlists(kind)
-    consumer_playlists = favorite_followables('ConsumerPlaylist', kind).includes(ConsumerPlaylist.eagerload_columns)
+    consumer_playlists = favorite_followables('ConsumerPlaylist', kind).includes(ConsumerPlaylist::PLAYLIST_EAGER_LOAD_COLS)
     curated_playlists = favorite_followables('CuratedPlaylist', kind)
     consumer_playlists | curated_playlists
   end
