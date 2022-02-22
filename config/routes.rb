@@ -76,14 +76,24 @@ Rails.application.routes.draw do
         resources :tracks, only: %i[index show] do
           collection do
             post :upload_track_search
+            get :get_downloaded_tracks
           end
 
           member do
             post :similar_tracks
+            post :add_download_track
           end
         end
 
-        resources :sfxes, only: %i[index show]
+        resources :sfxes, only: %i[index show] do
+          collection do
+            get :get_downloaded_sfxes
+          end
+
+          member do
+            post :add_download_sfx
+          end
+        end
 
         resources :users, only: %i[index show]
 

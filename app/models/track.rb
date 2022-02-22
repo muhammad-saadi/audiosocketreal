@@ -5,9 +5,12 @@ class Track < ApplicationRecord
   include TrackDetailsExporter
   include AimsCallbacks
   include Favoritable
-  include SoundTrack
+  include Media
 
   validates :title, presence: true
+  validates :wav_file, blob: { content_type: %w[audio/vnd.wave audio/wave] }, bitrate: { bits: [16, 24], sample_rate: 48_000 }, size: { less_than_or_equal_to: 50.megabytes }
+  validates :aiff_file, blob: { content_type: %w[audio/aiff audio/x-aiff] }, bitrate: { bits: [16, 24], sample_rate: 48_000 }, size: { less_than_or_equal_to: 50.megabytes }
+  validates :mp3_file, blob: { content_type: %w[audio/mpeg audio/x-mpeg-3] }, bitrate: { bits: [16, 24], sample_rate: 48_000 }, size: { less_than_or_equal_to: 50.megabytes }
   validates :track_writers, presence: true, unless: :pending?
   validate :publishers_validation, unless: :pending?
   validate :artists_collaborators_validation, unless: :pending?
@@ -19,9 +22,14 @@ class Track < ApplicationRecord
   belongs_to :parent_track, class_name: 'Track', optional: true
 
   after_save :convert_to_mp3_audio
+  after_save :set_duration
   before_save :set_publish_date
 
   has_one :user, through: :album
+
+  has_one_attached :wav_file
+  has_one_attached :aiff_file
+  has_one_attached :mp3_file
 
   has_many :notes, as: :notable, dependent: :destroy
   has_many :media_filters, as: :filterable, dependent: :destroy
@@ -46,6 +54,14 @@ class Track < ApplicationRecord
   }.freeze
 
   enum status: STATUSES
+
+  TRACK_TYPES = {
+    mp3_file: 'mp3_file',
+    aiff_file: 'aiff_file',
+    wav_file: 'wav_file'
+  }.freeze
+
+  FILE_TYPES = [:wav_file, :aiff_file, :mp3_file].freeze
 
   TRACK_EAGER_LOAD_COLS = [:alternate_versions, { filters: [:parent_filter, :tracks, sub_filters: [:tracks, sub_filters: [:tracks, :sub_filters]]], wav_file_attachment: :blob, aiff_file_attachment: :blob, mp3_file_attachment: :blob }].freeze
 
@@ -91,6 +107,28 @@ class Track < ApplicationRecord
 
   def self.filter_search(filters)
     self.ransack("filters_name_matches_any": filters).result(distinct: true)
+  end
+
+  def self.to_zip
+    all.each_with_index.inject([]) do |zip_list, (track, index)|
+      next zip_list unless track.mp3_file.attached?
+
+      file_name = zip_list.pluck(1).include?(track.filename) ? track.filename(" (#{index})") : track.filename
+      zip_list << [track.wav_file, track.aiff_file, track.mp3_file, file_name]
+    end
+  end
+
+  def set_duration
+    return if self.attachment_changes['mp3_file'].blank?
+
+    mp3_changes = self.attachment_changes['mp3_file'].attachable
+    filepath = mp3_changes.is_a?(Hash) ? mp3_changes[:io].path : mp3_changes.path
+    self.update_columns(duration: FFMPEG::Movie.new(filepath).duration&.round(2))
+  end
+
+  def filename(index = '')
+    name = mp3_file.filename.to_s
+    (title.presence || File.basename(name, File.extname(name))) + index + File.extname(name)
   end
 
   def track_writers=(attributes)

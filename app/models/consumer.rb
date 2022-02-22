@@ -9,6 +9,9 @@ class Consumer < ApplicationRecord
   has_one :consumer_profile, dependent: :destroy
   has_many :folders, dependent: :destroy
   has_many :consumer_playlists, dependent: :destroy
+  has_many :consumer_media, dependent: :destroy
+  has_many :downloaded_tracks, through: :consumer_media, source: :mediable, source_type: 'Track'
+  has_many :downloaded_sfxes, through: :consumer_media, source: :mediable, source_type: 'Sfx'
 
   validates :first_name, :last_name, presence: true
 

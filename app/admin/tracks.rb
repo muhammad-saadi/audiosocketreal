@@ -209,18 +209,18 @@ ActiveAdmin.register Track do
       f.input :title
       f.input :wav_file, as: :file , label: "WAV Music File"
       div class: 'file-hint' do
-        span 'Existing File: ' + file_hint(f.object, Track::AUDIO_TYPES[:wav_file]), id: 'hint', class: 'track_existing_wav_file'
-        span link_to 'x', remove_file_admin_track_path(f.object, type: Track::AUDIO_TYPES[:wav_file]), id: 'track_wav_file', class: 'remove-file', data: { confirm: 'Are you sure you want to remove this audio?', caller: 'wav_file' }, method: :delete, remote: true if f.object.wav_file.blob&.persisted?
+        span 'Existing File: ' + file_hint(f.object, Track::TRACK_TYPES[:wav_file]), id: 'hint', class: 'track_existing_wav_file'
+        span link_to 'x', remove_file_admin_track_path(f.object, type: Track::TRACK_TYPES[:wav_file]), id: 'track_wav_file', class: 'remove-file', data: { confirm: 'Are you sure you want to remove this audio?', caller: 'wav_file' }, method: :delete, remote: true if f.object.wav_file.blob&.persisted?
       end
       f.input :aiff_file, as: :file , label: "AIFF Music File"
       div class: 'file-hint' do
-        span 'Existing File: ' + file_hint(f.object, Track::AUDIO_TYPES[:aiff_file]), id: 'hint', class: 'track_existing_aiff_file'
-        span link_to 'x', remove_file_admin_track_path(f.object, type: Track::AUDIO_TYPES[:aiff_file]), id: 'track_aiff_file', class: 'remove-file', data: { confirm: 'Are you sure you want to remove this audio?', caller: 'aiff_file' }, method: :delete, remote: true if f.object.aiff_file.blob&.persisted?
+        span 'Existing File: ' + file_hint(f.object, Track::TRACK_TYPES[:aiff_file]), id: 'hint', class: 'track_existing_aiff_file'
+        span link_to 'x', remove_file_admin_track_path(f.object, type: Track::TRACK_TYPES[:aiff_file]), id: 'track_aiff_file', class: 'remove-file', data: { confirm: 'Are you sure you want to remove this audio?', caller: 'aiff_file' }, method: :delete, remote: true if f.object.aiff_file.blob&.persisted?
       end
       f.input :mp3_file, as: :file , label: "MP3 Music File"
       div class: 'file-hint' do
-        span 'Existing File: ' + file_hint(f.object, Track::AUDIO_TYPES[:mp3_file]), id: 'hint', class: 'track_existing_mp3_file'
-        span link_to 'x', remove_file_admin_track_path(f.object, type: Track::AUDIO_TYPES[:mp3_file]), id: 'track_mp3_file', class: 'remove-file', data: { confirm: 'Are you sure you want to remove this audio?', caller: 'mp3_file' }, method: :delete, remote: true if f.object.mp3_file.blob&.persisted?
+        span 'Existing File: ' + file_hint(f.object, Track::TRACK_TYPES[:mp3_file]), id: 'hint', class: 'track_existing_mp3_file'
+        span link_to 'x', remove_file_admin_track_path(f.object, type: Track::TRACK_TYPES[:mp3_file]), id: 'track_mp3_file', class: 'remove-file', data: { confirm: 'Are you sure you want to remove this audio?', caller: 'mp3_file' }, method: :delete, remote: true if f.object.mp3_file.blob&.persisted?
        end
       
       f.input :description, input_html: { class: 'autogrow', rows: 4, cols: 20 }
