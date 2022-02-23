@@ -5,7 +5,7 @@ class Api::V1::ContentController < Api::BaseController
 
   param_group :doc_content
   def show
-    render json: { content: @content&.content }
+    render json: { content: @content&.content.gsub('[name]', "#{current_user.full_name}") }
   end
 
   private
