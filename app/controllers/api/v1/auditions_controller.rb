@@ -1,6 +1,4 @@
 class Api::V1::AuditionsController < Api::BaseController
-  include Api::V1::Docs::AuditionsDoc
-
   validate_role roles: ['manager'], except: %i[create]
 
   skip_before_action :authenticate_user!, only: %i[create]
@@ -9,14 +7,12 @@ class Api::V1::AuditionsController < Api::BaseController
 
   around_action :wrap_transaction, only: %i[bulk_update_status]
 
-  param_group :doc_auditions
   def index
     @filtered_auditions = Audition.filter(filter_params[:search_key], filter_params[:search_query])
     @auditions = @filtered_auditions.filter_by_status(filter_params[:status]).pagination(filter_params)
     render json: @auditions.ordered_by_status.ordered.includes(:genres, :audition_musics), meta: count_details, adapter: :json
   end
 
-  param_group :doc_create_audition
   def create
     @audition = Audition.new(audition_params)
     @audition.status_updated_at = DateTime.now
@@ -28,7 +24,6 @@ class Api::V1::AuditionsController < Api::BaseController
     end
   end
 
-  param_group :doc_update_status
   def update_status
     if @audition.update(status_params)
       @audition.send_email(params[:content])
@@ -38,7 +33,6 @@ class Api::V1::AuditionsController < Api::BaseController
     end
   end
 
-  param_group :doc_bulk_update_status
   def bulk_update_status
     @auditions = Audition.where(id: params[:ids]).includes(:audition_musics, :genres)
     if @auditions.update(status_params) && @auditions.all? { |aud| aud.errors.blank? }
@@ -49,7 +43,6 @@ class Api::V1::AuditionsController < Api::BaseController
     end
   end
 
-  param_group :doc_assign_manager
   def assign_manager
     if @audition.update(assignee: @user, remarks: params[:remarks])
       @audition.notify_assignee
@@ -59,7 +52,6 @@ class Api::V1::AuditionsController < Api::BaseController
     end
   end
 
-  param_group :doc_bulk_assign_manager
   def bulk_assign_manager
     @auditions = Audition.where(id: params[:audition_ids]).includes(:audition_musics, :genres)
     if @auditions.update(assignee: @user, remarks: params[:remarks])
@@ -70,7 +62,6 @@ class Api::V1::AuditionsController < Api::BaseController
     end
   end
 
-  param_group :email_template
   def email_template
     return render json: { params[:status].to_sym => EMAIL_TEMPLATES[params[:status].to_sym] } if params[:status].present?
 

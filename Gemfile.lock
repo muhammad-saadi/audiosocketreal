@@ -84,8 +84,6 @@ GEM
       zeitwerk (~> 2.3)
     addressable (2.7.0)
       public_suffix (>= 2.0.2, < 5.0)
-    apipie-rails (0.5.18)
-      rails (>= 4.1)
     arbre (1.4.0)
       activesupport (>= 3.0.0, < 6.2)
       ruby2_keywords (>= 0.0.2, < 1.0)
@@ -425,7 +423,6 @@ DEPENDENCIES
   activeadmin
   activeadmin-searchable_select
   activestorage-audio
-  apipie-rails
   arctic_admin
   aws-sdk-s3
   bootsnap (>= 1.4.4)

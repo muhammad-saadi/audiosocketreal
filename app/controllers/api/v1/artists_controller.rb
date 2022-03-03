@@ -1,19 +1,15 @@
 class Api::V1::ArtistsController < Api::BaseController
-  include Api::V1::Docs::ArtistsDoc
-
   validate_role roles: ['artist'], except: %i[index]
   validate_role roles: ['collaborator'], only: %i[index]
 
   before_action :set_artist_profile, only: %i[update_profile show_profile]
 
-  param_group :doc_artists
   def index
     @filtered_artists = current_user.artists_details.non_self_collaborators.includes(artist: :artist_profile, collaborator: :users_agreements).filter_artists(filter_params[:search_key], filter_params[:search_query])
     @artists = @filtered_artists.filter_by_access(filter_params[:access]).pagination(pagination_params)
     render json: @artists, meta: count_details, each_serializer: Api::V1::ArtistsSerializer, adapter: :json
   end
 
-  param_group :doc_update_profile
   def update_profile
     if @artist_profile.update(artist_profile_params)
       @artist_profile.banner_image_status_pending! if params[:banner_image].present?
@@ -24,12 +20,10 @@ class Api::V1::ArtistsController < Api::BaseController
     end
   end
 
-  param_group :doc_show_profile
   def show_profile
     render json: @artist_profile
   end
 
-  param_group :doc_invite_collaborator
   def invite_collaborator
     current_user.invite_collaborator(collaborator_params)
     @collaborators = current_user.collaborators_details.ordered.pagination(pagination_params)
@@ -46,7 +40,6 @@ class Api::V1::ArtistsController < Api::BaseController
     render json: @collaborators.includes(:collaborator), meta: { count: @collaborators.count }, each_serializer: Api::V1::CollaboratorSerializer
   end
 
-  param_group :doc_collaborators
   def collaborators
     @collaborators = current_user.collaborators_details.ordered.pagination(pagination_params)
     render json: @collaborators.includes(:collaborator), meta: { count: @collaborators.count }, each_serializer: Api::V1::CollaboratorSerializer, adapter: :json
